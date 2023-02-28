@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nsK2Engine {
+namespace nsK2EngineLow {
 	class RenderingEngine;
 
 	//スキンモデルレンダー

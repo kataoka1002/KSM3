@@ -26,8 +26,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTK12", "..\k2EngineL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExEngine", "ExEngine", "{39F110FE-715C-4903-B346-0AB13535AA2F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "k2Engine", "..\k2Engine\k2Engine.vcxproj", "{53123121-4C75-40DA-9F54-CA46A3540A9A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -110,18 +108,6 @@ Global
 		{3E0E8608-CD9B-4C76-AF33-29CA38F2C9F0}.Release|x64.Build.0 = Release|x64
 		{3E0E8608-CD9B-4C76-AF33-29CA38F2C9F0}.Release|x86.ActiveCfg = Release|Win32
 		{3E0E8608-CD9B-4C76-AF33-29CA38F2C9F0}.Release|x86.Build.0 = Release|Win32
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Debug|x64.ActiveCfg = Debug|x64
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Debug|x64.Build.0 = Debug|x64
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Debug|x86.ActiveCfg = Debug|Win32
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Debug|x86.Build.0 = Debug|Win32
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Preview|x64.ActiveCfg = Debug|x64
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Preview|x64.Build.0 = Debug|x64
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Preview|x86.ActiveCfg = Debug|Win32
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Preview|x86.Build.0 = Debug|Win32
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Release|x64.ActiveCfg = Release|x64
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Release|x64.Build.0 = Release|x64
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Release|x86.ActiveCfg = Release|Win32
-		{53123121-4C75-40DA-9F54-CA46A3540A9A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
