@@ -1,4 +1,5 @@
 #pragma once
+//#include "graphics/ComputeAnimationVertexBuffer.h"
 
 namespace nsK2EngineLow {
 	class ModelRender {
@@ -46,6 +47,20 @@ namespace nsK2EngineLow {
 			SetScale({ xyz,xyz,xyz });
 		}
 
+		//座標拡大回転全てを設定
+		void SetTRS(const Vector3& pos, const Quaternion& rotation, const Vector3& scale)
+		{
+			SetPosition(pos);
+			SetRotation(rotation);
+			SetScale(scale);
+		}
+
+		//モデルを取得
+		Model& GetModel()
+		{
+			return m_model;
+		}
+
 		//アニメーションの再生
 		void PlayAnimation(int animNo, float interpolateTime = 0.0f)//アニメーションクリップの番号,補完時間
 		{
@@ -67,14 +82,16 @@ namespace nsK2EngineLow {
 	private:
 		//モデル
 		Model m_model;
+
 		//アニメーション
 		Animation m_animation;
 		AnimationClip* m_animationClips;
 		int m_numAnimationClips = 0;
 		Skeleton m_skeleton;
 		float m_animationSpeed = 1.0f;
+
 		//座標回転大きさ
-		Vector3 m_position = { 0.0f,0.0f,0.0f };
+		Vector3 m_position = Vector3::Zero;
 		Quaternion m_rotation = { 0.0f,0.0f,0.0f,1.0f };
 		Vector3 m_scale = Vector3::One;
 		

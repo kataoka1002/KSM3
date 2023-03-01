@@ -1,4 +1,6 @@
 #pragma once
+#include "LevelRender.h"
+class BoxMove;
 
 class Game:public IGameObject
 {
@@ -17,5 +19,8 @@ public:
 
 private:
 	ModelRender m_modelRender;
+	SpriteRender m_spriteRender;
+	LevelRender m_levelRender;
+	std::vector<BoxMove*> m_boxmoves;				//moveボックス
 };
 

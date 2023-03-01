@@ -13,12 +13,16 @@ namespace nsK2EngineLow {
 
 	}
 
-	void ModelRender::Init(const char* filePath, AnimationClip* animationClips,int numAnimationClips, EnModelUpAxis enModelUpAxis)
+	void ModelRender::Init(const char* filePath,
+		AnimationClip* animationClips,
+		int numAnimationClips,
+		EnModelUpAxis enModelUpAxis)
 	{
 		// スケルトンを初期化。
 		InitSkeleton(filePath);
 		// アニメーションを初期化。
 		InitAnimation(animationClips, numAnimationClips, enModelUpAxis);
+
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = filePath;
 		modelInitData.m_fxFilePath = "Assets/shader/model.fx";
@@ -38,7 +42,7 @@ namespace nsK2EngineLow {
 
 	void ModelRender::Update()
 	{
-		//モデル側に渡すのはここ
+		//モデル側に移動回転拡大を渡すのはここ
 		m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 
 		if (m_skeleton.IsInited()) {
