@@ -4,8 +4,8 @@
 
 bool Game::Start()
 {
-	m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 600.0f, 600.0f);
-	m_spriteRender.SetPosition({ 200.0f,0.0f,0.0f });
+	m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
+	m_spriteRender.SetPosition({ 600.0f,0.0f,0.0f });
 
 	animationClips[enAnimClip_Idle].Load("Assets/animData/idle.tka");
 	animationClips[enAnimClip_Idle].SetLoopFlag(true);
@@ -33,6 +33,12 @@ bool Game::Start()
 			}
 		});
 
+	m_fontRender.SetText(L"17");
+	m_fontRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	m_fontRender.SetScale(2.0f);
+	m_fontRender.SetColor({ 1.0f,1.0f,1.0f ,1.0f });
+	m_fontRender.SetShadowParam(true, 1.3f, Vector3{ 0.0f,0.0f,0.0f });
+
 	Quaternion rot;
 	rot.SetRotationDegY(180.0f);
 	m_modelRender.SetRotation(rot);
@@ -59,6 +65,10 @@ Game::~Game()
 
 void Game::Update()
 {
+	/*wchar_t count1[255];
+	swprintf_s(count1, 255, L"X%d", 5);*/
+	
+
 	m_modelRender.PlayAnimation(enAnimClip_Idle);
 
 	m_modelRender.Update();
@@ -69,7 +79,5 @@ void Game::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
 	m_spriteRender.Draw(rc);
-
-	//レベルで読み込んだモデルを表示させる。
-	//m_levelRender.Draw(rc);
+	m_fontRender.Draw(rc);
 }

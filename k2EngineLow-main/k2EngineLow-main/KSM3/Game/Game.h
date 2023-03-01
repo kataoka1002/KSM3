@@ -22,5 +22,6 @@ private:
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
 	std::vector<BoxMove*> m_boxmoves;				//moveボックス
+	FontRender m_fontRender;
 };
 
