@@ -13,6 +13,8 @@ BoxMove::~BoxMove()
 
 bool BoxMove::Start()
 {
+	m_position.x = 100.0f;
+
 	m_modelRender.Init("Assets/modelData/sample/sample.tkm");
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetRotation(m_rotation);

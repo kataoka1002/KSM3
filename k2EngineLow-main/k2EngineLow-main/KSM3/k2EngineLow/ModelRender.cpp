@@ -26,6 +26,8 @@ namespace nsK2EngineLow {
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = filePath;
 		modelInitData.m_fxFilePath = "Assets/shader/model.fx";
+		modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightingCB();
+		modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightingCB());
 		modelInitData.m_modelUpAxis = enModelUpAxis;
 
 		if (animationClips != nullptr) {
@@ -36,6 +38,7 @@ namespace nsK2EngineLow {
 			modelInitData.m_vsEntryPointFunc = "VSMain";
 		}
 
+	
 		m_model.Init(modelInitData);
 
 	}

@@ -5,7 +5,7 @@
 bool Game::Start()
 {
 	m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
-	m_spriteRender.SetPosition({ 600.0f,0.0f,0.0f });
+	m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
 
 	animationClips[enAnimClip_Idle].Load("Assets/animData/idle.tka");
 	animationClips[enAnimClip_Idle].SetLoopFlag(true);
@@ -33,19 +33,24 @@ bool Game::Start()
 			}
 		});
 
-	m_fontRender.SetText(L"17");
-	m_fontRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-	m_fontRender.SetScale(2.0f);
-	m_fontRender.SetColor({ 1.0f,1.0f,1.0f ,1.0f });
-	m_fontRender.SetShadowParam(true, 1.3f, Vector3{ 0.0f,0.0f,0.0f });
-
 	Quaternion rot;
 	rot.SetRotationDegY(180.0f);
 	m_modelRender.SetRotation(rot);
-
 	m_modelRender.SetScale(1.0f);
-
 	m_modelRender.Update();
+
+
+	//ライトは斜め上から当たっている
+	directionLight.ligDirection.x = 1.0f;
+	directionLight.ligDirection.y = -1.0f;
+	directionLight.ligDirection.z = -1.0f;
+	//正規化
+	directionLight.ligDirection.Normalize();
+	//色は白
+	directionLight.ligColor.x = 1.0f;
+	directionLight.ligColor.y = 1.0f;
+	directionLight.ligColor.z = 1.0f;
+
 	return true;
 }
 
@@ -65,11 +70,21 @@ Game::~Game()
 
 void Game::Update()
 {
-	/*wchar_t count1[255];
-	swprintf_s(count1, 255, L"X%d", 5);*/
-	
+	wchar_t wcsbuf[256];
+	swprintf_s(wcsbuf, 256, L"%d秒経過!!", int(m_timer));
+	//表示するテキストを設定。
+	m_fontRender.SetText(wcsbuf);
+	//フォントの位置を設定。
+	m_fontRender.SetPosition(Vector3(-800.0f, 0.0f, 0.0f));
+	//フォントの大きさを設定。
+	m_fontRender.SetScale(2.0f);
+	//フォントの色を設定。
+	m_fontRender.SetColor({ 1.0f,0.0f,0.0f,1.0f });
+	m_timer += g_gameTime->GetFrameDeltaTime();
 
 	m_modelRender.PlayAnimation(enAnimClip_Idle);
+
+	g_renderingEngine->SetDirectionLight(0, g_vec3Naname, g_vec3One);
 
 	m_modelRender.Update();
 	m_spriteRender.Update();
@@ -79,5 +94,6 @@ void Game::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
 	m_spriteRender.Draw(rc);
+
 	m_fontRender.Draw(rc);
 }

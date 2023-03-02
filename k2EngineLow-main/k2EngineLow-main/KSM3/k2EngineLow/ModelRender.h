@@ -1,7 +1,8 @@
 #pragma once
-//#include "graphics/ComputeAnimationVertexBuffer.h"
 
 namespace nsK2EngineLow {
+
+
 	class ModelRender {
 	public:
 		ModelRender();

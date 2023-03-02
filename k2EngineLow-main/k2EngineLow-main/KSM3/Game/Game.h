@@ -23,5 +23,7 @@ private:
 	LevelRender m_levelRender;
 	std::vector<BoxMove*> m_boxmoves;				//moveボックス
 	FontRender m_fontRender;
+	float m_timer = 0.0f;
+	DirectionLight directionLight;
 };
 
