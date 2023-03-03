@@ -5,7 +5,7 @@ namespace nsK2EngineLow {
 	struct DirectionLight
 	{
 		Vector3 ligDirection;
-		float pad;
+		float pad0;
 		Vector3 ligColor;
 		
 	};
@@ -13,6 +13,7 @@ namespace nsK2EngineLow {
 	struct Light
 	{
 		DirectionLight directionLight[4];	//ディレクションライトの配列(最大4つ)
+		float pad1;
 		Vector3 eyePos;						//視点の位置
 	};
 
@@ -20,12 +21,16 @@ namespace nsK2EngineLow {
 	{
 	public:
 		//初期化
-		void Init();
+		void Init()
+		{
+			m_light.eyePos = g_camera3D->GetPosition();
+		}
 
 		void SetDirectionLight(int lightNo, Vector3 direction, Vector3 color)
 		{
 			m_light.directionLight[lightNo].ligDirection = direction;
 			m_light.directionLight[lightNo].ligColor = color;
+			
 		}
 
 	private:

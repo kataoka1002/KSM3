@@ -16,6 +16,7 @@ cbuffer ModelCb : register(b0){
 cbuffer DirectionLightCb : register(b1) {
 	float3 ligDirection;		//ライトの方向
 	float3 ligColor;			//ライトのカラー
+	float3 eyePos;				//視点のデータにアクセスするための変数
 }
 
 ////////////////////////////////////////////////
@@ -37,6 +38,7 @@ struct SVSIn{
 struct SPSIn{
 	float4 pos 			: SV_POSITION;	//スクリーン空間でのピクセルの座標。
 	float2 uv 			: TEXCOORD0;	//uv座標。
+	float3 worldPos		: TEXCOORD1;
 	float3 normal		: NORMAL;		//法線
 };
 
@@ -83,6 +85,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 		m = mWorld;
 	}
 	psIn.pos = mul(m, vsIn.pos);
+	psIn.worldPos = vsIn.pos;
 	psIn.pos = mul(mView, psIn.pos);
 	psIn.pos = mul(mProj, psIn.pos);
 
@@ -113,6 +116,8 @@ SPSIn VSSkinMain( SVSIn vsIn )
 /// </summary>
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
+	//拡散反射ゾーン
+	//////////////////////////////////////////////////////
 	//ピクセルの法線とライトの方向の内積を計算する
 	float t = dot(psIn.normal,ligDirection);
 
@@ -124,11 +129,43 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 	}
 	//ピクセルが受けている光を求める
 	float3 diffuseLig = ligColor * t;
+	//////////////////////////////////////////////////////
 
+
+	//鏡面反射ゾーン
+	////////////////////////////////////////////////////////
+	//反射ベクトルを求める
+	float3 refVec = reflect(ligDirection, psIn.normal);
+	//光が当たったサーフェイスから視点に伸びるベクトルを求める
+	float3 toEye = eyePos - psIn.worldPos;
+	//正規化する
+	toEye = normalize(toEye);
+	//鏡面反射の強さを求め、結果がマイナスなら0にする
+	t = dot(refVec, toEye);
+	if (t < 0.0f)
+	{
+		t = 0.0f;
+	}
+	//鏡面反射の強さを絞る
+	t = pow(t, 5.0f);
+	//鏡面反射光を求める
+	float3 specularLig = ligColor * t;
+	///////////////////////////////////////////////////////
+
+	
+	//拡散反射光と鏡面反射光を足して最終的な光を求める
+	float3 lig = diffuseLig + specularLig;
+
+	//テクスチャからカラーをフェッチ
 	float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
 
+	//ライトの効果を一律で底上げする。
+	lig.x += 0.3f;
+	lig.y += 0.3f;
+	lig.z += 0.3f;
+
 	//最終出力カラーに光を乗算する
-	albedoColor.xyz *= diffuseLig;
+	albedoColor.xyz *= lig;
 
 	return albedoColor;
 }

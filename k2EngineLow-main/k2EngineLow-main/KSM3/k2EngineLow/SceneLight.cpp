@@ -3,8 +3,5 @@
 
 namespace nsK2EngineLow
 {
-	void SceneLight::Init()
-	{
-
-	}
+	
 }
