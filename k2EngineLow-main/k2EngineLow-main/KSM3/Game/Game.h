@@ -19,11 +19,13 @@ public:
 
 private:
 	ModelRender m_modelRender;
+	ModelRender m_modelRender2;
+	ModelRender m_modelRender3;
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
 	std::vector<BoxMove*> m_boxmoves;				//moveボックス
 	FontRender m_fontRender;
 	float m_timer = 0.0f;
-	DirectionLight directionLight;
+	Vector3 ptPosition = { 0.0f,30.0f,0.0f };
 };
 
