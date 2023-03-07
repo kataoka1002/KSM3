@@ -40,6 +40,12 @@ namespace nsK2EngineLow {
 			m_sceneLight.SetSpotLight(position, range, color, direction, angle);
 		}
 
+		//”¼‹…ƒ‰ƒCƒg‚Ìİ’è
+		void SetHemLight(Vector3 groundColor, Vector3 skyColor, Vector3 groundNormal)
+		{
+			m_sceneLight.SetHemLight(groundColor, skyColor, groundNormal);
+		}
+
 		SceneLight& GetLightingCB()
 		{
 			return m_sceneLight;

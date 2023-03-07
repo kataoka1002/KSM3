@@ -28,5 +28,8 @@ private:
 	float m_timer = 0.0f;
 	Vector3 ptPosition = { 0.0f,30.0f,0.0f };
 	Quaternion rot;
+	Vector3 groundColor = { 0.7f,0.5f,0.3f };
+	Vector3 skyColor = { 0.3f,0.3f,0.7f };
+	Vector3 groundNormal = { 0.0f,1.0f,0.0f };
 };
 

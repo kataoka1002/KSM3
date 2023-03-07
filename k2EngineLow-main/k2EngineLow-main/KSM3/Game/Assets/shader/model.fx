@@ -24,6 +24,12 @@ struct SpotLight
     float3 spDirection;		//スポットライトの射出方向
     float  spAngle;			//スポットライトの射出角度
 };
+struct HemLight
+{
+    float3 heGroundColor;	//照り返しのライト
+    float3 heSkyColor;		//天球ライト
+    float3 heGroundNormal;	//地面の法線
+};
 
 ////////////////////////////////////////////////
 // 定数バッファ。
@@ -48,6 +54,9 @@ cbuffer DirectionLightCb : register(b1) {
 	
 	//スポットライト用
     SpotLight spotLight;
+	
+	//半球ライト用
+    HemLight hemLight;
 }
 
 ////////////////////////////////////////////////
@@ -90,6 +99,7 @@ float3 CalcLigFromDirectionLight(SPSIn psIn);
 float3 CalcLigFromPointLight(SPSIn psIn);
 float3 CalcLigFromSpotLight(SPSIn psIn);
 float3 CalcLimPower(SPSIn psIn);
+float3 CalcLigFromHemLight(SPSIn psIn);
 
 /// <summary>
 //スキン行列を計算する。
@@ -167,10 +177,14 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 	//リムの計算
     float3 limColor = CalcLimPower(psIn);
 	
+	//半球ライトの計算
+    float3 hemLig = CalcLigFromHemLight(psIn);
 	
 	
-	//ディレクションライト、ポイントライト、スポットライト、アンビエントライトを合算して最終的な光を求める
-    float3 lig = directionLig + pointLig + ambientLight + spotLig;
+	
+	//ディレクションライト、ポイントライト、スポットライト、
+	//アンビエントライト、半球ライトを合算して最終的な光を求める
+    float3 lig = directionLig + pointLig + ambientLight + spotLig + hemLig;
 	//最終的な反射光にリムの反射光を合算する
     lig += limColor;
 	
@@ -352,5 +366,15 @@ float3 CalcLimPower(SPSIn psIn)
 	
 	//リムライトのカラーを計算し、返す
     return limPower * directionLight.dirColor;
+}
+
+float3 CalcLigFromHemLight(SPSIn psIn)
+{
+	//サーフェイスの法線と地面の法線との内積を計算する
+    float t = dot(psIn.normal, hemLight.heGroundNormal);
+	//内積の結果を0～1の範囲に変換
+    t = (t + 1.0f) / 2.0f;
+	//地面と天球色を補完率tで線形補完し、返す
+    return lerp(hemLight.heGroundColor, hemLight.heSkyColor, t);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////

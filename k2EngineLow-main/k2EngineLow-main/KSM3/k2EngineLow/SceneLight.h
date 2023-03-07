@@ -26,6 +26,15 @@ namespace nsK2EngineLow {
 		Vector3 ligDirection;
 		float ligAngle;
 	};
+	//環境ライト構造体
+	struct HemLight
+	{
+		Vector3 groundColor;
+		float pad0;
+		Vector3 skyColor;
+		float pad1;
+		Vector3 groundNormal;
+	};
 
 	//ライト構造体
 	struct Light
@@ -38,6 +47,7 @@ namespace nsK2EngineLow {
 		float pad2;
 		PointLight pointLight;			//ポイントライトの配列
 		SpotLight spotLight;			//スポットライトの配列
+		HemLight hemLight;				//半球ライトの配列
 	};
 
 	class SceneLight
@@ -78,6 +88,12 @@ namespace nsK2EngineLow {
 			m_light.spotLight.ligAngle = angle;
 		}
 
+		void SetHemLight(Vector3 groundColor, Vector3 skyColor, Vector3 groundNormal)
+		{
+			m_light.hemLight.groundColor = groundColor;
+			m_light.hemLight.skyColor = skyColor;
+			m_light.hemLight.groundNormal = groundNormal;
+		}
 
 	private:
 		Light m_light;	//シーンライト

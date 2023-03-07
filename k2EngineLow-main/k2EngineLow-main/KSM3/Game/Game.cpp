@@ -82,8 +82,8 @@ void Game::Update()
 	m_modelRender.PlayAnimation(enAnimClip_Idle);
 
 	//g_renderingEngine->SetPointLight( ptPosition, 150.0, g_vec3Right);
-	g_renderingEngine->SetAmbientLight(0.3f, 0.3f, 0.3f);
-
+	//g_renderingEngine->SetAmbientLight(0.3f, 0.3f, 0.3f);
+	g_renderingEngine->SetHemLight(groundColor, skyColor, groundNormal);
 	Vector3 nana2 = g_vec3Naname2;
 	nana2.Normalize();
 	float anglele = Math::DegToRad(25.0f);
