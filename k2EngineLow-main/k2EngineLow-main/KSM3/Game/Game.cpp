@@ -11,8 +11,19 @@ bool Game::Start()
 	animationClips[enAnimClip_Idle].SetLoopFlag(true);
 
 	m_modelRender.Init("Assets/modelData/unityChan.tkm", animationClips, enAnimClip_Num, enModelUpAxisY);
+	rot.SetRotationDegY(90.0);
+	m_modelRender.SetRotation(rot);
+	m_modelRender.SetPosition(-50.0f, 0.0f, 0.0f);
+	m_modelRender.SetScale(1.0f);
+	m_modelRender.Update();
 
-	m_modelRender.SetPosition(0.0f, 0.0f, 0.0f);
+	m_modelRender2.Init("Assets/modelData/sample/testBackGround.tkm");
+	m_modelRender2.SetPosition(0.0f, -20.0f, 20.0f);
+	m_modelRender2.Update();
+
+	m_modelRender3.Init("Assets/modelData/sample/light.tkm");
+	m_modelRender3.Update();
+
 
 	m_levelRender.Init("Assets/level/sample.tkl",
 		[&](LevelObjectData2& objData)
@@ -33,23 +44,9 @@ bool Game::Start()
 			}
 		});
 
-	Quaternion rot;
-	rot.SetRotationDegY(180.0f);
-	m_modelRender.SetRotation(rot);
-	m_modelRender.SetScale(1.0f);
-	m_modelRender.Update();
-
-
-	//ƒ‰ƒCƒg‚ÍŽÎ‚ßã‚©‚ç“–‚½‚Á‚Ä‚¢‚é
-	directionLight.ligDirection.x = 1.0f;
-	directionLight.ligDirection.y = -1.0f;
-	directionLight.ligDirection.z = -1.0f;
-	//³‹K‰»
-	directionLight.ligDirection.Normalize();
-	//F‚Í”’
-	directionLight.ligColor.x = 1.0f;
-	directionLight.ligColor.y = 1.0f;
-	directionLight.ligColor.z = 1.0f;
+	Vector3 nana = g_vec3Back;
+	nana.Normalize();
+	g_renderingEngine->SetDirectionLight(nana, g_vec3One);
 
 	return true;
 }
@@ -84,15 +81,44 @@ void Game::Update()
 
 	m_modelRender.PlayAnimation(enAnimClip_Idle);
 
-	g_renderingEngine->SetDirectionLight(0, g_vec3Naname, g_vec3One);
+	//g_renderingEngine->SetPointLight( ptPosition, 150.0, g_vec3Right);
+	g_renderingEngine->SetAmbientLight(0.3f, 0.3f, 0.3f);
 
+	Vector3 nana2 = g_vec3Naname2;
+	nana2.Normalize();
+	float anglele = Math::DegToRad(25.0f);
+	g_renderingEngine->SetSpotLight(ptPosition, 500.0f, g_vec3Up, nana2, anglele);
+
+
+	if (g_pad[0]->IsPress(enButtonRight)) {
+		ptPosition.x += 1.0;
+	}
+	if (g_pad[0]->IsPress(enButtonLeft)) {
+		ptPosition.x -= 1.0;
+	}
+	if (g_pad[0]->IsPress(enButtonUp)) {
+		ptPosition.z += 1.0;
+	}
+	if (g_pad[0]->IsPress(enButtonDown)) {
+		ptPosition.z -= 1.0;
+	}
+
+	
+	
 	m_modelRender.Update();
+	m_modelRender2.Update();
+	m_modelRender3.SetPosition(ptPosition);
+	m_modelRender3.Update();
+
 	m_spriteRender.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_modelRender2.Draw(rc);
+	m_modelRender3.Draw(rc);
+
 	m_spriteRender.Draw(rc);
 
 	m_fontRender.Draw(rc);

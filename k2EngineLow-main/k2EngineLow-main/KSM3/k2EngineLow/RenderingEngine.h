@@ -17,9 +17,27 @@ namespace nsK2EngineLow {
 		}
 
 		//ディレクションライトの設定
-		void SetDirectionLight(int lightNo, Vector3 direction, Vector3 color)
+		void SetDirectionLight( Vector3 direction, Vector3 color)
 		{
-			m_sceneLight.SetDirectionLight(lightNo, direction, color);
+			m_sceneLight.SetDirectionLight( direction, color);
+		}
+
+		//アンビエントライトの設定
+		void SetAmbientLight(float x,float y,float z)
+		{
+			m_sceneLight.SetAmbientLight(x, y, z);
+		}
+
+		//ポイントライトの設定
+		void SetPointLight(Vector3 position, float range, Vector3 color)
+		{
+			m_sceneLight.SetPointLight(position, range, color);
+		}
+
+		//スポットライトの設定
+		void SetSpotLight(Vector3 position, float range, Vector3 color, Vector3 direction, float angle)
+		{
+			m_sceneLight.SetSpotLight(position, range, color, direction, angle);
 		}
 
 		SceneLight& GetLightingCB()
