@@ -12,22 +12,32 @@ namespace nsK2EngineLow {
 	struct PointLight
 	{
 		Vector3 ligPosition;
-		float pad1;
+		float pad0;
 		Vector3 ligColor;
-		//float pad2;
 		float ligRange;
+	};
+	//スポットライト構造体
+	struct SpotLight
+	{
+		Vector3 ligPosition;
+		float pad0;
+		Vector3 ligColor;
+		float ligRange;
+		Vector3 ligDirection;
+		float ligAngle;
 	};
 
 	//ライト構造体
 	struct Light
 	{
-		DirectionLight directionLight;	//ディレクションライトの配列(最大4つ)
-		float pad3;
-		Vector3 eyePos;						//視点の位置
-		float pad4;
-		Vector3 ambientLight;				//環境光
-		float pad5;
-		PointLight pointLight;			//ポイントライトの配列(最大10個)
+		DirectionLight directionLight;	//ディレクションライトの配列
+		float pad0;
+		Vector3 eyePos;					//視点の位置
+		float pad1;
+		Vector3 ambientLight;			//環境光
+		float pad2;
+		PointLight pointLight;			//ポイントライトの配列
+		SpotLight spotLight;			//スポットライトの配列
 	};
 
 	class SceneLight
@@ -57,6 +67,15 @@ namespace nsK2EngineLow {
 			m_light.pointLight.ligPosition = position;
 			m_light.pointLight.ligRange = range;
 			m_light.pointLight.ligColor = color;
+		}
+
+		void SetSpotLight(Vector3 position, float range, Vector3 color, Vector3 direction, float angle)
+		{
+			m_light.spotLight.ligPosition = position;
+			m_light.spotLight.ligRange = range;
+			m_light.spotLight.ligColor = color;
+			m_light.spotLight.ligDirection = direction;
+			m_light.spotLight.ligAngle = angle;
 		}
 
 
