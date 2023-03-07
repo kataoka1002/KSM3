@@ -1,123 +1,98 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "BoxMove.h"
+#include "Player.h"
+#include "Title.h"
+#include "Result.h"
 
 bool Game::Start()
 {
 	m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
 	m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
 
-	animationClips[enAnimClip_Idle].Load("Assets/animData/idle.tka");
-	animationClips[enAnimClip_Idle].SetLoopFlag(true);
-
-	m_modelRender.Init("Assets/modelData/unityChan.tkm", animationClips, enAnimClip_Num, enModelUpAxisY);
-	rot.SetRotationDegY(90.0);
-	m_modelRender.SetRotation(rot);
-	m_modelRender.SetPosition(-50.0f, 0.0f, 0.0f);
-	m_modelRender.SetScale(1.0f);
-	m_modelRender.Update();
-
-	m_modelRender2.Init("Assets/modelData/sample/testBackGround.tkm");
-	m_modelRender2.SetPosition(0.0f, -20.0f, 20.0f);
-	m_modelRender2.Update();
-
-	m_modelRender3.Init("Assets/modelData/sample/light.tkm");
-	m_modelRender3.Update();
+	//m_modelRender.Init("Assets/modelData/test_player.tkm");
 
 
 	m_levelRender.Init("Assets/level/sample.tkl",
 		[&](LevelObjectData2& objData)
 		{
-			//ñºëOÇ™Box_MoveÇæÇ¡ÇΩÇÁÅB
+			//ÂêçÂâç„ÅåBox_Move„Å†„Å£„Åü„Çâ„ÄÇ
 			if (objData.EqualObjectName(L"Box_Move") == true) {
 
 				auto box = NewGO<BoxMove>(0);
-				//îzíuç¿ïWÅAÉXÉPÅ[ÉãÅAâÒì]ÇéÊìæÇ∑ÇÈÅB
+				//ÈÖçÁΩÆÂ∫ßÊ®ô„ÄÅ„Çπ„Ç±„Éº„É´„ÄÅÂõûËª¢„ÇíÂèñÂæó„Åô„Çã„ÄÇ
 				box->m_position = objData.position;
 				box->m_scale = objData.scale;
 				box->m_rotation = objData.rotation;
-				//å„Ç≈çÌèúÇ∑ÇÈÇΩÇﬂÇ…ÅAÉ{ÉbÉNÉXÇÉvÉbÉVÉÖÇµÇƒÇ®Ç≠ÅB
+				//Âæå„ÅßÂâäÈô§„Åô„Çã„Åü„ÇÅ„Å´„ÄÅ„Éú„ÉÉ„ÇØ„Çπ„Çí„Éó„ÉÉ„Ç∑„É•„Åó„Å¶„Åä„Åè„ÄÇ
 				m_boxmoves.push_back(box);
 
-				//trueÇ…Ç∑ÇÈÇ∆ÅAÉåÉxÉãÇÃï˚Ç≈ÉÇÉfÉãÇ™ì«Ç›çûÇ‹ÇÍÇ»Ç¢ÅB
+				//true„Å´„Åô„Çã„Å®„ÄÅ„É¨„Éô„É´„ÅÆÊñπ„Åß„É¢„Éá„É´„ÅåË™≠„ÅøËæº„Åæ„Çå„Å™„ÅÑ„ÄÇ
 				return true;
 			}
 		});
+		
 
-	Vector3 nana = g_vec3Back;
-	nana.Normalize();
-	g_renderingEngine->SetDirectionLight(nana, g_vec3One);
+
 
 	return true;
+
+	
 }
 
 Game::Game()
 {
-	
+	player = NewGO<Player>(1, "player");
 }
 
 Game::~Game()
 {
-	//ÉvÉbÉVÉÖÇµÇΩÉ{ÉbÉNÉXÇçÌèúÇµÇƒÇ¢Ç≠ÅB
+	//„Éó„ÉÉ„Ç∑„É•„Åó„Åü„Éú„ÉÉ„ÇØ„Çπ„ÇíÂâäÈô§„Åó„Å¶„ÅÑ„Åè„ÄÇ
 	for (auto box : m_boxmoves)
 	{
 		DeleteGO(box);
 	}
+
+	DeleteGO(player);
 }
 
 void Game::Update()
 {
 	wchar_t wcsbuf[256];
-	swprintf_s(wcsbuf, 256, L"%dïbåoâﬂ!!", int(m_timer));
-	//ï\é¶Ç∑ÇÈÉeÉLÉXÉgÇê›íËÅB
+	swprintf_s(wcsbuf, 256, L"%dÁßíÁµåÈÅé!!", int(m_timer));
+	//Ë°®Á§∫„Åô„Çã„ÉÜ„Ç≠„Çπ„Éà„ÇíË®≠ÂÆö„ÄÇ
 	m_fontRender.SetText(wcsbuf);
-	//ÉtÉHÉìÉgÇÃà íuÇê›íËÅB
+	//„Éï„Ç©„É≥„Éà„ÅÆ‰ΩçÁΩÆ„ÇíË®≠ÂÆö„ÄÇ
 	m_fontRender.SetPosition(Vector3(-800.0f, 0.0f, 0.0f));
-	//ÉtÉHÉìÉgÇÃëÂÇ´Ç≥Çê›íËÅB
+	//„Éï„Ç©„É≥„Éà„ÅÆÂ§ß„Åç„Åï„ÇíË®≠ÂÆö„ÄÇ
 	m_fontRender.SetScale(2.0f);
-	//ÉtÉHÉìÉgÇÃêFÇê›íËÅB
+	//„Éï„Ç©„É≥„Éà„ÅÆËâ≤„ÇíË®≠ÂÆö„ÄÇ
 	m_fontRender.SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
-	m_modelRender.PlayAnimation(enAnimClip_Idle);
+	//m_modelRender.PlayAnimation(enAnimClip_Idle);
 
-	//g_renderingEngine->SetPointLight( ptPosition, 150.0, g_vec3Right);
-	//g_renderingEngine->SetAmbientLight(0.3f, 0.3f, 0.3f);
-	g_renderingEngine->SetHemLight(groundColor, skyColor, groundNormal);
-	Vector3 nana2 = g_vec3Naname2;
-	nana2.Normalize();
-	float anglele = Math::DegToRad(25.0f);
-	g_renderingEngine->SetSpotLight(ptPosition, 500.0f, g_vec3Up, nana2, anglele);
+	dv = { 0.2f,0.2f,0.2f };
 
-
-	if (g_pad[0]->IsPress(enButtonRight)) {
-		ptPosition.x += 1.0;
-	}
-	if (g_pad[0]->IsPress(enButtonLeft)) {
-		ptPosition.x -= 1.0;
-	}
-	if (g_pad[0]->IsPress(enButtonUp)) {
-		ptPosition.z += 1.0;
-	}
-	if (g_pad[0]->IsPress(enButtonDown)) {
-		ptPosition.z -= 1.0;
-	}
-
-	
-	
-	m_modelRender.Update();
-	m_modelRender2.Update();
-	m_modelRender3.SetPosition(ptPosition);
-	m_modelRender3.Update();
 
 	m_spriteRender.Update();
+
+	//pauseÁîªÈù¢„Åã„Çâ„Çø„Ç§„Éà„É´„Å∏„ÅÆÈÅ∑Áßª
+	if (player->game_end_state == 1) {
+		title = NewGO<Title>(1, "title");
+		DeleteGO(this);
+	}
+	
+	//„É™„Ç∂„É´„Éà„Å∏„ÅÆÈÅ∑Áßª
+	if (g_pad[0]->IsTrigger(enButtonSelect)) {
+		result = NewGO<Result>(1, "result");
+		DeleteGO(this);
+	}
+
 }
 
 void Game::Render(RenderContext& rc)
 {
-	m_modelRender.Draw(rc);
-	m_modelRender2.Draw(rc);
-	m_modelRender3.Draw(rc);
 
 	m_spriteRender.Draw(rc);
 
