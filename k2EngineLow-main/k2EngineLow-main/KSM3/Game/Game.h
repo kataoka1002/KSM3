@@ -1,6 +1,9 @@
 #pragma once
 #include "LevelRender.h"
 class BoxMove;
+class Player; //プレイヤー
+class Title;//タイトル
+class Result;//リザルト
 
 class Game:public IGameObject
 {
@@ -17,6 +20,10 @@ public:
 	};
 	AnimationClip animationClips[enAnimClip_Num];
 
+	Player* player;//プレイヤー
+	Title* title;//タイトル
+	Result* result;//リザルト
+
 private:
 	ModelRender m_modelRender;
 	SpriteRender m_spriteRender;
@@ -25,5 +32,7 @@ private:
 	FontRender m_fontRender;
 	float m_timer = 0.0f;
 	DirectionLight directionLight;
+
+	Vector3 dv;
 };
 

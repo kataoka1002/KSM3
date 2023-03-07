@@ -1,18 +1,18 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "BoxMove.h"
+#include "Player.h"
+#include "Title.h"
+#include "Result.h"
 
 bool Game::Start()
 {
 	m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
 	m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
 
-	animationClips[enAnimClip_Idle].Load("Assets/animData/idle.tka");
-	animationClips[enAnimClip_Idle].SetLoopFlag(true);
+	//m_modelRender.Init("Assets/modelData/test_player.tkm");
 
-	m_modelRender.Init("Assets/modelData/unityChan.tkm", animationClips, enAnimClip_Num, enModelUpAxisY);
-
-	m_modelRender.SetPosition(0.0f, 0.0f, 0.0f);
+	//m_modelRender.SetPosition(0.0f, 0.0f, 0.0f);
 
 	m_levelRender.Init("Assets/level/sample.tkl",
 		[&](LevelObjectData2& objData)
@@ -32,12 +32,13 @@ bool Game::Start()
 				return true;
 			}
 		});
+		
 
 	Quaternion rot;
 	rot.SetRotationDegY(180.0f);
-	m_modelRender.SetRotation(rot);
-	m_modelRender.SetScale(1.0f);
-	m_modelRender.Update();
+	//m_modelRender.SetRotation(rot);
+	//m_modelRender.SetScale(1.0f);
+	//m_modelRender.Update();
 
 
 	//ライトは斜め上から当たっている
@@ -52,11 +53,13 @@ bool Game::Start()
 	directionLight.ligColor.z = 1.0f;
 
 	return true;
+
+	
 }
 
 Game::Game()
 {
-	
+	player = NewGO<Player>(1, "player");
 }
 
 Game::~Game()
@@ -66,6 +69,8 @@ Game::~Game()
 	{
 		DeleteGO(box);
 	}
+
+	DeleteGO(player);
 }
 
 void Game::Update()
@@ -82,17 +87,32 @@ void Game::Update()
 	m_fontRender.SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
-	m_modelRender.PlayAnimation(enAnimClip_Idle);
+	//m_modelRender.PlayAnimation(enAnimClip_Idle);
 
-	g_renderingEngine->SetDirectionLight(0, g_vec3Naname, g_vec3One);
+	dv = { 0.2f,0.2f,0.2f };
 
-	m_modelRender.Update();
+	g_renderingEngine->SetDirectionLight(0, g_vec3Naname, dv);
+
+	//m_modelRender.Update();
 	m_spriteRender.Update();
+
+	//pause画面からタイトルへの遷移
+	if (player->game_end_state == 1) {
+		title = NewGO<Title>(1, "title");
+		DeleteGO(this);
+	}
+	
+	//リザルトへの遷移
+	if (g_pad[0]->IsTrigger(enButtonSelect)) {
+		result = NewGO<Result>(1, "result");
+		DeleteGO(this);
+	}
+
 }
 
 void Game::Render(RenderContext& rc)
 {
-	m_modelRender.Draw(rc);
+	//m_modelRender.Draw(rc);
 	m_spriteRender.Draw(rc);
 
 	m_fontRender.Draw(rc);
