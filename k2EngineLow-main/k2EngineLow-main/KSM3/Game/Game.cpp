@@ -12,45 +12,28 @@ bool Game::Start()
 
 	//m_modelRender.Init("Assets/modelData/test_player.tkm");
 
-	//m_modelRender.SetPosition(0.0f, 0.0f, 0.0f);
 
 	m_levelRender.Init("Assets/level/sample.tkl",
 		[&](LevelObjectData2& objData)
 		{
-			//–¼‘O‚ªBox_Move‚¾‚Á‚½‚çB
+			//åå‰ãŒBox_Moveã ã£ãŸã‚‰ã€‚
 			if (objData.EqualObjectName(L"Box_Move") == true) {
 
 				auto box = NewGO<BoxMove>(0);
-				//”z’uÀ•WAƒXƒP[ƒ‹A‰ñ“]‚ğæ“¾‚·‚éB
+				//é…ç½®åº§æ¨™ã€ã‚¹ã‚±ãƒ¼ãƒ«ã€å›è»¢ã‚’å–å¾—ã™ã‚‹ã€‚
 				box->m_position = objData.position;
 				box->m_scale = objData.scale;
 				box->m_rotation = objData.rotation;
-				//Œã‚Åíœ‚·‚é‚½‚ß‚ÉAƒ{ƒbƒNƒX‚ğƒvƒbƒVƒ…‚µ‚Ä‚¨‚­B
+				//å¾Œã§å‰Šé™¤ã™ã‚‹ãŸã‚ã«ã€ãƒœãƒƒã‚¯ã‚¹ã‚’ãƒ—ãƒƒã‚·ãƒ¥ã—ã¦ãŠãã€‚
 				m_boxmoves.push_back(box);
 
-				//true‚É‚·‚é‚ÆAƒŒƒxƒ‹‚Ì•û‚Åƒ‚ƒfƒ‹‚ª“Ç‚İ‚Ü‚ê‚È‚¢B
+				//trueã«ã™ã‚‹ã¨ã€ãƒ¬ãƒ™ãƒ«ã®æ–¹ã§ãƒ¢ãƒ‡ãƒ«ãŒèª­ã¿è¾¼ã¾ã‚Œãªã„ã€‚
 				return true;
 			}
 		});
 		
 
-	Quaternion rot;
-	rot.SetRotationDegY(180.0f);
-	//m_modelRender.SetRotation(rot);
-	//m_modelRender.SetScale(1.0f);
-	//m_modelRender.Update();
 
-
-	//ƒ‰ƒCƒg‚ÍÎ‚ßã‚©‚ç“–‚½‚Á‚Ä‚¢‚é
-	directionLight.ligDirection.x = 1.0f;
-	directionLight.ligDirection.y = -1.0f;
-	directionLight.ligDirection.z = -1.0f;
-	//³‹K‰»
-	directionLight.ligDirection.Normalize();
-	//F‚Í”’
-	directionLight.ligColor.x = 1.0f;
-	directionLight.ligColor.y = 1.0f;
-	directionLight.ligColor.z = 1.0f;
 
 	return true;
 
@@ -64,7 +47,7 @@ Game::Game()
 
 Game::~Game()
 {
-	//ƒvƒbƒVƒ…‚µ‚½ƒ{ƒbƒNƒX‚ğíœ‚µ‚Ä‚¢‚­B
+	//ãƒ—ãƒƒã‚·ãƒ¥ã—ãŸãƒœãƒƒã‚¯ã‚¹ã‚’å‰Šé™¤ã—ã¦ã„ãã€‚
 	for (auto box : m_boxmoves)
 	{
 		DeleteGO(box);
@@ -76,14 +59,14 @@ Game::~Game()
 void Game::Update()
 {
 	wchar_t wcsbuf[256];
-	swprintf_s(wcsbuf, 256, L"%d•bŒo‰ß!!", int(m_timer));
-	//•\¦‚·‚éƒeƒLƒXƒg‚ğİ’èB
+	swprintf_s(wcsbuf, 256, L"%dç§’çµŒé!!", int(m_timer));
+	//è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã‚’è¨­å®šã€‚
 	m_fontRender.SetText(wcsbuf);
-	//ƒtƒHƒ“ƒg‚ÌˆÊ’u‚ğİ’èB
+	//ãƒ•ã‚©ãƒ³ãƒˆã®ä½ç½®ã‚’è¨­å®šã€‚
 	m_fontRender.SetPosition(Vector3(-800.0f, 0.0f, 0.0f));
-	//ƒtƒHƒ“ƒg‚Ì‘å‚«‚³‚ğİ’èB
+	//ãƒ•ã‚©ãƒ³ãƒˆã®å¤§ãã•ã‚’è¨­å®šã€‚
 	m_fontRender.SetScale(2.0f);
-	//ƒtƒHƒ“ƒg‚ÌF‚ğİ’èB
+	//ãƒ•ã‚©ãƒ³ãƒˆã®è‰²ã‚’è¨­å®šã€‚
 	m_fontRender.SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
@@ -91,18 +74,16 @@ void Game::Update()
 
 	dv = { 0.2f,0.2f,0.2f };
 
-	g_renderingEngine->SetDirectionLight(0, g_vec3Naname, dv);
 
-	//m_modelRender.Update();
 	m_spriteRender.Update();
 
-	//pause‰æ–Ê‚©‚çƒ^ƒCƒgƒ‹‚Ö‚Ì‘JˆÚ
+	//pauseç”»é¢ã‹ã‚‰ã‚¿ã‚¤ãƒˆãƒ«ã¸ã®é·ç§»
 	if (player->game_end_state == 1) {
 		title = NewGO<Title>(1, "title");
 		DeleteGO(this);
 	}
 	
-	//ƒŠƒUƒ‹ƒg‚Ö‚Ì‘JˆÚ
+	//ãƒªã‚¶ãƒ«ãƒˆã¸ã®é·ç§»
 	if (g_pad[0]->IsTrigger(enButtonSelect)) {
 		result = NewGO<Result>(1, "result");
 		DeleteGO(this);
@@ -112,7 +93,7 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-	//m_modelRender.Draw(rc);
+
 	m_spriteRender.Draw(rc);
 
 	m_fontRender.Draw(rc);

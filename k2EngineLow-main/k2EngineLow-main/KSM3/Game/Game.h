@@ -1,9 +1,9 @@
 #pragma once
 #include "LevelRender.h"
 class BoxMove;
-class Player; //ƒvƒŒƒCƒ„[
-class Title;//ƒ^ƒCƒgƒ‹
-class Result;//ƒŠƒUƒ‹ƒg
+class Player; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+class Title;//ã‚¿ã‚¤ãƒˆãƒ«
+class Result;//ãƒªã‚¶ãƒ«ãƒˆ
 
 class Game:public IGameObject
 {
@@ -20,19 +20,19 @@ public:
 	};
 	AnimationClip animationClips[enAnimClip_Num];
 
-	Player* player;//ƒvƒŒƒCƒ„[
-	Title* title;//ƒ^ƒCƒgƒ‹
-	Result* result;//ƒŠƒUƒ‹ƒg
+	Player* player;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	Title* title;//ã‚¿ã‚¤ãƒˆãƒ«
+	Result* result;//ãƒªã‚¶ãƒ«ãƒˆ
 
 private:
-	ModelRender m_modelRender;
+	ModelRender m_modelRender;		//ã‚­ãƒ£ãƒ©
+	ModelRender m_modelRender2;		//åºŠ
+	ModelRender m_modelRender3;		//ãƒ©ã‚¤ãƒˆ
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
-	std::vector<BoxMove*> m_boxmoves;				//moveƒ{ƒbƒNƒX
+	std::vector<BoxMove*> m_boxmoves;				//moveãƒœãƒƒã‚¯ã‚¹
 	FontRender m_fontRender;
 	float m_timer = 0.0f;
-	DirectionLight directionLight;
 
-	Vector3 dv;
 };
 
