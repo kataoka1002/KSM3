@@ -225,7 +225,6 @@
   <ItemGroup>
     <ClCompile Include="Battleship_gun.cpp" />
     <ClCompile Include="BoxMove.cpp" />
-    <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Lighting.cpp" />
@@ -243,7 +242,6 @@
   <ItemGroup>
     <ClInclude Include="Battleship_gun.h" />
     <ClInclude Include="BoxMove.h" />
-    <ClInclude Include="Demo.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Lighting.h" />
