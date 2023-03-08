@@ -1,6 +1,9 @@
 #pragma once
 #include "LevelRender.h"
 class BoxMove;
+class Player; //プレイヤー
+class Title;//タイトル
+class Result;//リザルト
 
 class Game:public IGameObject
 {
@@ -17,19 +20,19 @@ public:
 	};
 	AnimationClip animationClips[enAnimClip_Num];
 
+	Player* player;//プレイヤー
+	Title* title;//タイトル
+	Result* result;//リザルト
+
 private:
-	ModelRender m_modelRender;		//�L����
-	ModelRender m_modelRender2;		//��
-	ModelRender m_modelRender3;		//���C�g
+	ModelRender m_modelRender;		//キャラ
+	ModelRender m_modelRender2;		//床
+	ModelRender m_modelRender3;		//ライト
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
-	std::vector<BoxMove*> m_boxmoves;				//move�{�b�N�X
+	std::vector<BoxMove*> m_boxmoves;				//moveボックス
 	FontRender m_fontRender;
 	float m_timer = 0.0f;
-	Vector3 ptPosition = { 0.0f,30.0f,0.0f };
-	Quaternion rot;
-	Vector3 groundColor = { 0.7f,0.5f,0.3f };
-	Vector3 skyColor = { 0.3f,0.3f,0.7f };
-	Vector3 groundNormal = { 0.0f,1.0f,0.0f };
+
 };
 
