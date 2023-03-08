@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include <math.h>
+#include "Battleship_gun.h"
 
 Player::Player() {
 	player_modelRender.Init("Assets/modelData/test_player.tkm");
@@ -14,21 +15,22 @@ Player::Player() {
 		fsin[i] = (float)sin(i * 3.1415926535 / 180);
 		fcos[i] = (float)cos(i * 3.1415926535 / 180);
 	}
-
+	battleship_gun = NewGO<Battleship_gun>(1, "battleship_gun");
 }
 
 Player::~Player()
 {
-
+	DeleteGO(battleship_gun);
 }
 
 void Player::Update() {
+	battleship_gun->game_state = game_state;
+	battleship_gun->B_G_position = player_position;
+	battleship_gun->B_G_rotation = player_rotation;
 	if (game_state == 0) {
 		player_modelRender.SetPosition(player_position);
 
 		Move();//移動処理
-
-		Rotation();//回転処理
 
 		//ManageState();//ステート管理
 
@@ -40,8 +42,6 @@ void Player::Update() {
 	else if (game_state == 1) {
 		pause();
 	}
-
-
 }
 
 void Player::Move()
@@ -63,6 +63,8 @@ void Player::Move()
 
 	right *= stickL.x * 120.0f;
 	forward *= stickL.y * 120.0f;
+
+	playerFowrad.Normalize();
 
 	//xかzの移動速度があったら(スティックの入力があったら)。
 	//回転処理
@@ -91,11 +93,6 @@ void Player::Move()
 	//座標を教える。
 	player_modelRender.SetPosition(player_position);
 	player_modelRender.SetRotation(player_rotation);
-}
-
-void Player::Rotation()
-{
-	
 }
 
 void Player::pause() {
