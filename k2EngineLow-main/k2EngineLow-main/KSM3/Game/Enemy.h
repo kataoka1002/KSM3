@@ -18,6 +18,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+
 	//追跡処理
 	void Chase();
 	//プレイヤーに向かって視点移動

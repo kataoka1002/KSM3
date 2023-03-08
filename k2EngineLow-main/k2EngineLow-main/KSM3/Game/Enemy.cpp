@@ -58,7 +58,7 @@ void Enemy::Update()
  void Enemy::SearchPlayer()
 {
 	//エネミーからプレイヤーが入ってきたら追いかける
-	Vector3 toPlayer = m_player->m_position - m_position;
+	Vector3 toPlayer = m_player->player_position - m_position;
 
 	    //プレイヤーとの距離を計算する
 		float distToPlayer = toPlayer.Length();
@@ -88,7 +88,7 @@ void Enemy::Chase()
 	}
 
 	//エネミーからプレイヤーに向かうベクトルを計算する
-	Vector3 toPlayer = m_player->m_position - m_position;
+	Vector3 toPlayer = m_player->player_position - m_position;
 	//ベクトルを正規化する。
 	toPlayer.Normalize();
 	//移動速度を設定する。
@@ -112,7 +112,7 @@ void Enemy::ProcessCommonStateTransition()
 	m_idleTimer = 0.0f;
 	m_chaseTimer = 0.0f;
 	//エネミーからプレイヤーに向かうベクトルを計算する
-	Vector3 toPlayer = m_player->m_position - m_position;
+	Vector3 toPlayer = m_player->player_position - m_position;
 	//ベクトルを正規化する。
 	toPlayer.Normalize();
 
