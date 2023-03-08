@@ -223,10 +223,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Battleship_gun.cpp" />
     <ClCompile Include="BoxMove.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Lighting.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Result.cpp" />
@@ -239,10 +241,12 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Battleship_gun.h" />
     <ClInclude Include="BoxMove.h" />
     <ClInclude Include="Demo.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Lighting.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="stdafx.h" />

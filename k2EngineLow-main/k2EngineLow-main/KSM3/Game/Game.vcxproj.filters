@@ -17,6 +17,8 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="Lighting.cpp" />
+    <ClCompile Include="Battleship_gun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -29,5 +31,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Result.h" />
+    <ClInclude Include="Lighting.h" />
+    <ClInclude Include="Battleship_gun.h" />
   </ItemGroup>
 </Project>
