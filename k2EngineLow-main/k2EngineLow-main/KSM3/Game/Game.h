@@ -4,6 +4,7 @@ class BoxMove;
 class Player; //プレイヤー
 class Title;//タイトル
 class Result;//リザルト
+class Lighting;//ライティング
 
 class Game:public IGameObject
 {
@@ -23,6 +24,10 @@ public:
 	Player* player;//プレイヤー
 	Title* title;//タイトル
 	Result* result;//リザルト
+	Lighting* lighting;//ライティング
+
+	
+	Vector3 dv;
 
 private:
 	ModelRender m_modelRender;		//キャラ

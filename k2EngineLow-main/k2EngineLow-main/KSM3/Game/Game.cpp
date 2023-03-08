@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Title.h"
 #include "Result.h"
+#include "Lighting.h"
 
 bool Game::Start()
 {
@@ -12,8 +13,9 @@ bool Game::Start()
 
 	//m_modelRender.Init("Assets/modelData/test_player.tkm");
 
+	//m_modelRender.SetPosition(0.0f, 0.0f, 0.0f);
 
-	m_levelRender.Init("Assets/level/sample.tkl",
+	/*m_levelRender.Init("Assets/level/sample.tkl",
 		[&](LevelObjectData2& objData)
 		{
 			//名前がBox_Moveだったら。
@@ -31,17 +33,24 @@ bool Game::Start()
 				return true;
 			}
 		});
-		
+		*/
+
+
+	
+	//m_modelRender.SetRotation(rot);
+	//m_modelRender.SetScale(1.0f);
+	//m_modelRender.Update();
 
 
 
 	return true;
 
-	
+
 }
 
 Game::Game()
 {
+	lighting = NewGO<Lighting>(1, "lighting");
 	player = NewGO<Player>(1, "player");
 }
 
@@ -58,10 +67,10 @@ Game::~Game()
 
 void Game::Update()
 {
-	wchar_t wcsbuf[256];
-	swprintf_s(wcsbuf, 256, L"%d秒経過!!", int(m_timer));
+	//wchar_t wcsbuf[256];
+	//swprintf_s(wcsbuf, 256, L"%d秒経過!!", int(m_timer));
 	//表示するテキストを設定。
-	m_fontRender.SetText(wcsbuf);
+	m_fontRender.SetText(L"あいうえお\n");
 	//フォントの位置を設定。
 	m_fontRender.SetPosition(Vector3(-800.0f, 0.0f, 0.0f));
 	//フォントの大きさを設定。
@@ -72,9 +81,8 @@ void Game::Update()
 
 	//m_modelRender.PlayAnimation(enAnimClip_Idle);
 
-	dv = { 0.2f,0.2f,0.2f };
 
-
+	//m_modelRender.Update();
 	m_spriteRender.Update();
 
 	//pause画面からタイトルへの遷移
@@ -82,7 +90,7 @@ void Game::Update()
 		title = NewGO<Title>(1, "title");
 		DeleteGO(this);
 	}
-	
+
 	//リザルトへの遷移
 	if (g_pad[0]->IsTrigger(enButtonSelect)) {
 		result = NewGO<Result>(1, "result");
@@ -93,8 +101,8 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-
+	//m_modelRender.Draw(rc);
 	m_spriteRender.Draw(rc);
 
-	m_fontRender.Draw(rc);
+	//m_fontRender.Draw(rc);
 }

@@ -1,4 +1,6 @@
 #pragma once
+class Battleship_gun;
+
 class Player:public IGameObject
 {
 public:
@@ -7,15 +9,16 @@ public:
 	void Update();    //更新処理
 	void Render(RenderContext& rc);  //描画処理
 	void Move();   //移動処理
-	void Rotation();  //回転処理
 	void ManageState();  //ステート管理
 	void pause();//ポーズ画面
+
+	Battleship_gun* battleship_gun;
+
 
 	ModelRender player_modelRender;  //モデルレンダー
 	Vector3 player_position;  //座標
 	CharacterController characterController;  //キャラクターコントローラー
 	Quaternion player_rotation;  //クォータニオン
-	Quaternion move_rotation;
 	Vector3 player_moveSpeed;   //移動速度
 
 	float fsin[360], fcos[360];
@@ -26,6 +29,5 @@ public:
 	SpriteRender pouse_spriteRender;//pause画面用のスプライトレンダー
 
 	int game_end_state = 0;//ゲームの終了判定
-
 };
 
