@@ -1,5 +1,7 @@
 #pragma once
-class Battleship_gun;
+
+class Left_arm_weapons;
+
 
 class Player:public IGameObject
 {
@@ -12,7 +14,7 @@ public:
 	void ManageState();  //ステート管理
 	void pause();//ポーズ画面
 
-	Battleship_gun* battleship_gun;
+	
 
 
 	ModelRender player_modelRender;  //モデルレンダー
@@ -26,8 +28,16 @@ public:
 
 	int game_state=0;//ゲームがどの状態化の管理
 
+	Left_arm_weapons* p_left_arm_weapons = nullptr;
+	
 	SpriteRender pouse_spriteRender;//pause画面用のスプライトレンダー
 
 	int game_end_state = 0;//ゲームの終了判定
+
+	float accelerator = 0;
+	float brake = 0;
+
+	int p_custom_point[2][3] = { {0,0,0},
+						   {0,0,0} };
 };
 

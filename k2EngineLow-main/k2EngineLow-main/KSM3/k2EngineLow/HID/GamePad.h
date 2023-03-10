@@ -132,6 +132,7 @@ namespace nsK2EngineLow {
 		{
 			return m_lStickY;
 		}
+
 		
 
 		/// <summary>
@@ -152,6 +153,11 @@ namespace nsK2EngineLow {
 			return m_rStickY;
 		}
 		
+
+		float GetRTrigger()const
+		{
+			return m_rtrigger;
+		}
 		
 		/// <summary>
 		/// フレームの開始時に呼び出す必要がある関数
@@ -190,6 +196,7 @@ namespace nsK2EngineLow {
 		float m_lStickY = 0.0f;		// 左スティックのY軸の入力量。
 		float m_rStickX = 0.0f;		// 右スティックのX軸の入力量。
 		float m_rStickY = 0.0f;		// 右スティックのY軸の入力量。
+		float m_rtrigger = 0.0f;
 
 		static EnXInputPadState m_padStates[MAX_PAD];
 	};

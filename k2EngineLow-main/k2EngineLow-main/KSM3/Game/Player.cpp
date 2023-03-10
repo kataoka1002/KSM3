@@ -1,32 +1,31 @@
 #include "stdafx.h"
 #include "Player.h"
 #include <math.h>
-#include "Battleship_gun.h"
+#include "Left_arm_weapons.h"
+
+
 
 Player::Player() {
 	player_modelRender.Init("Assets/modelData/test_player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
 	characterController.Init(70.0f, 150.0f, player_position);
 
-	
 	//回転テーブル
 	int i;
 	for (i = 0; i < 360; i++) {
 		fsin[i] = (float)sin(i * 3.1415926535 / 180);
 		fcos[i] = (float)cos(i * 3.1415926535 / 180);
 	}
-	battleship_gun = NewGO<Battleship_gun>(1, "battleship_gun");
+	
 }
 
 Player::~Player()
 {
-	DeleteGO(battleship_gun);
+	DeleteGO(p_left_arm_weapons);
 }
 
 void Player::Update() {
-	battleship_gun->game_state = game_state;
-	battleship_gun->B_G_position = player_position;
-	battleship_gun->B_G_rotation = player_rotation;
+	
 	if (game_state == 0) {
 		player_modelRender.SetPosition(player_position);
 
@@ -42,6 +41,7 @@ void Player::Update() {
 	else if (game_state == 1) {
 		pause();
 	}
+	
 }
 
 void Player::Move()
@@ -49,8 +49,10 @@ void Player::Move()
 	player_moveSpeed = { 0.0f,0.0f,0.0f };//移動速度の初期化
 
 	Vector3 stickL;
+	float throttle;
 	stickL.x = g_pad[0]->GetLStickXF();
-	stickL.y = g_pad[0]->GetLStickYF();
+	throttle = g_pad[0]->GetRTrigger();
+	brake = g_pad[0]->IsPress(enButtonLB2);
 
 	Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
@@ -62,7 +64,7 @@ void Player::Move()
 
 
 	right *= stickL.x * 120.0f;
-	forward *= stickL.y * 120.0f;
+	forward *= throttle * 120.0f;
 
 	playerFowrad.Normalize();
 
@@ -76,19 +78,25 @@ void Player::Move()
 		player_rotation.SetRotationY(atan2(playerFowrad.x, playerFowrad.z));
 		player_modelRender.SetRotation(player_rotation);
 		//回転時の移動
-		if (stickL.y != 0.0f) {
-			player_moveSpeed += playerFowrad * forward.z * 9;
-
-			player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
-		}
 	}
 	//回転していないときの移動
-	else if (stickL.y != 0.0f) {
-		player_moveSpeed += playerFowrad * forward.z * 4;
-
-		player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
+	if (throttle != 0.0f) {
+		accelerator += 0.05;
+		if (accelerator >= 2) {
+			accelerator = 2;
+		}
 
 	}
+	else {
+		accelerator -= 0.05;
+		if (accelerator <= 0) {
+			accelerator = 0;
+		}
+	}
+
+	player_moveSpeed += playerFowrad  * 4 * accelerator*(throttle/2);
+
+	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
 
 	//座標を教える。
 	player_modelRender.SetPosition(player_position);

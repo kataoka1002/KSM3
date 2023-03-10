@@ -18,7 +18,11 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Lighting.cpp" />
-    <ClCompile Include="Battleship_gun.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Drop_item.cpp" />
+    <ClCompile Include="Left_arm_weapons.cpp" />
+    <ClCompile Include="Customize_UI.cpp" />
+    <ClCompile Include="Enumeration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -32,6 +36,10 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Lighting.h" />
-    <ClInclude Include="Battleship_gun.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Drop_item.h" />
+    <ClInclude Include="Left_arm_weapons.h" />
+    <ClInclude Include="Customize_UI.h" />
+    <ClInclude Include="Enumeration.h" />
   </ItemGroup>
 </Project>
