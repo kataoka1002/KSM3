@@ -5,6 +5,9 @@ class Player; //プレイヤー
 class Title;//タイトル
 class Result;//リザルト
 class Lighting;//ライティング
+class Enemy;//エネミー
+class Left_arm_weapons;
+class Drop_item;
 
 class Game:public IGameObject
 {
@@ -25,6 +28,9 @@ public:
 	Title* title;//タイトル
 	Result* result;//リザルト
 	Lighting* lighting;//ライティング
+	Enemy* enemy;//エネミー
+	Left_arm_weapons* s_left_arm_weapons;
+	Drop_item* drop_item;
 
 	
 	Vector3 dv;

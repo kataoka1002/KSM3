@@ -5,12 +5,16 @@
 #include "Title.h"
 #include "Result.h"
 #include "Lighting.h"
+#include "Enemy.h"
+#include "Left_arm_weapons.h"
+#include "Drop_item.h"
 
 bool Game::Start()
 {
 	m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
 	m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
 
+	
 	//m_modelRender.Init("Assets/modelData/test_player.tkm");
 
 	//m_modelRender.SetPosition(0.0f, 0.0f, 0.0f);
@@ -52,6 +56,9 @@ Game::Game()
 {
 	lighting = NewGO<Lighting>(1, "lighting");
 	player = NewGO<Player>(1, "player");
+	enemy = NewGO<Enemy>(1, "enemy");
+	enemy->enemy_position = { 0.0f,0.0f,2000.0f };
+	drop_item = NewGO< Drop_item>(1, "drop_item");
 }
 
 Game::~Game()
@@ -63,6 +70,10 @@ Game::~Game()
 	}
 
 	DeleteGO(player);
+	DeleteGO(enemy);
+	if (drop_item->GetState == false) {
+		DeleteGO(drop_item);
+	}
 }
 
 void Game::Update()
@@ -84,6 +95,9 @@ void Game::Update()
 
 	//m_modelRender.Update();
 	m_spriteRender.Update();
+
+	//enemy->enemy_game_state = player->game_state;
+	//enemy->enemy_position = player->player_position;
 
 	//pause画面からタイトルへの遷移
 	if (player->game_end_state == 1) {

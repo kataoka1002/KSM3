@@ -93,7 +93,7 @@ namespace nsK2EngineLow {
 			}
 		}
 		//左トリガー。
-		if (xInputState.Gamepad.bLeftTrigger != 0) {
+		if (xInputState.Gamepad.bLeftTrigger > 5) {
 			m_trigger[enButtonLB2] = 1 ^ m_press[enButtonLB2];
 			m_press[enButtonLB2] = 1;
 		}
@@ -101,14 +101,13 @@ namespace nsK2EngineLow {
 			m_trigger[enButtonLB2] = 0;
 			m_press[enButtonLB2] = 0;
 		}
-		//右トリガー
-		if (xInputState.Gamepad.bRightTrigger != 0) {
-			m_trigger[enButtonRB2] = 1 ^ m_press[enButtonRB2];
-			m_press[enButtonRB2] = 1;
+		//右トリガー(入力量取得可能)
+		if (xInputState.Gamepad.bRightTrigger !=0) {
+			m_rtrigger = static_cast<float>(xInputState.Gamepad.bRightTrigger);
 		}
 		else {
-			m_trigger[enButtonRB2] = 0;
-			m_press[enButtonRB2] = 0;
+			xInputState.Gamepad.bRightTrigger = 0;
+			m_rtrigger = 0;
 		}
 		if ((xInputState.Gamepad.sThumbLX < INPUT_DEADZONE &&
 			xInputState.Gamepad.sThumbLX > -INPUT_DEADZONE) &&
