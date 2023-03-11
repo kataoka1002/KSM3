@@ -223,6 +223,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BoxMove.cpp" />
     <ClCompile Include="Customize_UI.cpp" />
     <ClCompile Include="Drop_item.cpp" />
@@ -244,6 +245,7 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackGround.h" />
     <ClInclude Include="BoxMove.h" />
     <ClInclude Include="Customize_UI.h" />
     <ClInclude Include="Drop_item.h" />

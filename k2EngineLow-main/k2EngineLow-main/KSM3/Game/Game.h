@@ -8,6 +8,7 @@ class Lighting;//ライティング
 class Enemy;//エネミー
 class Left_arm_weapons;
 class Drop_item;
+class BackGround;
 
 class Game:public IGameObject
 {
@@ -31,6 +32,7 @@ public:
 	Enemy* enemy;//エネミー
 	Left_arm_weapons* s_left_arm_weapons;
 	Drop_item* drop_item;
+	BackGround* background;
 
 	
 	Vector3 dv;
