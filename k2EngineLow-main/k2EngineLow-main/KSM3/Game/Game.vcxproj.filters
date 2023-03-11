@@ -23,6 +23,7 @@
     <ClCompile Include="Left_arm_weapons.cpp" />
     <ClCompile Include="Customize_UI.cpp" />
     <ClCompile Include="Enumeration.cpp" />
+    <ClCompile Include="BackGround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -41,5 +42,6 @@
     <ClInclude Include="Left_arm_weapons.h" />
     <ClInclude Include="Customize_UI.h" />
     <ClInclude Include="Enumeration.h" />
+    <ClInclude Include="BackGround.h" />
   </ItemGroup>
 </Project>

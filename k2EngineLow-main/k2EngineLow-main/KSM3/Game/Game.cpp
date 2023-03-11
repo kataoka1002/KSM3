@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "Left_arm_weapons.h"
 #include "Drop_item.h"
+#include "BackGround.h"
 
 bool Game::Start()
 {
@@ -59,6 +60,7 @@ Game::Game()
 	enemy = NewGO<Enemy>(1, "enemy");
 	enemy->enemy_position = { 0.0f,0.0f,2000.0f };
 	drop_item = NewGO< Drop_item>(1, "drop_item");
+	background = NewGO< BackGround>(1, "background");
 }
 
 Game::~Game()
@@ -74,6 +76,7 @@ Game::~Game()
 	if (drop_item->GetState == false) {
 		DeleteGO(drop_item);
 	}
+	DeleteGO(background);
 }
 
 void Game::Update()
