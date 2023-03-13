@@ -2,20 +2,21 @@
 #include "Left_arm_weapons.h"
 #include "Player.h"
 #include "Enumeration.h"
+#include "Battle_ship_attack.h"
 
 Left_arm_weapons::Left_arm_weapons() {
 	l_a_w_player = FindGO<Player>("player");
 }
 
 Left_arm_weapons::~Left_arm_weapons() {
-
+	if (battle_ship_attack->Landing_state_BB = false) {
+		DeleteGO(battle_ship_attack);
+	}
 }
 
 void Left_arm_weapons::L_a_w_set() {
-	for (int i = 0; i < 12; i++) {
-		if (drop_weapons[i] == 1) {
-			Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
-		}
+	if (drop_weapons[1] == 1) {
+		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
 	}
 }
 
@@ -26,12 +27,19 @@ void Left_arm_weapons::Update() {
 	fast++;
 	if (game_state == 0) {
 		Move();
+		if (g_pad[0]->IsTrigger(enButtonRB1)) {
+
+			if (drop_weapons[1] == 1) {
+				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
+			}
+		
+		}
 		Left_arm_weapons_Render.Update();
 	}
 }
 
 void Left_arm_weapons::Move() {
-	Quaternion originRotation = l_a_w_player->player_rotation;
+	originRotation = l_a_w_player->player_rotation;
 	l_a_w_position = l_a_w_player->player_position;
 	Vector3 lp = l_a_w_localPosition;
 	originRotation.Multiply(lp);
