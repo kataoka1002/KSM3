@@ -5,6 +5,7 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include "Battle_ship_attack.h"
 
 Enemy::Enemy() {
 	e_player = FindGO<Player>("player");
@@ -36,6 +37,14 @@ void Enemy::Update()
 		Move();
 		PlayerSearch();
 		enemy_modelRender.Update();
+		if (e_player->attack_state_la == true) {
+			e_battle_ship_attack = FindGO< Battle_ship_attack>("battle_ship_attack");
+			Vector3 diff = e_battle_ship_attack->firing_position - enemy_position;
+			if (diff.Length() <= 120.0f)
+			{
+				DeleteGO(this);
+			}
+		}
 	}
 }
 

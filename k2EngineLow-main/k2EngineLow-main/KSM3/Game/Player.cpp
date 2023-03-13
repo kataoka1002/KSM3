@@ -21,7 +21,7 @@ Player::Player() {
 
 Player::~Player()
 {
-	DeleteGO(p_left_arm_weapons);
+	//DeleteGO(p_left_arm_weapons);
 }
 
 void Player::Update() {

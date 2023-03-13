@@ -23,8 +23,9 @@ public:
 	int game_state = 0;
 	ModelRender Left_arm_weapons_Render;
 
-	Vector3 l_a_w_localPosition = { -60.0f,90.0f,0.0f };
+	Vector3 l_a_w_localPosition = { -55.0f,90.0f,5.0f };
 
+	bool atack_state = false;
 	int drop_weapons [12] = {0,0,0,0,0,0,0,0,0,0,0,0 };
 
 	int fast = 0;
