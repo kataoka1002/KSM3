@@ -2,6 +2,7 @@
 
 class Player;
 class Left_arm_weapons;
+class Right_arm_weapons;
 class CollisionObject;
 
 class Battle_ship_attack :public IGameObject
@@ -17,6 +18,7 @@ public:
 
 	Player* b_s_attack_player;
 	Left_arm_weapons* b_s_left_arm_weapons;
+	Right_arm_weapons* b_s_right_arm_weapons;
 
 	ModelRender B_S_Bullet;
 	Quaternion B_S_aiming;

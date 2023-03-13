@@ -16,7 +16,7 @@ public:
 	Player* l_a_w_player = nullptr;
 	Battle_ship_attack* battle_ship_attack;
 
-	Quaternion originRotation;
+	Quaternion l_a_Rotation;
 	Vector3 l_a_w_position;
 	Vector3 l_a_w_moveSpeed;
 	Vector3 l_a_w_Fowrad = { 0.0f, 0.0f, 1.0f };//¶˜r‘•”õ‚Ì³–ÊƒxƒNƒgƒ‹
@@ -26,7 +26,7 @@ public:
 	Vector3 l_a_w_localPosition = { -55.0f,90.0f,5.0f };
 
 	bool atack_state = false;
-	int drop_weapons [12] = {0,0,0,0,0,0,0,0,0,0,0,0 };
+	int set_weapons [12] = {0,0,0,0,0,0,0,0,0,0,0,0 };
 
 	int fast = 0;
 };

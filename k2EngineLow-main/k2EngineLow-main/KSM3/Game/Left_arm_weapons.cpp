@@ -17,7 +17,7 @@ Left_arm_weapons::~Left_arm_weapons() {
 }
 
 void Left_arm_weapons::L_a_w_set() {
-	if (drop_weapons[1] == 1) {
+	if (set_weapons[1] == 1) {
 		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_left_arm.tkm");
 	}
 }
@@ -31,8 +31,10 @@ void Left_arm_weapons::Update() {
 		Move();
 		if (g_pad[0]->IsTrigger(enButtonRB1)) {
 
-			if (drop_weapons[1] == 1) {
+			if (set_weapons[1] == 1) {
 				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
+				battle_ship_attack->B_S_aiming = l_a_Rotation;
+				battle_ship_attack->firing_position = l_a_w_position;
 				atack_state = true;
 				
 			}
@@ -47,13 +49,14 @@ void Left_arm_weapons::Update() {
 }
 
 void Left_arm_weapons::Move() {
-	originRotation = l_a_w_player->player_rotation;
+	Quaternion originRotation = l_a_w_player->player_rotation;
 	l_a_w_position = l_a_w_player->player_position;
 	Vector3 lp = l_a_w_localPosition;
 	originRotation.Multiply(lp);
 	l_a_w_position += lp;
+	l_a_Rotation = originRotation;
 	Left_arm_weapons_Render.SetPosition(l_a_w_position);
-	Left_arm_weapons_Render.SetRotation(originRotation);
+	Left_arm_weapons_Render.SetRotation(l_a_Rotation);
 }
 
 void Left_arm_weapons::Render(RenderContext& rc) {
