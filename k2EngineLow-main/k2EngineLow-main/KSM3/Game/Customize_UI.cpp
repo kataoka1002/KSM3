@@ -2,6 +2,7 @@
 #include "Customize_UI.h"
 #include"Player.h"
 #include "Left_arm_weapons.h"
+#include"Right_arm_weapons.h"
 #include "Drop_item.h"
 #include <vector>       // ヘッダファイルインクルード
 using namespace std;
@@ -22,22 +23,102 @@ Customize_UI::Customize_UI() {
 	}
 	C_UI_Select_arrow.Init("Assets/sprite/C_UI_select_arrow.DDS", 33.0f, 54.0f);
 	C_UI_Render.Init("Assets/sprite/custom_screen.DDS", 1920.0f, 1080.0f);
+	custom_point[1][2] = custom_kinds;
 
-	for (int i = 0; i < 2; i++) {
-		for (int j = 0; j < 3; j++) {
-			if (custom_point[i][j]!=0) {
-				switch (custom_point[i][j])
-				{
-				case 1:
 
-					break;
-				default:
-					break;
-				}
-			}
-		}
+	switch (custom_point[0][0])
+	{
+	case 0:
+		slot_1_RA.Init("Assets/sprite/air_slot.DDS", 140.0f, 115.0f);
+		break;
+	case 1:
+		slot_1_RA.Init("Assets/sprite/BattleShip_gun_icon.DDS", 140.0f, 115.0f);
+		break;
+	default:
+		break;
 	}
+
+	switch (custom_point[0][1])
+	{
+	case 0:
+		slot_2_SD.Init("Assets/sprite/air_slot.DDS", 140.0f, 115.0f);
+		break;
+	case 1:
+		slot_2_SD.Init("Assets/sprite/BattleShip_gun_icon.DDS", 140.0f, 115.0f);
+		break;
+	default:
+		break;
+	}
+
+	switch (custom_point[0][2])
+	{
+	case 0:
+		slot_3_LA.Init("Assets/sprite/air_slot.DDS", 140.0f, 115.0f);
+		break;
+	case 1:
+		slot_3_LA.Init("Assets/sprite/BattleShip_gun_icon.DDS", 140.0f, 115.0f);
+		break;
+	default:
+		break;
+	}
+
+	switch (custom_point[1][0])
+	{
+	case 0:
+		slot_4_RL.Init("Assets/sprite/air_slot.DDS", 140.0f, 115.0f);
+		break;
+	case 1:
+		slot_4_RL.Init("Assets/sprite/BattleShip_gun_icon.DDS", 140.0f, 115.0f);
+		break;
+	default:
+		break;
+	}
+
+	switch (custom_point[1][1])
+	{
+	case 0:
+		slot_5_LL.Init("Assets/sprite/air_slot.DDS", 140.0f, 115.0f);
+		break;
+	case 1:
+		slot_5_LL.Init("Assets/sprite/BattleShip_gun_icon.DDS", 140.0f, 115.0f);
+		break;
+	default:
+		break;
+	}
+
+	switch (custom_point[1][2]){
+	    case 0:
+			slot_6_CI.Init("Assets/sprite/air_slot.DDS", 140.0f, 115.0f);
+			break;
+		case 1:
+			slot_6_CI.Init("Assets/sprite/BattleShip_gun_icon.DDS", 140.0f, 115.0f);
+			break;
+		default:
+			break;
+	}
+
+	slot_1_RA.SetPosition(slot_1_position);
+	slot_2_SD.SetPosition(slot_2_position);
+	slot_3_LA.SetPosition(slot_3_position);
+	slot_4_RL.SetPosition(slot_4_position);
+	slot_5_LL.SetPosition(slot_5_position);
+	slot_6_CI.SetPosition(slot_6_position);
+
+	slot_1_RA.SetScale(scalec);
+	slot_2_SD.SetScale(scalec);
+	slot_3_LA.SetScale(scalec);
+	slot_4_RL.SetScale(scalec);
+	slot_5_LL.SetScale(scalec);
+	slot_6_CI.SetScale(scalec);
+
 	C_UI_Render.SetScale(scalec);
+
+	slot_1_RA.Update();
+	slot_2_SD.Update();
+	slot_3_LA.Update();
+	slot_4_RL.Update();
+	slot_5_LL.Update();
+	slot_6_CI.Update();
 
 	C_UI_Render.Update();
 }
@@ -59,7 +140,7 @@ void Customize_UI::Update() {
 
 void Customize_UI::Custom_UI() {
 	
-	if (window_open == false&&delete_window_open == false) {
+	if (window_open == false&&delete_window_open == false&& error_window_open == false) {
 		//セレクトアローのプログラム
 			//右腕
 		if (selection_position[0][0] == 1) {
@@ -75,6 +156,17 @@ void Customize_UI::Custom_UI() {
 			else if (g_pad[0]->IsTrigger(enButtonDown) || g_pad[0]->IsTrigger(enButtonLeft)) {
 				selection_position[1][0] = 1;
 				selection_position[0][0] = 0;
+			}
+			if (g_pad[0]->IsTrigger(enButtonA)) {
+				if (custom_point[0][0] == 0) {
+					change_slot_x = 0, change_slot_y = 0;
+					window_open = true;
+					fast_push_state = 0;
+				}
+				else {
+					error_window_open = true;
+					fast_push_state = 0;
+				}
 			}
 		}
 		//肩
@@ -113,8 +205,15 @@ void Customize_UI::Custom_UI() {
 				selection_position[0][2] = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA)) {
-				window_open = true;
-				fast_push_state = 0;
+				if (custom_point[0][2] == 0) {
+					change_slot_x = 0, change_slot_y = 2;
+					window_open = true;
+					fast_push_state = 0;
+				}
+				else {
+					error_window_open = true;
+					fast_push_state = 0;
+				}
 			}
 		}
 		//右足
@@ -149,6 +248,7 @@ void Customize_UI::Custom_UI() {
 				selection_position[1][2] = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA)) {
+				fast_push_state = 0;
 				delete_window_open = true;
 			}
 		}
@@ -171,9 +271,18 @@ void Customize_UI::Custom_UI() {
 				window_select = false;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA)&&fast_push_state!=0) {
-				custom_point[0][2] = custom_kinds;
-				left_arm_weapons = NewGO<Left_arm_weapons>(1, "left_arm_weapons");
-				left_arm_weapons->drop_weapons[custom_kinds] = 1;
+				custom_point[change_slot_x][change_slot_y] = custom_kinds;
+				if (change_slot_x == 0) {
+					if (change_slot_y == 0) {
+						right_arm_weapons = NewGO<Right_arm_weapons>(1, "right_arm_weapons");
+						right_arm_weapons->set_weapons[custom_kinds] = 1;
+					}
+					else if (change_slot_y==2) {
+						left_arm_weapons = NewGO<Left_arm_weapons>(1, "left_arm_weapons");
+						left_arm_weapons->set_weapons[custom_kinds] = 1;
+					}
+				}
+				
 				DeleteGO(this);
 			}
 		}
@@ -207,9 +316,18 @@ void Customize_UI::Custom_UI() {
 				window_select = true;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 0) {
-				window_open = false;
+				delete_window_open = false;
 			}
 			C_UI_window.Init("Assets/sprite/back_window_no.DDS", 512.0f, 256.0f);
+		}
+		C_UI_window.Update();
+		fast_push_state++;
+	}
+
+	else if (error_window_open == true) {
+		C_UI_window.Init("Assets/sprite/error_window.DDS", 512.0f, 256.0f);
+		if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 0) {
+			error_window_open = false;
 		}
 		C_UI_window.Update();
 		fast_push_state++;
@@ -224,11 +342,16 @@ void Customize_UI::Render(RenderContext& rc) {
 	//一番最初にドロー
 	C_UI_Render.Draw(rc);
 
-
+	slot_1_RA.Draw(rc);
+	slot_2_SD.Draw(rc);
+	slot_3_LA.Draw(rc);
+	slot_4_RL.Draw(rc);
+	slot_5_LL.Draw(rc);
+	slot_6_CI.Draw(rc);
 
 	//一番最後にドロー
 	C_UI_Select_arrow.Draw(rc);
-	if (window_open == true|| delete_window_open == true) {
+	if (window_open == true || error_window_open == true || delete_window_open == true) {
 		C_UI_window.Draw(rc);
 	}
 }
