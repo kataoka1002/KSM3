@@ -24,6 +24,7 @@
     <ClCompile Include="Customize_UI.cpp" />
     <ClCompile Include="Enumeration.cpp" />
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Battle_ship_attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -43,5 +44,6 @@
     <ClInclude Include="Customize_UI.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Battle_ship_attack.h" />
   </ItemGroup>
 </Project>
