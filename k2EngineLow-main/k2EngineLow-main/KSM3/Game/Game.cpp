@@ -9,6 +9,7 @@
 #include "Left_arm_weapons.h"
 #include "Drop_item.h"
 #include "BackGround.h"
+#include "GameCamera.h"
 
 bool Game::Start()
 {
@@ -56,11 +57,12 @@ bool Game::Start()
 Game::Game()
 {
 	lighting = NewGO<Lighting>(1, "lighting");
-	player = NewGO<Player>(1, "player");
+	player = NewGO<Player>(2, "player");
 	enemy = NewGO<Enemy>(1, "enemy");
 	enemy->enemy_position = { 0.0f,0.0f,2000.0f };
 	drop_item = NewGO< Drop_item>(1, "drop_item");
 	background = NewGO< BackGround>(1, "background");
+	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 }
 
 Game::~Game()
@@ -77,6 +79,7 @@ Game::~Game()
 		DeleteGO(drop_item);
 	}
 	DeleteGO(background);
+	DeleteGO(gamecamera);
 }
 
 void Game::Update()

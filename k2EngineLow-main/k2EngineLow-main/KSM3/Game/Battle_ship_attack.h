@@ -2,6 +2,7 @@
 
 class Player;
 class Left_arm_weapons;
+class CollisionObject;
 
 class Battle_ship_attack :public IGameObject
 {
@@ -20,10 +21,13 @@ public:
 	ModelRender B_S_Bullet;
 	Quaternion B_S_aiming;
 	Vector3 firing_position;
-	Vector3 B_S_Bullet_Fowrad;
+	Vector3 B_S_Bullet_Fowrad; 
+	CollisionObject* b_s_collisionObject = nullptr;
 
 	bool Landing_state_BB = false;
-	int move_speed=100.0f;
-	float fall_speed = 10.0f;
+	float move_speed = 30.0f;
+	float fall_speed = 0.0f;
+
+	
 };
 

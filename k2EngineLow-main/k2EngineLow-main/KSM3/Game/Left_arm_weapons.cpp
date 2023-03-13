@@ -9,14 +9,16 @@ Left_arm_weapons::Left_arm_weapons() {
 }
 
 Left_arm_weapons::~Left_arm_weapons() {
-	if (battle_ship_attack->Landing_state_BB = false) {
-		DeleteGO(battle_ship_attack);
+	if (atack_state == true) {
+		if (battle_ship_attack->Landing_state_BB = false) {
+			DeleteGO(battle_ship_attack);
+		}
 	}
 }
 
 void Left_arm_weapons::L_a_w_set() {
 	if (drop_weapons[1] == 1) {
-		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
+		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_left_arm.tkm");
 	}
 }
 
@@ -31,9 +33,15 @@ void Left_arm_weapons::Update() {
 
 			if (drop_weapons[1] == 1) {
 				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
+				atack_state = true;
+				
 			}
 		
 		}
+		if (l_a_w_player->game_end_state == 1) {
+			DeleteGO(this);
+		}
+		l_a_w_player->attack_state_la = atack_state;
 		Left_arm_weapons_Render.Update();
 	}
 }

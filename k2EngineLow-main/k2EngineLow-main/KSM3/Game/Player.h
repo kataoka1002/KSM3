@@ -36,6 +36,8 @@ public:
 
 	float accelerator = 0;
 	float brake = 0;
+	bool attack_state_la = false;
+
 
 	int p_custom_point[2][3] = { {0,0,0},
 						   {0,0,0} };
