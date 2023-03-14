@@ -19,6 +19,8 @@ Right_arm_weapons::~Right_arm_weapons() {
 void Right_arm_weapons::R_a_w_set() {
 	if (set_weapons[1] == 1) {
 		Right_arm_weapons_Render.Init("Assets/modelData/battleship_gun_right_arm.tkm");
+		Right_arm_weapons_Render.SetScale(scale2);
+		Right_arm_weapons_Render.Update();
 	}
 }
 

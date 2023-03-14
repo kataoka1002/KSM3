@@ -23,7 +23,8 @@ public:
 	int game_state = 0;
 	ModelRender Right_arm_weapons_Render;
 
-	Vector3 r_a_w_localPosition = { 55.0f,90.0f,5.0f };
+	Vector3 r_a_w_localPosition = { 60.0f,70.0f,-10.0f };
+	Vector3 scale2 = { 2.0f,2.0f,2.0f };
 
 	bool atack_state = false;
 	int set_weapons[12] = { 0,0,0,0,0,0,0,0,0,0,0,0 };
