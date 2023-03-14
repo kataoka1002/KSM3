@@ -19,6 +19,8 @@ Left_arm_weapons::~Left_arm_weapons() {
 void Left_arm_weapons::L_a_w_set() {
 	if (set_weapons[1] == 1) {
 		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_left_arm.tkm");
+		Left_arm_weapons_Render.SetScale(scale2);
+		Left_arm_weapons_Render.Update();
 	}
 }
 

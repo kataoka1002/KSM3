@@ -274,11 +274,11 @@ void Customize_UI::Custom_UI() {
 				custom_point[change_slot_x][change_slot_y] = custom_kinds;
 				if (change_slot_x == 0) {
 					if (change_slot_y == 0) {
-						right_arm_weapons = NewGO<Right_arm_weapons>(1, "right_arm_weapons");
+						right_arm_weapons = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
 						right_arm_weapons->set_weapons[custom_kinds] = 1;
 					}
 					else if (change_slot_y==2) {
-						left_arm_weapons = NewGO<Left_arm_weapons>(1, "left_arm_weapons");
+						left_arm_weapons = NewGO<Left_arm_weapons>(2, "left_arm_weapons");
 						left_arm_weapons->set_weapons[custom_kinds] = 1;
 					}
 				}

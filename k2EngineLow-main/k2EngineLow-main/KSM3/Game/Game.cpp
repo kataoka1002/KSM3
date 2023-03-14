@@ -61,8 +61,11 @@ Game::Game()
 {
 	lighting = NewGO<Lighting>(1, "lighting");
 	player = NewGO<Player>(2, "player");
+
+
 	enemy = NewGO<Enemy>(1, "enemy");
 	enemy->enemy_position = { 0.0f,0.0f,2000.0f };
+
 	drop_item = NewGO< Drop_item>(1, "drop_item");
 	background = NewGO< BackGround>(1, "background");
 
