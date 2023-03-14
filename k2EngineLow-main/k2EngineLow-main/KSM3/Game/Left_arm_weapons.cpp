@@ -29,16 +29,19 @@ void Left_arm_weapons::Update() {
 	fast++;
 	if (game_state == 0) {
 		Move();
-		if (g_pad[0]->IsTrigger(enButtonRB1)) {
+		if (g_pad[0]->IsPress(enButtonRB1)) {
 
-			if (set_weapons[1] == 1) {
+			if (set_weapons[1] == 1 && firing_cound % 180 == 0) {
 				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
 				battle_ship_attack->B_S_aiming = l_a_Rotation;
 				battle_ship_attack->firing_position = l_a_w_position;
 				atack_state = true;
 				
 			}
-		
+			firing_cound++;
+		}
+		else {
+			firing_cound = 0;
 		}
 		if (l_a_w_player->game_end_state == 1) {
 			DeleteGO(this);

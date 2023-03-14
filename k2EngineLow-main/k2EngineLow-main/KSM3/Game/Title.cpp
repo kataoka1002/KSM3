@@ -3,7 +3,11 @@
 #include "Game.h"
 
 Title::Title() {
-	title_Render.Init("Assets/sprite/MAIN_MENU.dds", 1920.0f, 1080.0f);
+	title_Render.Init("Assets/sprite/title_test.dds", 1920.0f, 1080.0f);
+
+	title_Render.SetScale(title_scale);
+
+	title_Render.Update();
 }
 
 Title::~Title()

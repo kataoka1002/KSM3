@@ -94,7 +94,8 @@ void Player::Move()
 		}
 	}
 
-	player_moveSpeed += playerFowrad  * 4.0f * accelerator*(throttle/2.0f);
+	move_s = 4.0f * accelerator;
+	player_moveSpeed += playerFowrad  * move_s * (throttle / 2.0f);
 
 	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
 
