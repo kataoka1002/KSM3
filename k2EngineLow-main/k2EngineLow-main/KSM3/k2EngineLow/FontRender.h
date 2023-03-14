@@ -98,6 +98,16 @@ namespace nsK2EngineLow {
 			m_font.SetShadowParam(isDrawShadow, shadowOffset, shadowColor);
 		}
 
+		void OnDraw(RenderContext& rc)
+		{
+			if (m_text == nullptr)
+			{
+				return;
+			}
+
+			OnRender2D(rc);
+		}
+
 	private:
 		void OnRender2D(RenderContext& rc)
 		{

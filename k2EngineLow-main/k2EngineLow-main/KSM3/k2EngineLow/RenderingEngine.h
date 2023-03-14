@@ -4,17 +4,13 @@
 namespace nsK2EngineLow {
 
 	class K2EngineLow;
+	class FontRender;
 
 	class RenderingEngine : public Noncopyable
 	{
 	public:
-
-		RenderingEngine()
-		{
-		}
-		~RenderingEngine()
-		{
-		}
+		bool Start();
+		void Execute(RenderContext& rc);
 
 		//ディレクションライトの設定
 		void SetDirectionLight( Vector3 direction, Vector3 color)
@@ -51,7 +47,44 @@ namespace nsK2EngineLow {
 			return m_sceneLight;
 		}
 
+		//レンダリングターゲットを作成する(初期化の前に行う)
+		void MakeRenderTarget(RenderTarget& targetName, int w, int h, int mipLevel, int arraySize, DXGI_FORMAT colorFormat, DXGI_FORMAT depthStencilFormat)
+		{
+			targetName.Create(
+				w,                      // テクスチャの幅
+				h,                      // テクスチャの高さ
+				mipLevel,               // Mipmapレベル
+				arraySize,              // テクスチャ配列のサイズ
+				colorFormat,			// カラーバッファのフォーマット
+				depthStencilFormat		// デプスステンシルバッファのフォーマット
+			);
+		}
+
+		void AddModelRenderObject(ModelRender* modelRender)
+		{
+			//コンテナの後ろにくっつける
+			ModelRenderObject.push_back(modelRender);
+		}
+
+		void AddSpriteRenderObject(SpriteRender* spriteRender)
+		{
+			//コンテナの後ろにくっつける
+			SpriteRenderObject.push_back(spriteRender);
+		}
+
+		void AddFontRenderObject(FontRender* fontRender)
+		{
+			//コンテナの後ろにくっつける
+			FontRenderObject.push_back(fontRender);
+		}
+
 	private:
 		SceneLight m_sceneLight;
+		RenderTarget offscreenRenderTarget;
+		RenderContext& renderContext = g_graphicsEngine->GetRenderContext();
+
+		std::vector<ModelRender*> ModelRenderObject;
+		std::vector<SpriteRender*> SpriteRenderObject;
+		std::vector<FontRender*> FontRenderObject;
 	};
 }

@@ -21,6 +21,6 @@ namespace nsK2EngineLow {
 
 	void SpriteRender::Draw(RenderContext& rc)
 	{
-		m_sprite.Draw(rc);
+		g_renderingEngine->AddSpriteRenderObject(this);
 	}
 }
