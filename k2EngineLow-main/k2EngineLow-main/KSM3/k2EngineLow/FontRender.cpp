@@ -4,11 +4,6 @@
 namespace nsK2EngineLow {
 	void FontRender::Draw(RenderContext& rc)
 	{
-		if (m_text == nullptr)
-		{
-			return;
-		}
-
-		OnRender2D(rc);
+		g_renderingEngine->AddFontRenderObject(this);
 	}
 }
