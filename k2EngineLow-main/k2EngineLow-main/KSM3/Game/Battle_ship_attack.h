@@ -24,7 +24,7 @@ public:
 	Quaternion B_S_aiming;
 	Vector3 firing_position;
 	Vector3 B_S_Bullet_Fowrad; 
-	CollisionObject* b_s_collisionObject = nullptr;
+	//CollisionObject* b_s_collisionObject = nullptr;
 
 	bool Landing_state_BB = false;
 	float move_speed = 30.0f;
