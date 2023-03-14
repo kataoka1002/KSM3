@@ -6,6 +6,7 @@ namespace nsK2EngineLow {
 	K2EngineLow* g_engine = nullptr;
 	GameTime* g_gameTime = nullptr;
 	RenderingEngine* g_renderingEngine = nullptr;
+	CollisionObjectManager* g_collisionObjectManager = nullptr;
 
 	K2EngineLow::~K2EngineLow()
 	{
@@ -99,7 +100,7 @@ namespace nsK2EngineLow {
 		auto& renderContext = g_graphicsEngine->GetRenderContext();
 		// ゲームオブジェクトマネージャーの描画処理を実行。
 		GameObjectManager::GetInstance()->ExecuteRender(renderContext);
-		
+		g_renderingEngine->Execute(renderContext);
 	}
 
 	/// <summary>

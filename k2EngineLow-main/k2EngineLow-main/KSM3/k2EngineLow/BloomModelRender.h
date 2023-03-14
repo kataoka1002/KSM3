@@ -1,22 +1,37 @@
 #pragma once
 
+
 namespace nsK2EngineLow {
-
-
-	class ModelRender {
+	class BloomModelRender
+	{
 	public:
-		ModelRender();
-		~ModelRender();
-
-		//初期化
-		void Init(const char* filePath, 
+		BloomModelRender();
+		~BloomModelRender();
+		//モデル用の初期化関数
+		void InitModel(const char* filePath,
+			DXGI_FORMAT colorFormat,
 			AnimationClip* animationClips = nullptr,
 			int numAnimationClips = 0,
-			EnModelUpAxis enModelUpAxis = enModelUpAxisZ);
-		//アップデート
+			EnModelUpAxis enModelUpAxis = enModelUpAxisZ
+			);
+		//輝度抽出用スプライトの初期化関数
+		void InitLuminance(
+			DXGI_FORMAT colorFormat,
+			RenderTarget& mainTargetName
+		);
+		//色々初期化するための関数
+		void InitSome(RenderTarget&luminanceTargetName,
+			RenderTarget& mainTargetName,
+			DXGI_FORMAT colorFormat
+		);
+		void InitSprite(RenderTarget& mainTargetName);
 		void Update();
-		//描画処理
+		bool Start();
 		void Draw(RenderContext& rc);
+
+
+
+		void TargetSet(RenderTarget& luminanceTargetName,RenderTarget& mainTargetName);
 
 		//座標設定
 		void SetPosition(const Vector3& pos)
@@ -68,11 +83,6 @@ namespace nsK2EngineLow {
 			m_animation.Play(animNo, interpolateTime);
 		}
 
-		void OnDraw(RenderContext& rc)
-		{
-			m_model.Draw(rc);
-		}
-
 	private:
 		//アニメーションの初期化
 		void InitAnimation(AnimationClip* animationClips,	//アニメーションクリップ
@@ -82,12 +92,15 @@ namespace nsK2EngineLow {
 		//スケルトンの初期化
 		void InitSkeleton(const char* filePath);
 
-	public:
-		
-		
+
 	private:
 		//モデル
 		Model m_model;
+
+		//スプライト
+		Sprite m_luminanceSprite;
+		Sprite m_finalSprite;
+		Sprite m_copyToframeBufferSprite;
 
 		//アニメーション
 		Animation m_animation;
@@ -100,5 +113,9 @@ namespace nsK2EngineLow {
 		Vector3 m_position = Vector3::Zero;
 		Quaternion m_rotation = { 0.0f,0.0f,0.0f,1.0f };
 		Vector3 m_scale = Vector3::One;
+
+		//ガウシアンブラー
+		GaussianBlur gaussianBlur;
 	};
 }
+

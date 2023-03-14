@@ -5,7 +5,7 @@ namespace nsK2EngineLow {
 
 	ModelRender::ModelRender()
 	{
-
+		
 	}
 
 	ModelRender::~ModelRender()
@@ -18,11 +18,14 @@ namespace nsK2EngineLow {
 		int numAnimationClips,
 		EnModelUpAxis enModelUpAxis)
 	{
+
 		// スケルトンを初期化。
 		InitSkeleton(filePath);
 		// アニメーションを初期化。
 		InitAnimation(animationClips, numAnimationClips, enModelUpAxis);
 
+		
+		//モデルの初期化
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = filePath;
 		modelInitData.m_fxFilePath = "Assets/shader/model.fx";
@@ -30,6 +33,7 @@ namespace nsK2EngineLow {
 		modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightingCB());
 		modelInitData.m_modelUpAxis = enModelUpAxis;
 
+		
 		if (animationClips != nullptr) {
 			modelInitData.m_skeleton = &m_skeleton;
 			modelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
@@ -40,7 +44,6 @@ namespace nsK2EngineLow {
 
 	
 		m_model.Init(modelInitData);
-
 	}
 
 	void ModelRender::Update()
@@ -51,7 +54,6 @@ namespace nsK2EngineLow {
 		if (m_skeleton.IsInited()) {
 			m_skeleton.Update(m_model.GetWorldMatrix());
 		}
-
 		//アニメーションを進める。
 		m_animation.Progress(g_gameTime->GetFrameDeltaTime() * m_animationSpeed);
 	}
@@ -78,6 +80,7 @@ namespace nsK2EngineLow {
 
 	void ModelRender::Draw(RenderContext& rc)
 	{
-		m_model.Draw(rc);
+		g_renderingEngine->AddModelRenderObject(this);
 	}
+
 }
