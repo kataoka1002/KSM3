@@ -1,14 +1,17 @@
 #pragma once
 #include "SceneLight.h"
+#include "Bloom.h"
 
 namespace nsK2EngineLow {
 
-	class K2EngineLow;
+	//class K2EngineLow;
 	class FontRender;
+	class Bloom;
 
 	class RenderingEngine : public Noncopyable
 	{
 	public:
+		RenderingEngine();
 		bool Start();
 		void Execute(RenderContext& rc);
 
@@ -47,19 +50,6 @@ namespace nsK2EngineLow {
 			return m_sceneLight;
 		}
 
-		//レンダリングターゲットを作成する(初期化の前に行う)
-		void MakeRenderTarget(RenderTarget& targetName, int w, int h, int mipLevel, int arraySize, DXGI_FORMAT colorFormat, DXGI_FORMAT depthStencilFormat)
-		{
-			targetName.Create(
-				w,                      // テクスチャの幅
-				h,                      // テクスチャの高さ
-				mipLevel,               // Mipmapレベル
-				arraySize,              // テクスチャ配列のサイズ
-				colorFormat,			// カラーバッファのフォーマット
-				depthStencilFormat		// デプスステンシルバッファのフォーマット
-			);
-		}
-
 		void AddModelRenderObject(ModelRender* modelRender)
 		{
 			//コンテナの後ろにくっつける
@@ -78,13 +68,28 @@ namespace nsK2EngineLow {
 			FontRenderObject.push_back(fontRender);
 		}
 
+		RenderTarget& GetMainRenderTarget()
+		{
+			return m_mainRenderingTarget;
+		}
+
+		Sprite& GetFrameBufferSprite()
+		{
+			return m_copyToframeBufferSprite;
+		}
+
 	private:
 		SceneLight m_sceneLight;
-		RenderTarget offscreenRenderTarget;
-		RenderContext& renderContext = g_graphicsEngine->GetRenderContext();
+		Bloom m_bloom;
+
+		RenderTarget m_mainRenderingTarget;
+		SpriteInitData m_spiteInitData;
+		Sprite m_copyToframeBufferSprite;
 
 		std::vector<ModelRender*> ModelRenderObject;
 		std::vector<SpriteRender*> SpriteRenderObject;
 		std::vector<FontRender*> FontRenderObject;
+	public:
+
 	};
 }

@@ -231,8 +231,9 @@
     <ClCompile Include="LevelRender.cpp" />
     <ClCompile Include="FontRender.cpp" />
     <ClCompile Include="SceneLight.cpp" />
-    <ClCompile Include="BloomModelRender.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
+    <ClCompile Include="PostEffect.cpp" />
+    <ClCompile Include="Bloom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -513,8 +514,9 @@
     <ClInclude Include="LevelRender.h" />
     <ClInclude Include="FontRender.h" />
     <ClInclude Include="SceneLight.h" />
-    <ClInclude Include="BloomModelRender.h" />
     <ClInclude Include="CollisionObject.h" />
+    <ClInclude Include="PostEffect.h" />
+    <ClInclude Include="Bloom.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
