@@ -16,7 +16,7 @@ namespace nsK2EngineLow {
 		);
 
 		//ブルームの初期化
-		m_bloom.Init(m_mainRenderingTarget);
+		//m_bloom.Init(m_mainRenderingTarget);
 
 		// 最終的なテクスチャを張り付けるためのスプライトを初期化
 		m_spiteInitData.m_textures[0] = &m_mainRenderingTarget.GetRenderTargetTexture();
@@ -51,7 +51,7 @@ namespace nsK2EngineLow {
 
 
 		//ブルームを適用
-		m_bloom.Render(rc, m_mainRenderingTarget);
+		//m_bloom.Render(rc, m_mainRenderingTarget);
 		
 
 		//スプライトと文字を描画
