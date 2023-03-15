@@ -13,7 +13,7 @@ GameCamera::~GameCamera()
 bool GameCamera::Start()
 {
 	//注視点から視点までのベクトルを設定。
-	m_toCameraPos.Set(0.0f, 125.0f, -250.0f);
+	m_toCameraPos.Set(0.0f, 125.0f, -500.0f);
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");
 
@@ -50,13 +50,13 @@ void GameCamera::Update()
 	//正規化すると、ベクトルの大きさが１になる。
 	//大きさが１になるということは、ベクトルから強さがなくなり、方向のみの情報となるということ。
 	Vector3 toPosDir = m_toCameraPos;
-	toPosDir.Normalize();
-	if (toPosDir.y < -0.2f) {
-		//カメラが上向きすぎ。
+	toPosDir.Normalize();////////////////////////////
+	if (toPosDir.y < 0.1f) {//ちょっといじりました。(こた)
+		//カメラが上向きすぎ。///////////////////////
 		m_toCameraPos = toCameraPosOld;
-	}
-	else if (toPosDir.y > 0.9f) {
-		//カメラが下向きすぎ。
+	}////////////////////////////////////////////////
+	else if (toPosDir.y > 0.5f) {//同じく。(こた)
+		//カメラが下向きすぎ。///////////////////////
 		m_toCameraPos = toCameraPosOld;
 	}
 
