@@ -54,6 +54,7 @@ public:
 	bool error_window_open = false;
 	int fast_push_state = 0;
 	int change_slot_x = 0, change_slot_y = 0;
+	int window_time = 0;
 
 	Vector3 scalec = { 0.85f,0.85f,0.0f };
 
