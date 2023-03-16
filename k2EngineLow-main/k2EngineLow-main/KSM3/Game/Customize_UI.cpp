@@ -264,13 +264,15 @@ void Customize_UI::Custom_UI() {
 
 	//確認ウィンドウの表示
 	if (window_open == true) {
-
+		fast_push_state++;
 		if (window_select == true) {
+			if(fast_push_state==1)
 			C_UI_window.Init("Assets/sprite/change_window_yes.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonRight)) {
+				fast_push_state = 0;
 				window_select = false;
 			}
-			if (g_pad[0]->IsTrigger(enButtonA)&&fast_push_state!=0) {
+			if (g_pad[0]->IsTrigger(enButtonA)&&fast_push_state!=1) {
 				custom_point[change_slot_x][change_slot_y] = custom_kinds;
 				if (change_slot_x == 0) {
 					if (change_slot_y == 0) {
@@ -287,49 +289,60 @@ void Customize_UI::Custom_UI() {
 			}
 		}
 		else if (window_select == false) {
+			if(fast_push_state==1)
+			C_UI_window.Init("Assets/sprite/change_window_no.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonLeft)) {
 				window_select = true;
+				fast_push_state = 0;
 			}
-			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 0) {
+			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 1) {
 				window_open = false;
 			}
-			C_UI_window.Init("Assets/sprite/change_window_no.DDS", 512.0f, 256.0f);
+			
 		}
 		C_UI_window.Update();
-		fast_push_state++;
+		
 	}
 
 
 	else if (delete_window_open == true) {
-
+		fast_push_state++;
 		if (window_select == true) {
+			if(fast_push_state==1)
 			C_UI_window.Init("Assets/sprite/back_window_yes.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonRight)) {
 				window_select = false;
+				fast_push_state = 0;
 			}
-			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 0) {
+			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 1) {
 				DeleteGO(this);
 			}
 		}
 		else if (window_select == false) {
+			if (fast_push_state == 0)
+				C_UI_window.Init("Assets/sprite/back_window_no.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonLeft)) {
 				window_select = true;
+				fast_push_state = 0;
 			}
-			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 0) {
+			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 1) {
 				delete_window_open = false;
 			}
-			C_UI_window.Init("Assets/sprite/back_window_no.DDS", 512.0f, 256.0f);
+			
 		}
 		C_UI_window.Update();
-		fast_push_state++;
+		
 	}
 
 	else if (error_window_open == true) {
-		C_UI_window.Init("Assets/sprite/error_window.DDS", 512.0f, 256.0f);
+		
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 0) {
 			error_window_open = false;
 		}
-		C_UI_window.Update();
+		if (fast_push_state == 0) {
+			C_UI_window.Init("Assets/sprite/error_window.DDS", 512.0f, 256.0f);
+			C_UI_window.Update();
+		}
 		fast_push_state++;
 	}
 
