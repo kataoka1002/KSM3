@@ -78,12 +78,12 @@ void GameCamera::Update()
 	toPosDir.Normalize();
 	if (CameraState == 0)//雑魚戦の時カメラ。
 	{
-		if (toPosDir.y < 0.5f)
+		if (toPosDir.y < 0.3f)
 		{
 			//カメラが上向きすぎ。
 			m_toCameraPos = toCameraPosOld;
 		}
-		else if (toPosDir.y > 0.7f) 
+		else if (toPosDir.y > 0.8f) 
 		{
 			//カメラが下向きすぎ。
 			m_toCameraPos = toCameraPosOld;
@@ -96,7 +96,7 @@ void GameCamera::Update()
 			//上を向きすぎないように。
 			m_toCameraPos = toCameraPosOld;
 		}
-		else if (toPosDir.y > 0.3f)
+		else if (toPosDir.y > 0.7f)
 		{
 			//下を向きすぎないように。
 			m_toCameraPos = toCameraPosOld;
