@@ -5,10 +5,13 @@
 
 
 
+
 Player::Player() {
 	player_modelRender.Init("Assets/modelData/test_player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
 	characterController.Init(70.0f, 150.0f, player_position);
+
+	
 
 	//‰ñ“]ƒe[ƒuƒ‹
 	int i;

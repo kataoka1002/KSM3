@@ -9,7 +9,7 @@
 #include "Left_arm_weapons.h"
 #include "Drop_item.h"
 #include "BackGround.h"
-
+#include "Core_weapons.h"
 #include "GameCamera.h"
 
 
@@ -70,7 +70,7 @@ Game::Game()
 	background = NewGO< BackGround>(1, "background");
 
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
-
+	core_weapons = NewGO<Core_weapons>(2, "core_weapons");
 }
 
 Game::~Game()

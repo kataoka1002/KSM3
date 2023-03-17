@@ -26,6 +26,8 @@ public:
 	Vector3 enemy_moveSpeed;//移動速度
 	Vector3 enemy_forward{ 0.0f,0.0f,-1.0f };//エネミーの正面ベクトル
 
+	bool defeat_state = false;
+
 	int enemy_weapons = 1;
 	int enemy_game_state=0;
 };

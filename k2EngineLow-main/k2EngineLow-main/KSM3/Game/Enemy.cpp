@@ -13,12 +13,14 @@ Enemy::Enemy() {
 }
 
 Enemy::~Enemy() {
-	for (int i = 0; i < 12; i++) {
-		if (enemy_weapons == i) {
-			drop_item->drop_weapons[i] = 1;
-		}
-		else {
-			drop_item->drop_weapons[i] = 0;
+	if (defeat_state == true) {
+		for (int i = 0; i < 12; i++) {
+			if (enemy_weapons == i) {
+				drop_item->drop_weapons[i] = 1;
+			}
+			else {
+				drop_item->drop_weapons[i] = 0;
+			}
 		}
 	}
 }
@@ -53,6 +55,7 @@ void Enemy::Update()
 				drop_item = NewGO<Drop_item>(1, "drop_item");
 				drop_item->Drop_position = enemy_position;
 				drop_item->Drop_position.y += 50.0f;
+				defeat_state = true;
 				DeleteGO(this);
 			}
 		}
