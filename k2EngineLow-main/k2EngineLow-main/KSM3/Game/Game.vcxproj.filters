@@ -26,6 +26,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Battle_ship_attack.cpp" />
     <ClCompile Include="Right_arm_weapons.cpp" />
+    <ClCompile Include="Core_weapons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -47,5 +48,6 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Battle_ship_attack.h" />
     <ClInclude Include="Right_arm_weapons.h" />
+    <ClInclude Include="Core_weapons.h" />
   </ItemGroup>
 </Project>

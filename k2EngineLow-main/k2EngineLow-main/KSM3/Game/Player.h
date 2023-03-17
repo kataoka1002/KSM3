@@ -3,6 +3,7 @@
 class Left_arm_weapons;
 
 
+
 class Player:public IGameObject
 {
 public:
@@ -29,6 +30,7 @@ public:
 	int game_state=0;//ゲームがどの状態化の管理
 
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
+	
 	
 	SpriteRender pouse_spriteRender;//pause画面用のスプライトレンダー
 
