@@ -4,6 +4,7 @@
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
 
+
 Right_arm_weapons::Right_arm_weapons() {
 	r_a_w_player = FindGO<Player>("player");
 }
@@ -31,6 +32,7 @@ void Right_arm_weapons::Update() {
 	fast++;
 	if (game_state == 0) {
 		Move();
+		//UŒ‚
 		if (g_pad[0]->IsPress(enButtonRB1)) {
 
 			if (set_weapons[1] == 1&&firing_cound%180==0) {

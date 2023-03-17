@@ -29,7 +29,7 @@ public:
 	bool Landing_state_BB = false;
 	float move_speed = 30.0f;
 	float fall_speed = 0.0f;
-
+	bool atack_state = true;
 	
 };
 

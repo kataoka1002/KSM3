@@ -37,8 +37,6 @@ void Left_arm_weapons::Update() {
 				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
 				battle_ship_attack->B_S_aiming = l_a_Rotation;
 				battle_ship_attack->firing_position = l_a_w_position;
-				atack_state = true;
-				
 			}
 			firing_cound++;
 		}
