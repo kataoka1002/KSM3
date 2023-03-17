@@ -8,8 +8,10 @@
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
 
+
 Enemy::Enemy() {
 	e_player = FindGO<Player>("player");
+	
 }
 
 Enemy::~Enemy() {

@@ -14,6 +14,6 @@ public:
 	/////////////////////////////////////
 	Player* m_player;	//プレイヤー。
 	Vector3 m_toCameraPos;	//注視点から視点に向かうベクトル。
-	int CameraState = 0;
+	int CameraState = 1;
 
 };

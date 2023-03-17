@@ -12,6 +12,8 @@ class BackGround;
 class Core_weapons;
 class GameCamera;
 
+class Enemy_weapons;
+
 
 class Game:public IGameObject
 {
@@ -38,6 +40,8 @@ public:
 	BackGround* background;
 	Core_weapons* core_weapons;
 	GameCamera* gamecamera;
+
+	Enemy_weapons* enemy_weapons;
 
 	
 	Vector3 dv;

@@ -3,6 +3,7 @@ class Player;
 class Battle_ship_attack;
 class Drop_item;
 
+
 class Enemy:public IGameObject
 {
 public:
@@ -18,6 +19,7 @@ public:
 	Player* e_player = nullptr;
 	Battle_ship_attack* e_battle_ship_attack;
 	Drop_item* drop_item;
+	
 
 	ModelRender enemy_modelRender;//モデルレンダー
 	Vector3 enemy_position;//座標
