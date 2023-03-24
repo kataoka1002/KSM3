@@ -1,6 +1,7 @@
 #pragma once
 class Player;
 class Enemy;
+class Enemy_attack;
 
 class Enemy_weapons:public IGameObject
 {
@@ -15,6 +16,7 @@ public:
 
 	Player* e_w_player;
 	Enemy* e_w_enemy;
+	Enemy_attack* enemy_attack;
 
 	Quaternion e_w_Rotation;
 	Vector3 e_w_position;
@@ -26,6 +28,7 @@ public:
 	Vector3 e_w_localposition = { 0.0f,20.0f,20.0f };
 	
 	bool atack_state = false;
+	bool atack_ok = false;
 	int set_weapons = 0;
 
 	int firing_cound = 0;

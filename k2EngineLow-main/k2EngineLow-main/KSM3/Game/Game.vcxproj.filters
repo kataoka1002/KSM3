@@ -28,6 +28,8 @@
     <ClCompile Include="Right_arm_weapons.cpp" />
     <ClCompile Include="Core_weapons.cpp" />
     <ClCompile Include="Enemy_weapons.cpp" />
+    <ClCompile Include="Enemy_attack.cpp" />
+    <ClCompile Include="Core_weapons_attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -51,5 +53,7 @@
     <ClInclude Include="Right_arm_weapons.h" />
     <ClInclude Include="Core_weapons.h" />
     <ClInclude Include="Enemy_weapons.h" />
+    <ClInclude Include="Enemy_attack.h" />
+    <ClInclude Include="Core_weapons_attack.h" />
   </ItemGroup>
 </Project>

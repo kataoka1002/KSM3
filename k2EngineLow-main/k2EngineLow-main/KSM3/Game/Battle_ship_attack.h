@@ -4,6 +4,7 @@ class Player;
 class Left_arm_weapons;
 class Right_arm_weapons;
 class CollisionObject;
+class Enemy;
 
 class Battle_ship_attack :public IGameObject
 {
@@ -19,6 +20,7 @@ public:
 	Player* b_s_attack_player;
 	Left_arm_weapons* b_s_left_arm_weapons;
 	Right_arm_weapons* b_s_right_arm_weapons;
+	Enemy* b_s_enemy;
 
 	ModelRender B_S_Bullet;
 	Quaternion B_S_aiming;
@@ -30,6 +32,7 @@ public:
 	float move_speed = 30.0f;
 	float fall_speed = 0.0f;
 	bool atack_state = true;
+	
 	
 };
 

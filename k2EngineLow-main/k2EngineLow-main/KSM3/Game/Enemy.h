@@ -1,8 +1,10 @@
 #pragma once
+#define HP 200.0f
+
 class Player;
 class Battle_ship_attack;
 class Drop_item;
-
+class Enemy_weapons;
 
 class Enemy:public IGameObject
 {
@@ -19,6 +21,7 @@ public:
 	Player* e_player = nullptr;
 	Battle_ship_attack* e_battle_ship_attack;
 	Drop_item* drop_item;
+	Enemy_weapons* e_enemy_weapons;
 	
 
 	ModelRender enemy_modelRender;//ƒ‚ƒfƒ‹ƒŒƒ“ƒ_[
@@ -32,5 +35,7 @@ public:
 
 	int enemy_weapons = 1;
 	int enemy_game_state=0;
+
+	float enemy_HP = HP;
 };
 

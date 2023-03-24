@@ -17,13 +17,14 @@ Drop_item::Drop_item() {
 }
 
 void Drop_item::Set_Drop_item() {
-	for (int i = 0; i < 12; i++) {
-		if (drop_weapons[i] == 1) {
+		if (drop_weapons[1] == 1) {
 			Drop_item_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
-			drop_kinds = i;
+			drop_kinds = 1;
 		}
-
-}
+		else if (drop_weapons[2] == 1){
+			Drop_item_Render.Init("Assets/modelData/machine_gun_drop.tkm");
+			drop_kinds = 2;
+		}
 	
 	Drop_item_Render.SetPosition(Drop_position);
 }

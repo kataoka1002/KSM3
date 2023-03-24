@@ -43,5 +43,7 @@ public:
 
 	int p_custom_point[2][3] = { {0,0,0},
 						   {0,0,0} };
+
+	bool enemy_survival = true;
 };
 
