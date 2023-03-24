@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Core_weapons.h"
 #include "Player.h"
+#include "Core_weapons_attack.h"
 
 Core_weapons::Core_weapons() {
 	
@@ -8,7 +9,7 @@ Core_weapons::Core_weapons() {
 
 Core_weapons::~Core_weapons() {
 	if (atack_state == true) {
-		
+		DeleteGO(core_weapons_attack);
 	}
 }
 
@@ -18,6 +19,12 @@ void Core_weapons::CW_set() {
 		Core_Weapons_Render.Init("Assets/modelData/Giga_Plasma.tkm");
 		Core_Weapons_Render.SetScale(scale);
 		Core_Weapons_Render.Update();
+		core_HP = 200.0f;
+	}
+	else if (set_weapons == 2) {
+		Core_Weapons_Render.Init("Assets/modelData/Versatile_Perforator.tkm");
+		Core_Weapons_Render.Update();
+		core_HP = 200.0f;
 	}
 }
 
@@ -33,6 +40,10 @@ void Core_weapons::Update() {
 
 				if (set_weapons == 1 && firing_cound % 60 == 0) {
 
+				}
+				else if (set_weapons == 2 && firing_cound % 5 == 0) {
+					core_weapons_attack = NewGO<Core_weapons_attack>(1, "core_weapons_attack");
+					atack_state = true;
 				}
 				firing_cound++;
 			}

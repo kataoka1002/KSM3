@@ -31,5 +31,7 @@ public:
 
 	int firing_cound=0;
 	int fast = 0;
+
+	float R_a_w_HP = 0.0f;
 };
 
