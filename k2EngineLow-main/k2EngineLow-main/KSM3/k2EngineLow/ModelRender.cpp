@@ -5,6 +5,7 @@ namespace nsK2EngineLow {
 
 	ModelRender::ModelRender()
 	{
+
 	}
 
 	ModelRender::~ModelRender()
@@ -28,32 +29,37 @@ namespace nsK2EngineLow {
 		//モデルの初期化
 		ModelInitData modelInitData;
 		//影をを落とす方か落とされる方かでシェーダーを変える
-		if (m_shadowDrop == true) {
+		if(m_shadowDrop==true){
+			// モデルの初期化
 			modelInitData.m_tkmFilePath = filePath;
 			modelInitData.m_fxFilePath = "Assets/shader/model.fx";
 			modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightingCB();
 			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightingCB());
 			modelInitData.m_modelUpAxis = enModelUpAxis;
 
-
-			//落とす方のデータの作成
+			// シャドウマップに描画するモデルを初期化
 			ModelInitData shadowModelInitData;
-			shadowModelInitData.m_fxFilePath = "Assets/shader/model.fx";
 			shadowModelInitData.m_tkmFilePath = filePath;
+			shadowModelInitData.m_fxFilePath = "Assets/shader/model.fx";
 			shadowModelInitData.m_psEntryPointFunc = "PSShadowMain";
+			// カラーバッファーのフォーマットに変更が入ったので、こちらも変更する
 			shadowModelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;
 			m_shadowModel.Init(shadowModelInitData);
 		}
-		else {	
-			//落とされる方
-			modelInitData.m_fxFilePath = "Assets/shader/shadowReciever2.fx";
-			modelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
-			//modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightingCB();
-			//modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightingCB());
-			modelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix();
-			modelInitData.m_expandConstantBufferSize = sizeof(&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix());
-			modelInitData.m_tkmFilePath = filePath;
+		else {
+			// 影を受ける背景モデルを初期化
+			ModelInitData bgModelInitData;
+			// シャドウレシーバー(影が落とされるモデル)用のシェーダーを指定する
+			bgModelInitData.m_fxFilePath = "Assets/shader/shadowReciever2.fx";
+			// シャドウマップを拡張SRVに設定する
+			bgModelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
+			// ライトビュープロジェクション行列を拡張定数バッファーに設定する
+			bgModelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix();
+			bgModelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCamera().GetViewProjectionMatrix());
+			bgModelInitData.m_tkmFilePath = filePath;
+			m_model.Init(bgModelInitData);
 		}
+
 
 
 		//アニメーション有無でエントリーポイントを変える

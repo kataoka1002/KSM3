@@ -22,8 +22,6 @@ namespace nsK2EngineLow {
 
 		//ライトカメラの上方向の設定
 		lightCamera.SetUp(0, 1, 0);
-		//SetmLVP(lightCamera.GetViewProjectionMatrix());
-
 
 		//シャドウマップ用のターゲットの作成
 		shadowMapTarget.Create(
@@ -68,7 +66,6 @@ namespace nsK2EngineLow {
 				lightCamera.SetTarget(MobjData->GetPositionX(), MobjData->GetPositionY(), MobjData->GetPositionZ());
 				lightCamera.Update();	
 			}
-			//SetmLVP(lightCamera.GetViewProjectionMatrix());
 			//影モデルの描画
 			MobjData->OnShadowDraw(rc);
 			rc.WaitUntilFinishDrawingToRenderTarget(shadowMapTarget);

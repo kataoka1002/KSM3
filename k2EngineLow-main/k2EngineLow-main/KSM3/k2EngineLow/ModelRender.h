@@ -106,17 +106,6 @@ namespace nsK2EngineLow {
 		{
 			m_shadowModel.Draw(rc, g_renderingEngine->GetLightCamera());
 		}
-		/*
-		RenderTarget& GetShadowTarget()
-		{
-			return shadowMapTarget;
-		}
-
-		Camera& GetLightCamera()
-		{
-			return lightCamera;
-		}*/
-
 
 	private:
 		//アニメーションの初期化
@@ -148,7 +137,5 @@ namespace nsK2EngineLow {
 		Vector3 m_scale = Vector3::One;
 		
 		bool syuok = false;
-
-		//bool m_drawShadow = false;
 	};
 }

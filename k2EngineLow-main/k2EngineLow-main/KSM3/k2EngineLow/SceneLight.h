@@ -50,11 +50,6 @@ namespace nsK2EngineLow {
 		HemLight hemLight;				//半球ライトの配列
 	};
 
-	/*struct LVP
-	{
-		Matrix mLVP;
-	};*/
-
 	class SceneLight
 	{
 	public:
@@ -100,18 +95,8 @@ namespace nsK2EngineLow {
 			m_light.hemLight.groundNormal = groundNormal;
 		}
 
-		/*void SetmLVP(Matrix mat)
-		{
-			m_lVP.mLVP = mat;
-		}
-		
-		Matrix& GetLVP()
-		{
-			return m_lVP.mLVP;
-		}*/
 	private:
 		Light m_light;	//シーンライト
-		/*LVP m_lVP;*/
 	};
 }
 
