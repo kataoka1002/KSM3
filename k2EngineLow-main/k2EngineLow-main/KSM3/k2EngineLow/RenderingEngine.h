@@ -4,9 +4,11 @@
 
 namespace nsK2EngineLow {
 
-	//class K2EngineLow;
 	class FontRender;
 	class Bloom;
+
+	class ModelRender;
+	class SpriteRender;
 
 	class RenderingEngine : public Noncopyable
 	{
@@ -18,7 +20,7 @@ namespace nsK2EngineLow {
 		//ディレクションライトの設定
 		void SetDirectionLight( Vector3 direction, Vector3 color)
 		{
-			m_sceneLight.SetDirectionLight( direction, color);
+			m_sceneLight.SetDirectionLight(direction, color);
 		}
 
 		//アンビエントライトの設定
@@ -45,9 +47,19 @@ namespace nsK2EngineLow {
 			m_sceneLight.SetHemLight(groundColor, skyColor, groundNormal);
 		}
 
+		void SetmLVP(Matrix mat)
+		{
+			m_sceneLight.SetmLVP(mat);
+		}
+
 		SceneLight& GetLightingCB()
 		{
 			return m_sceneLight;
+		}
+
+		Matrix& GetLVP()
+		{
+			return m_sceneLight.GetLVP();
 		}
 
 		void AddModelRenderObject(ModelRender* modelRender)
@@ -78,6 +90,16 @@ namespace nsK2EngineLow {
 			return m_copyToframeBufferSprite;
 		}
 
+		RenderTarget& GetShadowTarget()
+		{
+			return shadowMapTarget;
+		}
+
+		Camera& GetLightCamera()
+		{
+			return lightCamera;
+		}
+
 	private:
 		SceneLight m_sceneLight;
 		Bloom m_bloom;
@@ -85,6 +107,12 @@ namespace nsK2EngineLow {
 		RenderTarget m_mainRenderingTarget;
 		SpriteInitData m_spiteInitData;
 		Sprite m_copyToframeBufferSprite;
+
+		//シャドウ用
+		RenderTarget shadowMapTarget;
+		Camera lightCamera;
+		float clearColor[4] = { 1.0f,1.0f,1.0f,1.0f };	//カラーバッファーは真っ白
+
 
 		std::vector<ModelRender*> ModelRenderObject;
 		std::vector<SpriteRender*> SpriteRenderObject;

@@ -11,6 +11,7 @@ class Drop_item;
 class BackGround;
 
 class GameCamera;
+class Test;
 
 
 class Game:public IGameObject
@@ -51,6 +52,8 @@ private:
 	std::vector<BoxMove*> m_boxmoves;				//moveボックス
 	FontRender m_fontRender;
 	float m_timer = 0.0f;
+
+	Test* test;
 
 };
 

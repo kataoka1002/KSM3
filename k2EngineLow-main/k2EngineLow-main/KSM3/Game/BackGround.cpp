@@ -14,7 +14,7 @@ BackGround::~BackGround()
 bool BackGround::Start()
 {
 	//モデルを読み込む。
-	modelRender.Init("Assets/modelData//stage.tkm");
+	modelRender.Init("Assets/modelData/stage.tkm",false);
 	//モデルを更新する。
 	modelRender.Update();
 	//静的物理オブジェクトを作成。

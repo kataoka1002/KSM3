@@ -13,14 +13,14 @@ Enemy::Enemy() {
 }
 
 Enemy::~Enemy() {
-	for (int i = 0; i < 12; i++) {
+	/*for (int i = 0; i < 12; i++) {
 		if (enemy_weapons == i) {
 			drop_item->drop_weapons[i] = 1;
 		}
 		else {
 			drop_item->drop_weapons[i] = 0;
 		}
-	}
+	}*/
 }
 
 bool Enemy::Start() {

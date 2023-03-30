@@ -6,9 +6,10 @@
 
 
 Player::Player() {
-	player_modelRender.Init("Assets/modelData/test_player.tkm");
+	player_modelRender.Init("Assets/modelData/unityChan.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
 	characterController.Init(70.0f, 150.0f, player_position);
+
 
 	//回転テーブル
 	int i;
@@ -33,7 +34,7 @@ void Player::Update() {
 
 		//ManageState();//ステート管理
 
-		player_modelRender.Update();
+		player_modelRender.Update(true);
 		if (g_pad[0]->IsTrigger(enButtonStart)) {
 			game_state = 1;
 		}
@@ -42,6 +43,11 @@ void Player::Update() {
 		pause();
 	}
 	
+	if (g_pad[0]->IsPress(enButtonY))
+	{
+		player_position.y += 9000.0f;
+	}
+
 }
 
 void Player::Move()

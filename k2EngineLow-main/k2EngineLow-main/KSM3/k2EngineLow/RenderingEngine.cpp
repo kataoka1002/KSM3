@@ -15,8 +15,27 @@ namespace nsK2EngineLow {
 			DXGI_FORMAT_D32_FLOAT						// デプスステンシルバッファのフォーマット
 		);
 
+
 		//ブルームの初期化
 		//m_bloom.Init(m_mainRenderingTarget);
+
+
+		//ライトカメラの上方向の設定
+		lightCamera.SetUp(0, 1, 0);
+		SetmLVP(lightCamera.GetViewProjectionMatrix());
+
+
+		//シャドウマップ用のターゲットの作成
+		shadowMapTarget.Create(
+			1024,	//解像度
+			1024,
+			1,
+			1,
+			DXGI_FORMAT_R32_FLOAT,
+			DXGI_FORMAT_D32_FLOAT,
+			clearColor
+		);
+
 
 		// 最終的なテクスチャを張り付けるためのスプライトを初期化
 		m_spiteInitData.m_textures[0] = &m_mainRenderingTarget.GetRenderTargetTexture();
@@ -33,6 +52,30 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
+	
+		//ターゲットをシャドウマップに変更
+		rc.WaitUntilFinishDrawingToRenderTarget(shadowMapTarget);
+		rc.SetRenderTargetAndViewport(shadowMapTarget);
+		rc.ClearRenderTargetView(shadowMapTarget);
+
+
+		// まとめて影モデルレンダーを描画
+		for (auto MobjData : ModelRenderObject)
+		{		
+			//主人公ならライトカメラを更新
+			if (MobjData->GetSyuzinkou() == true) {
+				//ライトカメラの更新
+				lightCamera.SetPosition(MobjData->GetPositionX() + 600.0f, MobjData->GetPositionY() + 800.0f, MobjData->GetPositionZ());
+				lightCamera.SetTarget(MobjData->GetPositionX() + 400.0f, MobjData->GetPositionY() + 500.0f, MobjData->GetPositionZ());
+				lightCamera.Update();
+				SetmLVP(lightCamera.GetViewProjectionMatrix());
+			}
+
+			//影モデルの描画
+			MobjData->OnShadowDraw(rc);
+			rc.WaitUntilFinishDrawingToRenderTarget(shadowMapTarget);
+		}
+
 		// メインのターゲットが使えるようになるまで待つ
 		rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderingTarget);
 		// ターゲットセット
@@ -44,18 +87,17 @@ namespace nsK2EngineLow {
 		for (auto MobjData : ModelRenderObject) {
 			MobjData->OnDraw(rc);
 		}
-
 		// 描画されるまで待つ
 		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderingTarget);
 		// MainRenderTarget終了
 
 
-		//ブルームを適用
+		//ブルームを適用(ON.OFF変更可)
 		//m_bloom.Render(rc, m_mainRenderingTarget);
-		
+
 
 		//スプライトと文字を描画
-		for(auto SobjData:SpriteRenderObject){
+		for (auto SobjData : SpriteRenderObject) {
 			SobjData->OnDraw(rc);
 		}
 		for (auto FobjData : FontRenderObject) {
@@ -71,7 +113,6 @@ namespace nsK2EngineLow {
 			g_graphicsEngine->GetCurrentFrameBuffuerDSV()
 		);
 		m_copyToframeBufferSprite.Draw(rc);
-
 
 
 		ModelRenderObject.clear();

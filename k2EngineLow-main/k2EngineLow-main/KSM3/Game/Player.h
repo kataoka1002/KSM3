@@ -18,7 +18,7 @@ public:
 
 
 	ModelRender player_modelRender;  //モデルレンダー
-	Vector3 player_position;  //座標
+	Vector3 player_position = { 0.0f,0.0f,500.0f };  //座標
 	CharacterController characterController;  //キャラクターコントローラー
 	Quaternion player_rotation;  //クォータニオン
 	Vector3 player_moveSpeed;   //移動速度
@@ -41,5 +41,7 @@ public:
 
 	int p_custom_point[2][3] = { {0,0,0},
 						   {0,0,0} };
+
+	bool m_syuzinkou = false;
 };
 

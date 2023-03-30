@@ -2,19 +2,19 @@
 
 namespace nsK2EngineLow {
 
-
 	class ModelRender {
 	public:
 		ModelRender();
 		~ModelRender();
 
 		//初期化
-		void Init(const char* filePath, 
+		void Init(const char* filePath,
+			bool m_shadowDrop = true,//影(trueが落とす方,falseが落とされる方)
 			AnimationClip* animationClips = nullptr,
 			int numAnimationClips = 0,
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ);
 		//アップデート
-		void Update();
+		void Update(bool m_syuzinkou = false);
 		//描画処理
 		void Draw(RenderContext& rc);
 
@@ -62,6 +62,35 @@ namespace nsK2EngineLow {
 			return m_model;
 		}
 
+		//モデルの座標を取得
+		Vector3& GetPosition()
+		{
+			return m_position;
+		}
+
+		//モデルのX座標を取得
+		float& GetPositionX()
+		{
+			return m_position.x;
+		}
+
+		//モデルのY座標を取得
+		float& GetPositionY()
+		{
+			return m_position.y;
+		}
+
+		//モデルのZ座標を取得
+		float& GetPositionZ()
+		{
+			return m_position.z;
+		}
+
+		bool& GetSyuzinkou()
+		{
+			return syuok;
+		}
+
 		//アニメーションの再生
 		void PlayAnimation(int animNo, float interpolateTime = 0.0f)//アニメーションクリップの番号,補完時間
 		{
@@ -72,6 +101,22 @@ namespace nsK2EngineLow {
 		{
 			m_model.Draw(rc);
 		}
+
+		void OnShadowDraw(RenderContext& rc)
+		{
+			m_shadowModel.Draw(rc, g_renderingEngine->GetLightCamera());
+		}
+		/*
+		RenderTarget& GetShadowTarget()
+		{
+			return shadowMapTarget;
+		}
+
+		Camera& GetLightCamera()
+		{
+			return lightCamera;
+		}*/
+
 
 	private:
 		//アニメーションの初期化
@@ -88,6 +133,7 @@ namespace nsK2EngineLow {
 	private:
 		//モデル
 		Model m_model;
+		Model m_shadowModel;
 
 		//アニメーション
 		Animation m_animation;
@@ -100,5 +146,9 @@ namespace nsK2EngineLow {
 		Vector3 m_position = Vector3::Zero;
 		Quaternion m_rotation = { 0.0f,0.0f,0.0f,1.0f };
 		Vector3 m_scale = Vector3::One;
+		
+		bool syuok = false;
+
+		//bool m_drawShadow = false;
 	};
 }

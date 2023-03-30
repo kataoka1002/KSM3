@@ -11,6 +11,7 @@
 #include "BackGround.h"
 
 #include "GameCamera.h"
+#include "Test.h"
 
 
 
@@ -59,7 +60,7 @@ bool Game::Start()
 
 Game::Game()
 {
-	lighting = NewGO<Lighting>(1, "lighting");
+	//lighting = NewGO<Lighting>(1, "lighting");
 	player = NewGO<Player>(2, "player");
 
 
@@ -70,6 +71,8 @@ Game::Game()
 	background = NewGO< BackGround>(1, "background");
 
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
+
+	test = NewGO<Test>(1, "test");
 
 }
 

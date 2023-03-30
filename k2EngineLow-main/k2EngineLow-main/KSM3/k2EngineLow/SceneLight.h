@@ -48,6 +48,7 @@ namespace nsK2EngineLow {
 		PointLight pointLight;			//ポイントライトの配列
 		SpotLight spotLight;			//スポットライトの配列
 		HemLight hemLight;				//半球ライトの配列
+		Matrix mLVP;
 	};
 
 	class SceneLight
@@ -95,6 +96,14 @@ namespace nsK2EngineLow {
 			m_light.hemLight.groundNormal = groundNormal;
 		}
 
+		void SetmLVP(Matrix mat)
+		{
+			m_light.mLVP = mat;
+		}
+		Matrix& GetLVP()
+		{
+			return m_light.mLVP;
+		}
 	private:
 		Light m_light;	//シーンライト
 	};
