@@ -48,19 +48,15 @@ namespace nsK2EngineLow {
 		}
 		else {
 			// 影を受ける背景モデルを初期化
-			ModelInitData bgModelInitData;
+			modelInitData.m_tkmFilePath = filePath;
 			// シャドウレシーバー(影が落とされるモデル)用のシェーダーを指定する
-			bgModelInitData.m_fxFilePath = "Assets/shader/shadowReciever2.fx";
+			modelInitData.m_fxFilePath = "Assets/shader/shadowReciever2.fx";
 			// シャドウマップを拡張SRVに設定する
-			bgModelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
+			modelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
 			// ライトビュープロジェクション行列を拡張定数バッファーに設定する
-			bgModelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix();
-			bgModelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCamera().GetViewProjectionMatrix());
-			bgModelInitData.m_tkmFilePath = filePath;
-			m_model.Init(bgModelInitData);
+			modelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix();
+			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCamera().GetViewProjectionMatrix());
 		}
-
-
 
 		//アニメーション有無でエントリーポイントを変える
 		if (animationClips != nullptr) {
