@@ -46,12 +46,12 @@ namespace nsK2EngineLow {
 		}
 		else {	
 			//—Ž‚Æ‚³‚ê‚é•û
-			modelInitData.m_fxFilePath = "Assets/shader/shadowReciever.fx";
+			modelInitData.m_fxFilePath = "Assets/shader/shadowReciever2.fx";
 			modelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
 			//modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightingCB();
 			//modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightingCB());
-			modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightingCB().GetLVP();
-			modelInitData.m_expandConstantBufferSize = sizeof(&g_renderingEngine->GetLightingCB().GetLVP());
+			modelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix();
+			modelInitData.m_expandConstantBufferSize = sizeof(&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix());
 			modelInitData.m_tkmFilePath = filePath;
 		}
 

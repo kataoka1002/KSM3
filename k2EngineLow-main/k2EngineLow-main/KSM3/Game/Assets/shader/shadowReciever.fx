@@ -54,12 +54,10 @@ cbuffer ModelCb : register(b0)
 //ディレクションライト用の定数バッファ
 cbuffer directionLightCb : register(b1)
 {
-    
     /*
 	//ディレクションライト用
     DirectionLight directionLight;
 
-	
 	//ライト用
     float3 eyePos; //視点のデータ
 
@@ -164,9 +162,6 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 {
     SPSIn psIn;
     
-    //シャドウの計算用ワールド座標
-    float4 s_worldPos = mul(mWorld, vsIn.pos);
-    
     float4x4 m;
     if (hasSkin)
     {
@@ -176,9 +171,11 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     {
         m = mWorld;
     }
-    psIn.pos = mul(m, vsIn.pos); // モデルの頂点をワールド座標系に変換
-    psIn.worldPos = psIn.pos;
-    psIn.pos = mul(mView, psIn.pos); // ワールド座標系からカメラ座標系に変換
+    //シャドウの計算用ワールド座標
+    float4 s_worldPos = mul(m, vsIn.pos);
+    //psIn.pos = mul(m, vsIn.pos); // モデルの頂点をワールド座標系に変換
+    //psIn.worldPos = psIn.pos;
+    psIn.pos = mul(mView, s_worldPos); // ワールド座標系からカメラ座標系に変換
     psIn.pos = mul(mProj, psIn.pos); // カメラ座標系からスクリーン座標系に変換
 
 	//頂点法線をピクセルシェーダーに渡す
@@ -189,7 +186,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 
     psIn.uv = vsIn.uv;
 	    
-    psIn.posInLVP = mul(mLVP, psIn.worldPos);  //ライトビュースクリーン空間の座標を計算する
+    psIn.posInLVP = mul(mLVP, s_worldPos); //ライトビュースクリーン空間の座標を計算する
     psIn.normalInView = mul(mView, psIn.normal); //カメラ空間の法線を求める
     
     return psIn;
@@ -206,17 +203,17 @@ SPSIn VSSkinMain(SVSIn vsIn)
 {
     return VSMainCore(vsIn, true);
 }
-// シャドウモデルの頂点シェーダーのエントリー関数
-float4 PSShadowMain(SPSIn psIn) : SV_Target0
-{
-    // シャドウマップにZ値を描き込む
-    return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
-}
+//// シャドウモデルの頂点シェーダーのエントリー関数
+//float4 PSShadowMain(SPSIn psIn) : SV_Target0
+//{
+//    // シャドウマップにZ値を描き込む
+//    return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
+//}
 
 /// ピクセルシェーダーのエントリー関数。
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
-    float3 lig = 3.0f;
+    //float3 lig = 3.0f;
 	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算
     //float3 directionLig = CalcLigFromDirectionLight(psIn);
 	
@@ -271,20 +268,20 @@ float4 PSMain(SPSIn psIn) : SV_Target0
         if (zInLVP > zInShadowMap)
         {
             // 遮蔽されている
-            //albedoColor.xyz *= 0.5f;
+            albedoColor.xyz *= 0.5f;
             
             //albedoColor.x = 1.0f;
             //albedoColor.y = 0.0f;
             //albedoColor.z = 0.0f; 
-            lig *= 0.5f;
+            //lig *= 0.5f;
         }
-        lig *= 0.5f;
+        //lig *= 0.5f;
     }
     /////////////////////////////////////////////////////////////////////////////
     
     
 	//最終出力カラーに光を乗算する
-    albedoColor.xyz *= lig;
+    //albedoColor.xyz *= lig;
     //albedoColor.xyz = a;
     return albedoColor;
 }

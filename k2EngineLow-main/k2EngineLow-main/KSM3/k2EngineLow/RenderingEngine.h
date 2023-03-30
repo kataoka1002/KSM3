@@ -47,20 +47,20 @@ namespace nsK2EngineLow {
 			m_sceneLight.SetHemLight(groundColor, skyColor, groundNormal);
 		}
 
-		void SetmLVP(Matrix mat)
+		/*void SetmLVP(Matrix mat)
 		{
 			m_sceneLight.SetmLVP(mat);
-		}
+		}*/
 
 		SceneLight& GetLightingCB()
 		{
 			return m_sceneLight;
 		}
 
-		Matrix& GetLVP()
+		/*Matrix& GetLVP()
 		{
 			return m_sceneLight.GetLVP();
-		}
+		}*/
 
 		void AddModelRenderObject(ModelRender* modelRender)
 		{

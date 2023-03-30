@@ -22,7 +22,7 @@ namespace nsK2EngineLow {
 
 		//ライトカメラの上方向の設定
 		lightCamera.SetUp(0, 1, 0);
-		SetmLVP(lightCamera.GetViewProjectionMatrix());
+		//SetmLVP(lightCamera.GetViewProjectionMatrix());
 
 
 		//シャドウマップ用のターゲットの作成
@@ -52,7 +52,6 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
-	
 		//ターゲットをシャドウマップに変更
 		rc.WaitUntilFinishDrawingToRenderTarget(shadowMapTarget);
 		rc.SetRenderTargetAndViewport(shadowMapTarget);
@@ -66,11 +65,10 @@ namespace nsK2EngineLow {
 			if (MobjData->GetSyuzinkou() == true) {
 				//ライトカメラの更新
 				lightCamera.SetPosition(MobjData->GetPositionX() + 600.0f, MobjData->GetPositionY() + 800.0f, MobjData->GetPositionZ());
-				lightCamera.SetTarget(MobjData->GetPositionX() + 400.0f, MobjData->GetPositionY() + 500.0f, MobjData->GetPositionZ());
-				lightCamera.Update();
-				SetmLVP(lightCamera.GetViewProjectionMatrix());
+				lightCamera.SetTarget(MobjData->GetPositionX(), MobjData->GetPositionY(), MobjData->GetPositionZ());
+				lightCamera.Update();	
 			}
-
+			//SetmLVP(lightCamera.GetViewProjectionMatrix());
 			//影モデルの描画
 			MobjData->OnShadowDraw(rc);
 			rc.WaitUntilFinishDrawingToRenderTarget(shadowMapTarget);
