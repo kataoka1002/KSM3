@@ -3,13 +3,14 @@
 #include "Player.h"
 #include "Left_arm_weapons.h"
 #include "Right_arm_weapons.h"
+#include "Enemy.h"
 
 Battle_ship_attack::Battle_ship_attack() {
 	b_s_attack_player = FindGO<Player>("player");
 	b_s_left_arm_weapons = FindGO<Left_arm_weapons>("left_arm_weapons");
 	b_s_right_arm_weapons= FindGO<Right_arm_weapons>("right_arm_weapons");
 	B_S_Bullet.Init("Assets/modelData/battleship_gun_bullet.tkm");
-
+	b_s_enemy = FindGO<Enemy>("enemy");
 	Setup();
 }
 
@@ -23,7 +24,10 @@ void Battle_ship_attack::Setup() {
 }
 
 Battle_ship_attack::~Battle_ship_attack() {
-	
+	if (b_s_attack_player->p_custom_point[0][2] != 0)
+		b_s_attack_player->attack_state_la = false;
+	else if (b_s_attack_player->p_custom_point[0][0] != 0)
+		b_s_attack_player->attack_state_la = false;
 }
 
 void Battle_ship_attack::Update() {
@@ -32,11 +36,16 @@ void Battle_ship_attack::Update() {
 		B_S_Bullet.Update();
 		if (firing_position.y <= 0.0f) {
 			b_s_attack_player->attack_state_la = false;
-			if(b_s_attack_player->p_custom_point[0][2]!=0)
-			b_s_left_arm_weapons->atack_state = false;
-			else if(b_s_attack_player->p_custom_point[0][0] != 0)
-				b_s_right_arm_weapons->atack_state = false;
+			
 			DeleteGO(this);
+		}
+		if (b_s_attack_player->enemy_survival == true) {
+			Vector3 diff = firing_position - b_s_enemy->enemy_position;
+			if (diff.Length() <= 100.0f)
+			{
+				b_s_enemy->enemy_HP -= 50.0f;
+				DeleteGO(this);
+			}
 		}
 	}
 }

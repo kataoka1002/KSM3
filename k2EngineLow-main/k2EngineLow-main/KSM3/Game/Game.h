@@ -9,9 +9,11 @@ class Enemy;//エネミー
 class Left_arm_weapons;
 class Drop_item;
 class BackGround;
-
+class Core_weapons;
 class GameCamera;
 class Test;
+
+class Enemy_weapons;
 
 
 class Game:public IGameObject
@@ -37,8 +39,10 @@ public:
 	Left_arm_weapons* s_left_arm_weapons;
 	Drop_item* drop_item;
 	BackGround* background;
-
+	Core_weapons* core_weapons;
 	GameCamera* gamecamera;
+
+	Enemy_weapons* enemy_weapons;
 
 	
 	Vector3 dv;

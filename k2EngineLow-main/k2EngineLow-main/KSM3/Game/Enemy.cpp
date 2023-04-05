@@ -2,25 +2,31 @@
 #include "Enemy.h"
 #include "Player.h"
 #include"Game.h"
-
 #include <time.h>
 #include <stdlib.h>
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
+#include "Enemy_weapons.h"
+
 
 Enemy::Enemy() {
 	e_player = FindGO<Player>("player");
+	e_enemy_weapons = NewGO<Enemy_weapons>(2, "enemy_weapons");
 }
 
 Enemy::~Enemy() {
-	/*for (int i = 0; i < 12; i++) {
-		if (enemy_weapons == i) {
-			drop_item->drop_weapons[i] = 1;
+	DeleteGO(e_enemy_weapons);
+	e_player->enemy_survival = false;
+	if (defeat_state == true) {
+		for (int i = 0; i < 12; i++) {
+			if (enemy_weapons == i) {
+				drop_item->drop_weapons[i] = 1;
+			}
+			else {
+				drop_item->drop_weapons[i] = 0;
+			}
 		}
-		else {
-			drop_item->drop_weapons[i] = 0;
-		}
-	}*/
+	}
 }
 
 bool Enemy::Start() {
@@ -46,13 +52,12 @@ void Enemy::Update()
 		PlayerSearch();
 		enemy_modelRender.Update();
 		if (e_player->attack_state_la == true) {
-			e_battle_ship_attack = FindGO< Battle_ship_attack>("battle_ship_attack");
-			Vector3 diff = e_battle_ship_attack->firing_position - enemy_position;
-			if (diff.Length() <= 120.0f)
-			{
+			
+			if (enemy_HP <= 0.0f) {
 				drop_item = NewGO<Drop_item>(1, "drop_item");
 				drop_item->Drop_position = enemy_position;
 				drop_item->Drop_position.y += 50.0f;
+				defeat_state = true;
 				DeleteGO(this);
 			}
 		}
@@ -73,6 +78,13 @@ void Enemy::PlayerSearch() {
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
 
+	if (fabsf(angle) < Math::DegToRad(45.0f)) {
+		e_enemy_weapons->atack_ok = true;
+	}
+	else {
+		e_enemy_weapons->atack_ok = false;
+	}
+
 	//敵キャラの前方方向を更新する
 	enemy_forward = toPlayerDir;
 	// 敵の前方方向を使って、回転クォータニオンを計算する。
@@ -88,7 +100,7 @@ void Enemy::Move() {
 	//ベクトルを正規化する。
 	toPlayer.Normalize();
 	//移動速度を設定する。
-	enemy_moveSpeed = toPlayer * 100.0f;
+	enemy_moveSpeed = toPlayer * 200.0f;
 	//エネミーを移動させる
 	enemy_position = enemy_characterController.Execute(enemy_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	Vector3 modelPosition = enemy_position;

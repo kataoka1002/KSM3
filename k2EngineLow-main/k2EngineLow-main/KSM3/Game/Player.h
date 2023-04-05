@@ -3,6 +3,7 @@
 class Left_arm_weapons;
 
 
+
 class Player:public IGameObject
 {
 public:
@@ -18,7 +19,7 @@ public:
 
 
 	ModelRender player_modelRender;  //モデルレンダー
-	Vector3 player_position = { 0.0f,0.0f,500.0f };  //座標
+	Vector3 player_position;  //座標
 	CharacterController characterController;  //キャラクターコントローラー
 	Quaternion player_rotation;  //クォータニオン
 	Vector3 player_moveSpeed;   //移動速度
@@ -29,6 +30,7 @@ public:
 	int game_state=0;//ゲームがどの状態化の管理
 
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
+	
 	
 	SpriteRender pouse_spriteRender;//pause画面用のスプライトレンダー
 
@@ -42,6 +44,6 @@ public:
 	int p_custom_point[2][3] = { {0,0,0},
 						   {0,0,0} };
 
-	bool m_syuzinkou = false;
+	bool enemy_survival = true;
 };
 
