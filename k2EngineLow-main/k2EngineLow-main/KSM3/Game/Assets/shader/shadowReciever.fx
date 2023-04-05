@@ -10,13 +10,11 @@ struct DirectionLight
     float3 dirDirection; //ディレクションライトの方向
 
     float3 dirColor; //ディレクションライトのカラー
-    
 };
 struct PointLight
 {
     float3 ptPosition; //ポイントライトの位置
     float3 ptColor; //ポイントライトのカラー
-
     float ptRange; //ポイントライトの影響範囲
 };
 struct SpotLight
@@ -46,16 +44,10 @@ cbuffer ModelCb : register(b0)
     float4x4 mView;
     float4x4 mProj;
 };
-// ライトビュープロジェクション行列にアクセスする定数バッファーを定義
-//cbuffer ShadowCb : register(b1)
-//{
-//float4x4 mLVP;
-//};
 //ディレクションライト用の定数バッファ
 cbuffer directionLightCb : register(b1)
 {
-    /*
-	//ディレクションライト用
+    //ディレクションライト用
     DirectionLight directionLight;
 
 	//ライト用
@@ -63,20 +55,18 @@ cbuffer directionLightCb : register(b1)
 
     float3 ambientLight; //アンビエントライトの強さ
    	
-	//ポイントライト用
+    //ポイントライト用
     PointLight pointLight;
 	
-	//スポットライト用
+    //スポットライト用
     SpotLight spotLight;
 	
-	//半球ライト用
+    //半球ライト用
     HemLight hemLight;
-*/
-    
+
+    //ライトビュースクリーン用
     float4x4 mLVP;
 }
-
-
 
 
 ////////////////////////////////////////////////
@@ -85,30 +75,30 @@ cbuffer directionLightCb : register(b1)
 //スキニング用の頂点データをひとまとめ。
 struct SSkinVSIn
 {
-    int4 Indices : BLENDINDICES0;
-    float4 Weights : BLENDWEIGHT0;
+    int4    Indices : BLENDINDICES0;
+    float4  Weights : BLENDWEIGHT0;
 };
 //頂点シェーダーへの入力。
 struct SVSIn
 {
-    float4 pos : POSITION; //モデルの頂点座標。
-    float2 uv : TEXCOORD0; //UV座標。
-    float3 tangent : TANGENT;
-    float3 biNormal : BINORMAL;
-    float3 normal : NORMAL; //法線
-    SSkinVSIn skinVert; //スキン用のデータ。
+    float4 pos      : POSITION;     //モデルの頂点座標。
+    float2 uv       : TEXCOORD0;    //UV座標。
+    float3 tangent  : TANGENT;      //接ベクトル
+    float3 biNormal : BINORMAL;     //従ベクトル
+    float3 normal   : NORMAL;       //法線
+    SSkinVSIn skinVert;             //スキン用のデータ。
 };
 //ピクセルシェーダーへの入力。
 struct SPSIn
 {
-    float4 pos : SV_POSITION;       //スクリーン空間でのピクセルの座標。
-    float2 uv : TEXCOORD0;          //uv座標。
-    float3 worldPos : TEXCOORD1;    //ワールド座標
-    float3 normal : NORMAL;         //法線
-    float3 tangent : TANGENT;       //接ベクトル
-    float3 biNormal : BINORMAL;     //従ベクトル
-    float3 normalInView : TEXCOORD2;//カメラ空間の法線
-    float4 posInLVP : TEXCOORD3;    //
+    float4 pos          : SV_POSITION;  //スクリーン空間でのピクセルの座標
+    float2 uv           : TEXCOORD0;    //uv座標
+    float3 worldPos     : TEXCOORD1;    //ワールド座標
+    float3 normal       : NORMAL;       //法線
+    float3 tangent      : TANGENT;      //接ベクトル
+    float3 biNormal     : BINORMAL;     //従ベクトル
+    float3 normalInView : TEXCOORD2;    //カメラ空間の法線
+    float4 posInLVP     : TEXCOORD3;    //ライトビュースクリーン行列
 };
 
 ////////////////////////////////////////////////
@@ -136,9 +126,7 @@ float3 CalcNormalCalcNormal(float3 normal, float3 tangent, float3 biNormal, floa
 float3 CalcNormalMap(SPSIn psIn);
 float3 CalcSpecularMap(SPSIn psIn);
 
-/// <summary>
 //スキン行列を計算する。
-/// </summary>
 float4x4 CalcSkinMatrix(SSkinVSIn skinVert)
 {
     float4x4 skinning = 0;
@@ -155,9 +143,7 @@ float4x4 CalcSkinMatrix(SSkinVSIn skinVert)
     return skinning;
 }
 
-/// <summary>
 /// 頂点シェーダーのコア関数。
-/// </summary>
 SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 {
     SPSIn psIn;
@@ -171,23 +157,27 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     {
         m = mWorld;
     }
-    //シャドウの計算用ワールド座標
-    float4 s_worldPos = mul(m, vsIn.pos);
-    //psIn.pos = mul(m, vsIn.pos); // モデルの頂点をワールド座標系に変換
-    //psIn.worldPos = psIn.pos;
-    psIn.pos = mul(mView, s_worldPos); // ワールド座標系からカメラ座標系に変換
-    psIn.pos = mul(mProj, psIn.pos); // カメラ座標系からスクリーン座標系に変換
+    
+    
+    psIn.pos = mul(m, vsIn.pos);        // モデルの頂点をワールド座標系に変換
+    
+    psIn.worldPos = psIn.pos;           // ワールド座標
+    float4 s_worldPos = psIn.pos;       // シャドウの計算用ワールド座標
+    
+    psIn.pos = mul(mView, psIn.pos);    // ワールド座標系からカメラ座標系に変換
+    psIn.pos = mul(mProj, psIn.pos);    // カメラ座標系からスクリーン座標系に変換
 
+    
 	//頂点法線をピクセルシェーダーに渡す
-    psIn.normal = normalize(mul(mWorld, vsIn.normal)); //法線を回転させる
+    psIn.normal = normalize(mul(m, vsIn.normal)); //法線を回転させる
     //接ベクトルと従ベクトルをワールド空間に変換する
-    psIn.tangent = normalize(mul(mWorld, vsIn.tangent));
-    psIn.biNormal = normalize(mul(mWorld, vsIn.biNormal));
+    psIn.tangent = normalize(mul(m, vsIn.tangent));
+    psIn.biNormal = normalize(mul(m, vsIn.biNormal));
 
     psIn.uv = vsIn.uv;
 	    
-    psIn.posInLVP = mul(mLVP, s_worldPos); //ライトビュースクリーン空間の座標を計算する
-    psIn.normalInView = mul(mView, psIn.normal); //カメラ空間の法線を求める
+    psIn.posInLVP = mul(mLVP, s_worldPos);          //ライトビュースクリーン空間の座標を計算する
+    psIn.normalInView = mul(mView, psIn.normal);    //カメラ空間の法線を求める
     
     return psIn;
 }
@@ -203,44 +193,37 @@ SPSIn VSSkinMain(SVSIn vsIn)
 {
     return VSMainCore(vsIn, true);
 }
-//// シャドウモデルの頂点シェーダーのエントリー関数
-//float4 PSShadowMain(SPSIn psIn) : SV_Target0
-//{
-//    // シャドウマップにZ値を描き込む
-//    return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
-//}
 
 /// ピクセルシェーダーのエントリー関数。
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
-    //float3 lig = 3.0f;
 	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算
-    //float3 directionLig = CalcLigFromDirectionLight(psIn);
+    float3 directionLig = CalcLigFromDirectionLight(psIn);
 	
 	//ポイントライト(鏡面拡散どっちも)によるライティングを計算
-    //float3 pointLig = CalcLigFromPointLight(psIn);
+    float3 pointLig = CalcLigFromPointLight(psIn);
 	
 	//スポットライト(鏡面拡散どっちも)によるライティングを計算
-   // float3 spotLig = CalcLigFromSpotLight(psIn);
+    float3 spotLig = CalcLigFromSpotLight(psIn);
 	
 	//リムの計算
-    //float3 limColor = CalcLimPower(psIn);
+    float3 limColor = CalcLimPower(psIn);
 	
 	//半球ライトの計算
-    //float3 hemLig = CalcLigFromHemLight(psIn);
+    float3 hemLig = CalcLigFromHemLight(psIn);
 	
 	//法線マップの計算
-    //float3 normalMap = CalcNormalMap(psIn);
+    float3 normalMap = CalcNormalMap(psIn);
     
     //スペキュラーマップの計算
-    //float3 specularMap = CalcSpecularMap(psIn);
+    float3 specularMap = CalcSpecularMap(psIn);
     
 	
 	//ディレクションライト、ポイントライト、スポットライト、
 	//アンビエントライト、半球ライト、法線マップ、スペキュラマップを合算して最終的な光を求める
-    //float3 lig = directionLig+pointLig + ambientLight + spotLig + hemLig + normalMap + specularMap;
+    float3 lig = directionLig + pointLig + ambientLight + spotLig + hemLig + normalMap + specularMap;
 	//最終的な反射光にリムの反射光を合算する
-    //lig += limColor;
+    lig += limColor;
 	
 	//テクスチャからカラーをフェッチ
     float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
@@ -256,33 +239,23 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     // ライトビュースクリーン空間でのZ値を計算する
     float zInLVP = psIn.posInLVP.z / psIn.posInLVP.w;
 
-    
     if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
         && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f)
     {
         // シャドウマップに描き込まれているZ値と比較する
         // 計算したUV座標を使って、シャドウマップから深度値をサンプリング
         float zInShadowMap = g_shadowMap.Sample(g_sampler, shadowMapUV).r;
-        //a = zInShadowMap;
-        //a = zInLVP;
         if (zInLVP > zInShadowMap)
         {
             // 遮蔽されている
             albedoColor.xyz *= 0.5f;
-            
-            //albedoColor.x = 1.0f;
-            //albedoColor.y = 0.0f;
-            //albedoColor.z = 0.0f; 
-            //lig *= 0.5f;
         }
-        //lig *= 0.5f;
     }
-    /////////////////////////////////////////////////////////////////////////////
-    
+    ////////////////////////////////////////////////////////////////////////////////
     
 	//最終出力カラーに光を乗算する
-    //albedoColor.xyz *= lig;
-    //albedoColor.xyz = a;
+    albedoColor.xyz *= lig;
+
     return albedoColor;
 }
 
@@ -290,9 +263,6 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 //ココから関数の定義
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Lambert拡散反射光を計算する
-
-
-/*
 float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 normal)
 {
 	// ピクセルの法線とライトの方向の内積を計算する
@@ -523,8 +493,4 @@ float3 CalcSpecularMap(SPSIn psIn)
     
     return specLig;
 }
-*/
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

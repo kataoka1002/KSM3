@@ -52,6 +52,11 @@ namespace nsK2EngineLow {
 			return m_sceneLight;
 		}
 
+		Light& GetLightCB()
+		{
+			return m_sceneLight.GetLight();
+		}
+
 		void AddModelRenderObject(ModelRender* modelRender)
 		{
 			//ƒRƒ“ƒeƒi‚ÌŒã‚ë‚É‚­‚Á‚Â‚¯‚é
@@ -88,6 +93,11 @@ namespace nsK2EngineLow {
 		Camera& GetLightCamera()
 		{
 			return lightCamera;
+		}
+
+		void SetLVP(Matrix mat)
+		{
+			m_sceneLight.SetLVP(mat);
 		}
 
 	private:

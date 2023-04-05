@@ -33,8 +33,8 @@ namespace nsK2EngineLow {
 			// モデルの初期化
 			modelInitData.m_tkmFilePath = filePath;
 			modelInitData.m_fxFilePath = "Assets/shader/model.fx";
-			modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightingCB();
-			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightingCB());
+			modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightCB();
+			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCB());
 			modelInitData.m_modelUpAxis = enModelUpAxis;
 
 			// シャドウマップに描画するモデルを初期化
@@ -50,12 +50,12 @@ namespace nsK2EngineLow {
 			// 影を受ける背景モデルを初期化
 			modelInitData.m_tkmFilePath = filePath;
 			// シャドウレシーバー(影が落とされるモデル)用のシェーダーを指定する
-			modelInitData.m_fxFilePath = "Assets/shader/shadowReciever2.fx";
+			modelInitData.m_fxFilePath = "Assets/shader/shadowReciever.fx";
 			// シャドウマップを拡張SRVに設定する
 			modelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
 			// ライトビュープロジェクション行列を拡張定数バッファーに設定する
-			modelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCamera().GetViewProjectionMatrix();
-			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCamera().GetViewProjectionMatrix());
+			modelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCB();
+			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCB());
 		}
 
 		//アニメーション有無でエントリーポイントを変える
