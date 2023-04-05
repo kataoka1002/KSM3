@@ -11,6 +11,7 @@ class Drop_item;
 class BackGround;
 class Core_weapons;
 class GameCamera;
+class Test;
 
 class Enemy_weapons;
 
@@ -55,6 +56,8 @@ private:
 	std::vector<BoxMove*> m_boxmoves;				//moveボックス
 	FontRender m_fontRender;
 	float m_timer = 0.0f;
+
+	Test* test;
 
 };
 
