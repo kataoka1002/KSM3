@@ -13,20 +13,21 @@ BackGround::~BackGround()
 
 bool BackGround::Start()
 {
-	//ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚ŞB
+	//ãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã€‚
+
 	modelRender.Init("Assets/modelData/stage.tkm",false);
-	//ƒ‚ƒfƒ‹‚ğXV‚·‚éB
+	//ãƒ¢ãƒ‡ãƒ«ã‚’æ›´æ–°ã™ã‚‹ã€‚
 	modelRender.Update();
-	//Ã“I•¨—ƒIƒuƒWƒFƒNƒg‚ğì¬B
+	//é™çš„ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã€‚
 	physicsStaticObject.CreateFromModel(modelRender.GetModel(), modelRender.GetModel().GetWorldMatrix());
-	// “–‚½‚è”»’è‚ğ—LŒø‰»‚·‚éB
+	// å½“ãŸã‚Šåˆ¤å®šã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã€‚
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
 }
 
 void BackGround::Update()
 {
-	//ƒ‚ƒfƒ‹‚ÌXVˆ—B
+	//ãƒ¢ãƒ‡ãƒ«ã®æ›´æ–°å‡¦ç†ã€‚
 	modelRender.Update();
 }
 

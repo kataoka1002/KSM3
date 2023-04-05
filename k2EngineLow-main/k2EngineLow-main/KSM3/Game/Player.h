@@ -2,6 +2,8 @@
 
 class Left_arm_weapons;
 
+class Customize_UI_ver2;
+
 
 
 class Player:public IGameObject
@@ -30,6 +32,7 @@ public:
 	int game_state=0;//ゲームがどの状態化の管理
 
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
+	Customize_UI_ver2* p_customize_ui_ver2;
 	
 	
 	SpriteRender pouse_spriteRender;//pause画面用のスプライトレンダー
@@ -43,6 +46,7 @@ public:
 
 	int p_custom_point[2][3] = { {0,0,0},
 						   {0,0,0} };
+
 
 	bool enemy_survival = true;
 };

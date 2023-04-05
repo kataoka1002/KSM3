@@ -9,11 +9,11 @@ Enemy_weapons::Enemy_weapons() {
 }
 
 Enemy_weapons::~Enemy_weapons() {
-	if (atack_state == true) {
-		if (enemy_attack->atack_state == true) {
+	//if (atack_state == true) {
+		//if (enemy_attack->atack_state == true) {
 			DeleteGO(enemy_attack);
-		}
-	}
+		//}
+	//}
 }
 
 void Enemy_weapons::Setup() {

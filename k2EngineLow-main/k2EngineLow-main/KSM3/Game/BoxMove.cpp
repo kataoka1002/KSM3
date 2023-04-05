@@ -15,7 +15,8 @@ bool BoxMove::Start()
 {
 	m_position.x = 100.0f;
 
-	m_modelRender.Init("Assets/modelData/sample/sample.tkm",false, nullptr, 0, enModelUpAxisY);
+	m_modelRender.Init("Assets/modelData/sample/sample.tkm",true, nullptr, 0, enModelUpAxisY);
+
 	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetRotation(m_rotation);
 	m_modelRender.SetScale(m_scale);
@@ -24,14 +25,14 @@ bool BoxMove::Start()
 
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 
-	m_defPosition = m_position;	//‰ŠúÀ•W‚ğİ’èB
+	m_defPosition = m_position;	//åˆæœŸåº§æ¨™ã‚’è¨­å®šã€‚
 
 	return true;
 }
 
 void BoxMove::Update()
 {
-	//ƒ{ƒbƒNƒX‚ğˆÚ“®‚³‚¹‚éB
+	//ãƒœãƒƒã‚¯ã‚¹ã‚’ç§»å‹•ã•ã›ã‚‹ã€‚
 	if (m_moveflag == false) {
 		m_position.y += 1.0f;
 	}
