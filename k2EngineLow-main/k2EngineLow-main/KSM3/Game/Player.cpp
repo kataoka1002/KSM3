@@ -2,6 +2,7 @@
 #include "Player.h"
 #include <math.h>
 #include "Left_arm_weapons.h"
+#include "Customize_UI_ver2.h"
 
 
 
@@ -36,9 +37,12 @@ void Player::Update() {
 
 		//ManageState();//ステート管理
 
-		player_modelRender.Update();
+		player_modelRender.Update(true);
 		if (g_pad[0]->IsTrigger(enButtonStart)) {
 			game_state = 1;
+		}
+		if (g_pad[0]->IsTrigger(enButtonA)) {
+			p_customize_ui_ver2 = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 		}
 	}
 	else if (game_state == 1) {
@@ -119,7 +123,6 @@ void Player::pause() {
 
 void Player::Render(RenderContext& rc)
 {
-	
 	player_modelRender.Draw(rc);
 	if (game_state == 1)
 		pouse_spriteRender.Draw(rc);

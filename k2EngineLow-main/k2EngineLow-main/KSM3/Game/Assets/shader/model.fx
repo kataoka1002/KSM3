@@ -59,6 +59,13 @@ cbuffer DirectionLightCb : register(b1) {
     HemLight hemLight;
 }
 
+//// ライトビュープロジェクション行列にアクセスする定数バッファーを定義
+//cbuffer ShadowCb : register(b1)
+//{
+//    float4x4 mLVP;
+//};
+
+
 ////////////////////////////////////////////////
 // 構造体
 ////////////////////////////////////////////////
@@ -95,7 +102,9 @@ Texture2D<float4> g_albedo : register(t0);				//アルベドマップ
 Texture2D<float4> g_normalMap : register(t1);			//法線マップにアクセスするための変数を追加
 Texture2D<float4> g_specularMap : register(t2);         //スペキュラーマップにアクセスするための変数を追加
 StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
-sampler g_sampler : register(s0);	//サンプラステート。
+sampler g_sampler : register(s0);	                    //サンプラステート。
+Texture2D<float4> g_shadowMap : register(t10); // シャドウマップ
+
 
 ////////////////////////////////////////////////
 // 関数定義。
@@ -148,10 +157,10 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     psIn.pos = mul(mProj, psIn.pos); // カメラ座標系からスクリーン座標系に変換
 
 	//頂点法線をピクセルシェーダーに渡す
-    psIn.normal = normalize(mul(mWorld, vsIn.normal)); //法線を回転させる
+    psIn.normal = normalize(mul(m, vsIn.normal)); //法線を回転させる
     //接ベクトルと従ベクトルをワールド空間に変換する
-    psIn.tangent = normalize(mul(mWorld, vsIn.tangent));
-    psIn.biNormal = normalize(mul(mWorld, vsIn.biNormal));
+    psIn.tangent = normalize(mul(m, vsIn.tangent));
+    psIn.biNormal = normalize(mul(m, vsIn.biNormal));
 
 	psIn.uv = vsIn.uv;
 	
@@ -160,23 +169,25 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 	return psIn;
 }
 
-/// <summary>
-/// スキンなしメッシュ用の頂点シェーダーのエントリー関数。
-/// </summary>
+
+// スキンなしメッシュ用の頂点シェーダーのエントリー関数。
 SPSIn VSMain(SVSIn vsIn)
 {
 	return VSMainCore(vsIn, false);
 }
-/// <summary>
-/// スキンありメッシュの頂点シェーダーのエントリー関数。
-/// </summary>
+// スキンありメッシュの頂点シェーダーのエントリー関数。
 SPSIn VSSkinMain( SVSIn vsIn ) 
 {
 	return VSMainCore(vsIn, true);
 }
-/// <summary>
+// シャドウモデルのピクセルシェーダーのエントリー関数
+float4 PSShadowMain(SPSIn psIn) : SV_Target0
+{
+    // シャドウマップにZ値を描き込む
+    return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
+}
+
 /// ピクセルシェーダーのエントリー関数。
-/// </summary>
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
 	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算

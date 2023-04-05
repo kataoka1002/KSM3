@@ -18,8 +18,8 @@
 
 bool Game::Start()
 {
-	m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
-	m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
+	//m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
+	//m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
 
 	
 	//m_modelRender.Init("Assets/modelData/test_player.tkm");
@@ -136,7 +136,7 @@ void Game::Update()
 void Game::Render(RenderContext& rc)
 {
 	//m_modelRender.Draw(rc);
-	m_spriteRender.Draw(rc);
+	//m_spriteRender.Draw(rc);
 
 	//m_fontRender.Draw(rc);
 }

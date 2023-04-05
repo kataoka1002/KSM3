@@ -228,7 +228,9 @@
     <ClCompile Include="BoxMove.cpp" />
     <ClCompile Include="Core_weapons.cpp" />
     <ClCompile Include="Core_weapons_attack.cpp" />
+    <ClCompile Include="Customize_area.cpp" />
     <ClCompile Include="Customize_UI.cpp" />
+    <ClCompile Include="Customize_UI_ver2.cpp" />
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Enemy_attack.cpp" />
@@ -256,7 +258,9 @@
     <ClInclude Include="BoxMove.h" />
     <ClInclude Include="Core_weapons.h" />
     <ClInclude Include="Core_weapons_attack.h" />
+    <ClInclude Include="Customize_area.h" />
     <ClInclude Include="Customize_UI.h" />
+    <ClInclude Include="Customize_UI_ver2.h" />
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy_attack.h" />

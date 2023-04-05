@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameCamera.h"
 #include "Player.h"
+#include "Customize_UI_ver2.h"
 
 GameCamera::GameCamera()
 {
@@ -40,9 +41,16 @@ bool GameCamera::Start()
 }
 void GameCamera::Update()
 {
+	Vector3 toCameraPosOld = m_toCameraPos;
 	//カメラを更新。
-	//注視点を計算する。
-	Vector3 target = m_player->player_position;
+	if (m_player->game_state == 3) {
+		camera_customize_ui_ver2 = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+		target = camera_customize_ui_ver2->custom_model_body_position;
+	}
+	else {
+		//注視点を計算する。
+		target = m_player->player_position;
+	}
 	
 	if (CameraState==0)
 	{
@@ -53,13 +61,38 @@ void GameCamera::Update()
 	{
 		//プレイヤの足元からちょっと上を注視点とする。
 		target.y += 200.0f;
+		
 
 	}
+	if (m_player->game_state == 3)
+	{
+		m_toCameraPos.Set(0.0f, -50.0f, -300.0f);
+		//近平面,遠平面調整中…。
+		g_camera3D->SetNear(1.0f);
+		g_camera3D->SetFar(10000.0f);
+		target.y -= 90.0f;
+	}
+	else {
+		//if (CameraState == 0)
+		//{
+		//	m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+		//	//カメラのニアクリップとファークリップを設定する。
+		//	g_camera3D->SetNear(1.0f);
+		//	g_camera3D->SetFar(25000.0f);
 
-	Vector3 toCameraPosOld = m_toCameraPos;
-	//パッドの入力を使ってカメラを回す。
-	float x = g_pad[0]->GetRStickXF();
-	float y = g_pad[0]->GetRStickYF();
+		//}
+		////カメラステートが1(ボス)の時。
+		//else if (CameraState == 1)
+		//{
+		//	m_toCameraPos.Set(0.0f, 125.0f, -400.0f);
+		//	//近平面,遠平面調整中…。
+		//	g_camera3D->SetNear(1.0f);
+		//	g_camera3D->SetFar(10000.0f);
+		//}
+		//パッドの入力を使ってカメラを回す。
+		x = g_pad[0]->GetRStickXF();
+		y = g_pad[0]->GetRStickYF();
+	}
 	//Y軸周りの回転
 	Quaternion qRot;
 	qRot.SetRotationDeg(Vector3::AxisY, 1.3f * x);
