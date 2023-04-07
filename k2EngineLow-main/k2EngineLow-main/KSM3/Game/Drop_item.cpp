@@ -3,6 +3,7 @@
 #include "Left_arm_weapons.h"
 #include "Player.h"
 #include "Customize_UI.h"
+#include "Customize_UI_ver2.h"
 #include <vector>       // ヘッダファイルインクルード
 using namespace std;
 
@@ -44,7 +45,7 @@ void Drop_item::Update() {
 		
 		if (diff.Length() < 100.0f) {
 			GetState = true;
-			customize_UI = NewGO<Customize_UI>(3, "customize_UI");
+			customize_UI_ver2 = NewGO<Customize_UI_ver2>(3, "customize_UI_ver2");
 		}
 	}
 }

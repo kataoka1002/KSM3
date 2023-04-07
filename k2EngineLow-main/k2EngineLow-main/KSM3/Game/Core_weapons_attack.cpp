@@ -47,7 +47,9 @@ void Core_weapons_attack::Update() {
 			Vector3 diff = firing_position - c_w_a_enemy->enemy_position;
 			if (diff.Length() <= 100.0f)
 			{
-				c_w_a_enemy->enemy_HP -= 10.0f;
+				if (C_W_A_core_weapons->set_weapons == 2) {
+					c_w_a_enemy->enemy_HP -= 10.0f;
+				}
 				DeleteGO(this);
 			}
 		}

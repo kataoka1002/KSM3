@@ -16,7 +16,7 @@ public:
 	Player* m_player;	//プレイヤー。
 	Customize_UI_ver2* camera_customize_ui_ver2;
 	Vector3 m_toCameraPos;	//注視点から視点に向かうベクトル。
-	int CameraState = 1;
+	int CameraState = 0;
 	Vector3 target;
 
 	float x;

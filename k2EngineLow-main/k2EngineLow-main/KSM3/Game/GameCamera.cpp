@@ -54,6 +54,7 @@ void GameCamera::Update()
 	
 	if (CameraState==0)
 	{
+		
 		target.y += 80.0f;
 	}
 
@@ -66,29 +67,13 @@ void GameCamera::Update()
 	}
 	if (m_player->game_state == 3)
 	{
-		m_toCameraPos.Set(0.0f, -50.0f, -300.0f);
-		//近平面,遠平面調整中…。
-		g_camera3D->SetNear(1.0f);
-		g_camera3D->SetFar(10000.0f);
-		target.y -= 90.0f;
+		//m_toCameraPos.Set(0.0f, -50.0f, -300.0f);
+		////近平面,遠平面調整中…。
+		//g_camera3D->SetNear(1.0f);
+		//g_camera3D->SetFar(10000.0f);
+		//target.y -= 90.0f;
 	}
 	else {
-		//if (CameraState == 0)
-		//{
-		//	m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
-		//	//カメラのニアクリップとファークリップを設定する。
-		//	g_camera3D->SetNear(1.0f);
-		//	g_camera3D->SetFar(25000.0f);
-
-		//}
-		////カメラステートが1(ボス)の時。
-		//else if (CameraState == 1)
-		//{
-		//	m_toCameraPos.Set(0.0f, 125.0f, -400.0f);
-		//	//近平面,遠平面調整中…。
-		//	g_camera3D->SetNear(1.0f);
-		//	g_camera3D->SetFar(10000.0f);
-		//}
 		//パッドの入力を使ってカメラを回す。
 		x = g_pad[0]->GetRStickXF();
 		y = g_pad[0]->GetRStickYF();
@@ -109,6 +94,7 @@ void GameCamera::Update()
 	//大きさが１になるということは、ベクトルから強さがなくなり、方向のみの情報となるということ。
 	Vector3 toPosDir = m_toCameraPos;
 	toPosDir.Normalize();
+	
 	if (CameraState == 0)//雑魚戦の時カメラ。
 	{
 		if (toPosDir.y < 0.3f)
