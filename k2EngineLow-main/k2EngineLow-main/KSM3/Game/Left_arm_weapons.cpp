@@ -17,7 +17,7 @@ Left_arm_weapons::~Left_arm_weapons() {
 }
 
 void Left_arm_weapons::L_a_w_set() {
-	if (set_weapons[1] == 1) {
+	if (l_a_w_player->p_custom_point[0][2] == 1) {
 		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_left_arm.tkm");
 		Left_arm_weapons_Render.SetScale(scale2);
 		Left_arm_weapons_Render.Update();
@@ -33,7 +33,7 @@ void Left_arm_weapons::Update() {
 		Move();
 		if (g_pad[0]->IsPress(enButtonRB1)) {
 
-			if (set_weapons[1] == 1 && firing_cound % 180 == 0) {
+			if (l_a_w_player->p_custom_point[0][2] == 1 && firing_cound % 180 == 0) {
 				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
 				battle_ship_attack->B_S_aiming = l_a_Rotation;
 				battle_ship_attack->firing_position = l_a_w_position;

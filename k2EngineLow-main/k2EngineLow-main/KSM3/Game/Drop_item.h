@@ -1,6 +1,7 @@
 #pragma once
 class Player;
 class Customize_UI;
+class Customize_UI_ver2;
 class Left_arm_weapons;
 
 class Drop_item:public IGameObject
@@ -20,6 +21,7 @@ public:
 	Player* drop_player;
 	Left_arm_weapons* left_arm_weapons;
 	Customize_UI* customize_UI = nullptr;
+	Customize_UI_ver2* customize_UI_ver2 = nullptr;
 
 	Vector3 Drop_position;//DropˆÊ’u
 
