@@ -15,17 +15,11 @@ Enemy::Enemy() {
 }
 
 Enemy::~Enemy() {
-	DeleteGO(e_enemy_weapons);
-	e_player->enemy_survival = false;
+	DeleteGO(e_enemy_weapons);//エネミーの武器の削除
+	e_player->enemy_survival = false;//エネミーが生きているかをプレーヤーに教える
+	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
 	if (defeat_state == true) {
-		for (int i = 0; i < 12; i++) {
-			if (enemy_weapons == i) {
-				drop_item->drop_weapons[i] = 1;
-			}
-			else {
-				drop_item->drop_weapons[i] = 0;
-			}
-		}
+		drop_item->drop_kinds = e_enemy_weapons->set_weapons;
 	}
 }
 

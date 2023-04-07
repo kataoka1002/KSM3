@@ -18,7 +18,7 @@ Enemy_weapons::~Enemy_weapons() {
 
 void Enemy_weapons::Setup() {
 	//敵の武器の種類の確定
-	set_weapons = 2;
+	set_weapons = 2;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
 	e_w_enemy = FindGO<Enemy>("enemy");
 	if (set_weapons == 1) {
 		Enemy_weapons_Render.Init("Assets/modelData/battleship_gun_enemy.tkm");
@@ -31,17 +31,18 @@ void Enemy_weapons::Setup() {
 }
 
 void Enemy_weapons::Update() {
-	if (fast == 0) {
+	if (fast == 0) {//ここで一回セットアップをしないとエラーを吐くため仕方なくアップデートの中の一フレーム目でセットアップをしています。ご了承ください。
 		Setup();
 	}
 	fast++;
 	if (game_state == 0&&fast!=0) {
 		Move();
 		if (atack_ok == true) {
-			firing_cound++;
+			firing_cound++;//攻撃タイミングの計算
+			//武器によっての分岐
 			switch (set_weapons)
 			{
-			case 1:
+			case 1://戦艦砲
 				if (firing_cound % 180 == 0) {
 					enemy_attack = NewGO<Enemy_attack>(1, "enemy_attack");
 					atack_state = true;
@@ -50,7 +51,7 @@ void Enemy_weapons::Update() {
 					enemy_attack->e_a_Bullet_Fowrad = e_w_enemy->enemy_forward;
 				}
 				break;
-			case 2:
+			case 2://マシンガン
 				if (firing_cound % 60 == 0) {
 					enemy_attack = NewGO<Enemy_attack>(1, "enemy_attack");
 					atack_state = true;
@@ -70,6 +71,7 @@ void Enemy_weapons::Update() {
 }
 
 void Enemy_weapons::Move() {
+	//ここは丸パクリでOK
 	Quaternion originRotation = e_w_enemy->enemy_rotation;
 	e_w_position = e_w_enemy->enemy_position;
 	Vector3 lp = e_w_localposition;
