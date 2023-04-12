@@ -27,7 +27,7 @@ public:
 	Vector3 scale2 = { 2.0f,2.0f,2.0f };
 
 	bool atack_state = false;
-	int set_weapons [12] = {0,0,0,0,0,0,0,0,0,0,0,0 };
+	int set_weapons=0;
 
 	int firing_cound = 0;
 	int fast = 0;

@@ -44,8 +44,13 @@ void GameCamera::Update()
 	Vector3 toCameraPosOld = m_toCameraPos;
 	//カメラを更新。
 	if (m_player->game_state == 3) {
-		camera_customize_ui_ver2 = FindGO<Customize_UI_ver2>("customize_ui_ver2");
-		target = camera_customize_ui_ver2->custom_model_body_position;
+		m_toCameraPos.Set(0.0f, 10.0f, -300.0f);
+		target.y = 60.0f;
+		/*if (fast_count >= 2) {
+			camera_customize_ui_ver2 = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+			target = camera_customize_ui_ver2->custom_model_body_position;
+		}
+		fast_count++;*/
 	}
 	else {
 		//注視点を計算する。

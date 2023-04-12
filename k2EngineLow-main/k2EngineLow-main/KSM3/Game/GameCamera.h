@@ -19,6 +19,8 @@ public:
 	int CameraState = 0;
 	Vector3 target;
 
+	int fast_count=0;
+
 	float x;
 	float y;
 };
