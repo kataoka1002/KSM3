@@ -15,11 +15,11 @@ namespace nsK2EngineLow {
 
 	void ModelRender::Init(const char* filePath,
 		bool m_shadowDrop,
+		bool m_toonShader,
 		AnimationClip* animationClips,
 		int numAnimationClips,
 		EnModelUpAxis enModelUpAxis)
 	{
-
 		// スケルトンを初期化。
 		InitSkeleton(filePath);
 		// アニメーションを初期化。
@@ -27,7 +27,7 @@ namespace nsK2EngineLow {
 
 
 		//モデルの初期化
-		ModelInitData modelInitData;
+		ModelInitDataFR modelInitData;
 		//影をを落とす方か落とされる方かでシェーダーを変える
 		if(m_shadowDrop==true){
 			// モデルの初期化
@@ -37,11 +37,24 @@ namespace nsK2EngineLow {
 			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCB());
 			modelInitData.m_modelUpAxis = enModelUpAxis;
 
+			//輪郭線の処理
+			//拡張SRVにZPrepassで作成された深度テクスチャを指定する
+			modelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetZPrepassDepthTexture();
+			//ZPrepassの初期化
+			InitCommon(filePath);
+			//トゥーンシェーダーを使用するなら
+			if (m_toonShader == true) {
+				modelInitData.m_expandShaderResoruceView[2] = &g_renderingEngine->GetToonTexture();
+				modelInitData.m_psEntryPointFunc = "PSToonMap";
+			}
+
+
 			// シャドウマップに描画するモデルを初期化
 			ModelInitData shadowModelInitData;
 			shadowModelInitData.m_tkmFilePath = filePath;
 			shadowModelInitData.m_fxFilePath = "Assets/shader/model.fx";
 			shadowModelInitData.m_psEntryPointFunc = "PSShadowMain";
+			shadowModelInitData.m_modelUpAxis = enModelUpAxis;
 			// カラーバッファーのフォーマットに変更が入ったので、こちらも変更する
 			shadowModelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;
 			m_shadowModel.Init(shadowModelInitData);
@@ -52,9 +65,9 @@ namespace nsK2EngineLow {
 			// シャドウレシーバー(影が落とされるモデル)用のシェーダーを指定する
 			modelInitData.m_fxFilePath = "Assets/shader/shadowReciever.fx";
 			// シャドウマップを拡張SRVに設定する
-			modelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
+			modelInitData.m_expandShaderResoruceView[1] = &g_renderingEngine->GetShadowTarget().GetRenderTargetTexture();
 			// ライトビュープロジェクション行列を拡張定数バッファーに設定する
-			modelInitData.m_expandConstantBuffer = (void*)&g_renderingEngine->GetLightCB();
+			modelInitData.m_expandConstantBuffer = &g_renderingEngine->GetLightCB();
 			modelInitData.m_expandConstantBufferSize = sizeof(g_renderingEngine->GetLightCB());
 		}
 
@@ -70,13 +83,25 @@ namespace nsK2EngineLow {
 		m_model.Init(modelInitData);
 	}
 
+	void ModelRender::InitCommon(const char* tkmFilePath)
+	{
+		// ZPrepass描画用のモデルを初期化
+		ModelInitData modelInitData;
+		modelInitData.m_tkmFilePath = tkmFilePath;
+		modelInitData.m_fxFilePath = "Assets/shader/ZPrepass.fx";
+		modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;
+
+		m_zprepassModel.Init(modelInitData);
+	}
+
 	void ModelRender::Update(bool m_syuzinkou)
 	{
 		//モデル側に移動回転拡大を渡す
 		m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		//影のモデルに移動回転拡大を渡す
 		m_shadowModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
-
+		//輪郭線に移動回転拡大を渡す
+		m_zprepassModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 
 		if (m_skeleton.IsInited()) {
 			m_skeleton.Update(m_model.GetWorldMatrix());
@@ -116,5 +141,6 @@ namespace nsK2EngineLow {
 	void ModelRender::Draw(RenderContext& rc)
 	{
 		g_renderingEngine->AddModelRenderObject(this);
+		g_renderingEngine->Add3DModelToZPrepass(m_zprepassModel);
 	}
 }

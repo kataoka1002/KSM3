@@ -5,17 +5,11 @@ namespace nsK2EngineLow {
 
 	void ToonMap::Init()
 	{
-
-	}
-
-	void ToonMap::Update()
-	{
 		
 	}
 
-	void ToonMap::Render(RenderContext& rc)
+	void ToonMap::SetSHaderResourceView()
 	{
-
+		
 	}
-
 }

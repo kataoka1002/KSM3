@@ -50,20 +50,17 @@ cbuffer DirectionLightCb : register(b1) {
     float3 ambientLight;	//アンビエントライトの強さ
 	
 	//ポイントライト用
-    PointLight pointLight;
+    PointLight pointLight[2];
 	
 	//スポットライト用
-    SpotLight spotLight;
+    SpotLight spotLight[2];
 	
 	//半球ライト用
     HemLight hemLight;
+        
+    //ライトビュースクリーン用
+    float4x4 mLVP;
 }
-
-//// ライトビュープロジェクション行列にアクセスする定数バッファーを定義
-//cbuffer ShadowCb : register(b1)
-//{
-//    float4x4 mLVP;
-//};
 
 
 ////////////////////////////////////////////////
@@ -75,8 +72,7 @@ struct SSkinVSIn{
     float4 Weights  : BLENDWEIGHT0;
 };
 //頂点シェーダーへの入力。
-struct SVSIn
-{
+struct SVSIn{
     float4 pos			: POSITION;		//モデルの頂点座標。
     float2 uv			: TEXCOORD0;	//UV座標。
     float3 tangent		: TANGENT;		
@@ -93,6 +89,7 @@ struct SPSIn{
     float3 tangent		: TANGENT;		//接ベクトル
     float3 biNormal		: BINORMAL;		//従ベクトル
     float3 normalInView : TEXCOORD2;	//カメラ空間の法線
+    float4 posInProj    : TEXCOORD3;    //輪郭線の為の変数
 };
 
 ////////////////////////////////////////////////
@@ -102,8 +99,10 @@ Texture2D<float4> g_albedo : register(t0);				//アルベドマップ
 Texture2D<float4> g_normalMap : register(t1);			//法線マップにアクセスするための変数を追加
 Texture2D<float4> g_specularMap : register(t2);         //スペキュラーマップにアクセスするための変数を追加
 StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
+Texture2D<float4> g_depthTexture : register(t10);       //深度
+Texture2D<float4> g_shadowMap : register(t11);          //シャドウマップ
+Texture2D<float4> g_toonMap : register(t12);            //トゥーンマップ
 sampler g_sampler : register(s0);	                    //サンプラステート。
-Texture2D<float4> g_shadowMap : register(t10); // シャドウマップ
 
 
 ////////////////////////////////////////////////
@@ -112,13 +111,15 @@ Texture2D<float4> g_shadowMap : register(t10); // シャドウマップ
 float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 normal);
 float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldPos, float3 normal);
 float3 CalcLigFromDirectionLight(SPSIn psIn);
-float3 CalcLigFromPointLight(SPSIn psIn);
-float3 CalcLigFromSpotLight(SPSIn psIn);
+float3 CalcLigFromPointLight(SPSIn psIn, int num);
+float3 CalcLigFromSpotLight(SPSIn psIn, int num);
 float3 CalcLimPower(SPSIn psIn);
 float3 CalcLigFromHemLight(SPSIn psIn);
 float3 CalcNormalCalcNormal(float3 normal, float3 tangent, float3 biNormal, float2 uv);
 float3 CalcNormalMap(SPSIn psIn);
 float3 CalcSpecularMap(SPSIn psIn);
+float4 MakeToonMap(SPSIn psIn,float3 lig);
+float OutLine(SPSIn psIn);
 
 /// <summary>
 //スキン行列を計算する。
@@ -165,6 +166,10 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 	psIn.uv = vsIn.uv;
 	
     psIn.normalInView = mul(mView, psIn.normal);//カメラ空間の法線を求める
+    
+    //頂点の正規化スクリーン座標系の座標をピクセルシェーダーに渡す
+    psIn.posInProj = psIn.pos;
+    psIn.posInProj.xy /= psIn.posInProj.w;
 
 	return psIn;
 }
@@ -187,18 +192,31 @@ float4 PSShadowMain(SPSIn psIn) : SV_Target0
     return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
 }
 
-/// ピクセルシェーダーのエントリー関数。
-float4 PSMain(SPSIn psIn) : SV_Target0
+// トゥーンシェーダーのエントリーポイント関数
+float4 PSToonMap(SPSIn psIn) : SV_Target0
 {
+    // 輪郭線の作成
+    float depth = OutLine(psIn);
+    if ( depth> 0.0005f)
+    {
+        // 深度値が結構違う場合はピクセルカラーを黒にする
+        return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
+    }
+    
 	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算
     float3 directionLig = CalcLigFromDirectionLight(psIn);
 	
-	//ポイントライト(鏡面拡散どっちも)によるライティングを計算
-    float3 pointLig = CalcLigFromPointLight(psIn);
-	
-	//スポットライト(鏡面拡散どっちも)によるライティングを計算
-    float3 spotLig = CalcLigFromSpotLight(psIn);
-	
+    //複数個のライティング計算
+    float3 pointLig[2];
+    float3 spotLig[2];
+    for (int i = 0; i < 2; i++)
+    {
+        //ポイントライト(鏡面拡散どっちも)によるライティングを計算
+        pointLig[i] = CalcLigFromPointLight(psIn, i);
+        //スポットライト(鏡面拡散どっちも)によるライティングを計算
+        spotLig[i] = CalcLigFromSpotLight(psIn, i);
+    }
+    
 	//リムの計算
     float3 limColor = CalcLimPower(psIn);
 	
@@ -214,10 +232,76 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 	
 	//ディレクションライト、ポイントライト、スポットライト、
 	//アンビエントライト、半球ライト、法線マップ、スペキュラマップを合算して最終的な光を求める
-    float3 lig = directionLig + pointLig + ambientLight + spotLig + hemLig + normalMap + specularMap;
+    float3 lig = directionLig + ambientLight + hemLig + normalMap + specularMap;
+    for (int j = 0; j < 2; j++)
+    {
+        lig += pointLig[j];
+        lig += spotLig[j];
+    }
+    
 	//最終的な反射光にリムの反射光を合算する
     lig += limColor;
+    
+    //モデルのテクスチャから色をフェッチする
+    float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
+
+    //トゥーン調に変更
+    float4 Col = MakeToonMap(psIn,lig);
+    
+    //求まった色を乗算する
+    return albedoColor *= Col;
+}
+
+/// ピクセルシェーダーのエントリー関数。
+float4 PSMain(SPSIn psIn) : SV_Target0
+{
+    // 自身の深度値と近傍8テクセルの深度値の差を調べる
+    float depth = OutLine(psIn);
+    if (depth > 0.0005f)
+    {
+        // 深度値が結構違う場合はピクセルカラーを黒にする
+        return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
+    }
+
+	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算
+    float3 directionLig = CalcLigFromDirectionLight(psIn);
 	
+    //複数個のライティング計算
+    float3 pointLig[2];
+    float3 spotLig[2];
+    for (int i = 0; i < 2; i++)
+    {
+        //ポイントライト(鏡面拡散どっちも)によるライティングを計算
+        pointLig[i] = CalcLigFromPointLight(psIn, i);
+        //スポットライト(鏡面拡散どっちも)によるライティングを計算
+        spotLig[i] = CalcLigFromSpotLight(psIn, i);
+    }
+    
+	//リムの計算
+    float3 limColor = CalcLimPower(psIn);
+	
+	//半球ライトの計算
+    float3 hemLig = CalcLigFromHemLight(psIn);
+	
+	//法線マップの計算
+    float3 normalMap = CalcNormalMap(psIn);
+    
+    //スペキュラーマップの計算
+    float3 specularMap = CalcSpecularMap(psIn);
+    
+	
+	//ディレクションライト、ポイントライト、スポットライト、
+	//アンビエントライト、半球ライト、法線マップ、スペキュラマップを合算して最終的な光を求める
+    float3 lig = directionLig + ambientLight + hemLig + normalMap + specularMap;
+    for (int j = 0; j < 2; j++)
+    {
+        lig += pointLig[j];
+        lig += spotLig[j];
+    }
+    
+	//最終的な反射光にリムの反射光を合算する
+    lig += limColor;
+
 	//テクスチャからカラーをフェッチ
     float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
 
@@ -267,7 +351,7 @@ float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldP
 	t = pow(t, 5.0f);
 
 	// 鏡面反射光を求める
-	return lightColor * t;
+    return lightColor * t;
 }
 
 //ポイントライトによる反射光を計算する
@@ -282,35 +366,35 @@ float3 CalcLigFromDirectionLight(SPSIn psIn)
 }
 
 //ポイントライトによる反射光を計算する
-float3 CalcLigFromPointLight(SPSIn psIn)
+float3 CalcLigFromPointLight(SPSIn psIn, int num)
 {
 	// このサーフェイスに入射しているポイントライトの光の向きを計算する
-    float3 ligDir = psIn.worldPos - pointLight.ptPosition;
+    float3 ligDir = psIn.worldPos - pointLight[num].ptPosition;
 
     // 正規化して大きさ1のベクトルにする
     ligDir = normalize(ligDir);
 
     // 減衰なしのLambert拡散反射光を計算する
     float3 diffPoint = CalcLambertDiffuse(
-        ligDir,				// ライトの方向
-        pointLight.ptColor, // ライトのカラー
+        ligDir, // ライトの方向
+        pointLight[num].ptColor, // ライトのカラー
         psIn.normal			// サーフェイスの法線
     );
 
     // 減衰なしのPhong鏡面反射光を計算する
     float3 specPoint = CalcPhongSpecular(
-        ligDir,				// ライトの方向
-       pointLight.ptColor,	// ライトのカラー
-        psIn.worldPos,		// サーフェイズのワールド座標
+        ligDir, // ライトの方向
+       pointLight[num].ptColor, // ライトのカラー
+        psIn.worldPos, // サーフェイズのワールド座標
         psIn.normal			// サーフェイズの法線
     );
 
     // 距離による影響率を計算する
     // ポイントライトとの距離を計算する
-    float3 distance = length(psIn.worldPos - pointLight.ptPosition);
+    float3 distance = length(psIn.worldPos - pointLight[num].ptPosition);
 
     // 影響率は距離に比例して小さくなっていく
-    float affect = 1.0f - 1.0f / pointLight.ptRange * distance;
+    float affect = 1.0f - 1.0f / pointLight[num].ptRange * distance;
     // 影響力がマイナスにならないように補正をかける
     if (affect < 0.0f)
     {
@@ -328,29 +412,29 @@ float3 CalcLigFromPointLight(SPSIn psIn)
 }
 
 //スポットライトによる反射光を計算する
-float3 CalcLigFromSpotLight(SPSIn psIn)
+float3 CalcLigFromSpotLight(SPSIn psIn, int num)
 {
 	//サーフェイスに入射するスポットライトの光の向きを計算する
-    float3 LigDir = psIn.worldPos - spotLight.spPosition;
+    float3 LigDir = psIn.worldPos - spotLight[num].spPosition;
 	//正規化
     LigDir = normalize(LigDir);
 	//減衰なしのLambert拡散反射光を計算する
     float3 diffSpot = CalcLambertDiffuse(
-		LigDir,				//スポットライトの方向
-		spotLight.spColor,	//スポットライトのカラー
+		LigDir, //スポットライトの方向
+		spotLight[num].spColor, //スポットライトのカラー
 		psIn.normal			//サーフェイスの法線
 	);
 	//減衰なしのPhong鏡面反射の計算
     float3 specSpot = CalcPhongSpecular(
-		LigDir,				//ライトの方向
-		spotLight.spColor,	//ライトのカラー
-		psIn.worldPos,		//サーフェイスのワールド座標
+		LigDir, //ライトの方向
+		spotLight[num].spColor, //ライトのカラー
+		psIn.worldPos, //サーフェイスのワールド座標
 		psIn.normal			//サーフェイスの法線
 	);
 	//スポットライトとの距離を計算する
-    float distance = length(psIn.worldPos - spotLight.spPosition);
+    float distance = length(psIn.worldPos - spotLight[num].spPosition);
 	//影響率は距離に比例して小さくなっていく
-    float affect = 1.0f - 1.0f / spotLight.spRange * distance;
+    float affect = 1.0f - 1.0f / spotLight[num].spRange * distance;
 	//影響力がマイナスにならないように
     if (affect < 0.0f)
     {
@@ -362,11 +446,11 @@ float3 CalcLigFromSpotLight(SPSIn psIn)
     diffSpot *= affect;
     specSpot *= affect;
 	//入射光と射出方向の角度を求める
-    float angle = dot(LigDir, spotLight.spDirection);
+    float angle = dot(LigDir, spotLight[num].spDirection);
 	//dot()で求めた値をacos()に渡して角度を求める
     angle = abs(acos(angle));
 	//角度に比例して小さくなっていく影響率を計算する
-    affect = 1.0f - 1.0f / spotLight.spAngle * angle;
+    affect = 1.0f - 1.0f / spotLight[num].spAngle * angle;
     if (affect < 0.0f)
     {
         affect = 0.0f;
@@ -460,5 +544,51 @@ float3 CalcSpecularMap(SPSIn psIn)
     specLig *= specPower * 50.0f; // ＜ー ここの倍率変更で光り方が変わる
     
     return specLig;
+}
+
+float4 MakeToonMap(SPSIn psIn,float3 light)
+{
+    
+    //ハーフランバート拡散照明によるライティング計算
+    float p = dot(psIn.normal * -1.0f, light);
+    p = p * 0.5f + 0.5f;
+    p = p * p;
+
+    //計算結果よりトゥーンシェーダー用のテクスチャから色をフェッチする
+    float4 Col = g_toonMap.Sample(g_sampler, float2(p, 0.0f));
+    
+    return Col;
+}
+
+float OutLine(SPSIn psIn)
+{
+    // 自身の深度値と近傍8テクセルの深度値の差を調べる。
+    // 近傍8テクセルの深度値を計算して、エッジを抽出する
+    // 正規化スクリーン座標系からUV座標系に変換する
+    float2 uv = psIn.posInProj.xy * float2(0.5f, -0.5f) + 0.5f;
+    // 近傍8テクセルへのUVオフセット
+    float2 uvOffset[8] =
+    {
+        float2(0.0f, 1.0f / 720.0f), //上
+        float2(0.0f, -1.0f / 720.0f), //下
+        float2(1.0f / 1280.0f, 0.0f), //右
+        float2(-1.0f / 1280.0f, 0.0f), //左
+        float2(1.0f / 1280.0f, 1.0f / 720.0f), //右上
+        float2(-1.0f / 1280.0f, 1.0f / 720.0f), //左上
+        float2(1.0f / 1280.0f, -1.0f / 720.0f), //右下
+        float2(-1.0f / 1280.0f, -1.0f / 720.0f) //左下
+    };
+
+    // このピクセルの深度値を取得
+    float depth = g_depthTexture.Sample(g_sampler, uv).x;
+    // 近傍8テクセルの深度値の平均値を計算する
+    float depth2 = 0.0f;
+    for (int s = 0; s < 8; s++)
+    {
+        depth2 += g_depthTexture.Sample(g_sampler, uv + uvOffset[s]).x;
+    }
+    depth2 /= 8.0f;
+
+    return abs(depth - depth2);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
