@@ -45,6 +45,7 @@ void Drop_item::Update() {
 		
 		if (diff.Length() < 100.0f) {
 			GetState = true;
+			DeleteGO(this);
 			customize_UI_ver2 = NewGO<Customize_UI_ver2>(3, "customize_UI_ver2");
 		}
 	}
