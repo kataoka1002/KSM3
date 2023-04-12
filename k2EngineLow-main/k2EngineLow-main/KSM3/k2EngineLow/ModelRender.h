@@ -2,14 +2,25 @@
 
 namespace nsK2EngineLow {
 
+	struct ModelInitDataFR : public ModelInitData
+	{
+		ModelInitDataFR()
+		{
+			m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		}
+	};
+
 	class ModelRender {
 	public:
 		ModelRender();
 		~ModelRender();
+		void InitCommon(const char* tkmFilePath);
+
 
 		//初期化
 		void Init(const char* filePath,
 			bool m_shadowDrop = true,//影(trueが落とす方,falseが落とされる方)
+			bool m_toonShader=true,
 			AnimationClip* animationClips = nullptr,
 			int numAnimationClips = 0,
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ);
@@ -107,6 +118,7 @@ namespace nsK2EngineLow {
 			m_shadowModel.Draw(rc, g_renderingEngine->GetLightCamera());
 		}
 
+
 	private:
 		//アニメーションの初期化
 		void InitAnimation(AnimationClip* animationClips,	//アニメーションクリップ
@@ -123,6 +135,8 @@ namespace nsK2EngineLow {
 		//モデル
 		Model m_model;
 		Model m_shadowModel;
+		Model m_zprepassModel;                  // ZPrepassで描画されるモデル
+
 
 		//アニメーション
 		Animation m_animation;
@@ -135,7 +149,7 @@ namespace nsK2EngineLow {
 		Vector3 m_position = Vector3::Zero;
 		Quaternion m_rotation = { 0.0f,0.0f,0.0f,1.0f };
 		Vector3 m_scale = Vector3::One;
-		
+
 		bool syuok = false;
 	};
 }
