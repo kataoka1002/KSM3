@@ -40,7 +40,7 @@ void Right_arm_weapons::Update() {
 		R_a_w_set();
 	}
 	fast++;
-	if (game_state == 0) {
+	if (r_a_w_player->game_state == 0) {
 		Move();
 		//UŒ‚
 		if (g_pad[0]->IsPress(enButtonRB1)) {

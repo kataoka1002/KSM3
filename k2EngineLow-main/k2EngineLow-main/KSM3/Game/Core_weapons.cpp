@@ -34,7 +34,7 @@ void Core_weapons::Update() {
 	}
 	fast++;
 	if(fast!=0) {
-		if (game_state == 0) {
+		if (cw_player->game_state == 0) {
 			Move();
 			if (g_pad[0]->IsPress(enButtonRB1)) {
 
