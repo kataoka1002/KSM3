@@ -35,7 +35,7 @@ void Enemy_weapons::Update() {
 		Setup();
 	}
 	fast++;
-	if (game_state == 0&&fast!=0) {
+	if (e_w_player->game_state == 0&&fast!=0) {
 		Move();
 		if (atack_ok == true) {
 			firing_cound++;//攻撃タイミングの計算
