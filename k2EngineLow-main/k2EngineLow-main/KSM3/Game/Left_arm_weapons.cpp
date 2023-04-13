@@ -38,7 +38,7 @@ void Left_arm_weapons::Update() {
 		L_a_w_set();
 	}
 	fast++;
-	if (game_state == 0) {
+	if (l_a_w_player->game_state == 0) {
 		Move();
 		if (g_pad[0]->IsPress(enButtonRB1)) {
 
