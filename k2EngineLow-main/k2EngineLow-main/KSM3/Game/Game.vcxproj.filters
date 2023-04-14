@@ -32,6 +32,9 @@
     <ClCompile Include="Core_weapons_attack.cpp" />
     <ClCompile Include="Customize_area.cpp" />
     <ClCompile Include="Customize_UI_ver2.cpp" />
+    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Enemy_type2.cpp" />
+    <ClCompile Include="Enemy_type2_weapons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -59,5 +62,8 @@
     <ClInclude Include="Core_weapons_attack.h" />
     <ClInclude Include="Customize_area.h" />
     <ClInclude Include="Customize_UI_ver2.h" />
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="Enemy_type2.h" />
+    <ClInclude Include="Enemy_type2_weapons.h" />
   </ItemGroup>
 </Project>

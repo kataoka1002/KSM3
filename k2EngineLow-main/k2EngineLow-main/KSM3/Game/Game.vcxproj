@@ -234,6 +234,8 @@
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Enemy_attack.cpp" />
+    <ClCompile Include="Enemy_type2.cpp" />
+    <ClCompile Include="Enemy_type2_weapons.cpp" />
     <ClCompile Include="Enemy_weapons.cpp" />
     <ClCompile Include="Enumeration.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -265,6 +267,8 @@
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy_attack.h" />
+    <ClInclude Include="Enemy_type2.h" />
+    <ClInclude Include="Enemy_type2_weapons.h" />
     <ClInclude Include="Enemy_weapons.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Game.h" />
