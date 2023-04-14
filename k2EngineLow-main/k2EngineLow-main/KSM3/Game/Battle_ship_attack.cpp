@@ -25,9 +25,15 @@ void Battle_ship_attack::Setup() {
 
 Battle_ship_attack::~Battle_ship_attack() {
 	if (b_s_attack_player->p_custom_point[0][2] != 0)
+		b_s_attack_player->attack_state_ra = false;
+	if (b_s_attack_player->p_custom_point[0][1] != 0)
+		b_s_attack_player->attack_state_s = false;
+	if (b_s_attack_player->p_custom_point[0][0] != 0)
 		b_s_attack_player->attack_state_la = false;
-	else if (b_s_attack_player->p_custom_point[0][0] != 0)
-		b_s_attack_player->attack_state_la = false;
+	if (b_s_attack_player->p_custom_point[1][0] != 0)
+		b_s_attack_player->attack_state_ll = false;
+	if (b_s_attack_player->p_custom_point[1][2] != 0)
+		b_s_attack_player->attack_state_rl = false;
 }
 
 void Battle_ship_attack::Update() {
@@ -36,7 +42,11 @@ void Battle_ship_attack::Update() {
 		B_S_Bullet.Update();
 		if (firing_position.y <= 0.0f) {
 			b_s_attack_player->attack_state_la = false;
-			
+			b_s_attack_player->attack_state_ra = false;
+			b_s_attack_player->attack_state_s = false;
+			b_s_attack_player->attack_state_ll = false;
+			b_s_attack_player->attack_state_rl = false;
+
 			DeleteGO(this);
 		}
 		if (b_s_attack_player->enemy_survival == true) {

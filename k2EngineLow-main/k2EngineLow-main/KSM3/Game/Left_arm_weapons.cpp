@@ -10,7 +10,7 @@ Left_arm_weapons::Left_arm_weapons() {
 
 Left_arm_weapons::~Left_arm_weapons() {
 	if (atack_state == true) {
-		if (battle_ship_attack->Landing_state_BB = false) {
+		if (battle_ship_attack->Landing_state_BB == false) {
 			DeleteGO(battle_ship_attack);
 		}
 	}
@@ -18,9 +18,18 @@ Left_arm_weapons::~Left_arm_weapons() {
 
 void Left_arm_weapons::L_a_w_set() {
 	if (l_a_w_player->p_custom_point[0][2] == 1) {
+		
+	}
+	switch (l_a_w_player->p_custom_point[0][2])
+	{
+	case 1:
 		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_left_arm.tkm");
 		Left_arm_weapons_Render.SetScale(scale2);
 		Left_arm_weapons_Render.Update();
+		set_weapons = l_a_w_player->p_custom_point[0][2];
+		break;
+	default:
+		break;
 	}
 }
 
@@ -29,7 +38,7 @@ void Left_arm_weapons::Update() {
 		L_a_w_set();
 	}
 	fast++;
-	if (game_state == 0) {
+	if (l_a_w_player->game_state == 0) {
 		Move();
 		if (g_pad[0]->IsPress(enButtonRB1)) {
 

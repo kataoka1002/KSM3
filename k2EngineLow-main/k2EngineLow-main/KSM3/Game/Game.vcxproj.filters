@@ -33,8 +33,9 @@
     <ClCompile Include="Customize_area.cpp" />
     <ClCompile Include="Customize_UI_ver2.cpp" />
     <ClCompile Include="Test.cpp" />
-    <ClCompile Include="Enemy_type2.cpp" />
-    <ClCompile Include="Enemy_type2_weapons.cpp" />
+    <ClCompile Include="Shoulder_weapons.cpp" />
+    <ClCompile Include="Right_leg_weapons.cpp" />
+    <ClCompile Include="Left_leg_weapons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -63,7 +64,8 @@
     <ClInclude Include="Customize_area.h" />
     <ClInclude Include="Customize_UI_ver2.h" />
     <ClInclude Include="Test.h" />
-    <ClInclude Include="Enemy_type2.h" />
-    <ClInclude Include="Enemy_type2_weapons.h" />
+    <ClInclude Include="Shoulder_weapons.h" />
+    <ClInclude Include="Right_leg_weapons.h" />
+    <ClInclude Include="Left_leg_weapons.h" />
   </ItemGroup>
 </Project>

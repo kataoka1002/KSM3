@@ -11,7 +11,7 @@ Right_arm_weapons::Right_arm_weapons() {
 
 Right_arm_weapons::~Right_arm_weapons() {
 	if (atack_state == true) {
-		if (battle_ship_attack->Landing_state_BB = false) {
+		if (battle_ship_attack->Landing_state_BB == false) {
 			DeleteGO(battle_ship_attack);
 		}
 	}
@@ -19,10 +19,20 @@ Right_arm_weapons::~Right_arm_weapons() {
 
 void Right_arm_weapons::R_a_w_set() {
 	if (r_a_w_player->p_custom_point[0][0] == 1) {
+		
+	}
+	switch (r_a_w_player->p_custom_point[0][0])
+	{
+	case 1:
 		Right_arm_weapons_Render.Init("Assets/modelData/battleship_gun_right_arm.tkm");
 		Right_arm_weapons_Render.SetScale(scale2);
 		Right_arm_weapons_Render.Update();
+		set_weapons = r_a_w_player->p_custom_point[0][0];
+		break;
+	default:
+		break;
 	}
+	
 }
 
 void Right_arm_weapons::Update() {
@@ -30,7 +40,7 @@ void Right_arm_weapons::Update() {
 		R_a_w_set();
 	}
 	fast++;
-	if (game_state == 0) {
+	if (r_a_w_player->game_state == 0) {
 		Move();
 		//UŒ‚
 		if (g_pad[0]->IsPress(enButtonRB1)) {
@@ -50,7 +60,7 @@ void Right_arm_weapons::Update() {
 		if (r_a_w_player->game_end_state == 1) {
 			DeleteGO(this);
 		}
-		r_a_w_player->attack_state_la = atack_state;
+		r_a_w_player->attack_state_ra = atack_state;
 		Right_arm_weapons_Render.Update();
 	}
 }

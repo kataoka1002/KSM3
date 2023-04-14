@@ -45,8 +45,8 @@ namespace nsK2EngineLow {
 		float pad1;
 		Vector3 ambientLight;			//環境光
 		float pad2;
-		PointLight pointLight;			//ポイントライトの配列
-		SpotLight spotLight;			//スポットライトの配列
+		PointLight pointLight[2];			//ポイントライトの配列
+		SpotLight spotLight[2];			//スポットライトの配列
 		HemLight hemLight;				//半球ライトの配列
 		float pad3;
 		Matrix m_LVP;					//ライトビュースクリーン配列
@@ -75,20 +75,20 @@ namespace nsK2EngineLow {
 			m_light.ambientLight.z = z;
 		}
 
-		void SetPointLight(Vector3 position, float range, Vector3 color)
+		void SetPointLight(int num, Vector3 position, float range, Vector3 color)
 		{
-			m_light.pointLight.ligPosition = position;
-			m_light.pointLight.ligRange = range;
-			m_light.pointLight.ligColor = color;
+			m_light.pointLight[num].ligPosition = position;
+			m_light.pointLight[num].ligRange = range;
+			m_light.pointLight[num].ligColor = color;
 		}
 
-		void SetSpotLight(Vector3 position, float range, Vector3 color, Vector3 direction, float angle)
+		void SetSpotLight(int num,Vector3 position, float range, Vector3 color, Vector3 direction, float angle)
 		{
-			m_light.spotLight.ligPosition = position;
-			m_light.spotLight.ligRange = range;
-			m_light.spotLight.ligColor = color;
-			m_light.spotLight.ligDirection = direction;
-			m_light.spotLight.ligAngle = angle;
+			m_light.spotLight[num].ligPosition = position;
+			m_light.spotLight[num].ligRange = range;
+			m_light.spotLight[num].ligColor = color;
+			m_light.spotLight[num].ligDirection = direction;
+			m_light.spotLight[num].ligAngle = angle;
 		}
 
 		void SetHemLight(Vector3 groundColor, Vector3 skyColor, Vector3 groundNormal)
