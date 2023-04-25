@@ -71,24 +71,24 @@ Game::Game()
 
 
 	float po = 2000.0f;
-	/*for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		enemy[i] = NewGO<Enemy>(1, "enemy");
 		enemy[i]->m_enemyPosition = {0.0f,0.0f,po};
 		po += 500.0f;
-	}*/
+	}
 	/*for (int i = 0; i < 2; i++)
 	{
 		enemy_far[i] = NewGO<Enemy_Far>(1, "enemy_far");
 		enemy_far[i]->m_enemyPosition = { 0.0f,0.0f,po + 100.0f };
 		po += 500.0f;
 	}*/
-	for (int i = 0; i < 2; i++)
+	/*for (int i = 0; i < 2; i++)
 	{
 		enemy_near[i] = NewGO<Enemy_Near>(1, "enemy_near");
 		enemy_near[i]->m_enemyPosition = { 0.0f,0.0f,po + 100.0f };
 		po += 500.0f;
-	}
+	}*/
 
 
 
