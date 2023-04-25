@@ -1,11 +1,13 @@
 #pragma once
 #include "LevelRender.h"
 class BoxMove;
-class Player; //プレイヤー
-class Title;//タイトル
-class Result;//リザルト
-class Lighting;//ライティング
-class Enemy;//エネミー
+class Player;		//プレイヤー
+class Title;		//タイトル
+class Result;		//リザルト
+class Lighting;		//ライティング
+class Enemy_Near;
+class Enemy;		//エネミー
+class Enemy_Far;
 class Left_arm_weapons;
 class Drop_item;
 class BackGround;
@@ -17,10 +19,10 @@ class Boss_Riser;
 class Game_UI;
 class Enemy_HP_UI;
 
-class Enemy_weapons;
 
 
-class Game:public IGameObject
+
+class Game :public IGameObject
 {
 public:
 	Game();
@@ -46,7 +48,9 @@ public:
 	Title* title;//タイトル
 	Result* result;//リザルト
 	Lighting* lighting;//ライティング
-	Enemy* enemy;//エネミー
+	Enemy_Near*enemy_near[2];
+	Enemy* enemy[2];//エネミー
+	Enemy_Far* enemy_far[2];
 	Left_arm_weapons* s_left_arm_weapons;
 	Drop_item* drop_item;
 	BackGround* background;
@@ -57,7 +61,7 @@ public:
 	Game_UI* game_ui;
 	Enemy_HP_UI* e_h_ui;
 
-	Enemy_weapons* enemy_weapons;
+	
 
 	
 	Vector3 dv;

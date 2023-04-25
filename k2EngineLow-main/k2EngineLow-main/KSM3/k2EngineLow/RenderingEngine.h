@@ -150,7 +150,7 @@ namespace nsK2EngineLow {
 		std::vector<ModelRender*>	ModelRenderObject;
 		std::vector<SpriteRender*>	SpriteRenderObject;
 		std::vector<FontRender*>	FontRenderObject;
-		std::vector< Model* >		m_zprepassModelsObject;	// ZPrepassの描画パスで描画されるモデルのリスト
+		std::vector<Model* >		m_zprepassModelsObject;	// ZPrepassの描画パスで描画されるモデルのリスト
 	public:
 
 	};

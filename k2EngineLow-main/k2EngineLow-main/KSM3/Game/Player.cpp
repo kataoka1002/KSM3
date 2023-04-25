@@ -8,18 +8,18 @@
 
 
 Player::Player() {
-	player_modelRender.Init("Assets/modelData/test_player.tkm");
+	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
 	characterController.Init(70.0f, 150.0f, player_position);
 
 	
 
-	//回転テーブル
-	int i;
-	for (i = 0; i < 360; i++) {
-		fsin[i] = (float)sin(i * 3.1415926535 / 180);
-		fcos[i] = (float)cos(i * 3.1415926535 / 180);
-	}
+	////回転テーブル
+	//int i;
+	//for (i = 0; i < 360; i++) {
+	//	fsin[i] = (float)sin(i * 3.1415926535 / 180);
+	//	fcos[i] = (float)cos(i * 3.1415926535 / 180);
+	//}
 	
 }
 

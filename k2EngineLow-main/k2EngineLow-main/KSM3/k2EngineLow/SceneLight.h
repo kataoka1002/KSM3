@@ -45,8 +45,8 @@ namespace nsK2EngineLow {
 		float pad1;
 		Vector3 ambientLight;			//環境光
 		float pad2;
-		PointLight pointLight[2];			//ポイントライトの配列
-		SpotLight spotLight[2];			//スポットライトの配列
+		PointLight pointLight[10];			//ポイントライトの配列
+		SpotLight spotLight[10];			//スポットライトの配列
 		HemLight hemLight;				//半球ライトの配列
 		float pad3;
 		Matrix m_LVP;					//ライトビュースクリーン配列

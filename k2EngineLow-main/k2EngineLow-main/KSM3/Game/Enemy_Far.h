@@ -5,7 +5,7 @@ class Player;
 class Battle_ship_attack;
 class Drop_item;
 
-class Enemy:public IGameObject
+class Enemy_Far :public IGameObject
 {
 public:
 
@@ -15,8 +15,8 @@ public:
 		int m_num;			//ポイントの番号
 	};
 
-	Enemy();
-	~Enemy();
+	Enemy_Far();
+	~Enemy_Far();
 
 	bool Start();
 	void Update();					//更新処理
@@ -59,7 +59,7 @@ public:
 	bool m_lockOn = false;
 	int m_setWeapon = 0;							//武器の種類
 	int m_enemyDirState = 0;						//エネミーの向き
-	int m_enemyGameState=0;
+	int m_enemyGameState = 0;
 	int m_attackCount = 0;							//攻撃の間隔
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力

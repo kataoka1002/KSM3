@@ -5,7 +5,9 @@
 #include "Title.h"
 #include "Result.h"
 #include "Lighting.h"
+#include "Enemy_Near.h"
 #include "Enemy.h"
+#include "Enemy_Far.h"
 #include "Left_arm_weapons.h"
 #include "Drop_item.h"
 #include "BackGround.h"
@@ -16,7 +18,7 @@
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
 
-#include "Enemy_weapons.h"
+
 
 
 bool Game::Start()
@@ -68,8 +70,27 @@ Game::Game()
 	player = NewGO<Player>(2, "player");
 
 
-	enemy = NewGO<Enemy>(1, "enemy");
-	enemy->enemy_position = { 0.0f,0.0f,2000.0f };
+	float po = 2000.0f;
+	/*for (int i = 0; i < 2; i++)
+	{
+		enemy[i] = NewGO<Enemy>(1, "enemy");
+		enemy[i]->m_enemyPosition = {0.0f,0.0f,po};
+		po += 500.0f;
+	}*/
+	/*for (int i = 0; i < 2; i++)
+	{
+		enemy_far[i] = NewGO<Enemy_Far>(1, "enemy_far");
+		enemy_far[i]->m_enemyPosition = { 0.0f,0.0f,po + 100.0f };
+		po += 500.0f;
+	}*/
+	for (int i = 0; i < 2; i++)
+	{
+		enemy_near[i] = NewGO<Enemy_Near>(1, "enemy_near");
+		enemy_near[i]->m_enemyPosition = { 0.0f,0.0f,po + 100.0f };
+		po += 500.0f;
+	}
+
+
 
 	boss = NewGO<Boss>(1, "boss");
 	boss->boss_position = { 0.0f,0.0f,10000.0f };
@@ -77,7 +98,7 @@ Game::Game()
 	//boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
 	//boss_riser->b_w_position = { -600.0f,100.0f,19000.0f };
 
-	m_numEnemy++;
+	
 	
 
 	drop_item = NewGO< Drop_item>(1, "drop_item");
@@ -98,8 +119,10 @@ Game::~Game()
 	}
 
 	DeleteGO(player);
-	DeleteGO(enemy);
+
+	DeleteGO(enemy[1]);
 	DeleteGO(boss);
+
 	if (drop_item->GetState == false) {
 		DeleteGO(drop_item);
 	}
