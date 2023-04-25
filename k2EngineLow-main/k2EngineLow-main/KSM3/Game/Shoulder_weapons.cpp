@@ -3,9 +3,11 @@
 #include "Player.h"
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
+#include "Shoulder_UI.h"
 
 Shoulder_weapons::Shoulder_weapons() {
 	s_w_player = FindGO<Player>("player");
+	shoulder_ui= FindGO<Shoulder_UI>("shoulder_ui");
 }
 
 Shoulder_weapons::~Shoulder_weapons() {
@@ -32,6 +34,7 @@ void Shoulder_weapons::S_w_set() {
 void Shoulder_weapons::Update() {
 	if (fast == 0) {
 		S_w_set();
+		shoulder_ui = NewGO<Shoulder_UI>(1, "shoulder_ui");
 	}
 	fast++;
 	if (s_w_player->game_state == 0) {

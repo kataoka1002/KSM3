@@ -1,6 +1,7 @@
 #pragma once
 class Player;
 class Battle_ship_attack;
+class Shoulder_UI;
 
 class Shoulder_weapons:public IGameObject
 {
@@ -15,6 +16,7 @@ public:
 
 	Player* s_w_player = nullptr;
 	Battle_ship_attack* battle_ship_attack;
+	Shoulder_UI* shoulder_ui;
 
 	Quaternion Shoulder_Rotation;
 	Vector3 s_w_position;

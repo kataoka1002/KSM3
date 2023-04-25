@@ -2,6 +2,7 @@
 
 class Player;
 class Battle_ship_attack;
+class Left_arm_UI;
 
 class Left_arm_weapons :public IGameObject
 {
@@ -15,6 +16,7 @@ public:
 
 	Player* l_a_w_player = nullptr;
 	Battle_ship_attack* battle_ship_attack;
+	Left_arm_UI* left_arm_ui;
 
 	Quaternion l_a_Rotation;
 	Vector3 l_a_w_position;

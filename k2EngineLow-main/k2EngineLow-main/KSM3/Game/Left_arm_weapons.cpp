@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "Left_arm_weapons.h"
+#include "Left_arm_UI.h"
 #include "Player.h"
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
 
 Left_arm_weapons::Left_arm_weapons() {
 	l_a_w_player = FindGO<Player>("player");
+	left_arm_ui = FindGO<Left_arm_UI>("left_arm_ui");
 }
 
 Left_arm_weapons::~Left_arm_weapons() {
@@ -27,6 +29,7 @@ void Left_arm_weapons::L_a_w_set() {
 		Left_arm_weapons_Render.SetScale(scale2);
 		Left_arm_weapons_Render.Update();
 		set_weapons = l_a_w_player->p_custom_point[0][2];
+		atack_state = true;
 		break;
 	default:
 		break;
@@ -36,6 +39,7 @@ void Left_arm_weapons::L_a_w_set() {
 void Left_arm_weapons::Update() {
 	if (fast == 0) {
 		L_a_w_set();
+		left_arm_ui= NewGO<Left_arm_UI>(0, "left_arm_ui");
 	}
 	fast++;
 	if (l_a_w_player->game_state == 0) {

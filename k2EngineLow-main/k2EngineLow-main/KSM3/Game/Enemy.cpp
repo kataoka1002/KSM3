@@ -7,7 +7,7 @@
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
 #include "Enemy_weapons.h"
-
+#include "Game.h"
 
 Enemy::Enemy() {
 	e_player = FindGO<Player>("player");
@@ -26,14 +26,13 @@ Enemy::~Enemy() {
 bool Enemy::Start() {
 	
 	//enemy_rotation.SetRotationY(Math::PI);
-
 	enemy_modelRender.Init("Assets/modelData/enemy_model.tkm");
 	enemy_modelRender.SetRotation(enemy_rotation);
 	enemy_modelRender.SetPosition(enemy_position);
 	//キャラクターコントローラーを初期化。
 	enemy_characterController.Init(
-		50.0f,			//半径。
-		-40.0f,			//高さ。
+		20.0f,			//半径。
+		30.0f,			//高さ。
 		enemy_position		//座標。
 	);
 	return true;
@@ -52,6 +51,8 @@ void Enemy::Update()
 				drop_item->Drop_position = enemy_position;
 				drop_item->Drop_position.y += 50.0f;
 				defeat_state = true;
+				Game* game = FindGO<Game>("game");
+				game->AddDefeatedEnemyNumber();
 				DeleteGO(this);
 			}
 		}
@@ -71,17 +72,17 @@ void Enemy::PlayerSearch() {
 	float t = toPlayerDir.Dot(enemy_forward);
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
-
-	if (fabsf(angle) < Math::DegToRad(45.0f)) {
-		e_enemy_weapons->atack_ok = true;
-	}
-	else {
-		e_enemy_weapons->atack_ok = false;
-	}
-
+	if (toPlayer.LengthSq() <= 1000.0 * 850.0) {
+		//if (fabsf(angle) < Math::DegToRad(45.0f)) {
+			e_enemy_weapons->atack_ok = true;
+		}
+		else {
+			e_enemy_weapons->atack_ok = false;
+		}
+	//}
 	//敵キャラの前方方向を更新する
 	enemy_forward = toPlayerDir;
-	// 敵の前方方向を使って、回転クォータニオンを計算する。
+	// 敵の前方方向を使って、回転クォータニオンを計算するg。
 	enemy_rotation.SetRotationY(atan2(enemy_forward.x, enemy_forward.z));
 	enemy_modelRender.SetPosition(enemy_position);
 	enemy_modelRender.SetRotation(enemy_rotation);
@@ -91,13 +92,34 @@ void Enemy::PlayerSearch() {
 void Enemy::Move() {
 	//エネミーからプレイヤーに向かうベクトルを計算する
 	Vector3 toPlayer = e_player->player_position - enemy_position;
-	//ベクトルを正規化する。
-	toPlayer.Normalize();
-	//移動速度を設定する。
-	enemy_moveSpeed = toPlayer * 200.0f;
-	//エネミーを移動させる
-	enemy_position = enemy_characterController.Execute(enemy_moveSpeed, g_gameTime->GetFrameDeltaTime());
-	Vector3 modelPosition = enemy_position;
+	//中距離型の移動処理
+	//エネミーがある程度近づいたら
+	if (toPlayer.LengthSq() <= 1000.0 * 850.0) {
+		//止まる
+		enemy_moveSpeed = toPlayer * 0.0f;
+	}
+	else {
+		if (e_enemy_weapons->set_weapons == 1, 2) {
+			//ベクトルを正規化する。
+			toPlayer.Normalize();
+			//移動速度を設定する。
+			enemy_moveSpeed = toPlayer * 200.0f;
+			//エネミーを移動させる
+			enemy_position = enemy_characterController.Execute(enemy_moveSpeed, g_gameTime->GetFrameDeltaTime());
+			Vector3 modelPosition = enemy_position;
+		}
+	}
+
+	//近距離型の移動処理
+	if (e_enemy_weapons->set_weapons == 3) {
+		//ベクトルを正規化する。
+		toPlayer.Normalize();
+		//移動速度を設定する。
+		enemy_moveSpeed = toPlayer * 500.0f;
+		//エネミーを移動させる
+		enemy_position = enemy_characterController.Execute(enemy_moveSpeed, g_gameTime->GetFrameDeltaTime());
+		Vector3 modelPosition = enemy_position;
+	}
 }
 
 void Enemy::Render(RenderContext& rc)

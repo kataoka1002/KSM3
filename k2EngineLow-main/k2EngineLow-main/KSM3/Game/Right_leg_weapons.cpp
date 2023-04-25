@@ -3,9 +3,11 @@
 #include "Player.h"
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
+#include "Right_leg_UI.h"
 
 Right_leg_weapons::Right_leg_weapons() {
 	r_l_w_player = FindGO<Player>("player");
+	right_leg_ui = FindGO<Right_leg_UI>("right_leg_UI");
 }
 
 Right_leg_weapons::~Right_leg_weapons() {
@@ -33,6 +35,7 @@ void Right_leg_weapons::R_l_w_set() {
 void Right_leg_weapons::Update() {
 	if (fast == 0) {
 		R_l_w_set();
+		right_leg_ui= NewGO<Right_leg_UI>(1, "right_leg_UI");
 	}
 	fast++;
 	if (r_l_w_player->game_state == 0) {
