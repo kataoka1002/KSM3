@@ -12,6 +12,8 @@ class BackGround;
 class Core_weapons;
 class GameCamera;
 class Test;
+class Boss;
+class Boss_Riser;
 
 class Enemy_weapons;
 
@@ -41,6 +43,8 @@ public:
 	BackGround* background;
 	Core_weapons* core_weapons;
 	GameCamera* gamecamera;
+	Boss* boss;
+	Boss_Riser* boss_riser;
 
 	Enemy_weapons* enemy_weapons;
 
