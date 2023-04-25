@@ -7,6 +7,7 @@ class Drop_item;
 class Boss_Riser;
 class Boss_Shovel;
 class Boss_Drill;
+class Boss_Cannon;
 
 class Boss :public IGameObject
 {
@@ -26,6 +27,7 @@ public:
 	Boss_Riser* b_boss_riser;
 	Boss_Shovel* b_boss_shovel;
 	Boss_Drill* b_boss_drill;
+	Boss_Cannon* b_boss_cannon;
 
 
 	ModelRender boss_modelRender;//ƒ‚ƒfƒ‹ƒŒƒ“ƒ_[
