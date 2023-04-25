@@ -225,6 +225,13 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Battle_ship_attack.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Boss_Drill.cpp" />
+    <ClCompile Include="Boss_Drill_attack.cpp" />
+    <ClCompile Include="Boss_Riser.cpp" />
+    <ClCompile Include="Boss_Riser_attack.cpp" />
+    <ClCompile Include="Boss_Shovel.cpp" />
+    <ClCompile Include="Boss_Shovel_attack.cpp" />
     <ClCompile Include="BoxMove.cpp" />
     <ClCompile Include="Core_weapons.cpp" />
     <ClCompile Include="Core_weapons_attack.cpp" />
@@ -234,6 +241,8 @@
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Enemy_attack.cpp" />
+    <ClCompile Include="Enemy_type2.cpp" />
+    <ClCompile Include="Enemy_type2_weapons.cpp" />
     <ClCompile Include="Enemy_HP_UI.cpp" />
     <ClCompile Include="Enemy_weapons.cpp" />
     <ClCompile Include="Enumeration.cpp" />
@@ -266,6 +275,13 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Battle_ship_attack.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="Boss_Drill.h" />
+    <ClInclude Include="Boss_Drill_attack.h" />
+    <ClInclude Include="Boss_Riser.h" />
+    <ClInclude Include="Boss_Riser_attack.h" />
+    <ClInclude Include="Boss_Shovel.h" />
+    <ClInclude Include="Boss_Shovel_attack.h" />
     <ClInclude Include="BoxMove.h" />
     <ClInclude Include="Core_weapons.h" />
     <ClInclude Include="Core_weapons_attack.h" />
@@ -275,6 +291,8 @@
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy_attack.h" />
+    <ClInclude Include="Enemy_type2.h" />
+    <ClInclude Include="Enemy_type2_weapons.h" />
     <ClInclude Include="Enemy_HP_UI.h" />
     <ClInclude Include="Enemy_weapons.h" />
     <ClInclude Include="Enumeration.h" />

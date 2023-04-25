@@ -53,5 +53,6 @@ public:
 
 
 	bool enemy_survival = true;
+	bool boss_survival = true;
 };
 

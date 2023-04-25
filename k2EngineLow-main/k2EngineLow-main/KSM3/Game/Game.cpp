@@ -11,6 +11,8 @@
 #include "BackGround.h"
 #include "Core_weapons.h"
 #include "GameCamera.h"
+#include "Boss.h"
+#include "Boss_RIser.h"
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
 
@@ -68,6 +70,13 @@ Game::Game()
 
 	enemy = NewGO<Enemy>(1, "enemy");
 	enemy->enemy_position = { 0.0f,0.0f,2000.0f };
+
+	boss = NewGO<Boss>(1, "boss");
+	boss->boss_position = { 0.0f,0.0f,10000.0f };
+
+	//boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
+	//boss_riser->b_w_position = { -600.0f,100.0f,19000.0f };
+
 	m_numEnemy++;
 	
 
@@ -90,6 +99,7 @@ Game::~Game()
 
 	DeleteGO(player);
 	DeleteGO(enemy);
+	DeleteGO(boss);
 	if (drop_item->GetState == false) {
 		DeleteGO(drop_item);
 	}
