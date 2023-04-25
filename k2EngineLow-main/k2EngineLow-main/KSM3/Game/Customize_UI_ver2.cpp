@@ -320,6 +320,7 @@ void Customize_UI_ver2::Window() {
 					default:
 						break;
 					}
+					
 					DeleteGO(this);
 				}
 			}

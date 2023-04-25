@@ -1,5 +1,5 @@
 /*!
- * @brief	シンプルなモデルシェーダー。
+ * @brief	モデルシェーダー。
  */
 
 ////////////////////////////////////////////////
@@ -50,10 +50,10 @@ cbuffer DirectionLightCb : register(b1) {
     float3 ambientLight;	//アンビエントライトの強さ
 	
 	//ポイントライト用
-    PointLight pointLight[2];
+    PointLight pointLight[10];
 	
 	//スポットライト用
-    SpotLight spotLight[2];
+    SpotLight spotLight[10];
 	
 	//半球ライト用
     HemLight hemLight;
@@ -169,7 +169,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     
     //頂点の正規化スクリーン座標系の座標をピクセルシェーダーに渡す
     psIn.posInProj = psIn.pos;
-    psIn.posInProj.xy /= psIn.posInProj.w;
+    
 
 	return psIn;
 }
@@ -192,6 +192,33 @@ float4 PSShadowMain(SPSIn psIn) : SV_Target0
     return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
 }
 
+float4 PSTest(SPSIn psIn):SV_Target0
+{
+    float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
+    
+    //if (dot(psIn.normal, directionLight.dirDirection) < -0.3f)
+    //{
+    //    return float4(1.0f, 1.0f, 1.0f, 1.0f);
+    //}
+    //else if (dot(psIn.normal, directionLight.dirDirection) >= -0.3f && dot(psIn.normal, directionLight.dirDirection) < 0.3f)
+    //{
+    //    return float4(0.5f, 0.5f, 0.5f, 1.0f);
+    //}
+    //else if (dot(psIn.normal, directionLight.dirDirection) >= 0.3f)
+    //{
+    //    return float4(0.0f,0.0f,0.0f,1.0f);
+    //}
+    
+    float p = dot(psIn.normal * -1.0f, directionLight.dirDirection);
+    p = p * 0.5f + 0.5f;
+
+    
+    //計算結果よりトゥーンシェーダー用のテクスチャから色をフェッチする
+    float4 Col = g_toonMap.Sample(g_sampler, float2(p, 0.0f));
+    
+    return albedoColor*Col;
+}
+
 // トゥーンシェーダーのエントリーポイント関数
 float4 PSToonMap(SPSIn psIn) : SV_Target0
 {
@@ -207,9 +234,9 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
     float3 directionLig = CalcLigFromDirectionLight(psIn);
 	
     //複数個のライティング計算
-    float3 pointLig[2];
-    float3 spotLig[2];
-    for (int i = 0; i < 2; i++)
+    float3 pointLig[10];
+    float3 spotLig[10];
+    for (int i = 0; i < 10; i++)
     {
         //ポイントライト(鏡面拡散どっちも)によるライティングを計算
         pointLig[i] = CalcLigFromPointLight(psIn, i);
@@ -233,7 +260,7 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
 	//ディレクションライト、ポイントライト、スポットライト、
 	//アンビエントライト、半球ライト、法線マップ、スペキュラマップを合算して最終的な光を求める
     float3 lig = directionLig + ambientLight + hemLig + normalMap + specularMap;
-    for (int j = 0; j < 2; j++)
+    for (int j = 0; j < 10; j++)
     {
         lig += pointLig[j];
         lig += spotLig[j];
@@ -246,10 +273,12 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
     float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
 
     //トゥーン調に変更
-    float4 Col = MakeToonMap(psIn,lig);
+    float4 Col = MakeToonMap(psIn,directionLight.dirDirection); //引数はライトの方向
     
     //求まった色を乗算する
-    return albedoColor *= Col;
+    albedoColor *= Col;
+    
+    return albedoColor;
 }
 
 /// ピクセルシェーダーのエントリー関数。
@@ -262,7 +291,7 @@ float4 PSMain(SPSIn psIn) : SV_Target0
         // 深度値が結構違う場合はピクセルカラーを黒にする
         return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
     }
-
+   
 	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算
     float3 directionLig = CalcLigFromDirectionLight(psIn);
 	
@@ -548,11 +577,10 @@ float3 CalcSpecularMap(SPSIn psIn)
 
 float4 MakeToonMap(SPSIn psIn,float3 light)
 {
-    
     //ハーフランバート拡散照明によるライティング計算
     float p = dot(psIn.normal * -1.0f, light);
     p = p * 0.5f + 0.5f;
-    p = p * p;
+    //p = p * p;
 
     //計算結果よりトゥーンシェーダー用のテクスチャから色をフェッチする
     float4 Col = g_toonMap.Sample(g_sampler, float2(p, 0.0f));
@@ -565,7 +593,7 @@ float OutLine(SPSIn psIn)
     // 自身の深度値と近傍8テクセルの深度値の差を調べる。
     // 近傍8テクセルの深度値を計算して、エッジを抽出する
     // 正規化スクリーン座標系からUV座標系に変換する
-    float2 uv = psIn.posInProj.xy * float2(0.5f, -0.5f) + 0.5f;
+    float2 uv = (psIn.posInProj.xy / psIn.posInProj.w) * float2(0.5f, -0.5f) + 0.5f;
     // 近傍8テクセルへのUVオフセット
     float2 uvOffset[8] =
     {

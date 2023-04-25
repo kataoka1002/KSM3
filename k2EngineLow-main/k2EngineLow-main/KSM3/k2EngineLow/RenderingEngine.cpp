@@ -78,7 +78,7 @@ namespace nsK2EngineLow {
 	void RenderingEngine::InitToonMap()
 	{
 		//トゥーンシェーダーのテクスチャを用意
-		const wchar_t* shaderTex = L"Assets/shader/texture/shader02.DDS";
+		const wchar_t* shaderTex = L"Assets/shader/texture/shader.DDS";
 		m_toonTexture.InitFromDDSFile(shaderTex);
 	}
 

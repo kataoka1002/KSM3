@@ -4,7 +4,8 @@
 
 Customize_area::Customize_area() {
 	c_area_player = FindGO<Player>("player");
-	customize_area_render.Init("Assets/modelData/Customize_area.tkm");
+
+	customize_area_render.Init("Assets/modelData/Customize_area.tkm",false);
 	customize_area_render.SetPosition(C_area_position);
 	customize_area_render.SetScale(c_area_scale);
 	customize_area_render.Update();

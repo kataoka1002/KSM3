@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Enemy.h"
+#include "Enemy_Near.h"
 #include "Player.h"
 #include "Game.h"
 #include <time.h>
@@ -8,7 +8,7 @@
 #include "Drop_item.h"
 
 
-Enemy::Enemy() 
+Enemy_Near::Enemy_Near()
 {
 	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
 	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//二番目のポイント
@@ -17,7 +17,7 @@ Enemy::Enemy()
 	m_point = &m_pointList[0];									//一番目のポイントを入れる
 }
 
-Enemy::~Enemy() 
+Enemy_Near::~Enemy_Near()
 {
 	m_player->enemy_survival = false;	//エネミーが生きているかをプレーヤーに教える
 	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
@@ -26,7 +26,7 @@ Enemy::~Enemy()
 	}
 }
 
-bool Enemy::Start() 
+bool Enemy_Near::Start()
 {
 	m_player = FindGO<Player>("player");
 
@@ -47,27 +47,13 @@ bool Enemy::Start()
 	return true;
 }
 
-void Enemy::SetUp()
+void Enemy_Near::SetUp()
 {
 	//敵の武器の種類の確定
 	m_setWeapon = 1;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
-	//set_weapons = rand() % 3 + 1;
-	if (m_setWeapon == 1) {	//ギガプラズマ
+	//set_weapons = rand() % 1 + 1;
+	if (m_setWeapon == 1) {	//ギガトンキャノン
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
-	}
-	else if (m_setWeapon == 2) { //マシンガン
-		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
-	}
-	else if (m_setWeapon == 3) { //ヘルファイヤ
-		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
@@ -75,7 +61,7 @@ void Enemy::SetUp()
 	}
 }
 
-void Enemy::Update()
+void Enemy_Near::Update()
 {
 	if (m_player->game_state == 0)
 	{
@@ -87,7 +73,7 @@ void Enemy::Update()
 		m_toPlayerDir = m_toPlayer;
 		m_toPlayerDir.Normalize();
 
-		if (m_distToPlayer > 4000.0f)
+		if (m_distToPlayer > 4000.0f && m_targetFlag == false)
 		{
 			m_lockOn = true;
 		}
@@ -107,10 +93,11 @@ void Enemy::Update()
 			Move();				//エネミー移動
 			Attack();			//攻撃
 		}
-			
+
 		WeaponMove();		//武器の移動回転	
 		ItemDrop();			//倒した時にアイテムを落とす処理
-		
+
+
 		//エネミーと武器の更新
 		m_enemyModel.SetPosition(m_enemyPosition);
 		m_enemyModel.SetRotation(m_enemyRotation);
@@ -121,7 +108,7 @@ void Enemy::Update()
 	}
 }
 
-void Enemy::PassMove()
+void Enemy_Near::PassMove()
 {
 	//自分のポジションから目標とするポイントのベクトル
 	Vector3 m_toPoint = m_point->m_position - m_enemyPosition;
@@ -141,12 +128,13 @@ void Enemy::PassMove()
 		if (m_point->m_num == m_pointList.size()) {
 			m_point = &m_pointList[0];
 		}
+
 		//そうでないなら配列の次の要素のポイントを目的地とする
 		else {
 			m_point = &m_pointList[m_point->m_num];
 		}
 	}
-	
+
 	//移動させる。
 	m_enemyMoveSpeed = m_enemyForward * 200.0f;
 	m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
@@ -155,33 +143,24 @@ void Enemy::PassMove()
 	m_enemyRotation.SetRotationY(atan2(m_enemyForward.x, m_enemyForward.z));
 }
 
-void Enemy::PlayerSearch() 
+void Enemy_Near::PlayerSearch()
 {
 	//エネミーの前方向とtoPlayerDirとの内積を計算する
 	float t = m_toPlayerDir.Dot(m_enemyForward);
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
 
-	//エネミーの視野にプレイヤーが入っている&距離が1500以下になる&プレイヤーの方向を向いている
-	if (fabsf(angle) < Math::DegToRad(45.0f) && m_distToPlayer <= 1500.0f && m_enemyDirState == 0) {
-		m_atackOK = true;		
-	}
-	else {
-		m_atackOK = false;
-	}
-
-
 	//エネミーの前方向を更新する
-	if (m_enemyDirState == 0) 
+	if (m_enemyDirState == 0)
 	{
-		m_enemyForward = m_toPlayerDir;					//プレイヤー向き
-		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//移動速度を設定
+		//ダッシュ中じゃないなら
+		if (m_dashFlag == false)
+		{
+			m_enemyForward = m_toPlayerDir;					//プレイヤー向き
+			m_enemyMoveSpeed = m_enemyForward * 250.0f;		//移動速度を設定
+		}
 	}
-	else if (m_enemyDirState == 1) 
-	{
-		m_enemyForward = m_toPlayerDir * -1.0;			//プレイヤーと反対向き
-	}
-	else if (m_enemyDirState == 2) 
+	else if (m_enemyDirState == 2)
 	{
 		m_enemyForward = Cross(m_Up, m_toPlayerDir);	//外積からエネミーの横方向を取得
 		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//移動速度の設定
@@ -191,53 +170,84 @@ void Enemy::PlayerSearch()
 		m_enemyForward = Cross(m_toPlayerDir, m_Up);	//外積からエネミーの横方向を取得
 		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//移動速度の設定
 	}
+	else if (m_enemyDirState == 4)
+	{
+		//攻撃中
+	}
+	else if (m_enemyDirState == 5)	//反動で動けない
+	{	
+		//時間経過
+		m_recoilCount--;			
 
-	//後退してないなら回転する
-	if (m_enemyEscape != true) 
+		if (m_recoilCount <= 0)
+		{
+			//プレイヤーの方を見るようになる(待機状態)
+			m_enemyForward = m_toPlayer;
+		}
+
+		if (m_recoilCount <= -180)
+		{
+			//また戦闘状態になる
+			m_attackFlag = false;	
+			m_targetFlag = false;
+			m_enemyDirState = 0;
+			m_recoilCount = 180;
+		}
+	}
+
+
+	//ダッシュ中じゃないなら回転する
+	if (m_dashFlag != true)
 	{
 		//エネミーの前方向を使って、回転クォータニオンを計算する。
 		m_enemyRotation.SetRotationY(atan2(m_enemyForward.x, m_enemyForward.z));
 	}
 }
 
-void Enemy::Move() 
+void Enemy_Near::Move()
 {
 	if (m_enemyDirState == 0) //プレイヤー向き
 	{
-		//条件を満たしている間だけプレイヤーに向かって移動する
+		//プレイヤーに向かって移動する(通常スピード)
 		if (m_distToPlayer >= 1500.0f && m_distToPlayer <= 4000.0f)
 		{
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
 		}
+		//プレイヤーに向かって移動する(ダッシュ)
+		else if (m_distToPlayer < 1500.0f && m_attackFlag == false)
+		{
+			//ターゲットの設定(1回のみ)
+			if (m_targetFlag == false)
+			{
+				m_enemyTargetPos = m_player->player_position;	//プレイヤーがさっきまでいた場所
+				m_targetFlag = true;
+			}
 
-		//エネミーとプレイヤーの距離が近い時、一定確率で後退する
-		if (m_distToPlayer <= 800.0f && rand() % 200 == 1)
+			//ダッシュ中
+			m_dashFlag = true;	
+			//エネミーの移動
+			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+		}	
+
+		//ターゲットが決まったら
+		if (m_targetFlag == true)	
 		{
-			m_enemyDirState = 1;
-			m_enemyMoveSpeed = m_enemyForward * -250.0f;	//移動速度の設定()
-			m_enemyEscape = true;
-		}
-		//エネミーとプレイヤーの距離が近い時、一定確率で横移動する
-		else if (m_distToPlayer < 1500.0f && rand() % 900 == 1)
-		{
-			m_enemyDirState = 2;
-		}
-		//エネミーとプレイヤーの距離が近い時、一定確率で横移動する
-		else if (m_distToPlayer < 1500.0f && rand() % 900 == 1)
-		{
-			m_enemyDirState = 3;
-		}
-	}
-	else if (m_enemyDirState == 1)	//後ろ向き
-	{
-		//移動させる。
-		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//一定距離以上になると後退ストップ
-		if (m_distToPlayer > 1400.0f || rand() % 400 == 1)
-		{
-			m_enemyEscape = false;
-			m_enemyDirState = 0;
+			//ターゲットまでの距離計算
+			m_toTarget = m_enemyTargetPos - m_enemyPosition;
+			m_distTarget = m_toTarget.Length();
+			m_toTarget.Normalize();
+
+			m_enemyForward = m_toTarget;					//ターゲット向き
+			m_enemyMoveSpeed = m_enemyForward * 700.0f;		//移動速度を計算(ダッシュ)
+
+
+			//近づいたら攻撃
+			if (m_distTarget <= 150.0f)
+			{
+				m_fireFlag = true;
+				m_enemyDirState = 4;
+			}
 		}
 	}
 	else if (m_enemyDirState == 2)	//横向き
@@ -260,11 +270,20 @@ void Enemy::Move()
 			m_enemyDirState = 0;
 		}
 	}
+	else if (m_enemyDirState == 4)
+	{
+		if (m_attackFlag == true)
+		{
+			m_dashFlag = false;
+			m_enemyDirState = 5;	//攻撃したら反動で動けない
+			return;
+		}
+	}
 }
 
-void Enemy::Attack()
+void Enemy_Near::Attack()
 {
-	if (m_atackOK == true)
+	if (m_fireFlag == true)
 	{
 		//攻撃タイミングの計算
 		m_attackCount++;
@@ -272,25 +291,12 @@ void Enemy::Attack()
 		//武器によっての分岐
 		switch (m_setWeapon)
 		{
-		case 1://ギガプラズマ
-			if (m_attackCount % 300 == 0)
+		case 1://ギガトンキャノン
+			if (m_attackCount % 30 == 0)
 			{
 				Fire();	//発射
 				m_attackCount = 0;
-			}
-			break;
-		case 2://マシンガン
-			if (m_attackCount % 60 == 0)
-			{
-				Fire();	//発射
-				m_attackCount = 0;
-			}
-			break;
-		case 3://ヘルファイヤ
-			if (m_attackCount % 60 == 0)
-			{
-				Fire();	//発射
-				m_attackCount = 0;
+				m_fireFlag = false;
 			}
 			break;
 		default:
@@ -299,13 +305,13 @@ void Enemy::Attack()
 	}
 }
 
-void Enemy:: Fire()
+void Enemy_Near::Fire()
 {
 	////弾の生成
-	//m_enemyAttack = NewGO<Enemy_BulletNear>(1, "enemy_attack");
+	//m_enemyAttack = NewGO<Enemy_Bullet>(1, "enemy_attack");
 	//m_enemyAttack->firing_position = m_position;	//弾の位置を設定
 	//m_enemyAttack->e_a_Bullet_Fowrad = m_enemy->m_enemyForward;	//弾の前方向の設定
-	//m_atackState = true;
+	m_attackFlag = true;
 
 	////武器が戦艦砲なら
 	//if (weponNom == 1)
@@ -314,7 +320,7 @@ void Enemy:: Fire()
 	//}
 }
 
-void Enemy::ItemDrop()
+void Enemy_Near::ItemDrop()
 {
 	//体力が0になったらアイテムを落とす
 	if (m_enemyHP <= 0.0f)
@@ -327,7 +333,7 @@ void Enemy::ItemDrop()
 	}
 }
 
-void Enemy::WeaponMove()
+void Enemy_Near::WeaponMove()
 {
 	//武器がエネミーと同じ動きをするようにする(親子関係)
 	Quaternion originRotation = m_enemyRotation;			//回転はエネミーと同じ
@@ -340,7 +346,7 @@ void Enemy::WeaponMove()
 	m_weaponPosition += localPosition;		//それに親から見た位置を足して最終的な武器の位置を決定
 }
 
-void Enemy::Render(RenderContext& rc)
+void Enemy_Near::Render(RenderContext& rc)
 {
 	//モデルの描画。
 	m_enemyModel.Draw(rc);

@@ -5,7 +5,7 @@ class Player;
 class Battle_ship_attack;
 class Drop_item;
 
-class Enemy:public IGameObject
+class Enemy_Near :public IGameObject
 {
 public:
 
@@ -15,8 +15,9 @@ public:
 		int m_num;			//ポイントの番号
 	};
 
-	Enemy();
-	~Enemy();
+	Enemy_Near();
+	~Enemy_Near();
+	
 
 	bool Start();
 	void Update();					//更新処理
@@ -30,10 +31,10 @@ public:
 	void Fire();					//発射
 	void PassMove();				//パス移動
 
+
 	//パス移動に必要な奴ら
 	std::vector<Point> m_pointList;
 	Point* m_point;
-
 
 	Player* m_player = nullptr;
 	Battle_ship_attack* m_battleShipAttack;
@@ -51,17 +52,24 @@ public:
 	Vector3 m_toPlayer;								//プレイヤーへのベクトル
 	Vector3 m_toPlayerDir;							//プレイヤーへの方向
 	Vector3 m_Up = { 0.0f,1.0f,0.0f };				//上方向の設定	
+	Vector3 m_enemyTargetPos = { 0.0f,0.0f,0.0f };	//ターゲットのポジション
+	Vector3 m_toTarget;								//ターゲットへの方向
 
 	bool m_defeatState = false;						//死んだかどうかフラグ
 	bool m_enemyEscape = false;						//後退中かどうかフラグ
-	bool m_atackState = false;
-	bool m_atackOK = false;							//攻撃フラグ
-	bool m_lockOn = false;
+	bool m_attackFlag = false;
+	bool m_fireFlag = false;						//攻撃フラグ
+	bool m_dashFlag = false;						//ダッシュしているかフラグ
+	bool m_targetFlag = false;						//ターゲットを設定しているかどうかフラグ
+	bool m_lockOn = false;							//プレイヤーをロックオンしているかどうか
 	int m_setWeapon = 0;							//武器の種類
 	int m_enemyDirState = 0;						//エネミーの向き
-	int m_enemyGameState=0;
+	int m_enemyGameState = 0;
 	int m_attackCount = 0;							//攻撃の間隔
+	int m_recoilCount = 300;						//反動の時間
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
+	float m_distTarget;								//ターゲットまでの距離
+
 };
 

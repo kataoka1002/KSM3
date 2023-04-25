@@ -27,8 +27,7 @@
     <ClCompile Include="Battle_ship_attack.cpp" />
     <ClCompile Include="Right_arm_weapons.cpp" />
     <ClCompile Include="Core_weapons.cpp" />
-    <ClCompile Include="Enemy_weapons.cpp" />
-    <ClCompile Include="Enemy_attack.cpp" />
+    <ClCompile Include="Enemy_Bullet.cpp" />
     <ClCompile Include="Core_weapons_attack.cpp" />
     <ClCompile Include="Customize_area.cpp" />
     <ClCompile Include="Customize_UI_ver2.cpp" />
@@ -36,6 +35,10 @@
     <ClCompile Include="Shoulder_weapons.cpp" />
     <ClCompile Include="Right_leg_weapons.cpp" />
     <ClCompile Include="Left_leg_weapons.cpp" />
+    <ClCompile Include="Enemy_Far.cpp" />
+    <ClCompile Include="Enemy_Near.cpp" />
+    <ClCompile Include="Enemy_BulletNear.cpp" />
+    <ClCompile Include="Enemy_BulletFar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -58,8 +61,7 @@
     <ClInclude Include="Battle_ship_attack.h" />
     <ClInclude Include="Right_arm_weapons.h" />
     <ClInclude Include="Core_weapons.h" />
-    <ClInclude Include="Enemy_weapons.h" />
-    <ClInclude Include="Enemy_attack.h" />
+    <ClInclude Include="Enemy_Bullet.h" />
     <ClInclude Include="Core_weapons_attack.h" />
     <ClInclude Include="Customize_area.h" />
     <ClInclude Include="Customize_UI_ver2.h" />
@@ -67,5 +69,9 @@
     <ClInclude Include="Shoulder_weapons.h" />
     <ClInclude Include="Right_leg_weapons.h" />
     <ClInclude Include="Left_leg_weapons.h" />
+    <ClInclude Include="Enemy_Far.h" />
+    <ClInclude Include="Enemy_Near.h" />
+    <ClInclude Include="Enemy_BulletNear.h" />
+    <ClInclude Include="Enemy_BulletFar.h" />
   </ItemGroup>
 </Project>

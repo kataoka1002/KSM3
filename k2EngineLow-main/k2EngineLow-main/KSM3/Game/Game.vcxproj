@@ -233,8 +233,11 @@
     <ClCompile Include="Customize_UI_ver2.cpp" />
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Enemy_attack.cpp" />
-    <ClCompile Include="Enemy_weapons.cpp" />
+    <ClCompile Include="Enemy_Bullet.cpp" />
+    <ClCompile Include="Enemy_BulletFar.cpp" />
+    <ClCompile Include="Enemy_BulletNear.cpp" />
+    <ClCompile Include="Enemy_Far.cpp" />
+    <ClCompile Include="Enemy_Near.cpp" />
     <ClCompile Include="Enumeration.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -267,8 +270,11 @@
     <ClInclude Include="Customize_UI_ver2.h" />
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Enemy_attack.h" />
-    <ClInclude Include="Enemy_weapons.h" />
+    <ClInclude Include="Enemy_Bullet.h" />
+    <ClInclude Include="Enemy_BulletFar.h" />
+    <ClInclude Include="Enemy_BulletNear.h" />
+    <ClInclude Include="Enemy_Far.h" />
+    <ClInclude Include="Enemy_Near.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />

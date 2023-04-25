@@ -1,5 +1,5 @@
 /*!
- * @brief	シンプルなモデルシェーダー。
+ * @brief	モデルシェーダー。
  */
 
 ////////////////////////////////////////////////
@@ -53,10 +53,10 @@ cbuffer directionLightCb : register(b1)
     float3 ambientLight; //アンビエントライトの強さ
    	
     //ポイントライト用
-    PointLight pointLight[2];
+    PointLight pointLight[10];
 	
     //スポットライト用
-    SpotLight spotLight[2];
+    SpotLight spotLight[10];
 	
     //半球ライト用
     HemLight hemLight;
@@ -199,9 +199,9 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 	
     //ポイントライト(鏡面拡散どっちも)によるライティングを計算
     //スポットライト(鏡面拡散どっちも)によるライティングを計算
-    float3 pointLig[2];
-    float3 spotLig[2];
-    for (int i = 0; i < 2; i++)
+    float3 pointLig[10];
+    float3 spotLig[10];
+    for (int i = 0; i < 10; i++)
     {
         pointLig[i] = CalcLigFromPointLight(psIn,i);
         spotLig[i] = CalcLigFromSpotLight(psIn,i);
@@ -223,7 +223,7 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 	//ディレクションライト、ポイントライト、スポットライト、
 	//アンビエントライト、半球ライト、法線マップ、スペキュラマップを合算して最終的な光を求める
     float3 lig = directionLig  + ambientLight + hemLig + normalMap + specularMap;
-    for (int j = 0; j < 2; j++)
+    for (int j = 0; j < 10; j++)
     {
         lig += pointLig[j];
         lig += spotLig[j];

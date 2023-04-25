@@ -50,10 +50,10 @@ void Battle_ship_attack::Update() {
 			DeleteGO(this);
 		}
 		if (b_s_attack_player->enemy_survival == true) {
-			Vector3 diff = firing_position - b_s_enemy->enemy_position;
+			Vector3 diff = firing_position - b_s_enemy->m_enemyPosition;
 			if (diff.Length() <= 100.0f)
 			{
-				b_s_enemy->enemy_HP -= 50.0f;
+				b_s_enemy->m_enemyHP -= 50.0f;
 				DeleteGO(this);
 			}
 		}
