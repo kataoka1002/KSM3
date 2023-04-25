@@ -11,6 +11,7 @@
 #include "Boss_Riser.h"
 #include "Boss_Shovel.h"
 #include "Boss_Drill.h"
+#include "Boss_Cannon.h"
 
 
 Boss::Boss() 
@@ -19,6 +20,7 @@ Boss::Boss()
 	b_boss_riser = NewGO<Boss_Riser>(2, "boss_riser");
 	b_boss_shovel = NewGO<Boss_Shovel>(2, "boss_shovel");
 	b_boss_drill = NewGO<Boss_Drill>(2, "boss_drill");
+	b_boss_cannon = NewGO<Boss_Cannon>(2, "boss_cannon");
 }
 
 Boss::~Boss() 

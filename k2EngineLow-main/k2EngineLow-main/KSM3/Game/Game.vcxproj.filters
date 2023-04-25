@@ -52,6 +52,8 @@
     <ClCompile Include="Left_leg_UI.cpp" />
     <ClCompile Include="Right_leg_UI.cpp" />
     <ClCompile Include="Shoulder_UI.cpp" />
+    <ClCompile Include="Boss_Cannon.cpp" />
+    <ClCompile Include="Boss_Cannon_attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -99,5 +101,7 @@
     <ClInclude Include="Left_leg_UI.h" />
     <ClInclude Include="Right_leg_UI.h" />
     <ClInclude Include="Shoulder_UI.h" />
+    <ClInclude Include="Boss_Cannon.h" />
+    <ClInclude Include="Boss_Cannon_attack.h" />
   </ItemGroup>
 </Project>
