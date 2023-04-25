@@ -1,4 +1,4 @@
-//ショベルパーツ。
+//ショベルのパーツ。
 
 #include "stdafx.h"
 #include "Boss_Shovel.h"

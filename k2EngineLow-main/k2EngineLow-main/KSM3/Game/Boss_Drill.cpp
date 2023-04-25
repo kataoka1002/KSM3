@@ -1,4 +1,4 @@
-//ライザーパーツ。
+//ドリルのパーツ。
 
 #include "stdafx.h"
 #include "Boss_Drill.h"
