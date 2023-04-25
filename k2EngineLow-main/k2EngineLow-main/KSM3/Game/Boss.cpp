@@ -1,4 +1,4 @@
-//ストライカーパーツ。
+//ストライカーのパーツ。
 
 #include "stdafx.h"
 #include "Boss.h"
@@ -12,6 +12,7 @@
 #include "Boss_Shovel.h"
 #include "Boss_Drill.h"
 #include "Boss_Cannon.h"
+#include "Boss_Turbo.h"
 
 
 Boss::Boss() 
@@ -21,16 +22,26 @@ Boss::Boss()
 	b_boss_shovel = NewGO<Boss_Shovel>(2, "boss_shovel");
 	b_boss_drill = NewGO<Boss_Drill>(2, "boss_drill");
 	b_boss_cannon = NewGO<Boss_Cannon>(2, "boss_cannon");
+	b_boss_turbo = NewGO<Boss_Turbo>(2, "boss_turbo");
 }
 
 Boss::~Boss() 
 {
-	DeleteGO(b_boss_riser);//エネミーの武器の削除
+	DeleteGO(b_boss_riser);//ライザーの武器削除。
+	DeleteGO(b_boss_shovel);//ショベルの武器削除。
+	DeleteGO(b_boss_drill);//ドリルの武器削除。
+	DeleteGO(b_boss_cannon);//キャノンの武器削除。
+	DeleteGO(b_boss_turbo);//ターボの武器削除。
 	b_player->boss_survival = false;//ボスが生きているかをプレーヤーに教える
 	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
 	//ココもいらない?
-	if (defeat_state == true) {
+	if (defeat_state == true) 
+	{
 		drop_item->drop_kinds = b_boss_riser->set_weapons;
+		drop_item->drop_kinds = b_boss_shovel->set_weapons;
+		drop_item->drop_kinds = b_boss_drill->set_weapons;
+		drop_item->drop_kinds = b_boss_cannon->set_weapons;
+		drop_item->drop_kinds = b_boss_turbo->set_weapons;
 	}
 }
 
