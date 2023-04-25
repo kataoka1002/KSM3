@@ -45,6 +45,13 @@
     <ClCompile Include="Boss_Shovel_attack.cpp" />
     <ClCompile Include="Boss_Drill.cpp" />
     <ClCompile Include="Boss_Drill_attack.cpp" />
+    <ClCompile Include="Enemy_HP_UI.cpp" />
+    <ClCompile Include="Game_UI.cpp" />
+    <ClCompile Include="Left_arm_UI.cpp" />
+    <ClCompile Include="Right_arm_UI.cpp" />
+    <ClCompile Include="Left_leg_UI.cpp" />
+    <ClCompile Include="Right_leg_UI.cpp" />
+    <ClCompile Include="Shoulder_UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -85,5 +92,12 @@
     <ClInclude Include="Boss_Shovel_attack.h" />
     <ClInclude Include="Boss_Drill.h" />
     <ClInclude Include="Boss_Drill_attack.h" />
+    <ClInclude Include="Enemy_HP_UI.h" />
+    <ClInclude Include="Game_UI.h" />
+    <ClInclude Include="Left_arm_UI.h" />
+    <ClInclude Include="Right_arm_UI.h" />
+    <ClInclude Include="Left_leg_UI.h" />
+    <ClInclude Include="Right_leg_UI.h" />
+    <ClInclude Include="Shoulder_UI.h" />
   </ItemGroup>
 </Project>

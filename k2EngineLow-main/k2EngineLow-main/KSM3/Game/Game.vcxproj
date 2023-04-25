@@ -243,18 +243,24 @@
     <ClCompile Include="Enemy_attack.cpp" />
     <ClCompile Include="Enemy_type2.cpp" />
     <ClCompile Include="Enemy_type2_weapons.cpp" />
+    <ClCompile Include="Enemy_HP_UI.cpp" />
     <ClCompile Include="Enemy_weapons.cpp" />
     <ClCompile Include="Enumeration.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Left_arm_UI.cpp" />
     <ClCompile Include="Left_arm_weapons.cpp" />
+    <ClCompile Include="Left_leg_UI.cpp" />
     <ClCompile Include="Left_leg_weapons.cpp" />
     <ClCompile Include="Lighting.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="Right_arm_UI.cpp" />
     <ClCompile Include="Right_arm_weapons.cpp" />
+    <ClCompile Include="Right_leg_UI.cpp" />
     <ClCompile Include="Right_leg_weapons.cpp" />
+    <ClCompile Include="Shoulder_UI.cpp" />
     <ClCompile Include="Shoulder_weapons.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -264,6 +270,7 @@
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Game_UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
@@ -286,22 +293,29 @@
     <ClInclude Include="Enemy_attack.h" />
     <ClInclude Include="Enemy_type2.h" />
     <ClInclude Include="Enemy_type2_weapons.h" />
+    <ClInclude Include="Enemy_HP_UI.h" />
     <ClInclude Include="Enemy_weapons.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Left_arm_UI.h" />
     <ClInclude Include="Left_arm_weapons.h" />
+    <ClInclude Include="Left_leg_UI.h" />
     <ClInclude Include="Left_leg_weapons.h" />
     <ClInclude Include="Lighting.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Result.h" />
+    <ClInclude Include="Right_arm_UI.h" />
     <ClInclude Include="Right_arm_weapons.h" />
+    <ClInclude Include="Right_leg_UI.h" />
     <ClInclude Include="Right_leg_weapons.h" />
+    <ClInclude Include="Shoulder_UI.h" />
     <ClInclude Include="Shoulder_weapons.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="Game_UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,6 +14,8 @@ class GameCamera;
 class Test;
 class Boss;
 class Boss_Riser;
+class Game_UI;
+class Enemy_HP_UI;
 
 class Enemy_weapons;
 
@@ -33,6 +35,13 @@ public:
 	};
 	AnimationClip animationClips[enAnimClip_Num];
 
+	void AddDefeatedEnemyNumber()
+	{
+		m_numDefeatedEnemy++;
+	}
+	int						m_numEnemy = 0;					//エネミーの数。
+	int						m_numDefeatedEnemy = 0;			//倒されたエネミーの数。
+
 	Player* player;//プレイヤー
 	Title* title;//タイトル
 	Result* result;//リザルト
@@ -45,6 +54,8 @@ public:
 	GameCamera* gamecamera;
 	Boss* boss;
 	Boss_Riser* boss_riser;
+	Game_UI* game_ui;
+	Enemy_HP_UI* e_h_ui;
 
 	Enemy_weapons* enemy_weapons;
 

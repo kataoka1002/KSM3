@@ -13,6 +13,8 @@
 #include "GameCamera.h"
 #include "Boss.h"
 #include "Boss_RIser.h"
+#include "Game_UI.h"
+#include "Enemy_HP_UI.h"
 
 #include "Enemy_weapons.h"
 
@@ -75,6 +77,7 @@ Game::Game()
 	//boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
 	//boss_riser->b_w_position = { -600.0f,100.0f,19000.0f };
 
+	m_numEnemy++;
 	
 
 	drop_item = NewGO< Drop_item>(1, "drop_item");
@@ -82,6 +85,8 @@ Game::Game()
 
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 	core_weapons = NewGO<Core_weapons>(2, "core_weapons");
+	game_ui = NewGO<Game_UI>(0, "game_ui");
+	e_h_ui = NewGO<Enemy_HP_UI>(1 , "enemy_hp_ui");
 }
 
 Game::~Game()
@@ -101,7 +106,8 @@ Game::~Game()
 	DeleteGO(background);
 
 	DeleteGO(gamecamera);
-
+	DeleteGO(game_ui);
+	DeleteGO(e_h_ui);
 }
 
 void Game::Update()
@@ -111,7 +117,7 @@ void Game::Update()
 	//表示するテキストを設定。
 	m_fontRender.SetText(L"あいうえお\n");
 	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(-800.0f, 0.0f, 0.0f));
+	m_fontRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 	//フォントの大きさを設定。
 	m_fontRender.SetScale(2.0f);
 	//フォントの色を設定。
