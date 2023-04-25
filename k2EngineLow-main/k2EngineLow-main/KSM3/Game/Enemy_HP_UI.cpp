@@ -39,7 +39,7 @@ void Enemy_HP_UI::Update()
 void Enemy_HP_UI::Enemy_HP_Position()
 {
 	//“G‚ÌHP‚ÌˆÊ’u‚ð“G‚ÌˆÊ’u‚É‡‚í‚¹‚é
-	hp_position = enemy->enemy_position;
+	hp_position = enemy->m_enemyPosition;
 	hp_position.y += 100.0f;
 	hp_position.z += 100.0f;
 	hp_render.SetPosition(hp_position);
