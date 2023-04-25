@@ -6,67 +6,69 @@
 #include <stdlib.h>
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
-
+#include "Game.h"
 
 Enemy::Enemy() 
 {
-	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//ˆê”Ô–Ú‚Ìƒ|ƒCƒ“ƒg
-	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//“ñ”Ô–Ú‚Ìƒ|ƒCƒ“ƒg
-	m_pointList.push_back({ Vector3(100.0f,0.0f,200.0f),3 });	//O”Ô–Ú‚Ìƒ|ƒCƒ“ƒg
-	m_pointList.push_back({ Vector3(-100.0f,0.0f,200.0f),4 });	//l”Ô–Ú‚Ìƒ|ƒCƒ“ƒg
-	m_point = &m_pointList[0];									//ˆê”Ô–Ú‚Ìƒ|ƒCƒ“ƒg‚ğ“ü‚ê‚é
+	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//ä¸€ç•ªç›®ã®ãƒã‚¤ãƒ³ãƒˆ
+	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//äºŒç•ªç›®ã®ãƒã‚¤ãƒ³ãƒˆ
+	m_pointList.push_back({ Vector3(100.0f,0.0f,200.0f),3 });	//ä¸‰ç•ªç›®ã®ãƒã‚¤ãƒ³ãƒˆ
+	m_pointList.push_back({ Vector3(-100.0f,0.0f,200.0f),4 });	//å››ç•ªç›®ã®ãƒã‚¤ãƒ³ãƒˆ
+	m_point = &m_pointList[0];									//ä¸€ç•ªç›®ã®ãƒã‚¤ãƒ³ãƒˆã‚’å…¥ã‚Œã‚‹
 }
 
 Enemy::~Enemy() 
 {
-	m_player->enemy_survival = false;	//ƒGƒlƒ~[‚ª¶‚«‚Ä‚¢‚é‚©‚ğƒvƒŒ[ƒ„[‚É‹³‚¦‚é
-	//ƒGƒlƒ~[‚ª‚Ç‚Ì•Ší‚ğ‚Á‚Ä‚¢‚½‚©æ“¾‚µAƒhƒƒbƒv‚·‚éƒAƒCƒeƒ€‚ğŒˆ‚ß‚é
+	m_player->enemy_survival = false;	//ã‚¨ãƒãƒŸãƒ¼ãŒç”Ÿãã¦ã„ã‚‹ã‹ã‚’ãƒ—ãƒ¬ãƒ¼ãƒ¤ãƒ¼ã«æ•™ãˆã‚‹
+	//ã‚¨ãƒãƒŸãƒ¼ãŒã©ã®æ­¦å™¨ã‚’æŒã£ã¦ã„ãŸã‹å–å¾—ã—ã€ãƒ‰ãƒ­ãƒƒãƒ—ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ±ºã‚ã‚‹
 	if (m_defeatState == true) {
 		m_dropItem->drop_kinds = m_setWeapon;
 	}
 }
 
+
 bool Enemy::Start() 
 {
 	m_player = FindGO<Player>("player");
 
-	//ƒGƒlƒ~[‚Ìİ’è
+	//ã‚¨ãƒãƒŸãƒ¼ã®è¨­å®š
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");
 	m_enemyModel.SetScale(2.0f);
 	m_enemyModel.SetRotation(m_enemyRotation);
 	m_enemyModel.SetPosition(m_enemyPosition);
-	//ƒLƒƒƒ‰ƒNƒ^[ƒRƒ“ƒgƒ[ƒ‰[‚ğ‰Šú‰»B
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚’åˆæœŸåŒ–ã€‚
 	m_enemyCharacterController.Init(
-		50.0f,			//”¼ŒaB
-		40.0f,			//‚‚³B
-		m_enemyPosition	//À•WB
+		50.0f,			//åŠå¾„ã€‚
+		40.0f,			//é«˜ã•ã€‚
+		m_enemyPosition	//åº§æ¨™ã€‚
+
 	);
 
-	SetUp();	//•Ší¶¬
+	SetUp();	//æ­¦å™¨ç”Ÿæˆ
 
 	return true;
 }
 
 void Enemy::SetUp()
 {
-	//“G‚Ì•Ší‚Ìí—Ş‚ÌŠm’è
-	m_setWeapon = 1;//‚±‚±‚Í‚¢‚Á‚½‚ñ‰¼‚Å’è”İ’è‚µ‚Ä‚é‚¾‚¯‚ÅŒãXƒ‰ƒ“ƒ_ƒ€‚É‚µ‚Ä‚¢‚­—\’è
+	//æ•µã®æ­¦å™¨ã®ç¨®é¡ã®ç¢ºå®š
+	m_setWeapon = 1;//ã“ã“ã¯ã„ã£ãŸã‚“ä»®ã§å®šæ•°è¨­å®šã—ã¦ã‚‹ã ã‘ã§å¾Œã€…ãƒ©ãƒ³ãƒ€ãƒ ã«ã—ã¦ã„ãäºˆå®š
 	//set_weapons = rand() % 3 + 1;
-	if (m_setWeapon == 1) {	//ƒMƒKƒvƒ‰ƒYƒ}
+	if (m_setWeapon == 1) {	//ã‚®ã‚¬ãƒ—ãƒ©ã‚ºãƒ
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
 	}
-	else if (m_setWeapon == 2) { //ƒ}ƒVƒ“ƒKƒ“
+	else if (m_setWeapon == 2) { //ãƒã‚·ãƒ³ã‚¬ãƒ³
 		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
 	}
-	else if (m_setWeapon == 3) { //ƒwƒ‹ƒtƒ@ƒCƒ„
+	else if (m_setWeapon == 3) { //ãƒ˜ãƒ«ãƒ•ã‚¡ã‚¤ãƒ¤
 		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
@@ -79,11 +81,11 @@ void Enemy::Update()
 {
 	if (m_player->game_state == 0)
 	{
-		//ƒGƒlƒ~[‚©‚çƒvƒŒƒCƒ„[‚Ö‚ÌƒxƒNƒgƒ‹
+		//ã‚¨ãƒãƒŸãƒ¼ã‹ã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
 		m_toPlayer = m_player->player_position - m_enemyPosition;
-		//ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚ğŒvZ‚·‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢ã‚’è¨ˆç®—ã™ã‚‹
 		m_distToPlayer = m_toPlayer.Length();
-		//ƒvƒŒƒCƒ„[‚ÉŒü‚©‚Á‚ÄL‚Ñ‚éƒxƒNƒgƒ‹‚ğ³‹K‰»‚·‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘ã‹ã£ã¦ä¼¸ã³ã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–ã™ã‚‹
 		m_toPlayerDir = m_toPlayer;
 		m_toPlayerDir.Normalize();
 
@@ -96,22 +98,23 @@ void Enemy::Update()
 			m_lockOn = false;
 		}
 
-		//ƒƒbƒNƒIƒ“‚µ‚Ä‚È‚¢‚È‚çƒpƒXˆÚ“®‚·‚é
+		//ãƒ­ãƒƒã‚¯ã‚ªãƒ³ã—ã¦ãªã„ãªã‚‰ãƒ‘ã‚¹ç§»å‹•ã™ã‚‹
 		if (m_lockOn == true)
 		{
 			PassMove();
 		}
 		if (m_lockOn == false)
 		{
-			PlayerSearch();		//õ“G
-			Move();				//ƒGƒlƒ~[ˆÚ“®
-			Attack();			//UŒ‚
+			PlayerSearch();		//ç´¢æ•µ
+			Move();				//ã‚¨ãƒãƒŸãƒ¼ç§»å‹•
+			Attack();			//æ”»æ’ƒ
 		}
 			
-		WeaponMove();		//•Ší‚ÌˆÚ“®‰ñ“]	
-		ItemDrop();			//“|‚µ‚½‚ÉƒAƒCƒeƒ€‚ğ—‚Æ‚·ˆ—
+
+		WeaponMove();		//æ­¦å™¨ã®ç§»å‹•å›è»¢	
+		ItemDrop();			//å€’ã—ãŸæ™‚ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è½ã¨ã™å‡¦ç†
 		
-		//ƒGƒlƒ~[‚Æ•Ší‚ÌXV
+		//ã‚¨ãƒãƒŸãƒ¼ã¨æ­¦å™¨ã®æ›´æ–°
 		m_enemyModel.SetPosition(m_enemyPosition);
 		m_enemyModel.SetRotation(m_enemyRotation);
 		m_enemyModel.Update();
@@ -123,46 +126,47 @@ void Enemy::Update()
 
 void Enemy::PassMove()
 {
-	//©•ª‚Ìƒ|ƒWƒVƒ‡ƒ“‚©‚ç–Ú•W‚Æ‚·‚éƒ|ƒCƒ“ƒg‚ÌƒxƒNƒgƒ‹
+	//è‡ªåˆ†ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‹ã‚‰ç›®æ¨™ã¨ã™ã‚‹ãƒã‚¤ãƒ³ãƒˆã®ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 m_toPoint = m_point->m_position - m_enemyPosition;
-	//‹——£‚ğŒvZ
+	//è·é›¢ã‚’è¨ˆç®—
 	float m_diffToPoint = m_toPoint.Length();
-	//•ûŒü‚ÌŒvZ
+	//æ–¹å‘ã®è¨ˆç®—
 	Vector3 m_toPointDir = m_toPoint;
 	m_toPointDir.Normalize();
-	//‘O•ûŒü‚Ìİ’è
+	//å‰æ–¹å‘ã®è¨­å®š
 	m_enemyForward = m_toPointDir;
 
-	//‹——£‚ªˆê’èˆÈ“à‚È‚ç–Ú“I’n‚Æ‚·‚éƒ|ƒCƒ“ƒg‚ğ•Ï‚¦‚é
+	//è·é›¢ãŒä¸€å®šä»¥å†…ãªã‚‰ç›®çš„åœ°ã¨ã™ã‚‹ãƒã‚¤ãƒ³ãƒˆã‚’å¤‰ãˆã‚‹
 	if (m_diffToPoint < 20.0f)
 	{
-		//¡–Ú“I’n‚Æ‚µ‚Ä‚¢‚éƒ|ƒCƒ“ƒg‚ª”z—ñ‚ÌÅŒã‚Ì—v‘f‚È‚ç
-		//ˆê”ÔÅ‰‚Ìƒ|ƒCƒ“ƒg‚ğ–Ú“I’n‚Æ‚·‚é
+		//ä»Šç›®çš„åœ°ã¨ã—ã¦ã„ã‚‹ãƒã‚¤ãƒ³ãƒˆãŒé…åˆ—ã®æœ€å¾Œã®è¦ç´ ãªã‚‰
+		//ä¸€ç•ªæœ€åˆã®ãƒã‚¤ãƒ³ãƒˆã‚’ç›®çš„åœ°ã¨ã™ã‚‹
 		if (m_point->m_num == m_pointList.size()) {
 			m_point = &m_pointList[0];
 		}
-		//‚»‚¤‚Å‚È‚¢‚È‚ç”z—ñ‚ÌŸ‚Ì—v‘f‚Ìƒ|ƒCƒ“ƒg‚ğ–Ú“I’n‚Æ‚·‚é
+		//ãã†ã§ãªã„ãªã‚‰é…åˆ—ã®æ¬¡ã®è¦ç´ ã®ãƒã‚¤ãƒ³ãƒˆã‚’ç›®çš„åœ°ã¨ã™ã‚‹
 		else {
 			m_point = &m_pointList[m_point->m_num];
+
 		}
 	}
 	
-	//ˆÚ“®‚³‚¹‚éB
+	//ç§»å‹•ã•ã›ã‚‹ã€‚
 	m_enemyMoveSpeed = m_enemyForward * 200.0f;
 	m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
 
-	//ƒGƒlƒ~[‚Ì‘O•ûŒü‚ğg‚Á‚ÄA‰ñ“]ƒNƒH[ƒ^ƒjƒIƒ“‚ğŒvZ‚·‚éB
+	//ã‚¨ãƒãƒŸãƒ¼ã®å‰æ–¹å‘ã‚’ä½¿ã£ã¦ã€å›è»¢ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’è¨ˆç®—ã™ã‚‹ã€‚
 	m_enemyRotation.SetRotationY(atan2(m_enemyForward.x, m_enemyForward.z));
 }
 
 void Enemy::PlayerSearch() 
 {
-	//ƒGƒlƒ~[‚Ì‘O•ûŒü‚ÆtoPlayerDir‚Æ‚Ì“àÏ‚ğŒvZ‚·‚é
+	//ã‚¨ãƒãƒŸãƒ¼ã®å‰æ–¹å‘ã¨toPlayerDirã¨ã®å†…ç©ã‚’è¨ˆç®—ã™ã‚‹
 	float t = m_toPlayerDir.Dot(m_enemyForward);
-	//“àÏ‚ÌŒ‹‰Ê‚ğacosŠÖ”‚É“n‚µ‚ÄAm_enemyFowrad‚ÆtoPlayerDir‚Ì‚È‚·Šp“x‚ğ‹‚ß‚éB
+	//å†…ç©ã®çµæœã‚’acosé–¢æ•°ã«æ¸¡ã—ã¦ã€m_enemyFowradã¨toPlayerDirã®ãªã™è§’åº¦ã‚’æ±‚ã‚ã‚‹ã€‚
 	float angle = acos(t);
 
-	//ƒGƒlƒ~[‚Ì‹–ì‚ÉƒvƒŒƒCƒ„[‚ª“ü‚Á‚Ä‚¢‚é&‹——£‚ª1500ˆÈ‰º‚É‚È‚é&ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğŒü‚¢‚Ä‚¢‚é
+	//ã‚¨ãƒãƒŸãƒ¼ã®è¦–é‡ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå…¥ã£ã¦ã„ã‚‹&è·é›¢ãŒ1500ä»¥ä¸‹ã«ãªã‚‹&ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹å‘ã‚’å‘ã„ã¦ã„ã‚‹
 	if (fabsf(angle) < Math::DegToRad(45.0f) && m_distToPlayer <= 1500.0f && m_enemyDirState == 0) {
 		m_atackOK = true;		
 	}
@@ -171,90 +175,90 @@ void Enemy::PlayerSearch()
 	}
 
 
-	//ƒGƒlƒ~[‚Ì‘O•ûŒü‚ğXV‚·‚é
+	//ã‚¨ãƒãƒŸãƒ¼ã®å‰æ–¹å‘ã‚’æ›´æ–°ã™ã‚‹
 	if (m_enemyDirState == 0) 
 	{
-		m_enemyForward = m_toPlayerDir;					//ƒvƒŒƒCƒ„[Œü‚«
-		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//ˆÚ“®‘¬“x‚ğİ’è
+		m_enemyForward = m_toPlayerDir;					//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å‘ã
+		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//ç§»å‹•é€Ÿåº¦ã‚’è¨­å®š
 	}
 	else if (m_enemyDirState == 1) 
 	{
-		m_enemyForward = m_toPlayerDir * -1.0;			//ƒvƒŒƒCƒ„[‚Æ”½‘ÎŒü‚«
+		m_enemyForward = m_toPlayerDir * -1.0;			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨åå¯¾å‘ã
 	}
 	else if (m_enemyDirState == 2) 
 	{
-		m_enemyForward = Cross(m_Up, m_toPlayerDir);	//ŠOÏ‚©‚çƒGƒlƒ~[‚Ì‰¡•ûŒü‚ğæ“¾
-		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//ˆÚ“®‘¬“x‚Ìİ’è
+		m_enemyForward = Cross(m_Up, m_toPlayerDir);	//å¤–ç©ã‹ã‚‰ã‚¨ãƒãƒŸãƒ¼ã®æ¨ªæ–¹å‘ã‚’å–å¾—
+		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//ç§»å‹•é€Ÿåº¦ã®è¨­å®š
 	}
 	else if (m_enemyDirState == 3)
 	{
-		m_enemyForward = Cross(m_toPlayerDir, m_Up);	//ŠOÏ‚©‚çƒGƒlƒ~[‚Ì‰¡•ûŒü‚ğæ“¾
-		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//ˆÚ“®‘¬“x‚Ìİ’è
+		m_enemyForward = Cross(m_toPlayerDir, m_Up);	//å¤–ç©ã‹ã‚‰ã‚¨ãƒãƒŸãƒ¼ã®æ¨ªæ–¹å‘ã‚’å–å¾—
+		m_enemyMoveSpeed = m_enemyForward * 250.0f;		//ç§»å‹•é€Ÿåº¦ã®è¨­å®š
 	}
 
-	//Œã‘Ş‚µ‚Ä‚È‚¢‚È‚ç‰ñ“]‚·‚é
+	//å¾Œé€€ã—ã¦ãªã„ãªã‚‰å›è»¢ã™ã‚‹
 	if (m_enemyEscape != true) 
 	{
-		//ƒGƒlƒ~[‚Ì‘O•ûŒü‚ğg‚Á‚ÄA‰ñ“]ƒNƒH[ƒ^ƒjƒIƒ“‚ğŒvZ‚·‚éB
+		//ã‚¨ãƒãƒŸãƒ¼ã®å‰æ–¹å‘ã‚’ä½¿ã£ã¦ã€å›è»¢ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’è¨ˆç®—ã™ã‚‹ã€‚
 		m_enemyRotation.SetRotationY(atan2(m_enemyForward.x, m_enemyForward.z));
 	}
 }
 
 void Enemy::Move() 
 {
-	if (m_enemyDirState == 0) //ƒvƒŒƒCƒ„[Œü‚«
+	if (m_enemyDirState == 0) //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å‘ã
 	{
-		//ğŒ‚ğ–‚½‚µ‚Ä‚¢‚éŠÔ‚¾‚¯ƒvƒŒƒCƒ„[‚ÉŒü‚©‚Á‚ÄˆÚ“®‚·‚é
+		//æ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ã‚‹é–“ã ã‘ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘ã‹ã£ã¦ç§»å‹•ã™ã‚‹
 		if (m_distToPlayer >= 1500.0f && m_distToPlayer <= 4000.0f)
 		{
-			//ƒGƒlƒ~[‚ÌˆÚ“®
+			//ã‚¨ãƒãƒŸãƒ¼ã®ç§»å‹•
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
 		}
 
-		//ƒGƒlƒ~[‚ÆƒvƒŒƒCƒ„[‚Ì‹——£‚ª‹ß‚¢Aˆê’èŠm—¦‚ÅŒã‘Ş‚·‚é
+		//ã‚¨ãƒãƒŸãƒ¼ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è·é›¢ãŒè¿‘ã„æ™‚ã€ä¸€å®šç¢ºç‡ã§å¾Œé€€ã™ã‚‹
 		if (m_distToPlayer <= 800.0f && rand() % 200 == 1)
 		{
 			m_enemyDirState = 1;
-			m_enemyMoveSpeed = m_enemyForward * -250.0f;	//ˆÚ“®‘¬“x‚Ìİ’è()
+			m_enemyMoveSpeed = m_enemyForward * -250.0f;	//ç§»å‹•é€Ÿåº¦ã®è¨­å®š()
 			m_enemyEscape = true;
 		}
-		//ƒGƒlƒ~[‚ÆƒvƒŒƒCƒ„[‚Ì‹——£‚ª‹ß‚¢Aˆê’èŠm—¦‚Å‰¡ˆÚ“®‚·‚é
+		//ã‚¨ãƒãƒŸãƒ¼ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è·é›¢ãŒè¿‘ã„æ™‚ã€ä¸€å®šç¢ºç‡ã§æ¨ªç§»å‹•ã™ã‚‹
 		else if (m_distToPlayer < 1500.0f && rand() % 900 == 1)
 		{
 			m_enemyDirState = 2;
 		}
-		//ƒGƒlƒ~[‚ÆƒvƒŒƒCƒ„[‚Ì‹——£‚ª‹ß‚¢Aˆê’èŠm—¦‚Å‰¡ˆÚ“®‚·‚é
+		//ã‚¨ãƒãƒŸãƒ¼ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è·é›¢ãŒè¿‘ã„æ™‚ã€ä¸€å®šç¢ºç‡ã§æ¨ªç§»å‹•ã™ã‚‹
 		else if (m_distToPlayer < 1500.0f && rand() % 900 == 1)
 		{
 			m_enemyDirState = 3;
 		}
 	}
-	else if (m_enemyDirState == 1)	//Œã‚ëŒü‚«
+	else if (m_enemyDirState == 1)	//å¾Œã‚å‘ã
 	{
-		//ˆÚ“®‚³‚¹‚éB
+		//ç§»å‹•ã•ã›ã‚‹ã€‚
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//ˆê’è‹——£ˆÈã‚É‚È‚é‚ÆŒã‘ŞƒXƒgƒbƒv
+		//ä¸€å®šè·é›¢ä»¥ä¸Šã«ãªã‚‹ã¨å¾Œé€€ã‚¹ãƒˆãƒƒãƒ—
 		if (m_distToPlayer > 1400.0f || rand() % 400 == 1)
 		{
 			m_enemyEscape = false;
 			m_enemyDirState = 0;
 		}
 	}
-	else if (m_enemyDirState == 2)	//‰¡Œü‚«
+	else if (m_enemyDirState == 2)	//æ¨ªå‘ã
 	{
-		//ˆÚ“®‚³‚¹‚éB
+		//ç§»å‹•ã•ã›ã‚‹ã€‚
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//‚ ‚é’ö“x‚µ‚½‚çƒXƒgƒbƒv
+		//ã‚ã‚‹ç¨‹åº¦ã—ãŸã‚‰ã‚¹ãƒˆãƒƒãƒ—
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
 		}
 	}
-	else if (m_enemyDirState == 3)	//‰¡Œü‚«
+	else if (m_enemyDirState == 3)	//æ¨ªå‘ã
 	{
-		//ˆÚ“®‚³‚¹‚éB
+		//ç§»å‹•ã•ã›ã‚‹ã€‚
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//‚ ‚é’ö“x‚µ‚½‚çƒXƒgƒbƒv
+		//ã‚ã‚‹ç¨‹åº¦ã—ãŸã‚‰ã‚¹ãƒˆãƒƒãƒ—
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
@@ -266,30 +270,30 @@ void Enemy::Attack()
 {
 	if (m_atackOK == true)
 	{
-		//UŒ‚ƒ^ƒCƒ~ƒ“ƒO‚ÌŒvZ
+		//æ”»æ’ƒã‚¿ã‚¤ãƒŸãƒ³ã‚°ã®è¨ˆç®—
 		m_attackCount++;
 
-		//•Ší‚É‚æ‚Á‚Ä‚Ì•ªŠò
+		//æ­¦å™¨ã«ã‚ˆã£ã¦ã®åˆ†å²
 		switch (m_setWeapon)
 		{
-		case 1://ƒMƒKƒvƒ‰ƒYƒ}
+		case 1://ã‚®ã‚¬ãƒ—ãƒ©ã‚ºãƒ
 			if (m_attackCount % 300 == 0)
 			{
-				Fire();	//”­Ë
+				Fire();	//ç™ºå°„
 				m_attackCount = 0;
 			}
 			break;
-		case 2://ƒ}ƒVƒ“ƒKƒ“
+		case 2://ãƒã‚·ãƒ³ã‚¬ãƒ³
 			if (m_attackCount % 60 == 0)
 			{
-				Fire();	//”­Ë
+				Fire();	//ç™ºå°„
 				m_attackCount = 0;
 			}
 			break;
-		case 3://ƒwƒ‹ƒtƒ@ƒCƒ„
+		case 3://ãƒ˜ãƒ«ãƒ•ã‚¡ã‚¤ãƒ¤
 			if (m_attackCount % 60 == 0)
 			{
-				Fire();	//”­Ë
+				Fire();	//ç™ºå°„
 				m_attackCount = 0;
 			}
 			break;
@@ -301,13 +305,13 @@ void Enemy::Attack()
 
 void Enemy:: Fire()
 {
-	////’e‚Ì¶¬
+	////å¼¾ã®ç”Ÿæˆ
 	//m_enemyAttack = NewGO<Enemy_BulletNear>(1, "enemy_attack");
-	//m_enemyAttack->firing_position = m_position;	//’e‚ÌˆÊ’u‚ğİ’è
-	//m_enemyAttack->e_a_Bullet_Fowrad = m_enemy->m_enemyForward;	//’e‚Ì‘O•ûŒü‚Ìİ’è
+	//m_enemyAttack->firing_position = m_position;	//å¼¾ã®ä½ç½®ã‚’è¨­å®š
+	//m_enemyAttack->e_a_Bullet_Fowrad = m_enemy->m_enemyForward;	//å¼¾ã®å‰æ–¹å‘ã®è¨­å®š
 	//m_atackState = true;
 
-	////•Ší‚ªíŠÍ–C‚È‚ç
+	////æ­¦å™¨ãŒæˆ¦è‰¦ç ²ãªã‚‰
 	//if (weponNom == 1)
 	//{
 	//	m_enemyAttack->e_a_aiming = m_enemy->m_enemyRotation;
@@ -316,7 +320,7 @@ void Enemy:: Fire()
 
 void Enemy::ItemDrop()
 {
-	//‘Ì—Í‚ª0‚É‚È‚Á‚½‚çƒAƒCƒeƒ€‚ğ—‚Æ‚·
+	//ä½“åŠ›ãŒ0ã«ãªã£ãŸã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’è½ã¨ã™
 	if (m_enemyHP <= 0.0f)
 	{
 		m_dropItem = NewGO<Drop_item>(1, "drop_item");
@@ -329,20 +333,20 @@ void Enemy::ItemDrop()
 
 void Enemy::WeaponMove()
 {
-	//•Ší‚ªƒGƒlƒ~[‚Æ“¯‚¶“®‚«‚ğ‚·‚é‚æ‚¤‚É‚·‚é(eqŠÖŒW)
-	Quaternion originRotation = m_enemyRotation;			//‰ñ“]‚ÍƒGƒlƒ~[‚Æ“¯‚¶
-	Vector3 localPosition = { 0.0f,40.0f,40.0f };			//e‚©‚çŒ©‚½ˆÊ’u‚Ì’è‹`
-	originRotation.Multiply(localPosition);					//‰½‚©‚µ‚ç‚ÌŒvZ
-	//ÅI“I‚È•Ší‚Ì‰ñ“]‚ğŒˆ’è
+	//æ­¦å™¨ãŒã‚¨ãƒãƒŸãƒ¼ã¨åŒã˜å‹•ãã‚’ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹(è¦ªå­é–¢ä¿‚)
+	Quaternion originRotation = m_enemyRotation;			//å›è»¢ã¯ã‚¨ãƒãƒŸãƒ¼ã¨åŒã˜
+	Vector3 localPosition = { 0.0f,40.0f,40.0f };			//è¦ªã‹ã‚‰è¦‹ãŸä½ç½®ã®å®šç¾©
+	originRotation.Multiply(localPosition);					//ä½•ã‹ã—ã‚‰ã®è¨ˆç®—
+	//æœ€çµ‚çš„ãªæ­¦å™¨ã®å›è»¢ã‚’æ±ºå®š
 	m_weaponRotation = originRotation;
 
-	m_weaponPosition = m_enemyPosition;		//‚Ü‚¸,•Ší‚ÌˆÊ’u‚ğƒGƒlƒ~[‚Æ“¯‚¶‚Éİ’è‚µ
-	m_weaponPosition += localPosition;		//‚»‚ê‚Ée‚©‚çŒ©‚½ˆÊ’u‚ğ‘«‚µ‚ÄÅI“I‚È•Ší‚ÌˆÊ’u‚ğŒˆ’è
+	m_weaponPosition = m_enemyPosition;		//ã¾ãš,æ­¦å™¨ã®ä½ç½®ã‚’ã‚¨ãƒãƒŸãƒ¼ã¨åŒã˜ã«è¨­å®šã—
+	m_weaponPosition += localPosition;		//ãã‚Œã«è¦ªã‹ã‚‰è¦‹ãŸä½ç½®ã‚’è¶³ã—ã¦æœ€çµ‚çš„ãªæ­¦å™¨ã®ä½ç½®ã‚’æ±ºå®š
 }
 
 void Enemy::Render(RenderContext& rc)
 {
-	//ƒ‚ƒfƒ‹‚Ì•`‰æB
+	//ãƒ¢ãƒ‡ãƒ«ã®æç”»ã€‚
 	m_enemyModel.Draw(rc);
 	m_enemyWeaponModel.Draw(rc);
 }

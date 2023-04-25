@@ -13,7 +13,10 @@
 #include "BackGround.h"
 #include "Core_weapons.h"
 #include "GameCamera.h"
-
+#include "Boss.h"
+#include "Boss_RIser.h"
+#include "Game_UI.h"
+#include "Enemy_HP_UI.h"
 
 
 
@@ -66,6 +69,7 @@ Game::Game()
 	lighting = NewGO<Lighting>(1, "lighting");
 	player = NewGO<Player>(2, "player");
 
+
 	float po = 2000.0f;
 	/*for (int i = 0; i < 2; i++)
 	{
@@ -85,6 +89,16 @@ Game::Game()
 		enemy_near[i]->m_enemyPosition = { 0.0f,0.0f,po + 100.0f };
 		po += 500.0f;
 	}
+
+
+
+	boss = NewGO<Boss>(1, "boss");
+	boss->boss_position = { 0.0f,0.0f,10000.0f };
+
+	//boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
+	//boss_riser->b_w_position = { -600.0f,100.0f,19000.0f };
+
+	
 	
 
 	drop_item = NewGO< Drop_item>(1, "drop_item");
@@ -92,6 +106,8 @@ Game::Game()
 
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 	core_weapons = NewGO<Core_weapons>(2, "core_weapons");
+	game_ui = NewGO<Game_UI>(0, "game_ui");
+	e_h_ui = NewGO<Enemy_HP_UI>(1 , "enemy_hp_ui");
 }
 
 Game::~Game()
@@ -103,14 +119,18 @@ Game::~Game()
 	}
 
 	DeleteGO(player);
+
 	DeleteGO(enemy[1]);
+	DeleteGO(boss);
+
 	if (drop_item->GetState == false) {
 		DeleteGO(drop_item);
 	}
 	DeleteGO(background);
 
 	DeleteGO(gamecamera);
-
+	DeleteGO(game_ui);
+	DeleteGO(e_h_ui);
 }
 
 void Game::Update()
@@ -120,7 +140,7 @@ void Game::Update()
 	//表示するテキストを設定。
 	m_fontRender.SetText(L"あいうえお\n");
 	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(-800.0f, 0.0f, 0.0f));
+	m_fontRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 	//フォントの大きさを設定。
 	m_fontRender.SetScale(2.0f);
 	//フォントの色を設定。

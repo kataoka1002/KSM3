@@ -45,7 +45,7 @@ namespace nsK2EngineLow {
 			//トゥーンシェーダーを使用するなら
 			if (m_toonShader == true) {
 				modelInitData.m_expandShaderResoruceView[2] = &g_renderingEngine->GetToonTexture();
-				modelInitData.m_psEntryPointFunc = "PSToonMap";
+				//modelInitData.m_psEntryPointFunc = "PSToonMap";
 			}
 
 
