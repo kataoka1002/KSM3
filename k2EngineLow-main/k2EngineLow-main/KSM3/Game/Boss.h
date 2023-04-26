@@ -9,6 +9,7 @@ class Boss_Shovel;
 class Boss_Drill;
 class Boss_Cannon;
 class Boss_Turbo;
+class Result;
 
 class Boss :public IGameObject
 {
@@ -20,6 +21,7 @@ public:
 	void Update();//更新処理
 	void Render(RenderContext& rc);//描画処理
 	void Move();//移動処理
+	void Damage();
 	void PlayerSearch();//索敵
 
 	Player* b_player = nullptr;
@@ -30,6 +32,7 @@ public:
 	Boss_Drill* b_boss_drill;
 	Boss_Cannon* b_boss_cannon;
 	Boss_Turbo* b_boss_turbo;
+	Result* result;
 
 
 	ModelRender boss_modelRender;//モデルレンダー

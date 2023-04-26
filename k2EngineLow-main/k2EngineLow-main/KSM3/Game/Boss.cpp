@@ -13,6 +13,7 @@
 #include "Boss_Drill.h"
 #include "Boss_Cannon.h"
 #include "Boss_Turbo.h"
+#include "Result.h"
 
 
 Boss::Boss() 
@@ -73,11 +74,13 @@ void Boss::Update()
 
 	boss_modelRender.SetScale(15.0f);
 
+	Damage();
+
 	if (b_player->game_state == 0) {
 		//Move();
 		PlayerSearch();
 		boss_modelRender.Update();
-		if (b_player->attack_state_la == true) {
+		/*if (b_player->attack_state_la == true) {
 			
 			if (boss_HP <= 0.0f) {
 				drop_item = NewGO<Drop_item>(1, "drop_item");
@@ -86,7 +89,7 @@ void Boss::Update()
 				defeat_state = true;
 				DeleteGO(this);
 			}
-		}
+		}*/
 	}
 }
 
@@ -132,6 +135,22 @@ void Boss::Move()
 	//エネミーを移動させる
 	boss_position = boss_characterController.Execute(boss_moveSpeed, g_gameTime->GetFrameDeltaTime());
 	Vector3 modelPosition = boss_position;
+}
+
+void Boss::Damage()
+{
+	if (g_pad[0]->IsPress(enButtonY))
+	{
+		boss_HP = 0.0f;
+	}
+	if (boss_HP <= 0.0f)
+	{
+		b_player->game_end_state == 1;
+		result = NewGO<Result>(1, "result");
+
+		DeleteGO(this);
+
+	}
 }
 
 void Boss::Render(RenderContext& rc)
