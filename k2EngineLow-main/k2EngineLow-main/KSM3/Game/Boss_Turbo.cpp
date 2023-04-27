@@ -22,7 +22,7 @@ void Boss_Turbo::Setup()
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Turbo_Render.Init("Assets/modelData/Boss_riser.tkm");
+		boss_Turbo_Render.Init("Assets/modelData/Boss_turbo.tkm");
 		boss_Turbo_Render.Update();
 	}
 
@@ -46,7 +46,7 @@ void Boss_Turbo::Update()
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
 		Move();
-		if (atack_ok == true)
+		if (attack_ok == true)
 		{
 			firing_cound++;//攻撃のタイミングの計算。
 			if (firing_cound % 108 == 0)

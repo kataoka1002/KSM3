@@ -22,10 +22,11 @@ void Boss_Drill::Setup()
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Drill_Render.Init("Assets/modelData/Boss_kari.tkm");
+		boss_Drill_Render.Init("Assets/modelData/Boss_Drill.tkm");
 		boss_Drill_Render.Update();
 	}
 
+	//キャラコンいらんのん?
 	//キャラコン。
 	//boss_riser_characterContller.Init(
 	//	450.0f,			//半径。
@@ -46,7 +47,7 @@ void Boss_Drill::Update()
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
 		Move();
-		if (atack_ok == true)
+		if (attack_ok == true)
 		{
 			firing_cound++;//攻撃のタイミングの計算。
 			if (firing_cound % 108 == 0)

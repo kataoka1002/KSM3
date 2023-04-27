@@ -32,7 +32,7 @@ public:
 	Vector3 b_w_localposition = { 00.0f,00.0f,-1050.0f };
 
 	bool attack_state = false;
-	bool atack_ok = false;
+	bool attack_ok = false;
 	int set_weapons = 0;
 
 	int firing_cound = 0;

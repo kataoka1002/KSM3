@@ -29,10 +29,10 @@ public:
 	ModelRender boss_Drill_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { 0.0f,0.0f,500.0f };
+	Vector3 b_w_localposition = { 0.0f,0.0f,900.0f };
 
 	bool attack_state = false;
-	bool atack_ok = false;
+	bool attack_ok = false;
 	int set_weapons = 0;
 
 	int firing_cound = 0;

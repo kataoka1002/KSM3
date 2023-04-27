@@ -46,6 +46,7 @@ public:
 
 	int boss_weapons = 1;
 	int boss_game_state = 0;
+	int attack_state = 0;		//UŒ‚’†‚©‚Ç‚¢‚¤‚©B0‚ªUŒ‚’†‚¶‚á–³‚¢B
 
 	float boss_HP = HP;
 };

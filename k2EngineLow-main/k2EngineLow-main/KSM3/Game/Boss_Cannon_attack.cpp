@@ -43,13 +43,15 @@ void Boss_Cannon_attack::Update()
 {
 	if (b_a_player->game_state == 0)
 	{
-		Move();
+		
 		b_a_Bullet.Update();
 		if (firing_position.y <= 0.0f)
 		{
 			DeleteGO(this);
 		}
 	}
+	b_a_Bullet.SetScale(15.0f);
+	Move();
 }
 
 void Boss_Cannon_attack::Move()
@@ -68,6 +70,8 @@ void Boss_Cannon_attack::Move()
 	move_speed -= 0.05f;
 
 	b_a_Bullet.SetPosition(firing_position);
+
+
 }
 
 void Boss_Cannon_attack::Render(RenderContext& rc)

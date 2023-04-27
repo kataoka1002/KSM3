@@ -65,20 +65,13 @@ bool Boss::Start()
 
 void Boss::Update()
 {
-	//ココだけ引っ張ってきた。
-	/*boss_rotation.SetRotationY(atan2(boss_forward.x, boss_forward.z));
-	boss_modelRender.SetPosition(boss_position);
-	boss_modelRender.SetRotation(boss_rotation);
-	boss_modelRender.Update();
-	PlayerSearch();*/
-
 	boss_modelRender.SetScale(15.0f);
-
 	Damage();
 
 	if (b_player->game_state == 0) {
-		//Move();
-		PlayerSearch();
+		
+			PlayerSearch();
+		
 		boss_modelRender.Update();
 		/*if (b_player->attack_state_la == true) {
 			
@@ -108,11 +101,27 @@ void Boss::PlayerSearch()
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
 
+	/*if (fabsf(angle) > Math::DegToRad(45.0f))
+	{
+		boss_rotation.SetRotationY(atan2(boss_forward.x, boss_forward.z));
+		boss_modelRender.SetPosition(boss_position);
+		boss_modelRender.SetRotation(boss_rotation);
+		boss_modelRender.Update();
+	}*/
+
 	if (fabsf(angle) < Math::DegToRad(45.0f)) {
-		b_boss_riser->atack_ok = true;
+		b_boss_riser->attack_ok = true;
+		b_boss_cannon->attack_ok = true;
+		b_boss_drill->attack_ok = true;
+		b_boss_shovel->attack_ok = true;
+		b_boss_turbo->attack_ok = true;
 	}
 	else {
-		b_boss_riser->atack_ok = false;
+		b_boss_riser->attack_ok = false;
+		b_boss_cannon->attack_ok = false;
+		b_boss_drill->attack_ok = false;
+		b_boss_shovel->attack_ok = false;
+		b_boss_turbo->attack_ok = false;
 	}
 
 	//敵キャラの前方方向を更新する
@@ -139,10 +148,13 @@ void Boss::Move()
 
 void Boss::Damage()
 {
-	if (g_pad[0]->IsPress(enButtonY))
-	{
-		boss_HP = 0.0f;
-	}
+	//ボス即死コード。
+	//if (g_pad[0]->IsPress(enButtonY))
+	//{
+	//	boss_HP = 0.0f;
+	//}
+	
+	//やっつけたらリザルト画面へGO!!
 	if (boss_HP <= 0.0f)
 	{
 		b_player->game_end_state == 1;
