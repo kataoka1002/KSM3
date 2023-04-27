@@ -63,7 +63,7 @@ void Boss_Turbo::Update()
 	{
 		DeleteGO(this);
 	}
-	boss_Turbo_Render.Update();
+	
 
 	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
 	//boss_Riser_Render.SetPosition(b_w_position);
@@ -71,7 +71,8 @@ void Boss_Turbo::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Turbo_Render.SetScale(14.0f);
+	boss_Turbo_Render.SetScale(13.0f);
+	boss_Turbo_Render.Update();
 }
 
 void Boss_Turbo::Move()
