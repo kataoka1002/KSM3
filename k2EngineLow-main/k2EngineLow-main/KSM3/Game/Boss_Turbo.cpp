@@ -71,7 +71,7 @@ void Boss_Turbo::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Turbo_Render.SetScale(15.0f);
+	boss_Turbo_Render.SetScale(14.0f);
 }
 
 void Boss_Turbo::Move()

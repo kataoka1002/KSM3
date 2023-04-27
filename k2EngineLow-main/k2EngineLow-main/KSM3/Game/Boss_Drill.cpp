@@ -72,7 +72,7 @@ void Boss_Drill::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Drill_Render.SetScale(15.0f);
+	boss_Drill_Render.SetScale(17.0f);
 }
 
 void Boss_Drill::Move()
