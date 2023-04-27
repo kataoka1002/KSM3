@@ -29,7 +29,7 @@ public:
 	ModelRender boss_Riser_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { 500.0f,200.0f,-150.0f };
+	Vector3 b_w_localposition = { 500.0f,250.0f,-150.0f };
 
 	bool attack_state = false;
 	bool attack_ok = false;
