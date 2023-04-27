@@ -7,6 +7,9 @@ class Drop_item;
 class Boss_Riser;
 class Boss_Shovel;
 class Boss_Drill;
+class Boss_Cannon;
+class Boss_Turbo;
+class Result;
 
 class Boss :public IGameObject
 {
@@ -18,6 +21,7 @@ public:
 	void Update();//更新処理
 	void Render(RenderContext& rc);//描画処理
 	void Move();//移動処理
+	void Damage();
 	void PlayerSearch();//索敵
 
 	Player* b_player = nullptr;
@@ -26,6 +30,9 @@ public:
 	Boss_Riser* b_boss_riser;
 	Boss_Shovel* b_boss_shovel;
 	Boss_Drill* b_boss_drill;
+	Boss_Cannon* b_boss_cannon;
+	Boss_Turbo* b_boss_turbo;
+	Result* result;
 
 
 	ModelRender boss_modelRender;//モデルレンダー
@@ -39,6 +46,7 @@ public:
 
 	int boss_weapons = 1;
 	int boss_game_state = 0;
+	int attack_state = 0;		//攻撃中かどいうか。0が攻撃中じゃ無い。
 
 	float boss_HP = HP;
 };

@@ -35,7 +35,6 @@
     <ClCompile Include="Shoulder_weapons.cpp" />
     <ClCompile Include="Right_leg_weapons.cpp" />
     <ClCompile Include="Left_leg_weapons.cpp" />
-
     <ClCompile Include="Enemy_Far.cpp" />
     <ClCompile Include="Enemy_Near.cpp" />
     <ClCompile Include="Enemy_BulletNear.cpp" />
@@ -54,6 +53,10 @@
     <ClCompile Include="Left_leg_UI.cpp" />
     <ClCompile Include="Right_leg_UI.cpp" />
     <ClCompile Include="Shoulder_UI.cpp" />
+    <ClCompile Include="Boss_Cannon.cpp" />
+    <ClCompile Include="Boss_Cannon_attack.cpp" />
+    <ClCompile Include="Boss_Turbo.cpp" />
+    <ClCompile Include="Boss_Turbo_attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -84,7 +87,6 @@
     <ClInclude Include="Shoulder_weapons.h" />
     <ClInclude Include="Right_leg_weapons.h" />
     <ClInclude Include="Left_leg_weapons.h" />
-
     <ClInclude Include="Enemy_Far.h" />
     <ClInclude Include="Enemy_Near.h" />
     <ClInclude Include="Enemy_BulletNear.h" />
@@ -103,6 +105,9 @@
     <ClInclude Include="Left_leg_UI.h" />
     <ClInclude Include="Right_leg_UI.h" />
     <ClInclude Include="Shoulder_UI.h" />
-
+    <ClInclude Include="Boss_Cannon.h" />
+    <ClInclude Include="Boss_Cannon_attack.h" />
+    <ClInclude Include="Boss_Turbo.h" />
+    <ClInclude Include="Boss_Turbo_attack.h" />
   </ItemGroup>
 </Project>

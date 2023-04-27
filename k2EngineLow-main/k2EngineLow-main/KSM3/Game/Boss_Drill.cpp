@@ -1,10 +1,10 @@
-//ライザーパーツ。
+//ドリルのパーツ。
 
 #include "stdafx.h"
 #include "Boss_Drill.h"
 #include "Player.h"
 #include "Boss.h"
-#include "Boss_Riser_attack.h"
+#include "Boss_Drill_attack.h"
 
 Boss_Drill::Boss_Drill()
 {
@@ -22,10 +22,11 @@ void Boss_Drill::Setup()
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Drill_Render.Init("Assets/modelData/Boss_kari.tkm");
+		boss_Drill_Render.Init("Assets/modelData/Boss_Drill.tkm");
 		boss_Drill_Render.Update();
 	}
 
+	//キャラコンいらんのん?
 	//キャラコン。
 	//boss_riser_characterContller.Init(
 	//	450.0f,			//半径。
@@ -46,12 +47,12 @@ void Boss_Drill::Update()
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
 		Move();
-		if (atack_ok == true)
+		if (attack_ok == true)
 		{
 			firing_cound++;//攻撃のタイミングの計算。
 			if (firing_cound % 108 == 0)
 			{
-				b_boss_weapons = NewGO<Boss_Riser_attack>(1, "boss_riser_attack");
+				b_boss_weapons = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
 				attack_state = true;
 				b_boss_weapons->firing_position = b_w_position;
 				b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
@@ -71,7 +72,8 @@ void Boss_Drill::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Drill_Render.SetScale(15.0f);
+	boss_Drill_Render.SetScale(20.0f);
+	boss_Drill_Render.Update();
 }
 
 void Boss_Drill::Move()

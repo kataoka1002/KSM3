@@ -22,16 +22,21 @@ public:
 	Player* m_player; 
 	SoundSource* m_soundSource;
 
+	Enemy* m_enemyMama = nullptr;
+
 	ModelRender m_bulletModel;
 	Quaternion m_aim;
+	Quaternion m_rot;
+	Quaternion originRotation;
 	Vector3 m_position;
 	Vector3 m_bulletFowrad;
 	Vector3 m_toCoreWeapons;
-
-	float m_bulletSpeed = 30.0f;
+	Vector3 m_bulletSpeed;
+	Vector3 m_macineGunLocalPosition;	//マシンガンの弾のローカルポジション
 	float m_fallSpeed = 0.0f;
 	bool m_attuckState = true;
-	bool fast_count = true;
 	bool Landing_state = false;
+
+	
 };
 

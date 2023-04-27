@@ -1,29 +1,29 @@
-//ショベルのパーツ。
+//ターボのパーツ。
 
 #include "stdafx.h"
-#include "Boss_Shovel.h"
+#include "Boss_Turbo.h"
 #include "Player.h"
 #include "Boss.h"
-#include "Boss_Shovel_attack.h"
+#include "Boss_Turbo_attack.h"
 
-Boss_Shovel::Boss_Shovel()
+Boss_Turbo::Boss_Turbo()
 {
 	b_w_player = FindGO<Player>("player");
 }
 
-Boss_Shovel::~Boss_Shovel()
+Boss_Turbo::~Boss_Turbo()
 {
 	DeleteGO(b_boss_weapons);
 }
 
-void Boss_Shovel::Setup()
+void Boss_Turbo::Setup()
 {
 	set_weapons = 1;
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Shovel_Render.Init("Assets/modelData/Boss_kari.tkm");
-		boss_Shovel_Render.Update();
+		boss_Turbo_Render.Init("Assets/modelData/Boss_turbo.tkm");
+		boss_Turbo_Render.Update();
 	}
 
 	//キャラコン。
@@ -36,7 +36,7 @@ void Boss_Shovel::Setup()
 	//boss_Riser_Render.SetPosition(b_w_position);
 }
 
-void Boss_Shovel::Update()
+void Boss_Turbo::Update()
 {
 	if (fast == 0)
 	{
@@ -51,7 +51,7 @@ void Boss_Shovel::Update()
 			firing_cound++;//攻撃のタイミングの計算。
 			if (firing_cound % 108 == 0)
 			{
-				b_boss_weapons = NewGO<Boss_Shovel_attack>(1, "boss_riser_attack");
+				b_boss_weapons = NewGO<Boss_Turbo_attack>(1, "boss_turbo_attack");
 				attack_state = true;
 				b_boss_weapons->firing_position = b_w_position;
 				b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
@@ -63,7 +63,7 @@ void Boss_Shovel::Update()
 	{
 		DeleteGO(this);
 	}
-	boss_Shovel_Render.Update();
+	
 
 	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
 	//boss_Riser_Render.SetPosition(b_w_position);
@@ -71,10 +71,11 @@ void Boss_Shovel::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Shovel_Render.SetScale(15.0f);
+	boss_Turbo_Render.SetScale(13.0f);
+	boss_Turbo_Render.Update();
 }
 
-void Boss_Shovel::Move()
+void Boss_Turbo::Move()
 {
 	//ここは丸パクリでOK
 	Quaternion originRotation = b_w_boss->boss_rotation;
@@ -83,11 +84,11 @@ void Boss_Shovel::Move()
 	originRotation.Multiply(lp);
 	b_w_position += lp;
 	b_w_rotation = originRotation;
-	boss_Shovel_Render.SetPosition(b_w_position);
-	boss_Shovel_Render.SetRotation(b_w_rotation);
+	boss_Turbo_Render.SetPosition(b_w_position);
+	boss_Turbo_Render.SetRotation(b_w_rotation);
 }
 
-void Boss_Shovel::PlayerSearch()
+void Boss_Turbo::PlayerSearch()
 {
 	////エネミーからプレイヤーが入ってきたら追いかける。
 	//Vector3 toPlayer = b_w_player->player_position - b_w_position;
@@ -108,7 +109,7 @@ void Boss_Shovel::PlayerSearch()
 
 }
 
-void Boss_Shovel::Render(RenderContext& rc)
+void Boss_Turbo::Render(RenderContext& rc)
 {
-	boss_Shovel_Render.Draw(rc);
+	boss_Turbo_Render.Draw(rc);
 }

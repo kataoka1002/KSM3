@@ -2,7 +2,7 @@
 
 class Player;
 class Boss;
-class Boss_Riser_attack;
+class Boss_Drill_attack;
 
 class Boss_Drill :public IGameObject
 {
@@ -18,7 +18,7 @@ public:
 
 	Player* b_w_player;
 	Boss* b_w_boss;
-	Boss_Riser_attack* b_boss_weapons;
+	Boss_Drill_attack* b_boss_weapons;
 
 	//CharacterController boss_riser_characterContller;
 	Quaternion b_w_rotation;
@@ -29,10 +29,10 @@ public:
 	ModelRender boss_Drill_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { 0.0f,-00.0f,500.0f };
+	Vector3 b_w_localposition = { 0.0f,0.0f,900.0f };
 
 	bool attack_state = false;
-	bool atack_ok = false;
+	bool attack_ok = false;
 	int set_weapons = 0;
 
 	int firing_cound = 0;
