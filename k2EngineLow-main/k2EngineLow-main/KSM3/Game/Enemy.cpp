@@ -7,6 +7,8 @@
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
 #include "Game.h"
+#include "Enemy_Bullet.h"
+
 
 Enemy::Enemy() 
 {
@@ -19,7 +21,8 @@ Enemy::Enemy()
 
 Enemy::~Enemy() 
 {
-	m_player->enemy_survival = false;	//エネミーが生きているかをプレーヤーに教える
+	//エネミーが生きているかをプレーヤーに教える
+	m_player->enemy_survival = false;	
 	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
 	if (m_defeatState == true) {
 		m_dropItem->drop_kinds = m_setWeapon;
@@ -30,6 +33,7 @@ Enemy::~Enemy()
 bool Enemy::Start() 
 {
 	m_player = FindGO<Player>("player");
+	
 
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");
@@ -110,7 +114,7 @@ void Enemy::Update()
 			Attack();			//攻撃
 		}
 			
-
+		
 		WeaponMove();		//武器の移動回転	
 		ItemDrop();			//倒した時にアイテムを落とす処理
 		
@@ -213,6 +217,7 @@ void Enemy::Move()
 		{
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+			//Effect(0);
 		}
 
 		//エネミーとプレイヤーの距離が近い時、一定確率で後退する
@@ -279,21 +284,21 @@ void Enemy::Attack()
 		case 1://ギガプラズマ
 			if (m_attackCount % 300 == 0)
 			{
-				Fire();	//発射
+				Fire(1);	//発射
 				m_attackCount = 0;
 			}
 			break;
 		case 2://マシンガン
 			if (m_attackCount % 60 == 0)
 			{
-				Fire();	//発射
+				Fire(2);	//発射
 				m_attackCount = 0;
 			}
 			break;
 		case 3://ヘルファイヤ
 			if (m_attackCount % 60 == 0)
 			{
-				Fire();	//発射
+				Fire(3);	//発射
 				m_attackCount = 0;
 			}
 			break;
@@ -303,18 +308,35 @@ void Enemy::Attack()
 	}
 }
 
-void Enemy:: Fire()
+void Enemy:: Fire(int m_weaponNum)
 {
-	////弾の生成
-	//m_enemyAttack = NewGO<Enemy_BulletNear>(1, "enemy_attack");
-	//m_enemyAttack->firing_position = m_position;	//弾の位置を設定
-	//m_enemyAttack->e_a_Bullet_Fowrad = m_enemy->m_enemyForward;	//弾の前方向の設定
-	//m_atackState = true;
+	if (m_weaponNum == 2)
+	{
+		//弾の生成
+		Enemy_Bullet* m_enemyBullet;
+		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
+		m_enemyBullet->m_enemyMama = this;
+		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
+		m_enemyBullet->m_macineGunLocalPosition = { 30.0f,55.0f,20.0f };	//ローカルポジション設定
+		m_enemyBullet->m_bulletFowrad = m_enemyForward;						//弾の前方向の設定		
+		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+
+		//弾の生成
+		Enemy_Bullet* m_enemyBullet2;
+		m_enemyBullet2 = NewGO<Enemy_Bullet>(1, "enemy_bullet");
+		m_enemyBullet2->m_enemyMama = this;
+		m_enemyBullet2->m_position = m_enemyPosition;						//弾の位置を設定
+		m_enemyBullet2->m_macineGunLocalPosition = { -30.0f,55.0f,20.0f };	//ローカルポジション設定
+		m_enemyBullet2->m_bulletFowrad = m_enemyForward;					//弾の前方向の設定		
+		m_enemyBullet2->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+	}
+
+	m_atackState = true;
 
 	////武器が戦艦砲なら
-	//if (weponNom == 1)
+	//if (m_setWeapon == 1)
 	//{
-	//	m_enemyAttack->e_a_aiming = m_enemy->m_enemyRotation;
+	//	m_enemyBullet->m_aim = m_enemyRotation;
 	//}
 }
 
@@ -342,6 +364,17 @@ void Enemy::WeaponMove()
 
 	m_weaponPosition = m_enemyPosition;		//まず,武器の位置をエネミーと同じに設定し
 	m_weaponPosition += localPosition;		//それに親から見た位置を足して最終的な武器の位置を決定
+}
+
+void Enemy::Damage()
+{
+	//m_battleShipAttack = FindGO<Battle_ship_attack>("buttle_ship_attack");
+	/*Vector3 diff = m_battleShipAttack->firing_position - m_enemyPosition;
+	if (diff.Length() <= 100.0f)
+	{
+		m_enemyHP -= 50.0f;
+		DeleteGO(m_battleShipAttack);
+	}*/
 }
 
 void Enemy::Render(RenderContext& rc)
