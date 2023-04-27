@@ -2,13 +2,13 @@
 
 class Player;
 class Boss;
-class Boss_Riser_attack;
+class Boss_Turbo_attack;
 
-class Boss_Riser :public IGameObject
+class Boss_Turbo :public IGameObject
 {
 public:
-	Boss_Riser();
-	~Boss_Riser();
+	Boss_Turbo();
+	~Boss_Turbo();
 
 	void Setup();
 	void Update();
@@ -18,7 +18,7 @@ public:
 
 	Player* b_w_player;
 	Boss* b_w_boss;
-	Boss_Riser_attack* b_boss_weapons;
+	Boss_Turbo_attack* b_boss_weapons;
 
 	//CharacterController boss_riser_characterContller;
 	Quaternion b_w_rotation;
@@ -26,10 +26,10 @@ public:
 	Vector3 b_w_moveSpeed;
 	Vector3 b_w_Fowrad = { 0.0f,0.0f,1.0f };
 	int game_state = 0;
-	ModelRender boss_Riser_Render;
+	ModelRender boss_Turbo_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { 500.0f,250.0f,-150.0f };
+	Vector3 b_w_localposition = { -630.0f,230.0f,-100.0f };
 
 	bool attack_state = false;
 	bool attack_ok = false;

@@ -14,7 +14,6 @@
 #include "Core_weapons.h"
 #include "GameCamera.h"
 #include "Boss.h"
-#include "Boss_RIser.h"
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
 
@@ -102,7 +101,7 @@ Game::Game()
 
 
 	boss = NewGO<Boss>(1, "boss");
-	boss->boss_position = { 0.0f,0.0f,10000.0f };
+	boss->boss_position = { 0.0f,0.0f,5100.0f };
 
 	//boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
 	//boss_riser->b_w_position = { -600.0f,100.0f,19000.0f };
