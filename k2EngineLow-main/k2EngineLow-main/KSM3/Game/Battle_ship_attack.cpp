@@ -4,11 +4,14 @@
 #include "Left_arm_weapons.h"
 #include "Right_arm_weapons.h"
 #include "Enemy.h"
+#include "Enemy_Far.h"
+#include "Game.h"
 
 Battle_ship_attack::Battle_ship_attack() {
 	b_s_attack_player = FindGO<Player>("player");
 	b_s_left_arm_weapons = FindGO<Left_arm_weapons>("left_arm_weapons");
 	b_s_right_arm_weapons= FindGO<Right_arm_weapons>("right_arm_weapons");
+	m_game = FindGO<Game>("game");
 	B_S_Bullet.Init("Assets/modelData/battleship_gun_bullet.tkm");
 	b_s_enemy = FindGO<Enemy>("enemy");
 	Setup();
@@ -20,6 +23,7 @@ void Battle_ship_attack::Setup() {
 	//firing_position = b_s_left_arm_weapons->l_a_w_position;
 	firing_position.y += 10.0f;
 	B_S_Bullet.SetRotation(B_S_aiming);
+	B_S_Bullet.SetScale(5.0f);
 	B_S_Bullet.SetPosition(firing_position);
 }
 
@@ -49,14 +53,31 @@ void Battle_ship_attack::Update() {
 
 			DeleteGO(this);
 		}
-		if (b_s_attack_player->enemy_survival == true) {
-			Vector3 diff = firing_position - b_s_enemy->m_enemyPosition;
-			if (diff.Length() <= 100.0f)
+		//if (b_s_attack_player->enemy_survival == true) 
+		//{
+			//エネミーの数だけ繰り返す
+			for (auto enemy : m_game->m_enemyObject) 
 			{
-				b_s_enemy->m_enemyHP -= 50.0f;
-				DeleteGO(this);
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemy->m_enemyPosition;
+				if (diff.Length() <= 100.0f)
+				{
+					enemy->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
 			}
-		}
+			//エネミーFarの数だけ繰り返す
+			for (auto enemyFar : m_game->m_enemyFarObject)
+			{
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemyFar->m_enemyPosition;
+				if (diff.Length() <= 100.0f)
+				{
+					enemyFar->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
+			}
+		//}
 	}
 }
 

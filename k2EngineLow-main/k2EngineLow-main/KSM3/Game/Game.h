@@ -49,7 +49,7 @@ public:
 	Result* result;//リザルト
 	Lighting* lighting;//ライティング
 	Enemy_Near*enemy_near[2];
-	Enemy* enemy[2];//エネミー
+	
 	Enemy_Far* enemy_far[2];
 	Left_arm_weapons* s_left_arm_weapons;
 	Drop_item* drop_item;
@@ -61,6 +61,8 @@ public:
 	Game_UI* game_ui;
 	Enemy_HP_UI* e_h_ui;
 
+	std::vector<Enemy*>	m_enemyObject;
+	std::vector<Enemy_Far*> m_enemyFarObject;
 	
 
 	

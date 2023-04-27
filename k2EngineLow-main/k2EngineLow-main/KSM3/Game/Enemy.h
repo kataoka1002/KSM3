@@ -1,9 +1,11 @@
 #pragma once
 #define HP 200.0f
+#include "Game.h"
 
 class Player;
 class Battle_ship_attack;
 class Drop_item;
+class Game;
 
 class Enemy:public IGameObject
 {
@@ -27,8 +29,9 @@ public:
 	void WeaponMove();				//離れる処理
 	void SetUp();					//武器セット
 	void Attack();					//武器を選んで攻撃
-	void Fire();					//発射
+	void Fire(int m_weaponNum);		//発射
 	void PassMove();				//パス移動
+	void Damage();
 
 	//パス移動に必要な奴ら
 	std::vector<Point> m_pointList;
@@ -51,6 +54,7 @@ public:
 	Vector3 m_toPlayer;								//プレイヤーへのベクトル
 	Vector3 m_toPlayerDir;							//プレイヤーへの方向
 	Vector3 m_Up = { 0.0f,1.0f,0.0f };				//上方向の設定	
+	
 
 	bool m_defeatState = false;						//死んだかどうかフラグ
 	bool m_enemyEscape = false;						//後退中かどうかフラグ

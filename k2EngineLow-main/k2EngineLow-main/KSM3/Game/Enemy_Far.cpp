@@ -31,7 +31,7 @@ bool Enemy_Far::Start()
 	m_player = FindGO<Player>("player");
 
 	//エネミーの設定
-	m_enemyModel.Init("Assets/modelData/Enemy_model_type2.tkm");
+	m_enemyModel.Init("Assets/modelData/Enemy_model.tkm");
 	m_enemyModel.SetScale(2.0f);
 	m_enemyModel.SetRotation(m_enemyRotation);
 	m_enemyModel.SetPosition(m_enemyPosition);
@@ -50,7 +50,7 @@ bool Enemy_Far::Start()
 void Enemy_Far::SetUp()
 {
 	//敵の武器の種類の確定
-	m_setWeapon = 1;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
+	m_setWeapon = 2;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
 	//set_weapons = rand() % 2 + 1;
 	if (m_setWeapon == 1) {	//ミサイル
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
@@ -60,7 +60,7 @@ void Enemy_Far::SetUp()
 		m_enemyWeaponModel.Update();
 	}
 	else if (m_setWeapon == 2) { //戦艦砲
-		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
+		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);

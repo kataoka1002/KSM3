@@ -23,6 +23,8 @@
 
 bool Game::Start()
 {
+
+
 	//m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
 	//m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
 
@@ -58,10 +60,7 @@ bool Game::Start()
 	//m_modelRender.Update();
 
 
-
 	return true;
-
-
 }
 
 Game::Game()
@@ -69,14 +68,24 @@ Game::Game()
 	lighting = NewGO<Lighting>(1, "lighting");
 	player = NewGO<Player>(2, "player");
 
-
-	float po = 2000.0f;
+	
+	//エネミーを複数体生成
 	for (int i = 0; i < 2; i++)
 	{
-		enemy[i] = NewGO<Enemy>(1, "enemy");
-		enemy[i]->m_enemyPosition = {0.0f,0.0f,po};
-		po += 500.0f;
+		Enemy* enemy = NewGO<Enemy>(1, "enemy");
+		enemy->m_enemyPosition = { 0.0f,0.0f,2000.0f };
+		
+		m_enemyObject.push_back(enemy);
 	}
+	/*for (int i = 0; i < 2; i++)
+	{
+		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
+		enemyFar->m_enemyPosition = { 0.0f,0.0f,3000.0f };
+
+		m_enemyFarObject.push_back(enemyFar);
+	}*/
+	
+	
 	/*for (int i = 0; i < 2; i++)
 	{
 		enemy_far[i] = NewGO<Enemy_Far>(1, "enemy_far");
@@ -107,20 +116,27 @@ Game::Game()
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 	core_weapons = NewGO<Core_weapons>(2, "core_weapons");
 	game_ui = NewGO<Game_UI>(0, "game_ui");
-	e_h_ui = NewGO<Enemy_HP_UI>(1 , "enemy_hp_ui");
+	//e_h_ui = NewGO<Enemy_HP_UI>(1 , "enemy_hp_ui");
 }
 
 Game::~Game()
 {
-	//プッシュしたボックスを削除していく。
+	//プッシュしたボックスを削除していく
 	for (auto box : m_boxmoves)
 	{
 		DeleteGO(box);
 	}
+	//プッシュしたエネミーを削除していく
+	for (auto enemy : m_enemyObject)
+	{
+		DeleteGO(enemy);
+	}
+	for (auto enemyFar : m_enemyFarObject)
+	{
+		DeleteGO(enemyFar);
+	}
 
 	DeleteGO(player);
-
-	DeleteGO(enemy[1]);
 	DeleteGO(boss);
 
 	if (drop_item->GetState == false) {
@@ -135,6 +151,7 @@ Game::~Game()
 
 void Game::Update()
 {
+
 	//wchar_t wcsbuf[256];
 	//swprintf_s(wcsbuf, 256, L"%d秒経過!!", int(m_timer));
 	//表示するテキストを設定。
