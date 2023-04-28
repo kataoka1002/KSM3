@@ -3,6 +3,8 @@
 
 class Core_weapons;
 class Enemy;
+class Enemy_Near;
+class Enemy_Far;
 class Player;
 
 class Enemy_Bullet:public IGameObject
@@ -14,17 +16,22 @@ public:
 	void Setup();
 	void Update();
 	void Move();
+	void MoveNear();
+	void MoveFar();
 	bool Start();
 	void Render(RenderContext& rc);
 
-	Core_weapons* m_coreWeapons;
-	Enemy* m_enemy;
+	Core_weapons* m_coreWeapons = nullptr;
 	Player* m_player; 
 	SoundSource* m_soundSource;
 
 	Enemy* m_enemyMama = nullptr;
+	Enemy_Near* m_enemyNearMama = nullptr;
+	Enemy_Far* m_enemyFarMama = nullptr;
+	EffectEmitter* masinganEffect = nullptr;
 
-	ModelRender m_bulletModel;
+
+	ModelRender m_bulletModel;	//ƒ}ƒVƒ“ƒKƒ“‚Ì’e‚Ìƒ‚ƒfƒ‹
 	Quaternion m_aim;
 	Quaternion m_rot;
 	Quaternion originRotation;

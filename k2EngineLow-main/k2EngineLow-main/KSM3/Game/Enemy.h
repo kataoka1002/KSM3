@@ -32,6 +32,8 @@ public:
 	void Fire(int m_weaponNum);		//発射
 	void PassMove();				//パス移動
 	void Damage();
+	void Effect();
+	void SE();
 
 	//パス移動に必要な奴ら
 	std::vector<Point> m_pointList;
@@ -41,6 +43,11 @@ public:
 	Player* m_player = nullptr;
 	Battle_ship_attack* m_battleShipAttack;
 	Drop_item* m_dropItem;
+	EffectEmitter* sunabokoriEffect=nullptr;
+	EffectEmitter* sunabokoriEffect2 = nullptr;
+	SoundSource* m_machineGunSE;					//マシンガンSE
+	SoundSource* m_asiotoSE;						//足音
+
 
 	ModelRender m_enemyModel;						//エネミーモデル
 	ModelRender m_enemyWeaponModel;					//武器モデル
@@ -49,7 +56,7 @@ public:
 	Quaternion m_weaponRotation;					//武器クォータニオン
 	Vector3 m_enemyPosition;						//エネミー座標
 	Vector3 m_weaponPosition;						//武器ポジション
-	Vector3 m_enemyMoveSpeed;						//エネミー移動速度
+	Vector3 m_enemyMoveSpeed=Vector3::Zero;						//エネミー移動速度
 	Vector3 m_enemyForward{ 0.0f,0.0f,-1.0f };		//エネミーの正面ベクトル
 	Vector3 m_toPlayer;								//プレイヤーへのベクトル
 	Vector3 m_toPlayerDir;							//プレイヤーへの方向
@@ -60,11 +67,13 @@ public:
 	bool m_enemyEscape = false;						//後退中かどうかフラグ
 	bool m_atackState = false;
 	bool m_atackOK = false;							//攻撃フラグ
-	bool m_lockOn = false;
+	bool m_lockOn = false;							//エネミーがパスのポイントをロックオンしているかどうか
+	bool m_running = false;							//走っているかどうか
 	int m_setWeapon = 0;							//武器の種類
 	int m_enemyDirState = 0;						//エネミーの向き
 	int m_enemyGameState=0;
 	int m_attackCount = 0;							//攻撃の間隔
+	int m_sunaHassei = 0;
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
 };

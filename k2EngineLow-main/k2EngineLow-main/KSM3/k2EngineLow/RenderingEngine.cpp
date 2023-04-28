@@ -99,6 +99,10 @@ namespace nsK2EngineLow {
 		//ブルームを適用(ON.OFF変更可)
 		//m_bloom.Render(rc, m_mainRenderingTarget);
 
+		//ここでエフェクトドロー。
+		EffectEngine::GetInstance()->Draw();
+
+
 		// メインレンダリングターゲットの絵をフレームバッファにコピー
 		CopyMainRenderTargetToFrameBuffer(rc);
 

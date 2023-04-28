@@ -50,9 +50,9 @@ bool Enemy_Near::Start()
 void Enemy_Near::SetUp()
 {
 	//“G‚Ì•Ší‚Ìí—Ş‚ÌŠm’è
-	m_setWeapon = 1;//‚±‚±‚Í‚¢‚Á‚½‚ñ‰¼‚Å’è”İ’è‚µ‚Ä‚é‚¾‚¯‚ÅŒãXƒ‰ƒ“ƒ_ƒ€‚É‚µ‚Ä‚¢‚­—\’è
+	m_setWeapon = 4;//‚±‚±‚Í‚¢‚Á‚½‚ñ‰¼‚Å’è”İ’è‚µ‚Ä‚é‚¾‚¯‚ÅŒãXƒ‰ƒ“ƒ_ƒ€‚É‚µ‚Ä‚¢‚­—\’è
 	//set_weapons = rand() % 1 + 1;
-	if (m_setWeapon == 1) {	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
+	if (m_setWeapon == 4) {	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
@@ -291,7 +291,7 @@ void Enemy_Near::Attack()
 		//•Ší‚É‚æ‚Á‚Ä‚Ì•ªŠò
 		switch (m_setWeapon)
 		{
-		case 1://ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
+		case 4://ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
 			if (m_attackCount % 30 == 0)
 			{
 				Fire();	//”­Ë
