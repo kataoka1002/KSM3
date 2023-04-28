@@ -22,6 +22,8 @@
 
 bool Game::Start()
 {
+	EffectEngine::GetInstance()->ResistEffect(enSunabokori, u"Assets/effect/enemy/sunabokori2.efk");
+	EffectEngine::GetInstance()->ResistEffect(enMasinganHibana, u"Assets/effect/enemy/masinganHibana.efk");
 
 
 	//m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
@@ -69,7 +71,7 @@ Game::Game()
 
 	
 	//エネミーを複数体生成
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
 		enemy->m_enemyPosition = { 0.0f,0.0f,2000.0f };

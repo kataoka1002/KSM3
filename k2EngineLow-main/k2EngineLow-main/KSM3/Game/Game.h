@@ -19,7 +19,10 @@ class Boss_Riser;
 class Game_UI;
 class Enemy_HP_UI;
 
-
+enum EffectName {
+	enSunabokori,		//砂ぼこり
+	enMasinganHibana	//マシンガンから出る火花
+};
 
 
 class Game :public IGameObject

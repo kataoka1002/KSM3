@@ -52,14 +52,14 @@ void Enemy_Far::SetUp()
 	//敵の武器の種類の確定
 	m_setWeapon = 2;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
 	//set_weapons = rand() % 2 + 1;
-	if (m_setWeapon == 1) {	//ミサイル
+	if (m_setWeapon == 5) {	//ミサイル
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
 	}
-	else if (m_setWeapon == 2) { //戦艦砲
+	else if (m_setWeapon == 6) { //戦艦砲
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
@@ -267,14 +267,14 @@ void Enemy_Far::Attack()
 		//武器によっての分岐
 		switch (m_setWeapon)
 		{
-		case 1://ミサイル
+		case 5://ミサイル
 			if (m_attackCount % 180 == 0)
 			{
 				Fire();	//発射
 				m_attackCount = 0;
 			}
 			break;
-		case 2://戦艦砲
+		case 6://戦艦砲
 			if (m_attackCount % 60 == 0)
 			{
 				Fire();	//発射
