@@ -6,10 +6,16 @@
 #include <stdlib.h>
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
+#include "Enemy_Bullet.h"
 
 
 Enemy_Far::Enemy_Far()
 {
+	//効果音の作成
+	m_battleshipGunSE = NewGO<SoundSource>(0);
+	m_asiotoSE = NewGO<SoundSource>(0);
+
+
 	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
 	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//二番目のポイント
 	m_pointList.push_back({ Vector3(100.0f,0.0f,200.0f),3 });	//三番目のポイント
@@ -30,19 +36,31 @@ bool Enemy_Far::Start()
 {
 	m_player = FindGO<Player>("player");
 
+	//砂ぼこりエフェの初期化
+	sunabokoriEffect = NewGO<EffectEmitter>(0);
+	sunabokoriEffect->Init(enSunabokori);
+
 	//エネミーの設定
-	m_enemyModel.Init("Assets/modelData/Enemy_model.tkm");
+	m_enemyModel.Init("Assets/modelData/Enemy_model_type2.tkm");
 	m_enemyModel.SetScale(2.0f);
 	m_enemyModel.SetRotation(m_enemyRotation);
 	m_enemyModel.SetPosition(m_enemyPosition);
 	//キャラクターコントローラーを初期化。
 	m_enemyCharacterController.Init(
-		50.0f,			//半径。
-		40.0f,			//高さ。
+		200.0f,			//半径。
+		70.0f,			//高さ。
 		m_enemyPosition	//座標。
 	);
 
-	SetUp();	//武器生成
+	//足音の設定
+	g_soundEngine->ResistWaveFileBank(0, "Assets/audio/enemy/enemyRunning.wav");
+	m_asiotoSE->Init(0);			//初期化
+	m_asiotoSE->SetVolume(0.8f);	//音量調整
+	m_asiotoSE->Play(true);			//再生
+	m_asiotoSE->Stop();
+
+	//武器生成
+	SetUp();	
 
 	return true;
 }
@@ -50,21 +68,23 @@ bool Enemy_Far::Start()
 void Enemy_Far::SetUp()
 {
 	//敵の武器の種類の確定
-	m_setWeapon = 2;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
+	m_setWeapon = 6;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
 	//set_weapons = rand() % 2 + 1;
 	if (m_setWeapon == 5) {	//ミサイル
-		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
+		
 	}
 	else if (m_setWeapon == 6) { //戦艦砲
+		//武器モデルの設定
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
+		m_enemyWeaponModel.SetScale({ 2.7f ,4.0f,2.7f });
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
+
+		//効果音の設定
+		g_soundEngine->ResistWaveFileBank(2, "Assets/audio/Taihou_kouho1.wav");
+		m_battleshipGunSE->Init(2);			//初期化
+		m_battleshipGunSE->SetVolume(0.2f);	//音量調整
 	}
 }
 
@@ -72,6 +92,9 @@ void Enemy_Far::Update()
 {
 	if (m_player->game_state == 0)
 	{
+		//砂ぼこりの発生カウント
+		m_sunaHassei++;
+
 		//エネミーからプレイヤーへのベクトル
 		m_toPlayer = m_player->player_position - m_enemyPosition;
 		//プレイヤーとの距離を計算する
@@ -102,6 +125,7 @@ void Enemy_Far::Update()
 			Attack();			//攻撃
 		}
 
+		SE();				//効果音の処理
 		WeaponMove();		//武器の移動回転	
 		ItemDrop();			//倒した時にアイテムを落とす処理
 
@@ -113,6 +137,13 @@ void Enemy_Far::Update()
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
+
+		//エフェクト再生中なら更新
+		if (sunabokoriEffect->IsPlay() == true)
+		{
+			sunabokoriEffect->SetRotation(m_weaponRotation);
+			sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y - 20.0f,m_enemyPosition.z });
+		}
 	}
 }
 
@@ -157,8 +188,8 @@ void Enemy_Far::PlayerSearch()
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
 
-	//エネミーの視野にプレイヤーが入っている&距離が1500以下になる&プレイヤーの方向を向いている
-	if (fabsf(angle) < Math::DegToRad(45.0f) && m_distToPlayer <= 1500.0f && m_enemyDirState == 0) {
+	//エネミーの視野にプレイヤーが入っている&距離が3000以下になる&プレイヤーの方向を向いている
+	if (fabsf(angle) < Math::DegToRad(45.0f) && m_distToPlayer <= 3000.0f && m_enemyDirState == 0) {
 		m_atackOK = true;
 	}
 	else {
@@ -204,7 +235,28 @@ void Enemy_Far::Move()
 		{
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+			//砂ぼこりの可視化
+			if (m_sunaHassei >= 10)
+			{
+				Effect();
+				m_sunaHassei = 0;
+			}
+			//足音再生
+			if (m_asiotoSE->IsPlaying() != true)
+			{
+				m_asiotoSE->Play(true);
+			}
 		}
+		else
+		{
+			m_asiotoSE->Stop();			//停止
+			//砂ぼこりを止める
+			if (sunabokoriEffect->IsPlay() == true)
+			{
+				sunabokoriEffect->Stop();
+			}
+		}
+
 
 		//エネミーとプレイヤーの距離が近い時、一定確率で後退する
 		if (m_distToPlayer <= 1500.0f && rand() % 150 == 1)
@@ -228,31 +280,80 @@ void Enemy_Far::Move()
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+		//足音再生
+		if (m_asiotoSE->IsPlaying() != true)
+		{
+			m_asiotoSE->Play(true);
+		}
+
 		//一定距離以上になると後退ストップ
-		if (m_distToPlayer > 2800.0f || rand() % 400 == 1)
+		if (m_distToPlayer > 2800.0f || rand() % 300 == 1)
 		{
 			m_enemyEscape = false;
 			m_enemyDirState = 0;
+			m_asiotoSE->Stop();			//停止
+			//砂ぼこりを停止
+			if (sunabokoriEffect->IsPlay() == true)
+			{
+				sunabokoriEffect->Stop();
+			}
 		}
 	}
 	else if (m_enemyDirState == 2)	//横向き
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+		//砂ぼこりの可視化
+		if (m_sunaHassei >= 10)
+		{
+			Effect();
+			m_sunaHassei = 0;
+		}
+		//足音再生
+		if (m_asiotoSE->IsPlaying() != true)
+		{
+			m_asiotoSE->Play(true);
+		}
+
 		//ある程度したらストップ
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
+			m_asiotoSE->Stop();			//停止
+			//砂ぼこりを停止
+			if (sunabokoriEffect->IsPlay() == true)
+			{
+				sunabokoriEffect->Stop();
+			}
 		}
 	}
 	else if (m_enemyDirState == 3)	//横向き
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+		//砂ぼこりの可視化
+		if (m_sunaHassei >= 10)
+		{
+			Effect();
+			m_sunaHassei = 0;
+		}
+		//足音再生
+		if (m_asiotoSE->IsPlaying() != true)
+		{
+			m_asiotoSE->Play(true);
+		}
+
 		//ある程度したらストップ
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
+			m_asiotoSE->Stop();			//停止
+			//砂ぼこりを停止
+			if (sunabokoriEffect->IsPlay() == true)
+			{
+				sunabokoriEffect->Stop();
+			}
+
 		}
 	}
 }
@@ -270,14 +371,14 @@ void Enemy_Far::Attack()
 		case 5://ミサイル
 			if (m_attackCount % 180 == 0)
 			{
-				Fire();	//発射
+				Fire(5);	//発射
 				m_attackCount = 0;
 			}
 			break;
 		case 6://戦艦砲
-			if (m_attackCount % 60 == 0)
+			if (m_attackCount >= 60)
 			{
-				Fire();	//発射
+				Fire(6);	//発射
 				m_attackCount = 0;
 			}
 			break;
@@ -287,19 +388,35 @@ void Enemy_Far::Attack()
 	}
 }
 
-void Enemy_Far::Fire()
+void Enemy_Far::Fire(int m_weaponNum)
 {
-	////弾の生成
-	//m_enemyAttack = NewGO<Enemy_Bullet>(1, "enemy_attack");
-	//m_enemyAttack->firing_position = m_position;	//弾の位置を設定
-	//m_enemyAttack->e_a_Bullet_Fowrad = m_enemy->m_enemyForward;	//弾の前方向の設定
-	//m_atackState = true;
+	if (m_weaponNum == 6)	//戦艦砲なら
+	{
+		//弾の生成
+		Enemy_Bullet* m_enemyBullet;
+		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
+		m_enemyBullet->m_enemyFarMama = this;
+		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
+		m_enemyBullet->m_bulletLocalPosition = { 105.0f,140.0f,290.0f };	//ローカルポジション設定
+		m_enemyBullet->m_bulletFowrad = m_enemyForward;						//弾の前方向の設定		
+		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 
-	////武器が戦艦砲なら
-	//if (weponNom == 1)
-	//{
-	//	m_enemyAttack->e_a_aiming = m_enemy->m_enemyRotation;
-	//}
+		//弾の生成
+		Enemy_Bullet* m_enemyBullet2;
+		m_enemyBullet2 = NewGO<Enemy_Bullet>(1, "enemy_bullet");
+		m_enemyBullet2->m_enemyFarMama = this;
+		m_enemyBullet2->m_position = m_enemyPosition;						//弾の位置を設定
+		m_enemyBullet2->m_bulletLocalPosition = { -105.0f,140.0f,290.0f };	//ローカルポジション設定
+		m_enemyBullet2->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+
+		//弾の生成
+		Enemy_Bullet* m_enemyBullet3;
+		m_enemyBullet3 = NewGO<Enemy_Bullet>(1, "enemy_bullet");
+		m_enemyBullet3->m_enemyFarMama = this;
+		m_enemyBullet3->m_position = m_enemyPosition;						//弾の位置を設定
+		m_enemyBullet3->m_bulletLocalPosition = { 0.0f,140.0f,290.0f };		//ローカルポジション設定
+		m_enemyBullet3->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+	}
 }
 
 void Enemy_Far::ItemDrop()
@@ -319,7 +436,7 @@ void Enemy_Far::WeaponMove()
 {
 	//武器がエネミーと同じ動きをするようにする(親子関係)
 	Quaternion originRotation = m_enemyRotation;			//回転はエネミーと同じ
-	Vector3 localPosition = { 0.0f,40.0f,40.0f };			//親から見た位置の定義
+	Vector3 localPosition = { 0.0f,120.0f,150.0f };			//親から見た位置の定義
 	originRotation.Multiply(localPosition);					//何かしらの計算
 	//最終的な武器の回転を決定
 	m_weaponRotation = originRotation;
@@ -327,6 +444,44 @@ void Enemy_Far::WeaponMove()
 	m_weaponPosition = m_enemyPosition;		//まず,武器の位置をエネミーと同じに設定し
 	m_weaponPosition += localPosition;		//それに親から見た位置を足して最終的な武器の位置を決定
 }
+
+void Enemy_Far::Damage()
+{
+	//m_battleShipAttack = FindGO<Battle_ship_attack>("buttle_ship_attack");
+	/*Vector3 diff = m_battleShipAttack->firing_position - m_enemyPosition;
+	if (diff.Length() <= 100.0f)
+	{
+		m_enemyHP -= 50.0f;
+		DeleteGO(m_battleShipAttack);
+	}*/
+}
+
+void Enemy_Far::Effect()
+{
+	//砂ぼこりエフェクトの初期化と再生
+	sunabokoriEffect = NewGO<EffectEmitter>(0);
+	sunabokoriEffect->Init(enSunabokori);
+	sunabokoriEffect->SetScale({ 6.0f,6.0f,4.0f });
+	sunabokoriEffect->SetRotation(m_enemyRotation);
+	sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y + 10.0f ,m_enemyPosition.z });
+	sunabokoriEffect->Play();
+}
+
+void Enemy_Far::SE()
+{
+	if (m_setWeapon == 6)	//戦艦砲の時
+	{
+		if (m_attackCount >= 60 && m_atackOK == true && m_battleshipGunSE->IsPlaying() != true)
+		{
+			m_battleshipGunSE->Play(false);
+		}
+		else if (m_atackOK == false)
+		{
+			//m_battleshipGunSE->Stop();		
+		}
+	}
+}
+
 
 void Enemy_Far::Render(RenderContext& rc)
 {

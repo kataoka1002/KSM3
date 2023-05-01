@@ -53,11 +53,11 @@ void Enemy_Near::SetUp()
 	m_setWeapon = 4;//‚±‚±‚Í‚¢‚Á‚½‚ñ‰¼‚Å’è”İ’è‚µ‚Ä‚é‚¾‚¯‚ÅŒãXƒ‰ƒ“ƒ_ƒ€‚É‚µ‚Ä‚¢‚­—\’è
 	//set_weapons = rand() % 1 + 1;
 	if (m_setWeapon == 4) {	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
-		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
+		/*m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
+		m_enemyWeaponModel.Update();*/
 	}
 }
 

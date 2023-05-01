@@ -34,11 +34,13 @@ public:
 
 	//パス移動に必要な奴ら
 	std::vector<Point> m_pointList;
-	Point* m_point;
+	Point* m_point = nullptr;
 
 	Player* m_player = nullptr;
-	Battle_ship_attack* m_battleShipAttack;
-	Drop_item* m_dropItem;
+	Battle_ship_attack* m_battleShipAttack = nullptr;
+	Drop_item* m_dropItem = nullptr;
+	EffectEmitter* sunabokoriEffect = nullptr;
+
 
 	ModelRender m_enemyModel;						//エネミーモデル
 	ModelRender m_enemyWeaponModel;					//武器モデル
