@@ -30,6 +30,7 @@ public:
 	Vector3 playerFowrad = { 0.0f, 0.0f, 1.0f };//プレイヤーの正面ベクトル
 
 	int game_state=0;//ゲームがどの状態化の管理
+	//0がメインゲーム。1がポーズ画面。2空欄。3がカスタマイズ。
 
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
 	Customize_UI_ver2* p_customize_ui_ver2;

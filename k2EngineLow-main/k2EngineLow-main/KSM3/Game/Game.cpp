@@ -16,6 +16,7 @@
 #include "Boss.h"
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
+#include "Fade.h"
 
 
 
@@ -52,8 +53,9 @@ bool Game::Start()
 		});
 		*/
 
-
-	
+	/*m_fade = FindGO<Fade>("fade");
+	m_fade->StartFadeIn();*/
+		
 	//m_modelRender.SetRotation(rot);
 	//m_modelRender.SetScale(1.0f);
 	//m_modelRender.Update();
@@ -101,7 +103,7 @@ Game::Game()
 
 
 	boss = NewGO<Boss>(1, "boss");
-	boss->boss_position = { 0.0f,0.0f,5100.0f };
+	boss->boss_position = { 0.0f,0.0f,15100.0f };
 
 	//boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
 	//boss_riser->b_w_position = { -600.0f,100.0f,19000.0f };
@@ -165,6 +167,29 @@ void Game::Update()
 
 	//m_modelRender.PlayAnimation(enAnimClip_Idle);
 
+	//if (m_gameState == enGameState_GameClear_Idle)
+//	{
+//		if (m_isWaitFadeout)
+//		{
+//			if (!m_fade->IsFade())
+//			{
+				if (player->game_end_state == 1) 
+				{
+					title = NewGO<Title>(1, "title");
+					DeleteGO(this);
+				}
+//			}
+//		}
+//		else
+//		{
+//			if (g_pad[0]->IsTrigger(enButtonA))
+//			{
+//				m_isWaitFadeout = true;
+//				m_fade->StartFadeOut();
+//			}
+//		}
+//		return;
+//	}
 
 	//m_modelRender.Update();
 	m_spriteRender.Update();
@@ -173,10 +198,10 @@ void Game::Update()
 	//enemy->enemy_position = player->player_position;
 
 	//pause画面からタイトルへの遷移
-	if (player->game_end_state == 1) {
+	/*if (player->game_end_state == 1) {
 		title = NewGO<Title>(1, "title");
 		DeleteGO(this);
-	}
+	}*/
 
 	//リザルトへの遷移
 	if (g_pad[0]->IsTrigger(enButtonSelect)) {

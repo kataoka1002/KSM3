@@ -70,7 +70,7 @@ void Boss::Update()
 
 	if (b_player->game_state == 0) {
 		
-			//PlayerSearch();
+			PlayerSearch();
 		
 		boss_modelRender.Update();
 		/*if (b_player->attack_state_la == true) {
