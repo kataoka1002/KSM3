@@ -19,6 +19,7 @@ public:
 	void MoveNear();
 	void MoveFar();
 	bool Start();
+	void Effect(int num);
 	void Render(RenderContext& rc);
 
 	Core_weapons* m_coreWeapons = nullptr;
@@ -39,7 +40,7 @@ public:
 	Vector3 m_bulletFowrad;
 	Vector3 m_toCoreWeapons;
 	Vector3 m_bulletSpeed;
-	Vector3 m_macineGunLocalPosition;	//マシンガンの弾のローカルポジション
+	Vector3 m_bulletLocalPosition;	//弾のローカルポジション
 	float m_fallSpeed = 0.0f;
 	bool m_attuckState = true;
 	bool Landing_state = false;

@@ -27,17 +27,24 @@ public:
 	void WeaponMove();				//離れる処理
 	void SetUp();					//武器セット
 	void Attack();					//武器を選んで攻撃
-	void Fire();					//発射
+	void Fire(int m_weaponNum);		//発射
 	void PassMove();				//パス移動
+	void Damage();					//被弾
+	void Effect();					//エフェクト
+	void SE();						//効果音
 
 	//パス移動に必要な奴ら
 	std::vector<Point> m_pointList;
-	Point* m_point;
+	Point* m_point = nullptr;
 
 
 	Player* m_player = nullptr;
-	Battle_ship_attack* m_battleShipAttack;
-	Drop_item* m_dropItem;
+	Battle_ship_attack* m_battleShipAttack = nullptr;
+	Drop_item* m_dropItem = nullptr;
+	EffectEmitter* sunabokoriEffect = nullptr;
+	SoundSource* m_battleshipGunSE = nullptr;			//マシンガンSE
+	SoundSource* m_asiotoSE = nullptr;					//足音
+
 
 	ModelRender m_enemyModel;						//エネミーモデル
 	ModelRender m_enemyWeaponModel;					//武器モデル
@@ -61,6 +68,7 @@ public:
 	int m_enemyDirState = 0;						//エネミーの向き
 	int m_enemyGameState = 0;
 	int m_attackCount = 0;							//攻撃の間隔
+	int m_sunaHassei = 0;							//砂ぼこりの発生間隔
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
 };

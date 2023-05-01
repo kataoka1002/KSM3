@@ -15,8 +15,6 @@ Enemy::Enemy()
 	//効果音の作成
 	m_machineGunSE = NewGO<SoundSource>(0);
 	m_asiotoSE = NewGO<SoundSource>(0);
-	
-
 
 	//パス移動の目的地の設定
 	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
@@ -37,6 +35,7 @@ Enemy::~Enemy()
 
 	DeleteGO(sunabokoriEffect);
 	DeleteGO(m_machineGunSE);
+	DeleteGO(m_asiotoSE);
 }
 
 
@@ -55,7 +54,7 @@ bool Enemy::Start()
 	m_enemyModel.SetPosition(m_enemyPosition);
 	//キャラクターコントローラーを初期化。
 	m_enemyCharacterController.Init(
-		50.0f,			//半径。
+		100.0f,			//半径。
 		40.0f,			//高さ。
 		m_enemyPosition	//座標。
 
@@ -80,14 +79,10 @@ void Enemy::SetUp()
 	m_setWeapon = 2;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
 	//set_weapons = rand() % 3 + 1;
 	if (m_setWeapon == 1) {	//ギガプラズマ
-		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
+		
 	}
 	else if (m_setWeapon == 2) { //マシンガン
-		//モデル設定
+		//武器モデル設定
 		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
 		m_enemyWeaponModel.SetScale(2.0f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
@@ -100,11 +95,7 @@ void Enemy::SetUp()
 		m_machineGunSE->SetVolume(0.2f);	//音量調整
 	}
 	else if (m_setWeapon == 3) { //ヘルファイヤ
-		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
+		
 	}
 }
 
@@ -429,8 +420,7 @@ void Enemy:: Fire(int m_weaponNum)
 		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
 		m_enemyBullet->m_enemyMama = this;
 		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet->m_macineGunLocalPosition = { 30.0f,50.0f,190.0f };	//ローカルポジション設定
-		m_enemyBullet->m_bulletFowrad = m_enemyForward;						//弾の前方向の設定		
+		m_enemyBullet->m_bulletLocalPosition = { 30.0f,50.0f,190.0f };	//ローカルポジション設定
 		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 
 		//弾の生成
@@ -438,8 +428,7 @@ void Enemy:: Fire(int m_weaponNum)
 		m_enemyBullet2 = NewGO<Enemy_Bullet>(1, "enemy_bullet");
 		m_enemyBullet2->m_enemyMama = this;
 		m_enemyBullet2->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet2->m_macineGunLocalPosition = { -30.0f,50.0f,190.0f };	//ローカルポジション設定
-		m_enemyBullet2->m_bulletFowrad = m_enemyForward;					//弾の前方向の設定		
+		m_enemyBullet2->m_bulletLocalPosition = { -30.0f,50.0f,190.0f };	//ローカルポジション設定
 		m_enemyBullet2->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 	}
 

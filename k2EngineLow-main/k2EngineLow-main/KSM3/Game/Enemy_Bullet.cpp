@@ -24,6 +24,9 @@ bool Enemy_Bullet::Start()
 	m_player = FindGO<Player>("player");
 	m_coreWeapons = FindGO<Core_weapons>("core_weapons");
 
+	masinganEffect = NewGO<EffectEmitter>(0);
+	masinganEffect->Init(enMasinganHibana);
+
 
 	//親によって初期情報を変える
 	if (m_enemyMama != nullptr)
@@ -39,12 +42,13 @@ bool Enemy_Bullet::Start()
 			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
 			m_bulletModel.SetScale(4.0f);
 			//エネミーから見て正しい位置に弾を設定
-			originRotation.Multiply(m_macineGunLocalPosition);	//掛け算
+			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 			//最終的な弾の回転を決定
 			m_rot = originRotation;
-			m_position += m_macineGunLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
+			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
 			//バレットの前方向の設定
 			m_bulletFowrad = m_enemyMama->m_enemyForward;
+			//更新
 			m_bulletModel.SetRotation(m_enemyMama->m_enemyRotation);
 			m_bulletModel.SetPosition(m_position);
 
@@ -52,6 +56,9 @@ bool Enemy_Bullet::Start()
 			g_soundEngine->ResistWaveFileBank(2, "Assets/audio/enemy/masinganHassya.wav");
 			m_soundSource->Init(m_enemyMama->m_setWeapon);	//初期化
 			m_soundSource->SetVolume(0.2f);					//音量調整
+
+			//エフェクトの再生
+			Effect(2);
 			break;
 
 		case 3:	//ヘイルファイヤーライフル
@@ -60,8 +67,6 @@ bool Enemy_Bullet::Start()
 		default:
 			break;
 		}
-
-		
 	}
 	else if (m_enemyNearMama != nullptr)
 	{
@@ -77,7 +82,6 @@ bool Enemy_Bullet::Start()
 		default:
 			break;
 		}
-
 	}
 	else if (m_enemyFarMama != nullptr)
 	{
@@ -90,10 +94,28 @@ bool Enemy_Bullet::Start()
 			break;
 
 		case 6:	//戦艦砲
+						
+			//モデルの初期化
+			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel.SetScale(10.0f);
+			//エネミーから見て正しい位置に弾を設定
+			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
+			//最終的な弾の回転を決定
+			m_rot = originRotation;
+			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
+			//バレットの前方向の設定
+			m_bulletFowrad = m_enemyFarMama->m_enemyForward;
+			//更新
+			m_bulletModel.SetRotation(m_enemyFarMama->m_enemyRotation);
+			m_bulletModel.SetPosition(m_position);
 
-			//効果音の初期化
-			m_soundSource->Init(m_enemyFarMama->m_setWeapon);
+			//効果音の設定
+			g_soundEngine->ResistWaveFileBank(2, "Assets/audio/enemy/masinganHassya.wav");
+			m_soundSource->Init(2);	//初期化
+			m_soundSource->SetVolume(0.2f);						//音量調整
 
+			//エフェクトの再生
+			Effect(6);
 			break;
 
 		default:
@@ -102,28 +124,19 @@ bool Enemy_Bullet::Start()
 	}
 		
 
-	//セットアップ
-	Setup();
-
-
 	return true;
 }
 
 void Enemy_Bullet::Setup() 
 {
-	//エフェクトの初期化と再生
-	masinganEffect = NewGO<EffectEmitter>(0);
-	masinganEffect->Init(enMasinganHibana);
-	masinganEffect->SetScale({ 0.7f,0.7f,0.7f });
-	masinganEffect->SetPosition(m_position);
-	masinganEffect->Play();
+
 }
 
 void Enemy_Bullet::Update() 
 {
 	if (m_player->game_state == 0)
 	{
-		//位置が0以下になると消える
+		//位置が0以下になると消える(全ての弾共通)
 		if (m_position.y <= 0.0f)
 		{
 			DeleteGO(this);
@@ -182,7 +195,6 @@ void Enemy_Bullet::MoveNear()
 	{
 
 	}
-
 }
 
 void Enemy_Bullet::MoveFar()
@@ -193,9 +205,53 @@ void Enemy_Bullet::MoveFar()
 	}
 	else if (m_enemyFarMama->m_setWeapon == 6)	//戦艦砲
 	{
+		//弾を前に飛ばす処理
+		m_bulletSpeed += m_bulletFowrad * 1.7f;
+		m_bulletSpeed.y -= 0.08f;
+		m_position += m_bulletSpeed;
+
+		//バレットの更新
+		m_bulletModel.SetRotation(m_rot);
+		m_bulletModel.SetPosition(m_position);
+		m_bulletModel.Update();
+	}
+}
+
+void Enemy_Bullet::Effect(int num)
+{
+	if (num == 1)
+	{
+	}
+	else if (num == 2)
+	{
+		//エフェクトの初期化と再生
+		masinganEffect = NewGO<EffectEmitter>(0);
+		masinganEffect->Init(enMasinganHibana);
+		masinganEffect->SetScale({ 0.7f,0.7f,0.7f });
+		masinganEffect->SetPosition(m_position);
+		masinganEffect->Play();
+	}
+	else if (num == 3)
+	{
 
 	}
+	else if (num == 4)
+	{
 
+	}
+	else if (num == 5)
+	{
+
+	}
+	else if (num == 6)
+	{
+		//エフェクトの初期化と再生
+		masinganEffect = NewGO<EffectEmitter>(0);
+		masinganEffect->Init(enMasinganHibana);
+		masinganEffect->SetScale({ 0.7f,0.7f,0.7f });
+		masinganEffect->SetPosition(m_position);
+		masinganEffect->Play();
+	}
 }
 
 void Enemy_Bullet::Render(RenderContext& rc)

@@ -51,9 +51,7 @@ public:
 	Title* title;//タイトル
 	Result* result;//リザルト
 	Lighting* lighting;//ライティング
-	Enemy_Near*enemy_near[2];
 	
-	Enemy_Far* enemy_far[2];
 	Left_arm_weapons* s_left_arm_weapons;
 	Drop_item* drop_item;
 	BackGround* background;
@@ -66,6 +64,7 @@ public:
 
 	std::vector<Enemy*>	m_enemyObject;
 	std::vector<Enemy_Far*> m_enemyFarObject;
+	std::vector<Enemy_Near*>m_enemyNearObject;
 	
 
 	
