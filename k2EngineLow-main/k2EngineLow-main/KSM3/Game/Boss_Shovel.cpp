@@ -51,7 +51,7 @@ void Boss_Shovel::Update()
 			firing_cound++;//攻撃のタイミングの計算。
 			if (firing_cound % 108 == 0)
 			{
-				b_boss_weapons = NewGO<Boss_Shovel_attack>(1, "boss_riser_attack");
+				b_boss_weapons = NewGO<Boss_Shovel_attack>(1, "boss_Shovel_attack");
 				attack_state = true;
 				b_boss_weapons->firing_position = b_w_position;
 				b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;

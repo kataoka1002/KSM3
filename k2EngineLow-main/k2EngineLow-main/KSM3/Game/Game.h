@@ -18,6 +18,7 @@ class Boss;
 class Boss_Riser;
 class Game_UI;
 class Enemy_HP_UI;
+class Fade;
 
 enum EffectName {
 	enSunabokori,		//砂ぼこり
@@ -47,6 +48,8 @@ public:
 	int						m_numEnemy = 0;					//エネミーの数。
 	int						m_numDefeatedEnemy = 0;			//倒されたエネミーの数。
 
+	bool					m_isWaitFadeout = false;
+
 	Player* player;//プレイヤー
 	Title* title;//タイトル
 	Result* result;//リザルト
@@ -61,6 +64,7 @@ public:
 	Boss_Riser* boss_riser;
 	Game_UI* game_ui;
 	Enemy_HP_UI* e_h_ui;
+	Fade* m_fade = nullptr;		//フェード。
 
 	std::vector<Enemy*>	m_enemyObject;
 	std::vector<Enemy_Far*> m_enemyFarObject;

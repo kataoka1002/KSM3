@@ -251,6 +251,7 @@
     <ClCompile Include="Enemy_Near.cpp" />
     <ClCompile Include="Enemy_HP_UI.cpp" />
     <ClCompile Include="Enumeration.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Left_arm_UI.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="Enemy_Near.h" />
     <ClInclude Include="Enemy_HP_UI.h" />
     <ClInclude Include="Enumeration.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Left_arm_UI.h" />
