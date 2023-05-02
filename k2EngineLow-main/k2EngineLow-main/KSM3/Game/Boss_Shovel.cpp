@@ -22,7 +22,7 @@ void Boss_Shovel::Setup()
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Shovel_Render.Init("Assets/modelData/Boss_kari.tkm");
+		boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm");
 		boss_Shovel_Render.Update();
 	}
 
