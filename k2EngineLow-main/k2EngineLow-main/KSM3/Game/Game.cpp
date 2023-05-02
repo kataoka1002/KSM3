@@ -18,6 +18,7 @@
 #include "Enemy_HP_UI.h"
 #include "Fade.h"
 
+
 Game::Game()
 {
 	lighting = NewGO<Lighting>(1, "lighting");
@@ -48,15 +49,8 @@ Game::Game()
 	}
 
 
-
-	//boss = NewGO<Boss>(1, "boss");
-	//boss->boss_position = { 0.0f,0.0f,15100.0f };
-
-	//boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
-	//boss_riser->b_w_position = { -600.0f,100.0f,19000.0f };
-
-	
-	
+	boss = NewGO<Boss>(1, "boss");//15100
+	boss->boss_position = { 0.0f,0.0f,5100.0f };
 
 	drop_item = NewGO< Drop_item>(1, "drop_item");
 	background = NewGO< BackGround>(1, "background");
@@ -116,9 +110,8 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enGigatonCannon, "Assets/audio/enemy/cannon.wav");
 	g_soundEngine->ResistWaveFileBank(enButtleShipGun, "Assets/audio/enemy/buttleShipAttack.wav");
 
-
-	/*m_fade = FindGO<Fade>("fade");
-	m_fade->StartFadeIn();*/
+  m_fade = FindGO<Fade>("fade");
+	m_fade->StartFadeIn();
 		
 	return true;
 }
@@ -142,17 +135,17 @@ void Game::Update()
 
 	//if (m_gameState == enGameState_GameClear_Idle)
 //	{
-//		if (m_isWaitFadeout)
-//		{
-//			if (!m_fade->IsFade())
-//			{
+		if (m_isWaitFadeout)
+		{
+			if (!m_fade->IsFade())
+			{
 				if (player->game_end_state == 1) 
 				{
 					title = NewGO<Title>(1, "title");
 					DeleteGO(this);
 				}
-//			}
-//		}
+			}
+		}
 //		else
 //		{
 //			if (g_pad[0]->IsTrigger(enButtonA))

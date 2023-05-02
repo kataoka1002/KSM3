@@ -29,7 +29,7 @@ public:
 	ModelRender boss_Shovel_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { -5000.0f,200.0f,150.0f };//Ç«Ç±ÇæÇ¡ÇØ?
+	Vector3 b_w_localposition = { 00.0f,230.0f,950.0f };
 
 	bool attack_state = false;
 	bool attack_ok = false;

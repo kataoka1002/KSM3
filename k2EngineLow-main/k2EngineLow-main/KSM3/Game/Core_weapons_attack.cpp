@@ -44,11 +44,11 @@ void Core_weapons_attack::Update() {
 			DeleteGO(this);
 		}
 		if (C_W_A_player->enemy_survival == true) {
-			Vector3 diff = firing_position - c_w_a_enemy->m_enemyPosition;
+			Vector3 diff;// = firing_position - c_w_a_enemy->m_enemyPosition;
 			if (diff.Length() <= 100.0f)
 			{
 				if (C_W_A_core_weapons->set_weapons == 2) {
-					c_w_a_enemy->m_enemyHP -= 10.0f;
+					//c_w_a_enemy->m_enemyHP -= 10.0f;
 				}
 				DeleteGO(this);
 			}
