@@ -19,62 +19,6 @@
 #include "Fade.h"
 
 
-
-
-bool Game::Start()
-{
-	//エフェクトの設定
-	EffectEngine::GetInstance()->ResistEffect(enSunabokori, u"Assets/effect/enemy/sunabokori2.efk");
-	EffectEngine::GetInstance()->ResistEffect(enMasinganHibana, u"Assets/effect/enemy/masinganHibana.efk");
-	EffectEngine::GetInstance()->ResistEffect(enHidan, u"Assets/effect/enemy/hidan.efk");
-
-	//サウンドの設定
-	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
-	g_soundEngine->ResistWaveFileBank(enMachineGun, "Assets/audio/enemy/masinganHassya.wav");
-	g_soundEngine->ResistWaveFileBank(enGigatonCannon, "Assets/audio/enemy/cannon.wav");
-	g_soundEngine->ResistWaveFileBank(enButtleShipGun, "Assets/audio/enemy/buttleShipAttack.wav");
-
-
-
-	//m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
-	//m_spriteRender.SetPosition({ -600.0f,300.0f,0.0f });
-
-	
-	//m_modelRender.Init("Assets/modelData/test_player.tkm");
-
-	//m_modelRender.SetPosition(0.0f, 0.0f, 0.0f);
-
-	/*m_levelRender.Init("Assets/level/sample.tkl",
-		[&](LevelObjectData2& objData)
-		{
-			//名前がBox_Moveだったら。
-			if (objData.EqualObjectName(L"Box_Move") == true) {
-
-				auto box = NewGO<BoxMove>(0);
-				//配置座標、スケール、回転を取得する。
-				box->m_position = objData.position;
-				box->m_scale = objData.scale;
-				box->m_rotation = objData.rotation;
-				//後で削除するために、ボックスをプッシュしておく。
-				m_boxmoves.push_back(box);
-
-				//trueにすると、レベルの方でモデルが読み込まれない。
-				return true;
-			}
-		});
-		*/
-
-	m_fade = FindGO<Fade>("fade");
-	m_fade->StartFadeIn();
-		
-	//m_modelRender.SetRotation(rot);
-	//m_modelRender.SetScale(1.0f);
-	//m_modelRender.Update();
-
-
-	return true;
-}
-
 Game::Game()
 {
 	lighting = NewGO<Lighting>(1, "lighting");
@@ -105,10 +49,8 @@ Game::Game()
 	}
 
 
-
 	boss = NewGO<Boss>(1, "boss");//15100
 	boss->boss_position = { 0.0f,0.0f,5100.0f };
-	
 
 	drop_item = NewGO< Drop_item>(1, "drop_item");
 	background = NewGO< BackGround>(1, "background");
@@ -153,6 +95,27 @@ Game::~Game()
 	DeleteGO(e_h_ui);
 }
 
+bool Game::Start()
+{
+	//エフェクトの設定
+	EffectEngine::GetInstance()->ResistEffect(enSunabokori, u"Assets/effect/enemy/sunabokori2.efk");
+	EffectEngine::GetInstance()->ResistEffect(enMasinganHibana, u"Assets/effect/enemy/masinganHibana.efk");
+	EffectEngine::GetInstance()->ResistEffect(enHidan, u"Assets/effect/enemy/hidan.efk");
+	EffectEngine::GetInstance()->ResistEffect(enTyakudan, u"Assets/effect/enemy/bulletTyakudan.efk");
+
+	//サウンドの設定
+	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
+	g_soundEngine->ResistWaveFileBank(enDash, "Assets/audio/enemy/enemyDash.wav");
+	g_soundEngine->ResistWaveFileBank(enMachineGun, "Assets/audio/enemy/masinganHassya.wav");
+	g_soundEngine->ResistWaveFileBank(enGigatonCannon, "Assets/audio/enemy/cannon.wav");
+	g_soundEngine->ResistWaveFileBank(enButtleShipGun, "Assets/audio/enemy/buttleShipAttack.wav");
+
+  m_fade = FindGO<Fade>("fade");
+	m_fade->StartFadeIn();
+		
+	return true;
+}
+
 void Game::Update()
 {
 
@@ -194,7 +157,6 @@ void Game::Update()
 //		return;
 //	}
 
-	//m_modelRender.Update();
 	m_spriteRender.Update();
 
 	//enemy->enemy_game_state = player->game_state;
@@ -216,8 +178,5 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-	//m_modelRender.Draw(rc);
-	//m_spriteRender.Draw(rc);
-
-	//m_fontRender.Draw(rc);
+	
 }

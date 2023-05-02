@@ -21,6 +21,7 @@ public:
 	bool Start();
 	void Effect(int num);
 	void Render(RenderContext& rc);
+	void EffectDelete(int num);
 
 	Core_weapons* m_coreWeapons = nullptr;
 	Player* m_player = nullptr; 
@@ -30,7 +31,6 @@ public:
 	Enemy_Near* m_enemyNearMama = nullptr;
 	Enemy_Far* m_enemyFarMama = nullptr;
 	EffectEmitter* m_weaponEffect = nullptr;
-	EffectEmitter* m_weaponNearEffect = nullptr;
 
 
 	ModelRender m_bulletModel;	//ƒ}ƒVƒ“ƒKƒ“‚Ì’e‚Ìƒ‚ƒfƒ‹

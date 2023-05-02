@@ -43,6 +43,7 @@ public:
 	Drop_item* m_dropItem = nullptr;
 	EffectEmitter* sunabokoriEffect = nullptr;			//砂ぼこり
 	SoundSource* m_asiotoSE = nullptr;					//足音
+	SoundSource* m_dashSE = nullptr;					//ダッシュ音
 	SoundSource* m_cannonSE = nullptr;					//ギガトンキャノンSE
 
 
@@ -63,7 +64,7 @@ public:
 
 	bool m_defeatState = false;						//死んだかどうかフラグ
 	bool m_enemyEscape = false;						//後退中かどうかフラグ
-	bool m_attackFlag = false;
+	bool m_attackFlag = false;						//弾を撃ったかどうかフラグ
 	bool m_fireFlag = false;						//攻撃フラグ
 	bool m_dashFlag = false;						//ダッシュしているかフラグ
 	bool m_targetFlag = false;						//ターゲットを設定しているかどうかフラグ
