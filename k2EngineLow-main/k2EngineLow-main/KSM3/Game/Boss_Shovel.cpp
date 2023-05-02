@@ -16,6 +16,15 @@ Boss_Shovel::~Boss_Shovel()
 	DeleteGO(b_boss_weapons);
 }
 
+bool Boss_Shovel::Start()
+{
+	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_shovel_idol01.tka");
+	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
+	//èâä˙âªÅB
+
+	return true;
+}
+
 void Boss_Shovel::Setup()
 {
 	set_weapons = 1;
@@ -65,13 +74,15 @@ void Boss_Shovel::Update()
 	}
 	boss_Shovel_Render.Update();
 
-	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
-	//boss_Riser_Render.SetPosition(b_w_position);
-	//boss_Riser_Render.SetRotation(b_w_rotation);
-	//boss_Riser_Render.Update();
-	//PlayerSearch();
+	switch (shovelState)
+	{
+	case 0:
+		boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle);
+		break;
+	}
 
 	boss_Shovel_Render.SetScale(15.0f);
+	boss_Shovel_Render.Update();
 }
 
 void Boss_Shovel::Move()
