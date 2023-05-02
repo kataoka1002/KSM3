@@ -14,7 +14,7 @@ Enemy::Enemy()
 {
 	//効果音の作成(流し続ける音源なのでインスタンスを保持させる)
 	m_machineGunSE = NewGO<SoundSource>(0);
-	//足音の生成
+	//足音の生成(流し続ける音源なのでインスタンスを保持させる)
 	m_asiotoSE = NewGO<SoundSource>(0);
 
 	//パス移動の目的地の設定
@@ -42,10 +42,6 @@ Enemy::~Enemy()
 bool Enemy::Start() 
 {
 	m_player = FindGO<Player>("player");
-
-	//砂ぼこりエフェの初期化
-	sunabokoriEffect = NewGO<EffectEmitter>(0);
-	sunabokoriEffect->Init(enSunabokori);
 	
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");
@@ -89,8 +85,8 @@ void Enemy::SetUp()
 		m_enemyWeaponModel.Update();
 
 		//効果音の設定
-		m_machineGunSE->Init(enMachineGun);			//初期化
-		m_machineGunSE->SetVolume(0.2f);	//音量調整
+		m_machineGunSE->Init(enMachineGun);	//初期化
+		m_machineGunSE->SetVolume(0.5f);	//音量調整
 	}
 	else if (m_setWeapon == 3) { //ヘルファイヤ
 		
@@ -156,12 +152,6 @@ void Enemy::Update()
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
 
-		//エフェクト再生中なら更新
-		if (sunabokoriEffect->IsPlay() == true)
-		{
-			sunabokoriEffect->SetRotation(m_weaponRotation);
-			sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y - 20.0f,m_enemyPosition.z });
-		}
 	}
 }
 
@@ -213,6 +203,7 @@ void Enemy::PlayerSearch()
 	}
 	else {
 		m_atackOK = false;
+		m_machinGunSEPlay = false;	//効果音は流さない
 	}
 
 
@@ -254,7 +245,7 @@ void Enemy::Move()
 		{
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-			//砂ぼこりの可視化
+			//砂ぼこりの発生
 			if (m_sunaHassei >= 10)
 			{
 				Effect();
@@ -268,12 +259,8 @@ void Enemy::Move()
 		}
 		else
 		{
-			//砂ぼこりを見えなくする
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
-			m_asiotoSE->Stop();			//停止
+			//足音停止
+			m_asiotoSE->Stop();	
 		}
 
 		//エネミーとプレイヤーの距離が近い時、一定確率で後退する
@@ -303,7 +290,8 @@ void Enemy::Move()
 		{
 			m_enemyEscape = false;
 			m_enemyDirState = 0;
-			m_asiotoSE->Stop();			//停止
+			//足音停止
+			m_asiotoSE->Stop();	
 
 		}
 		//足音再生
@@ -316,7 +304,7 @@ void Enemy::Move()
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//砂ぼこりの可視化
+		//砂ぼこりの発生
 		if (m_sunaHassei >= 10)
 		{
 			Effect();
@@ -333,24 +321,14 @@ void Enemy::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			//砂ぼこりを見えなくする
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
-			m_asiotoSE->Stop();	//停止
+			//足音停止
+			m_asiotoSE->Stop();
 		}
 	}
 	else if (m_enemyDirState == 3)	//横向き
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//砂ぼこりの可視化
-		if (m_sunaHassei >= 10)
-		{
-			Effect();
-			m_sunaHassei = 0;
-		}
 		//足音再生
 		if (m_asiotoSE->IsPlaying() != true)
 		{
@@ -362,12 +340,8 @@ void Enemy::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			//砂ぼこりを見えなくする
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
-			m_asiotoSE->Stop();	//停止
+			//足音停止
+			m_asiotoSE->Stop();
 		}
 	}
 }
@@ -390,9 +364,10 @@ void Enemy::Attack()
 			}
 			break;
 		case 2://マシンガン
-			if (m_attackCount % 5 == 0)
+			if (m_attackCount >= 5)
 			{
 				Fire(2);	//発射
+				m_machinGunSEPlay = true;	//マシンガンの効果音流す
 				m_attackCount = 0;
 			}
 			break;
@@ -483,11 +458,11 @@ void Enemy::SE()
 {
 	if (m_setWeapon == 2)	//マシンガンの時
 	{
-		if (m_atackOK == true && m_machineGunSE->IsPlaying() != true)
+		if (m_machinGunSEPlay == true && m_machineGunSE->IsPlaying() != true)
 		{
 			m_machineGunSE->Play(true);	//攻撃中は再生
 		}
-		else if (m_atackOK == false)
+		else if (m_machinGunSEPlay == false)
 		{
 			m_machineGunSE->Stop();		//攻撃じゃないなら停止
 		}

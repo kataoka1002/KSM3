@@ -11,8 +11,9 @@
 
 Enemy_Near::Enemy_Near()
 {
-	//足音の生成
+	//足音の生成(流し続ける音源なのでインスタンスを保持させる)
 	m_asiotoSE = NewGO<SoundSource>(0);
+	m_dashSE = NewGO<SoundSource>(0);
 	
 	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
 	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//二番目のポイント
@@ -23,20 +24,21 @@ Enemy_Near::Enemy_Near()
 
 Enemy_Near::~Enemy_Near()
 {
-	m_player->enemy_survival = false;	//エネミーが生きているかをプレーヤーに教える
+	//エネミーが生きているかをプレーヤーに教える
+	m_player->enemy_survival = false;	
 	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
 	if (m_defeatState == true) {
 		m_dropItem->drop_kinds = m_setWeapon;
 	}
+
+	DeleteGO(m_asiotoSE);
+	DeleteGO(m_dashSE);
 }
 
 bool Enemy_Near::Start()
 {
 	m_player = FindGO<Player>("player");
 
-	//砂ぼこりエフェの初期化
-	sunabokoriEffect = NewGO<EffectEmitter>(0);
-	sunabokoriEffect->Init(enSunabokori);
 
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");
@@ -51,11 +53,16 @@ bool Enemy_Near::Start()
 	);
 
 	//足音の設定
-	//g_soundEngine->ResistWaveFileBank(0, "Assets/audio/enemy/enemyRunning.wav");
-	m_asiotoSE->Init(enRunning);			//初期化
+	m_asiotoSE->Init(enRunning);	//初期化
 	m_asiotoSE->SetVolume(0.8f);	//音量調整
 	m_asiotoSE->Play(true);			//再生
 	m_asiotoSE->Stop();				//停止
+
+	//足音の設定
+	m_dashSE->Init(enDash);			//初期化
+	m_dashSE->SetVolume(0.8f);		//音量調整
+	m_dashSE->Play(true);			//再生
+	m_dashSE->Stop();				//停止
 
 
 	SetUp();	//武器生成
@@ -79,6 +86,9 @@ void Enemy_Near::SetUp()
 
 void Enemy_Near::Update()
 {
+	//砂ぼこりの間隔カウント
+	m_sunaHassei++;
+
 	if (m_player->game_state == 0)
 	{
 		//エネミーからプレイヤーへのベクトル
@@ -122,12 +132,6 @@ void Enemy_Near::Update()
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
 
-		//エフェクト再生中なら更新
-		if (sunabokoriEffect->IsPlay() == true)
-		{
-			sunabokoriEffect->SetRotation(m_weaponRotation);
-			sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y - 20.0f,m_enemyPosition.z });
-		}
 	}
 }
 
@@ -177,7 +181,7 @@ void Enemy_Near::PlayerSearch()
 	if (m_enemyDirState == 0)
 	{
 		//ダッシュ中じゃないなら
-		if (m_dashFlag == false)
+		if (m_dashFlag != true)
 		{
 			m_enemyForward = m_toPlayerDir;					//プレイヤー向き
 			m_enemyMoveSpeed = m_enemyForward * 250.0f;		//移動速度を設定
@@ -236,7 +240,7 @@ void Enemy_Near::Move()
 		{
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-			//砂ぼこりの可視化
+			//砂ぼこりの発生
 			if (m_sunaHassei >= 10)
 			{
 				Effect();
@@ -261,20 +265,22 @@ void Enemy_Near::Move()
 
 			//ダッシュ中
 			m_dashFlag = true;	
+			
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-			//砂ぼこりの可視化
+			//砂ぼこりの発生
 			if (m_sunaHassei >= 10)
 			{
 				Effect();
 				m_sunaHassei = 0;
 			}
 			//足音再生
-			if (m_asiotoSE->IsPlaying() != true)
+			if (m_dashSE->IsPlaying() != true)
 			{
-				m_asiotoSE->Play(true);
+				//ダッシュの効果音を流して普通の足音を消す
+				m_dashSE->Play(true);
+				m_asiotoSE->Stop();
 			}
-
 		}	
 
 		//ターゲットが決まったら
@@ -294,12 +300,8 @@ void Enemy_Near::Move()
 			{
 				m_fireFlag = true;
 				m_enemyDirState = 4;
-				//砂ぼこりを見えなくする
-				if (sunabokoriEffect->IsPlay() == true)
-				{
-					sunabokoriEffect->Stop();
-				}
-				m_asiotoSE->Stop();	//停止
+				//足音停止
+				m_dashSE->Stop();
 			}
 		}
 	}
@@ -307,7 +309,7 @@ void Enemy_Near::Move()
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//砂ぼこりの可視化
+		//砂ぼこりの発生
 		if (m_sunaHassei >= 10)
 		{
 			Effect();
@@ -324,20 +326,15 @@ void Enemy_Near::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			//砂ぼこりを見えなくする
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
-			m_asiotoSE->Stop();	//停止
-
+			//足音停止
+			m_asiotoSE->Stop();	
 		}
 	}
 	else if (m_enemyDirState == 3)	//横向き
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//砂ぼこりの可視化
+		//砂ぼこりの発生
 		if (m_sunaHassei >= 10)
 		{
 			Effect();
@@ -354,12 +351,8 @@ void Enemy_Near::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			//砂ぼこりを見えなくする
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
-			m_asiotoSE->Stop();	//停止
+			//足音停止
+			m_asiotoSE->Stop();	
 		}
 	}
 	else if (m_enemyDirState == 4)
@@ -367,7 +360,7 @@ void Enemy_Near::Move()
 		if (m_attackFlag == true)
 		{
 			m_dashFlag = false;
-			m_enemyDirState = 5;	//攻撃したら反動で動けない
+			m_enemyDirState = 5;	//弾を撃ったら反動で動けない
 			return;
 		}
 	}
@@ -384,7 +377,7 @@ void Enemy_Near::Attack()
 		switch (m_setWeapon)
 		{
 		case 4://ギガトンキャノン
-			if (m_attackCount % 10 == 0)
+			if (m_attackCount >= 10)
 			{
 				Fire(4);	//発射
 				m_attackCount = 0;
@@ -415,7 +408,7 @@ void Enemy_Near::Fire(int weaponNum)
 		m_cannonSE->SetVolume(2.0f);			//音量調整
 		m_cannonSE->Play(false);
 
-		m_attackFlag = true;
+		m_attackFlag = true;		//弾を撃ったフラグを立てる
 	}
 }
 

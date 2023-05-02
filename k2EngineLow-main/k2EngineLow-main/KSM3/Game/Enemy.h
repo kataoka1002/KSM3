@@ -67,6 +67,7 @@ public:
 	bool m_atackOK = false;							//攻撃フラグ
 	bool m_lockOn = false;							//エネミーがパスのポイントをロックオンしているかどうか
 	bool m_running = false;							//走っているかどうか
+	bool m_machinGunSEPlay = false;					//マシンガンのSEを流すかどうかフラグ
 	int m_setWeapon = 0;							//武器の種類
 	int m_enemyDirState = 0;						//エネミーの向き
 	int m_enemyGameState=0;

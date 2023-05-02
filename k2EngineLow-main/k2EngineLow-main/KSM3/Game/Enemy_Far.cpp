@@ -11,7 +11,7 @@
 
 Enemy_Far::Enemy_Far()
 {
-	//足音の生成(流し続けるのでここでNewGO)
+	//足音の生成(流し続ける音源なのでインスタンスを保持させる)
 	m_asiotoSE = NewGO<SoundSource>(0);
 
 	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
@@ -23,20 +23,20 @@ Enemy_Far::Enemy_Far()
 
 Enemy_Far::~Enemy_Far()
 {
-	m_player->enemy_survival = false;	//エネミーが生きているかをプレーヤーに教える
+	//エネミーが生きているかをプレーヤーに教える
+	m_player->enemy_survival = false;	
 	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
 	if (m_defeatState == true) {
 		m_dropItem->drop_kinds = m_setWeapon;
 	}
+
+	DeleteGO(m_asiotoSE);
 }
 
 bool Enemy_Far::Start()
 {
 	m_player = FindGO<Player>("player");
 
-	//砂ぼこりエフェの初期化
-	sunabokoriEffect = NewGO<EffectEmitter>(0);
-	sunabokoriEffect->Init(enSunabokori);
 
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/Enemy_model_type2.tkm");
@@ -74,7 +74,7 @@ void Enemy_Far::SetUp()
 	else if (m_setWeapon == 6) { //戦艦砲
 		//武器モデルの設定
 		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale({ 2.7f ,4.0f,2.7f });
+		m_enemyWeaponModel.SetScale({ 3.0f ,5.0f,3.0f });
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
@@ -131,12 +131,6 @@ void Enemy_Far::Update()
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
 
-		//エフェクト再生中なら更新
-		if (sunabokoriEffect->IsPlay() == true)
-		{
-			sunabokoriEffect->SetRotation(m_weaponRotation);
-			sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y - 20.0f,m_enemyPosition.z });
-		}
 	}
 }
 
@@ -228,7 +222,7 @@ void Enemy_Far::Move()
 		{
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-			//砂ぼこりの可視化
+			//砂ぼこりの発生
 			if (m_sunaHassei >= 10)
 			{
 				Effect();
@@ -242,13 +236,8 @@ void Enemy_Far::Move()
 		}
 		else
 		{
-			//停止
+			//足音停止
 			m_asiotoSE->Stop();			
-			//砂ぼこりを止める
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
 		}
 
 
@@ -285,19 +274,15 @@ void Enemy_Far::Move()
 		{
 			m_enemyEscape = false;
 			m_enemyDirState = 0;
-			m_asiotoSE->Stop();			//停止
-			//砂ぼこりを停止
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
+			//足音停止
+			m_asiotoSE->Stop();	
 		}
 	}
 	else if (m_enemyDirState == 2)	//横向き
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//砂ぼこりの可視化
+		//砂ぼこりの発生
 		if (m_sunaHassei >= 10)
 		{
 			Effect();
@@ -313,19 +298,15 @@ void Enemy_Far::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			m_asiotoSE->Stop();			//停止
-			//砂ぼこりを停止
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
+			//足音停止
+			m_asiotoSE->Stop();	
 		}
 	}
 	else if (m_enemyDirState == 3)	//横向き
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
-		//砂ぼこりの可視化
+		//砂ぼこりの発生
 		if (m_sunaHassei >= 10)
 		{
 			Effect();
@@ -341,13 +322,8 @@ void Enemy_Far::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			//停止
+			//足音停止
 			m_asiotoSE->Stop();			
-			//砂ぼこりを停止
-			if (sunabokoriEffect->IsPlay() == true)
-			{
-				sunabokoriEffect->Stop();
-			}
 
 		}
 	}
@@ -371,7 +347,7 @@ void Enemy_Far::Attack()
 			}
 			break;
 		case 6://戦艦砲
-			if (m_attackCount >= 60)
+			if (m_attackCount >= 120)
 			{
 				Fire(6);	//発射
 				m_attackCount = 0;

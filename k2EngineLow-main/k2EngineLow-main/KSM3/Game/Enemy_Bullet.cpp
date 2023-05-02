@@ -9,20 +9,37 @@
 
 Enemy_Bullet::Enemy_Bullet() 
 {
-	//エフェクトの作成
-	m_weaponNearEffect = NewGO<EffectEmitter>(0);
+	
 }
 
 Enemy_Bullet::~Enemy_Bullet() 
 {
 	DeleteGO(m_soundSource);
+
+	//親によってエフェクトを変える
+	if (m_enemyMama != nullptr)
+	{
+		
+	}
+	else if (m_enemyNearMama != nullptr)
+	{
+		
+	}
+	else if (m_enemyFarMama != nullptr)
+	{
+		//エフェクトの初期化と再生
+		m_weaponEffect = NewGO<EffectEmitter>(0);
+		m_weaponEffect->Init(enTyakudan);
+		m_weaponEffect->SetScale({ 5.7f,5.7f,5.7f });
+		m_weaponEffect->SetPosition(m_position);
+		m_weaponEffect->Play();
+	}
 }
 
 bool Enemy_Bullet::Start()
 {
 	m_player = FindGO<Player>("player");
 	m_coreWeapons = FindGO<Core_weapons>("core_weapons");
-
 
 
 	//親によって初期情報を変える
@@ -227,7 +244,7 @@ void Enemy_Bullet::MoveFar()
 	{
 		//弾を前に飛ばす処理
 		m_bulletSpeed += m_bulletFowrad * 1.7f;
-		m_bulletSpeed.y -= 0.08f;
+		m_bulletSpeed.y -= 0.1f;
 		m_position += m_bulletSpeed;
 
 		//バレットの更新
@@ -258,10 +275,11 @@ void Enemy_Bullet::Effect(int num)
 	else if (num == 4)
 	{
 		//エフェクトの初期化と再生
-		m_weaponNearEffect->Init(enHidan);
-		m_weaponNearEffect->SetScale({ 1.5f,1.5f,1.5f });
-		m_weaponNearEffect->SetPosition(m_position);
-		m_weaponNearEffect->Play();
+		m_weaponEffect = NewGO<EffectEmitter>(0);
+		m_weaponEffect->Init(enHidan);
+		m_weaponEffect->SetScale({ 1.5f,1.5f,1.5f });
+		m_weaponEffect->SetPosition(m_position);
+		m_weaponEffect->Play();
 	}
 	else if (num == 5)
 	{
@@ -276,6 +294,11 @@ void Enemy_Bullet::Effect(int num)
 		m_weaponEffect->SetPosition(m_position);
 		m_weaponEffect->Play();
 	}
+}
+
+void Enemy_Bullet::EffectDelete(int num)
+{
+	
 }
 
 void Enemy_Bullet::Render(RenderContext& rc)

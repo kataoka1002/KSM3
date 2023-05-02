@@ -24,12 +24,14 @@ class Fade;
 enum EffectName {
 	enSunabokori,		//砂ぼこり
 	enMasinganHibana,	//マシンガンから出る火花
-	enHidan				//被弾
+	enHidan,			//被弾
+	enTyakudan			//弾が着弾した時
 };
 
 //サウンドの列挙
 enum SoundName {
 	enRunning,			//移動中の音
+	enDash,				//ダッシュ中の音
 	enMachineGun,		//マシンガン
 	enGigatonCannon,	//ギガトンキャノン
 	enButtleShipGun		//戦艦砲
