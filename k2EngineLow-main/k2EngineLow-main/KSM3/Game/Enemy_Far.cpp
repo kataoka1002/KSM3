@@ -11,10 +11,8 @@
 
 Enemy_Far::Enemy_Far()
 {
-	//効果音の作成
-	m_battleshipGunSE = NewGO<SoundSource>(0);
+	//足音の生成(流し続けるのでここでNewGO)
 	m_asiotoSE = NewGO<SoundSource>(0);
-
 
 	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
 	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//二番目のポイント
@@ -53,11 +51,11 @@ bool Enemy_Far::Start()
 	);
 
 	//足音の設定
-	g_soundEngine->ResistWaveFileBank(0, "Assets/audio/enemy/enemyRunning.wav");
-	m_asiotoSE->Init(0);			//初期化
+	m_asiotoSE->Init(enRunning);	//初期化
 	m_asiotoSE->SetVolume(0.8f);	//音量調整
 	m_asiotoSE->Play(true);			//再生
 	m_asiotoSE->Stop();
+
 
 	//武器生成
 	SetUp();	
@@ -80,11 +78,6 @@ void Enemy_Far::SetUp()
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
-
-		//効果音の設定
-		g_soundEngine->ResistWaveFileBank(2, "Assets/audio/Taihou_kouho1.wav");
-		m_battleshipGunSE->Init(2);			//初期化
-		m_battleshipGunSE->SetVolume(0.2f);	//音量調整
 	}
 }
 
@@ -125,7 +118,7 @@ void Enemy_Far::Update()
 			Attack();			//攻撃
 		}
 
-		SE();				//効果音の処理
+		//SE();				//効果音の処理
 		WeaponMove();		//武器の移動回転	
 		ItemDrop();			//倒した時にアイテムを落とす処理
 
@@ -249,7 +242,8 @@ void Enemy_Far::Move()
 		}
 		else
 		{
-			m_asiotoSE->Stop();			//停止
+			//停止
+			m_asiotoSE->Stop();			
 			//砂ぼこりを止める
 			if (sunabokoriEffect->IsPlay() == true)
 			{
@@ -347,7 +341,8 @@ void Enemy_Far::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			m_asiotoSE->Stop();			//停止
+			//停止
+			m_asiotoSE->Stop();			
 			//砂ぼこりを停止
 			if (sunabokoriEffect->IsPlay() == true)
 			{
@@ -416,6 +411,12 @@ void Enemy_Far::Fire(int m_weaponNum)
 		m_enemyBullet3->m_position = m_enemyPosition;						//弾の位置を設定
 		m_enemyBullet3->m_bulletLocalPosition = { 0.0f,140.0f,290.0f };		//ローカルポジション設定
 		m_enemyBullet3->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+
+		//爆発音の設定と再生
+		m_battleShipGunSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_battleShipGunSE->Init(enButtleShipGun);	//初期化
+		m_battleShipGunSE->SetVolume(1.0f);			//音量調整
+		m_battleShipGunSE->Play(false);
 	}
 }
 
@@ -469,17 +470,7 @@ void Enemy_Far::Effect()
 
 void Enemy_Far::SE()
 {
-	if (m_setWeapon == 6)	//戦艦砲の時
-	{
-		if (m_attackCount >= 60 && m_atackOK == true && m_battleshipGunSE->IsPlaying() != true)
-		{
-			m_battleshipGunSE->Play(false);
-		}
-		else if (m_atackOK == false)
-		{
-			//m_battleshipGunSE->Stop();		
-		}
-	}
+
 }
 
 

@@ -12,8 +12,9 @@
 
 Enemy::Enemy() 
 {
-	//効果音の作成
+	//効果音の作成(流し続ける音源なのでインスタンスを保持させる)
 	m_machineGunSE = NewGO<SoundSource>(0);
+	//足音の生成
 	m_asiotoSE = NewGO<SoundSource>(0);
 
 	//パス移動の目的地の設定
@@ -33,7 +34,6 @@ Enemy::~Enemy()
 		m_dropItem->drop_kinds = m_setWeapon;
 	}
 
-	DeleteGO(sunabokoriEffect);
 	DeleteGO(m_machineGunSE);
 	DeleteGO(m_asiotoSE);
 }
@@ -61,8 +61,7 @@ bool Enemy::Start()
 	);
 
 	//足音の設定
-	g_soundEngine->ResistWaveFileBank(0, "Assets/audio/enemy/enemyRunning.wav");
-	m_asiotoSE->Init(0);			//初期化
+	m_asiotoSE->Init(enRunning);	//初期化
 	m_asiotoSE->SetVolume(0.8f);	//音量調整
 	m_asiotoSE->Play(true);			//再生
 	m_asiotoSE->Stop();
@@ -90,8 +89,7 @@ void Enemy::SetUp()
 		m_enemyWeaponModel.Update();
 
 		//効果音の設定
-		g_soundEngine->ResistWaveFileBank(2, "Assets/audio/enemy/masinganHassya.wav");
-		m_machineGunSE->Init(2);			//初期化
+		m_machineGunSE->Init(enMachineGun);			//初期化
 		m_machineGunSE->SetVolume(0.2f);	//音量調整
 	}
 	else if (m_setWeapon == 3) { //ヘルファイヤ
@@ -108,11 +106,11 @@ void Enemy::Update()
 		{
 			
 		}
-
 		if (g_pad[0]->IsTrigger(enButtonY))
 		{
 			
 		}
+
 		//砂ぼこりの発生カウント
 		m_sunaHassei++;
 
@@ -270,7 +268,7 @@ void Enemy::Move()
 		}
 		else
 		{
-			//砂ぼこりを見えないくらい小さくする
+			//砂ぼこりを見えなくする
 			if (sunabokoriEffect->IsPlay() == true)
 			{
 				sunabokoriEffect->Stop();
@@ -335,7 +333,7 @@ void Enemy::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			//砂ぼこりを見えないくらい小さくする
+			//砂ぼこりを見えなくする
 			if (sunabokoriEffect->IsPlay() == true)
 			{
 				sunabokoriEffect->Stop();
@@ -364,7 +362,7 @@ void Enemy::Move()
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
-			//砂ぼこりを見えないくらい小さくする
+			//砂ぼこりを見えなくする
 			if (sunabokoriEffect->IsPlay() == true)
 			{
 				sunabokoriEffect->Stop();
@@ -420,7 +418,7 @@ void Enemy:: Fire(int m_weaponNum)
 		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
 		m_enemyBullet->m_enemyMama = this;
 		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet->m_bulletLocalPosition = { 30.0f,50.0f,190.0f };	//ローカルポジション設定
+		m_enemyBullet->m_bulletLocalPosition = { 30.0f,50.0f,190.0f };		//ローカルポジション設定
 		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 
 		//弾の生成
@@ -431,14 +429,6 @@ void Enemy:: Fire(int m_weaponNum)
 		m_enemyBullet2->m_bulletLocalPosition = { -30.0f,50.0f,190.0f };	//ローカルポジション設定
 		m_enemyBullet2->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 	}
-
-	m_atackState = true;
-
-	////武器が戦艦砲なら
-	//if (m_setWeapon == 1)
-	//{
-	//	m_enemyBullet->m_aim = m_enemyRotation;
-	//}
 }
 
 void Enemy::ItemDrop()

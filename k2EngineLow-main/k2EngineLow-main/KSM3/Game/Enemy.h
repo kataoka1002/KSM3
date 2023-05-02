@@ -64,7 +64,6 @@ public:
 
 	bool m_defeatState = false;						//死んだかどうかフラグ
 	bool m_enemyEscape = false;						//後退中かどうかフラグ
-	bool m_atackState = false;
 	bool m_atackOK = false;							//攻撃フラグ
 	bool m_lockOn = false;							//エネミーがパスのポイントをロックオンしているかどうか
 	bool m_running = false;							//走っているかどうか

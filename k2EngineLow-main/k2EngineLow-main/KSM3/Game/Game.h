@@ -20,9 +20,19 @@ class Game_UI;
 class Enemy_HP_UI;
 class Fade;
 
+//エフェクトの列挙
 enum EffectName {
 	enSunabokori,		//砂ぼこり
-	enMasinganHibana	//マシンガンから出る火花
+	enMasinganHibana,	//マシンガンから出る火花
+	enHidan				//被弾
+};
+
+//サウンドの列挙
+enum SoundName {
+	enRunning,			//移動中の音
+	enMachineGun,		//マシンガン
+	enGigatonCannon,	//ギガトンキャノン
+	enButtleShipGun		//戦艦砲
 };
 
 

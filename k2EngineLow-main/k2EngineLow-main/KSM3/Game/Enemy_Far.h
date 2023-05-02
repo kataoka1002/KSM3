@@ -44,6 +44,7 @@ public:
 	EffectEmitter* sunabokoriEffect = nullptr;
 	SoundSource* m_battleshipGunSE = nullptr;			//マシンガンSE
 	SoundSource* m_asiotoSE = nullptr;					//足音
+	SoundSource* m_battleShipGunSE = nullptr;			//戦艦砲SE
 
 
 	ModelRender m_enemyModel;						//エネミーモデル
@@ -61,7 +62,6 @@ public:
 
 	bool m_defeatState = false;						//死んだかどうかフラグ
 	bool m_enemyEscape = false;						//後退中かどうかフラグ
-	bool m_atackState = false;
 	bool m_atackOK = false;							//攻撃フラグ
 	bool m_lockOn = false;
 	int m_setWeapon = 0;							//武器の種類

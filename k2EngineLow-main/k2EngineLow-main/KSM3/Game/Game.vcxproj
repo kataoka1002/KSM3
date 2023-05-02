@@ -245,8 +245,6 @@
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Enemy_Bullet.cpp" />
-    <ClCompile Include="Enemy_BulletFar.cpp" />
-    <ClCompile Include="Enemy_BulletNear.cpp" />
     <ClCompile Include="Enemy_Far.cpp" />
     <ClCompile Include="Enemy_Near.cpp" />
     <ClCompile Include="Enemy_HP_UI.cpp" />
@@ -301,8 +299,6 @@
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy_Bullet.h" />
-    <ClInclude Include="Enemy_BulletFar.h" />
-    <ClInclude Include="Enemy_BulletNear.h" />
     <ClInclude Include="Enemy_Far.h" />
     <ClInclude Include="Enemy_Near.h" />
     <ClInclude Include="Enemy_HP_UI.h" />

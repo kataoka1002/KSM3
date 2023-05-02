@@ -26,6 +26,14 @@ bool Game::Start()
 	//エフェクトの設定
 	EffectEngine::GetInstance()->ResistEffect(enSunabokori, u"Assets/effect/enemy/sunabokori2.efk");
 	EffectEngine::GetInstance()->ResistEffect(enMasinganHibana, u"Assets/effect/enemy/masinganHibana.efk");
+	EffectEngine::GetInstance()->ResistEffect(enHidan, u"Assets/effect/enemy/hidan.efk");
+
+	//サウンドの設定
+	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
+	g_soundEngine->ResistWaveFileBank(enMachineGun, "Assets/audio/enemy/masinganHassya.wav");
+	g_soundEngine->ResistWaveFileBank(enGigatonCannon, "Assets/audio/enemy/cannon.wav");
+	g_soundEngine->ResistWaveFileBank(enButtleShipGun, "Assets/audio/enemy/buttleShipAttack.wav");
+
 
 
 	//m_spriteRender.Init("Assets/modelData/utc_nomal.DDS", 100.0f, 100.0f);
@@ -74,20 +82,20 @@ Game::Game()
 
 	
 	//エネミーを複数体生成
-	/*for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
-		enemy->m_enemyPosition = { 0.0f,0.0f,2000.0f };
+		enemy->m_enemyPosition = { 0.0f,0.0f,3000.0f };
 		
 		m_enemyObject.push_back(enemy);
-	}*/
-	/*for (int i = 0; i < 1; i++)
+	}
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
-		enemyFar->m_enemyPosition = { 0.0f,0.0f,3000.0f };
+		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
 
 		m_enemyFarObject.push_back(enemyFar);
-	}*/
+	}
 	for (int i = 0; i < 1; i++)
 	{
 		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
