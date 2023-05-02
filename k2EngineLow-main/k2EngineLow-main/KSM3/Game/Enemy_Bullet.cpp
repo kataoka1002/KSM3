@@ -9,13 +9,12 @@
 
 Enemy_Bullet::Enemy_Bullet() 
 {
-	//効果音の作成
-	m_soundSource = NewGO<SoundSource>(0);
+	//エフェクトの作成
+	m_weaponNearEffect = NewGO<EffectEmitter>(0);
 }
 
 Enemy_Bullet::~Enemy_Bullet() 
 {
-	DeleteGO(masinganEffect);
 	DeleteGO(m_soundSource);
 }
 
@@ -24,8 +23,6 @@ bool Enemy_Bullet::Start()
 	m_player = FindGO<Player>("player");
 	m_coreWeapons = FindGO<Core_weapons>("core_weapons");
 
-	masinganEffect = NewGO<EffectEmitter>(0);
-	masinganEffect->Init(enMasinganHibana);
 
 
 	//親によって初期情報を変える
@@ -52,10 +49,7 @@ bool Enemy_Bullet::Start()
 			m_bulletModel.SetRotation(m_enemyMama->m_enemyRotation);
 			m_bulletModel.SetPosition(m_position);
 
-			//効果音の設定
-			g_soundEngine->ResistWaveFileBank(2, "Assets/audio/enemy/masinganHassya.wav");
-			m_soundSource->Init(m_enemyMama->m_setWeapon);	//初期化
-			m_soundSource->SetVolume(0.2f);					//音量調整
+			//音はエネミー側で鳴らしている
 
 			//エフェクトの再生
 			Effect(2);
@@ -73,9 +67,25 @@ bool Enemy_Bullet::Start()
 		switch (m_enemyNearMama->m_setWeapon)
 		{
 		case 4:	//ギガトンキャノン
-		
-			//効果音の初期化
-			m_soundSource->Init(m_enemyNearMama->m_setWeapon);
+
+			//モデルの初期化
+			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel.SetScale(15.0f);
+			//エネミーから見て正しい位置に弾を設定
+			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
+			//最終的な弾の回転を決定
+			m_rot = originRotation;
+			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
+			//バレットの前方向の設定
+			m_bulletFowrad = m_enemyNearMama->m_enemyForward;
+			//更新
+			m_bulletModel.SetRotation(m_enemyNearMama->m_enemyRotation);
+			m_bulletModel.SetPosition(m_position);
+
+			//爆発音はエネミー側で鳴らしている
+
+			//エフェクトの再生
+			Effect(4);
 
 			break;
 
@@ -94,7 +104,7 @@ bool Enemy_Bullet::Start()
 			break;
 
 		case 6:	//戦艦砲
-						
+
 			//モデルの初期化
 			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
 			m_bulletModel.SetScale(10.0f);
@@ -108,11 +118,6 @@ bool Enemy_Bullet::Start()
 			//更新
 			m_bulletModel.SetRotation(m_enemyFarMama->m_enemyRotation);
 			m_bulletModel.SetPosition(m_position);
-
-			//効果音の設定
-			g_soundEngine->ResistWaveFileBank(2, "Assets/audio/enemy/masinganHassya.wav");
-			m_soundSource->Init(2);	//初期化
-			m_soundSource->SetVolume(0.2f);						//音量調整
 
 			//エフェクトの再生
 			Effect(6);
@@ -193,7 +198,22 @@ void Enemy_Bullet::MoveNear()
 {
 	if (m_enemyNearMama->m_setWeapon == 4)	//ギガトンキャノン
 	{
+		//弾を前に飛ばす処理
+		m_bulletSpeed += m_bulletFowrad * 2.0f;
+		m_position += m_bulletSpeed;
 
+		//弾とエネミー(親)の距離を計算して一定距離以上なら弾を消す
+		Vector3 m_toEnemy = m_enemyNearMama->m_enemyPosition - m_position;
+		float m_dirToEnemy = m_toEnemy.Length();
+		if (m_dirToEnemy >= 100.0f)
+		{
+			DeleteGO(this);
+		}
+
+		//バレットの更新
+		m_bulletModel.SetRotation(m_rot);
+		m_bulletModel.SetPosition(m_position);
+		m_bulletModel.Update();
 	}
 }
 
@@ -225,11 +245,11 @@ void Enemy_Bullet::Effect(int num)
 	else if (num == 2)
 	{
 		//エフェクトの初期化と再生
-		masinganEffect = NewGO<EffectEmitter>(0);
-		masinganEffect->Init(enMasinganHibana);
-		masinganEffect->SetScale({ 0.7f,0.7f,0.7f });
-		masinganEffect->SetPosition(m_position);
-		masinganEffect->Play();
+		m_weaponEffect = NewGO<EffectEmitter>(0);
+		m_weaponEffect->Init(enMasinganHibana);
+		m_weaponEffect->SetScale({ 0.7f,0.7f,0.7f });
+		m_weaponEffect->SetPosition(m_position);
+		m_weaponEffect->Play();
 	}
 	else if (num == 3)
 	{
@@ -237,7 +257,11 @@ void Enemy_Bullet::Effect(int num)
 	}
 	else if (num == 4)
 	{
-
+		//エフェクトの初期化と再生
+		m_weaponNearEffect->Init(enHidan);
+		m_weaponNearEffect->SetScale({ 1.5f,1.5f,1.5f });
+		m_weaponNearEffect->SetPosition(m_position);
+		m_weaponNearEffect->Play();
 	}
 	else if (num == 5)
 	{
@@ -246,11 +270,11 @@ void Enemy_Bullet::Effect(int num)
 	else if (num == 6)
 	{
 		//エフェクトの初期化と再生
-		masinganEffect = NewGO<EffectEmitter>(0);
-		masinganEffect->Init(enMasinganHibana);
-		masinganEffect->SetScale({ 0.7f,0.7f,0.7f });
-		masinganEffect->SetPosition(m_position);
-		masinganEffect->Play();
+		m_weaponEffect = NewGO<EffectEmitter>(0);
+		m_weaponEffect->Init(enMasinganHibana);
+		m_weaponEffect->SetScale({ 0.7f,0.7f,0.7f });
+		m_weaponEffect->SetPosition(m_position);
+		m_weaponEffect->Play();
 	}
 }
 
@@ -275,7 +299,7 @@ void Enemy_Bullet::Render(RenderContext& rc)
 	{
 		if (m_enemyNearMama->m_setWeapon == 4)	//ギガトンキャノン
 		{
-
+			m_bulletModel.Draw(rc);
 		}
 	}
 	else if (m_enemyFarMama != nullptr)

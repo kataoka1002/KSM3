@@ -5,6 +5,7 @@
 #include "Right_arm_weapons.h"
 #include "Enemy.h"
 #include "Enemy_Far.h"
+#include "Enemy_Near.h"
 #include "Game.h"
 
 Battle_ship_attack::Battle_ship_attack() {
@@ -77,6 +78,18 @@ void Battle_ship_attack::Update() {
 					DeleteGO(this);	//弾は消える
 				}
 			}
+			//エネミーNearの数だけ繰り返す
+			for (auto enemyNear : m_game->m_enemyNearObject)
+			{
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemyNear->m_enemyPosition;
+				if (diff.Length() <= 100.0f)
+				{
+					enemyNear->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
+			}
+
 		//}
 	}
 }

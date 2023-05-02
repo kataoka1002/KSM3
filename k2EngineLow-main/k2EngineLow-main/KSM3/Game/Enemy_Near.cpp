@@ -6,10 +6,14 @@
 #include <stdlib.h>
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
+#include "Enemy_Bullet.h"
 
 
 Enemy_Near::Enemy_Near()
 {
+	//足音の生成
+	m_asiotoSE = NewGO<SoundSource>(0);
+	
 	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
 	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//二番目のポイント
 	m_pointList.push_back({ Vector3(100.0f,0.0f,200.0f),3 });	//三番目のポイント
@@ -30,6 +34,10 @@ bool Enemy_Near::Start()
 {
 	m_player = FindGO<Player>("player");
 
+	//砂ぼこりエフェの初期化
+	sunabokoriEffect = NewGO<EffectEmitter>(0);
+	sunabokoriEffect->Init(enSunabokori);
+
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");
 	m_enemyModel.SetScale(2.0f);
@@ -41,6 +49,14 @@ bool Enemy_Near::Start()
 		40.0f,			//高さ。
 		m_enemyPosition	//座標。
 	);
+
+	//足音の設定
+	//g_soundEngine->ResistWaveFileBank(0, "Assets/audio/enemy/enemyRunning.wav");
+	m_asiotoSE->Init(enRunning);			//初期化
+	m_asiotoSE->SetVolume(0.8f);	//音量調整
+	m_asiotoSE->Play(true);			//再生
+	m_asiotoSE->Stop();				//停止
+
 
 	SetUp();	//武器生成
 
@@ -105,6 +121,13 @@ void Enemy_Near::Update()
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
 		m_enemyWeaponModel.Update();
+
+		//エフェクト再生中なら更新
+		if (sunabokoriEffect->IsPlay() == true)
+		{
+			sunabokoriEffect->SetRotation(m_weaponRotation);
+			sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y - 20.0f,m_enemyPosition.z });
+		}
 	}
 }
 
@@ -213,6 +236,18 @@ void Enemy_Near::Move()
 		{
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+			//砂ぼこりの可視化
+			if (m_sunaHassei >= 10)
+			{
+				Effect();
+				m_sunaHassei = 0;
+			}
+			//足音再生
+			if (m_asiotoSE->IsPlaying() != true)
+			{
+				m_asiotoSE->Play(true);
+			}
+
 		}
 		//プレイヤーに向かって移動する(ダッシュ)
 		else if (m_distToPlayer < 1500.0f && m_attackFlag == false)
@@ -228,6 +263,18 @@ void Enemy_Near::Move()
 			m_dashFlag = true;	
 			//エネミーの移動
 			m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+			//砂ぼこりの可視化
+			if (m_sunaHassei >= 10)
+			{
+				Effect();
+				m_sunaHassei = 0;
+			}
+			//足音再生
+			if (m_asiotoSE->IsPlaying() != true)
+			{
+				m_asiotoSE->Play(true);
+			}
+
 		}	
 
 		//ターゲットが決まったら
@@ -247,6 +294,12 @@ void Enemy_Near::Move()
 			{
 				m_fireFlag = true;
 				m_enemyDirState = 4;
+				//砂ぼこりを見えなくする
+				if (sunabokoriEffect->IsPlay() == true)
+				{
+					sunabokoriEffect->Stop();
+				}
+				m_asiotoSE->Stop();	//停止
 			}
 		}
 	}
@@ -254,20 +307,59 @@ void Enemy_Near::Move()
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+		//砂ぼこりの可視化
+		if (m_sunaHassei >= 10)
+		{
+			Effect();
+			m_sunaHassei = 0;
+		}
+		//足音再生
+		if (m_asiotoSE->IsPlaying() != true)
+		{
+			m_asiotoSE->Play(true);
+		}
+
+
 		//ある程度したらストップ
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
+			//砂ぼこりを見えなくする
+			if (sunabokoriEffect->IsPlay() == true)
+			{
+				sunabokoriEffect->Stop();
+			}
+			m_asiotoSE->Stop();	//停止
+
 		}
 	}
 	else if (m_enemyDirState == 3)	//横向き
 	{
 		//移動させる。
 		m_enemyPosition = m_enemyCharacterController.Execute(m_enemyMoveSpeed, g_gameTime->GetFrameDeltaTime());
+		//砂ぼこりの可視化
+		if (m_sunaHassei >= 10)
+		{
+			Effect();
+			m_sunaHassei = 0;
+		}
+		//足音再生
+		if (m_asiotoSE->IsPlaying() != true)
+		{
+			m_asiotoSE->Play(true);
+		}
+
+
 		//ある程度したらストップ
 		if (rand() % 200 == 1)
 		{
 			m_enemyDirState = 0;
+			//砂ぼこりを見えなくする
+			if (sunabokoriEffect->IsPlay() == true)
+			{
+				sunabokoriEffect->Stop();
+			}
+			m_asiotoSE->Stop();	//停止
 		}
 	}
 	else if (m_enemyDirState == 4)
@@ -292,9 +384,9 @@ void Enemy_Near::Attack()
 		switch (m_setWeapon)
 		{
 		case 4://ギガトンキャノン
-			if (m_attackCount % 30 == 0)
+			if (m_attackCount % 10 == 0)
 			{
-				Fire();	//発射
+				Fire(4);	//発射
 				m_attackCount = 0;
 				m_fireFlag = false;
 			}
@@ -305,19 +397,26 @@ void Enemy_Near::Attack()
 	}
 }
 
-void Enemy_Near::Fire()
+void Enemy_Near::Fire(int weaponNum)
 {
-	////弾の生成
-	//m_enemyAttack = NewGO<Enemy_Bullet>(1, "enemy_attack");
-	//m_enemyAttack->firing_position = m_position;	//弾の位置を設定
-	//m_enemyAttack->e_a_Bullet_Fowrad = m_enemy->m_enemyForward;	//弾の前方向の設定
-	m_attackFlag = true;
+	if (weaponNum == 4)
+	{
+		//弾の生成
+		Enemy_Bullet* m_enemyBullet;
+		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
+		m_enemyBullet->m_enemyNearMama = this;
+		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
+		m_enemyBullet->m_bulletLocalPosition = { 0.0f,50.0f,100.0f };		//ローカルポジション設定
+		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 
-	////武器が戦艦砲なら
-	//if (weponNom == 1)
-	//{
-	//	m_enemyAttack->e_a_aiming = m_enemy->m_enemyRotation;
-	//}
+		//爆発音の設定と再生
+		m_cannonSE = NewGO<SoundSource>(0);
+		m_cannonSE->Init(enGigatonCannon);					//初期化
+		m_cannonSE->SetVolume(2.0f);			//音量調整
+		m_cannonSE->Play(false);
+
+		m_attackFlag = true;
+	}
 }
 
 void Enemy_Near::ItemDrop()
@@ -344,6 +443,22 @@ void Enemy_Near::WeaponMove()
 
 	m_weaponPosition = m_enemyPosition;		//まず,武器の位置をエネミーと同じに設定し
 	m_weaponPosition += localPosition;		//それに親から見た位置を足して最終的な武器の位置を決定
+}
+
+void Enemy_Near::Effect()
+{
+	//砂ぼこりエフェクトの初期化と再生
+	sunabokoriEffect = NewGO<EffectEmitter>(0);
+	sunabokoriEffect->Init(enSunabokori);
+	sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
+	sunabokoriEffect->SetRotation(m_enemyRotation);
+	sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y + 10.0f ,m_enemyPosition.z });
+	sunabokoriEffect->Play();
+}
+
+void Enemy_Near::SE()
+{
+
 }
 
 void Enemy_Near::Render(RenderContext& rc)

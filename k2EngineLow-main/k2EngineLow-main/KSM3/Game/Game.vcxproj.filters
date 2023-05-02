@@ -37,8 +37,6 @@
     <ClCompile Include="Left_leg_weapons.cpp" />
     <ClCompile Include="Enemy_Far.cpp" />
     <ClCompile Include="Enemy_Near.cpp" />
-    <ClCompile Include="Enemy_BulletNear.cpp" />
-    <ClCompile Include="Enemy_BulletFar.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Boss_Riser.cpp" />
     <ClCompile Include="Boss_Riser_attack.cpp" />
@@ -89,8 +87,6 @@
     <ClInclude Include="Left_leg_weapons.h" />
     <ClInclude Include="Enemy_Far.h" />
     <ClInclude Include="Enemy_Near.h" />
-    <ClInclude Include="Enemy_BulletNear.h" />
-    <ClInclude Include="Enemy_BulletFar.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Boss_Riser.h" />
     <ClInclude Include="Boss_Riser_attack.h" />

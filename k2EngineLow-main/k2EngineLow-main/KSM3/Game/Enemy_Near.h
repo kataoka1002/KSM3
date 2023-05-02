@@ -28,8 +28,10 @@ public:
 	void WeaponMove();				//離れる処理
 	void SetUp();					//武器セット
 	void Attack();					//武器を選んで攻撃
-	void Fire();					//発射
+	void Fire(int weaponNum);					//発射
 	void PassMove();				//パス移動
+	void Effect();					//エフェクト
+	void SE();						//効果音
 
 
 	//パス移動に必要な奴ら
@@ -39,7 +41,9 @@ public:
 	Player* m_player = nullptr;
 	Battle_ship_attack* m_battleShipAttack = nullptr;
 	Drop_item* m_dropItem = nullptr;
-	EffectEmitter* sunabokoriEffect = nullptr;
+	EffectEmitter* sunabokoriEffect = nullptr;			//砂ぼこり
+	SoundSource* m_asiotoSE = nullptr;					//足音
+	SoundSource* m_cannonSE = nullptr;					//ギガトンキャノンSE
 
 
 	ModelRender m_enemyModel;						//エネミーモデル
@@ -69,6 +73,7 @@ public:
 	int m_enemyGameState = 0;
 	int m_attackCount = 0;							//攻撃の間隔
 	int m_recoilCount = 300;						//反動の時間
+	int m_sunaHassei = 0;							//砂ぼこりが発生する間隔
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
 	float m_distTarget;								//ターゲットまでの距離

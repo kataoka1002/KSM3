@@ -23,13 +23,14 @@ public:
 	void Render(RenderContext& rc);
 
 	Core_weapons* m_coreWeapons = nullptr;
-	Player* m_player; 
-	SoundSource* m_soundSource;
+	Player* m_player = nullptr; 
+	SoundSource* m_soundSource = nullptr;
 
 	Enemy* m_enemyMama = nullptr;
 	Enemy_Near* m_enemyNearMama = nullptr;
 	Enemy_Far* m_enemyFarMama = nullptr;
-	EffectEmitter* masinganEffect = nullptr;
+	EffectEmitter* m_weaponEffect = nullptr;
+	EffectEmitter* m_weaponNearEffect = nullptr;
 
 
 	ModelRender m_bulletModel;	//ƒ}ƒVƒ“ƒKƒ“‚Ì’e‚Ìƒ‚ƒfƒ‹
