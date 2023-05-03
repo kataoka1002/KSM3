@@ -20,18 +20,19 @@ bool Boss_Shovel::Start()
 {
 	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_shovel_idol01.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
-	//èâä˙âªÅB
+	//èâä˙âª
+	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm");//, 0, 0, m_animationClip, enAnimationClip_Num, enModelUpAxisY);
 
 	return true;
 }
 
 void Boss_Shovel::Setup()
-{
+{b_w_boss = FindGO<Boss>("boss");
 	set_weapons = 1;
-	b_w_boss = FindGO<Boss>("boss");
+	
 	if (set_weapons == 1)
 	{
-		boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm");
+		//boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm");
 		boss_Shovel_Render.Update();
 	}
 

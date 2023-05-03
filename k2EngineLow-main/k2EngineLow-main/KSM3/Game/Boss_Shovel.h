@@ -23,7 +23,7 @@ public:
 	};
 
 	AnimationClip m_animationClip[enAnimationClip_Num];
-	Player* b_w_player;
+	Player* b_w_player = nullptr;
 	Boss* b_w_boss;
 	Boss_Shovel_attack* b_boss_weapons;
 
