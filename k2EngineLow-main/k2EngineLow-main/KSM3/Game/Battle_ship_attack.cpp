@@ -8,7 +8,7 @@
 #include "Enemy_Near.h"
 #include "Game.h"
 
-Battle_ship_attack::Battle_ship_attack() {
+BattleShipBullet::BattleShipBullet() {
 	b_s_attack_player = FindGO<Player>("player");
 	b_s_left_arm_weapons = FindGO<Left_arm_weapons>("left_arm_weapons");
 	b_s_right_arm_weapons= FindGO<Right_arm_weapons>("right_arm_weapons");
@@ -18,7 +18,7 @@ Battle_ship_attack::Battle_ship_attack() {
 	Setup();
 }
 
-void Battle_ship_attack::Setup() {
+void BattleShipBullet::Setup() {
 	B_S_Bullet_Fowrad = b_s_attack_player->playerFowrad;
 	//B_S_aiming = b_s_left_arm_weapons->l_a_Rotation;
 	//firing_position = b_s_left_arm_weapons->l_a_w_position;
@@ -28,7 +28,7 @@ void Battle_ship_attack::Setup() {
 	B_S_Bullet.SetPosition(firing_position);
 }
 
-Battle_ship_attack::~Battle_ship_attack() {
+BattleShipBullet::~BattleShipBullet() {
 	if (b_s_attack_player->p_custom_point[0][2] != 0)
 		b_s_attack_player->attack_state_ra = false;
 	if (b_s_attack_player->p_custom_point[0][1] != 0)
@@ -41,7 +41,7 @@ Battle_ship_attack::~Battle_ship_attack() {
 		b_s_attack_player->attack_state_rl = false;
 }
 
-void Battle_ship_attack::Update() {
+void BattleShipBullet::Update() {
 	if (b_s_attack_player->game_state == 0) {
 		Move();
 		B_S_Bullet.Update();
@@ -94,7 +94,7 @@ void Battle_ship_attack::Update() {
 	}
 }
 
-void Battle_ship_attack::Move() {
+void BattleShipBullet::Move() {
 	firing_position += B_S_Bullet_Fowrad * move_speed;
 	firing_position.y -= fall_speed;
 	move_speed -= 0.05f;
@@ -102,6 +102,6 @@ void Battle_ship_attack::Move() {
 	B_S_Bullet.SetPosition(firing_position);
 }
 
-void Battle_ship_attack::Render(RenderContext& rc) {
+void BattleShipBullet::Render(RenderContext& rc) {
 	B_S_Bullet.Draw(rc);
 }

@@ -38,6 +38,7 @@ enum SoundName {
 };
 
 
+
 class Game :public IGameObject
 {
 public:
@@ -47,11 +48,6 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	enum EnAnimationClip {
-		enAnimClip_Idle,
-		enAnimClip_Num,
-	};
-	AnimationClip animationClips[enAnimClip_Num];
 
 	void AddDefeatedEnemyNumber()
 	{

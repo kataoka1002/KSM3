@@ -192,7 +192,7 @@ float4 PSShadowMain(SPSIn psIn) : SV_Target0
     return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
 }
 
-float4 PSTest(SPSIn psIn):SV_Target0
+float4 PSTest(SPSIn psIn):SV_Target0    //テスト用の関数
 {
     float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
     

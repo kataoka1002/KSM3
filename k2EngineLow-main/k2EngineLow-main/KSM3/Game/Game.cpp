@@ -21,8 +21,11 @@
 
 Game::Game()
 {
+	//ライトの作成
 	lighting = NewGO<Lighting>(1, "lighting");
-	player = NewGO<Player>(2, "player");
+
+	//プレイヤーの作成
+	player = NewGO<Player>(1, "player");
 
 	
 	//エネミーを複数体生成
@@ -110,7 +113,8 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enGigatonCannon, "Assets/audio/enemy/cannon.wav");
 	g_soundEngine->ResistWaveFileBank(enButtleShipGun, "Assets/audio/enemy/buttleShipAttack.wav");
 
-  m_fade = FindGO<Fade>("fade");
+
+	m_fade = FindGO<Fade>("fade");
 	m_fade->StartFadeIn();
 		
 	return true;

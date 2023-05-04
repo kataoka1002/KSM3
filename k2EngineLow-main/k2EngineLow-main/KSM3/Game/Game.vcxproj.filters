@@ -56,6 +56,7 @@
     <ClCompile Include="Boss_Turbo.cpp" />
     <ClCompile Include="Boss_Turbo_attack.cpp" />
     <ClCompile Include="Fade.cpp" />
+    <ClCompile Include="MachineGunAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -107,5 +108,6 @@
     <ClInclude Include="Boss_Turbo.h" />
     <ClInclude Include="Boss_Turbo_attack.h" />
     <ClInclude Include="Fade.h" />
+    <ClInclude Include="MachineGunAttack.h" />
   </ItemGroup>
 </Project>

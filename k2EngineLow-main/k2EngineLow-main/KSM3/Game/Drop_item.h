@@ -31,8 +31,8 @@ public:
 	int touch_flag = 0;
 
 
-	int drop_weapons[12] = {0,//non
-							  0,//Battleship_gun
+	int drop_weapons[12] = {  0,	//non
+							  0,	//Battleship_gun
 							  0,
 							  0,
 							  0,
