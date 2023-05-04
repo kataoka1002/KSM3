@@ -3,7 +3,7 @@
 #include "Game.h"
 
 class Player;
-class Battle_ship_attack;
+class BattleShipBullet;
 class Drop_item;
 class Game;
 
@@ -41,7 +41,7 @@ public:
 
 
 	Player* m_player = nullptr;
-	Battle_ship_attack* m_battleShipAttack = nullptr;
+	BattleShipBullet* m_battleShipAttack = nullptr;
 	Drop_item* m_dropItem = nullptr;
 	EffectEmitter* sunabokoriEffect=nullptr;
 	SoundSource* m_machineGunSE = nullptr;				//ƒ}ƒVƒ“ƒKƒ“SE

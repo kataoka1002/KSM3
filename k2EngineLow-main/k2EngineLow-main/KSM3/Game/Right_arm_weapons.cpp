@@ -49,7 +49,7 @@ void Right_arm_weapons::Update() {
 		if (g_pad[0]->IsPress(enButtonRB1)) {
 
 			if (r_a_w_player->p_custom_point[0][0] == 1&&firing_cound%180==0) {
-				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
+				battle_ship_attack = NewGO< BattleShipBullet>(1, "battle_ship_attack");
 				battle_ship_attack->B_S_aiming = r_a_Rotation;
 				battle_ship_attack->firing_position = r_a_w_position;
 				atack_state = true;

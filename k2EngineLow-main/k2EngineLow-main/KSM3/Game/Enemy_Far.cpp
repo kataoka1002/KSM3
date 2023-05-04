@@ -424,7 +424,7 @@ void Enemy_Far::WeaponMove()
 
 void Enemy_Far::Damage()
 {
-	//m_battleShipAttack = FindGO<Battle_ship_attack>("buttle_ship_attack");
+	//m_battleShipAttack = FindGO<BattleShipBullet>("buttle_ship_attack");
 	/*Vector3 diff = m_battleShipAttack->firing_position - m_enemyPosition;
 	if (diff.Length() <= 100.0f)
 	{

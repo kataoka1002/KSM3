@@ -42,7 +42,7 @@ void Shoulder_weapons::Update() {
 		//UŒ‚
 		if (g_pad[0]->IsPress(enButtonRB1)) {
 			if (s_w_player->p_custom_point[0][1] == 1 && firing_cound % 180 == 0) {
-				battle_ship_attack = NewGO<Battle_ship_attack>(1, "battle_ship_attack");
+				battle_ship_attack = NewGO<BattleShipBullet>(1, "battle_ship_attack");
 				battle_ship_attack->B_S_aiming = Shoulder_Rotation;
 				battle_ship_attack->firing_position = s_w_position;
 				atack_state = true;

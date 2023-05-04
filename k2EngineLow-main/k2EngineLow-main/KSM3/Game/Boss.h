@@ -2,7 +2,7 @@
 #define HP 2000.0f
 
 class Player;
-class Battle_ship_attack;
+class BattleShipBullet;
 class Drop_item;
 class Boss_Riser;
 class Boss_Shovel;
@@ -25,7 +25,7 @@ public:
 	void PlayerSearch();//çıìG
 
 	Player* b_player = nullptr;
-	Battle_ship_attack* b_battle_ship_attack;
+	BattleShipBullet* b_battle_ship_attack;
 	Drop_item* drop_item;
 	Boss_Riser* b_boss_riser;
 	Boss_Shovel* b_boss_shovel;

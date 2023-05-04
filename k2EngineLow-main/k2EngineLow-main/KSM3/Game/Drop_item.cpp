@@ -7,7 +7,8 @@
 #include <vector>       // ヘッダファイルインクルード
 using namespace std;
 
-Drop_item::Drop_item() {
+Drop_item::Drop_item() 
+{
 	drop_player = FindGO<Player>("player");
 
 	drop_weapons[1] = 1;
@@ -17,25 +18,31 @@ Drop_item::Drop_item() {
 	Set_Drop_item();
 }
 
-void Drop_item::Set_Drop_item() {
-		if (drop_weapons[1] == 1) {
-			Drop_item_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
-			drop_kinds = 1;
-		}
-		else if (drop_weapons[2] == 1){
-			Drop_item_Render.Init("Assets/modelData/machine_gun_drop.tkm");
-			drop_kinds = 2;
-		}
-	
+Drop_item::~Drop_item() 
+{
+
+}
+
+void Drop_item::Set_Drop_item()
+{
+	if (drop_weapons[1] == 1)
+	{
+		Drop_item_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
+		drop_kinds = 1;
+	}
+	else if (drop_weapons[2] == 1)
+	{
+		Drop_item_Render.Init("Assets/modelData/machine_gun_drop.tkm");
+		drop_kinds = 2;
+	}
+
 	Drop_item_Render.SetPosition(Drop_position);
 }
 
-Drop_item::~Drop_item() {
-
-}
-
-void Drop_item::Update() {
-	if (drop_player->game_state == 0) {
+void Drop_item::Update() 
+{
+	if (drop_player->game_state == 0) 
+	{
 		
 		Float();
 		Drop_item_Render.Update();
@@ -43,7 +50,8 @@ void Drop_item::Update() {
 		//取得処理
 		Vector3 diff = drop_player->player_position - Drop_position;
 		
-		if (diff.Length() < 100.0f) {
+		if (diff.Length() < 100.0f) 
+		{
 			GetState = true;
 			DeleteGO(this);
 			customize_UI_ver2 = NewGO<Customize_UI_ver2>(3, "customize_UI_ver2");
@@ -51,9 +59,11 @@ void Drop_item::Update() {
 	}
 }
 
-void Drop_item::Float() {
+void Drop_item::Float() 
+{
 	float_counter += 1;
-	if (float_counter % 90 == 0) {
+	if (float_counter % 90 == 0) 
+	{
 		float_level*=-1;
 	}
 	Drop_position.y += float_level;
@@ -62,6 +72,7 @@ void Drop_item::Float() {
 	Drop_item_Render.SetRotation(Drop_rotation);
 }
 
-void Drop_item::Render(RenderContext& rc) {
+void Drop_item::Render(RenderContext& rc) 
+{
 	Drop_item_Render.Draw(rc);
 }

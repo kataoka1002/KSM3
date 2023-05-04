@@ -5,11 +5,12 @@
 #include "Customize_UI_ver2.h"
 
 
-
-
-Player::Player() {
+Player::Player() 
+{
+	//プレイヤーのモデルとポーズ画面のスプライトの初期化
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
+	//キャラコンの設定
 	characterController.Init(70.0f, 150.0f, player_position);
 
 	
@@ -28,27 +29,29 @@ Player::~Player()
 	//DeleteGO(p_left_arm_weapons);
 }
 
-void Player::Update() {
-	
-	if (game_state == 0) {
-		player_modelRender.SetPosition(player_position);
+void Player::Update() 
+{
+	if (game_state == 0) //メインゲーム
+	{
+		Move();	//移動処理
 
-		Move();//移動処理
-
-		//ManageState();//ステート管理
-
-		player_modelRender.Update(true);
-		if (g_pad[0]->IsTrigger(enButtonStart)) {
+		//スタートボタンを押すとポーズ画面に移動
+		if (g_pad[0]->IsTrigger(enButtonStart)) 
+		{
 			game_state = 1;
 		}
-		if (g_pad[0]->IsTrigger(enButtonA)) {
+		if (g_pad[0]->IsTrigger(enButtonA)) 
+		{
 			p_customize_ui_ver2 = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 		}
+
+		//モデルの更新
+		player_modelRender.Update(true);
 	}
-	else if (game_state == 1) {
+	else if (game_state == 1) //ポーズ画面
+	{
 		pause();
 	}
-	
 }
 
 void Player::Move()
@@ -58,20 +61,20 @@ void Player::Move()
 	Vector3 stickL;
 	float throttle;
 	stickL.x = g_pad[0]->GetLStickXF();
+	//スティックを倒した量の取得
 	throttle = g_pad[0]->GetRTrigger();
-	brake = g_pad[0]->IsPress(enButtonLB2);
+	//brake = g_pad[0]->IsPress(enButtonLB2);
 
-	Vector3 forward = g_camera3D->GetForward();
+	//Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
-
-	float cx, cy;
-
-	forward.y = 0.0f;
 	right.y = 0.0f;
-
-
 	right *= stickL.x * 120.0f;
-	forward *= throttle * 120.0f;
+
+	//float cx, cy;
+
+	//forward.y = 0.0f;
+	
+	//forward *= throttle * 120.0f;
 
 	playerFowrad.Normalize();
 
@@ -79,25 +82,28 @@ void Player::Move()
 	//回転処理
 	if (stickL.x!=0.0f)
 	{
-		playerFowrad.x = playerFowrad.x * cos(stickL.x*-0.05) - playerFowrad.z * sin(stickL.x * -0.05);
-		playerFowrad.z = playerFowrad.x * sin(stickL.x*-0.05) + playerFowrad.z * cos(stickL.x * -0.05);
+		playerFowrad.x = playerFowrad.x * cos(stickL.x * -0.05) - playerFowrad.z * sin(stickL.x * -0.05);
+		playerFowrad.z = playerFowrad.x * sin(stickL.x * -0.05) + playerFowrad.z * cos(stickL.x * -0.05);
 
 		player_rotation.SetRotationY(atan2(playerFowrad.x, playerFowrad.z));
-		player_modelRender.SetRotation(player_rotation);
-		//回転時の移動
 	}
 	//回転していないときの移動
-	if (throttle != 0.0f) {
+	if (throttle != 0.0f) 
+	{
+		//だんだん速くする
 		accelerator += 0.05;
-		if (accelerator >= 2) {
-			accelerator = 2;
+		if (accelerator >= 2) 
+		{
+			accelerator = 2;	//最大値は2
 		}
-
 	}
-	else {
+	else 
+	{
+		//だんだん遅くする
 		accelerator -= 0.05;
-		if (accelerator <= 0) {
-			accelerator = 0;
+		if (accelerator <= 0) 
+		{
+			accelerator = 0;	//最小値は0
 		}
 	}
 
@@ -111,19 +117,25 @@ void Player::Move()
 	player_modelRender.SetRotation(player_rotation);
 }
 
-void Player::pause() {
-	
-	if (g_pad[0]->IsTrigger(enButtonB)) {
-		game_state = 0;
+void Player::pause() 
+{
+	if (g_pad[0]->IsTrigger(enButtonB)) 
+	{
+		game_state = 0;	//メインゲームに戻る
 	}
-	else if (g_pad[0]->IsTrigger(enButtonA)) {
-		game_end_state = 1;
+	else if (g_pad[0]->IsTrigger(enButtonA)) 
+	{
+		game_end_state = 1;	//ゲーム終了
 	}
 }
 
 void Player::Render(RenderContext& rc)
 {
 	player_modelRender.Draw(rc);
+
+	//ポーズ中ならポーズ画面を表示
 	if (game_state == 1)
+	{
 		pouse_spriteRender.Draw(rc);
+	}
 }

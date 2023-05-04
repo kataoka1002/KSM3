@@ -1,19 +1,15 @@
 #include "stdafx.h"
 #include "Customize_UI_ver2.h"
 #include"Player.h"
-
 #include "Left_arm_weapons.h"
 #include"Right_arm_weapons.h"
 #include "Core_weapons.h"
 #include "Shoulder_weapons.h"
 #include "Right_leg_weapons.h"
 #include "Left_leg_weapons.h"
-
 #include "Drop_item.h"
-
 #include"Customize_area.h"
 #include "GameCamera.h"
-
 
 
 Customize_UI_ver2::Customize_UI_ver2() {
@@ -34,6 +30,13 @@ Customize_UI_ver2::Customize_UI_ver2() {
 	cui_drop_item = FindGO<Drop_item>("drop_item");
 	customize_area = NewGO<Customize_area>(1, "customize_area");
 	Setup();
+}
+
+Customize_UI_ver2::~Customize_UI_ver2() {
+	C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+	//DeleteGO(cui_drop_item);
+	DeleteGO(customize_area);
+	custom_player->game_state = 0;
 }
 
 void Customize_UI_ver2::Setup() {
@@ -58,13 +61,6 @@ void Customize_UI_ver2::Setup() {
 	}
 
 	custom_kinds = cui_drop_item->drop_kinds;
-}
-
-Customize_UI_ver2::~Customize_UI_ver2() {
-	C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
-	//DeleteGO(cui_drop_item);
-	DeleteGO(customize_area);
-	custom_player->game_state = 0;
 }
 
 void Customize_UI_ver2::Update() {

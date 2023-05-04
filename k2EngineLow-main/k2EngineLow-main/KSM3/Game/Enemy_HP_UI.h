@@ -1,7 +1,7 @@
 #pragma once
 class Enemy;
 class Player;
-class Battle_ship_attack;
+class BattleShipBullet;
 class Game;
 class GameCamera;
 
@@ -22,7 +22,7 @@ public:
 	Vector3 hp_movespeed;
 	Enemy* enemy;
 	Player* player;
-	Battle_ship_attack* b_s_attack;
+	BattleShipBullet* b_s_attack;
 	Game* game;
 	GameCamera* game_camera;
 };

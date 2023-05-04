@@ -41,11 +41,11 @@ namespace nsK2EngineLow {
 			//拡張SRVにZPrepassで作成された深度テクスチャを指定する
 			modelInitData.m_expandShaderResoruceView[0] = &g_renderingEngine->GetZPrepassDepthTexture();
 			//ZPrepassの初期化
-			InitCommon(filePath);
+			InitCommon(filePath,animationClips);
 			//トゥーンシェーダーを使用するなら
 			if (m_toonShader == true) {
 				modelInitData.m_expandShaderResoruceView[2] = &g_renderingEngine->GetToonTexture();
-				//modelInitData.m_psEntryPointFunc = "PSToonMap";
+				modelInitData.m_psEntryPointFunc = "PSToonMap";
 			}
 
 
@@ -57,6 +57,16 @@ namespace nsK2EngineLow {
 			shadowModelInitData.m_modelUpAxis = enModelUpAxis;
 			// カラーバッファーのフォーマットに変更が入ったので、こちらも変更する
 			shadowModelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;
+
+			//アニメーション有無でエントリーポイントを変える
+			if (animationClips != nullptr) {
+				shadowModelInitData.m_skeleton = &m_skeleton;
+				shadowModelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
+			}
+			else {
+				shadowModelInitData.m_vsEntryPointFunc = "VSMain";
+			}
+
 			m_shadowModel.Init(shadowModelInitData);
 		}
 		else {
@@ -83,13 +93,22 @@ namespace nsK2EngineLow {
 		m_model.Init(modelInitData);
 	}
 
-	void ModelRender::InitCommon(const char* tkmFilePath)
+	void ModelRender::InitCommon(const char* tkmFilePath, AnimationClip* animationClips)
 	{
 		// ZPrepass描画用のモデルを初期化
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = tkmFilePath;
 		modelInitData.m_fxFilePath = "Assets/shader/ZPrepass.fx";
 		modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;
+
+		//アニメーション有無でエントリーポイントを変える
+		if (animationClips != nullptr) {
+			modelInitData.m_skeleton = &m_skeleton;
+			modelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
+		}
+		else {
+			modelInitData.m_vsEntryPointFunc = "VSMain";
+		}
 
 		m_zprepassModel.Init(modelInitData);
 	}

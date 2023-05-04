@@ -7,11 +7,11 @@ class CollisionObject;
 class Enemy;
 class Game;
 
-class Battle_ship_attack :public IGameObject
+class BattleShipBullet :public IGameObject
 {
 public:
-	Battle_ship_attack();
-	~Battle_ship_attack();
+	BattleShipBullet();
+	~BattleShipBullet();
 
 	void Setup();
 	void Update();

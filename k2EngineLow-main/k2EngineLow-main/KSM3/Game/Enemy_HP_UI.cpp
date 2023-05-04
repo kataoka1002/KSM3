@@ -12,7 +12,7 @@ Enemy_HP_UI::Enemy_HP_UI()
 	game = FindGO<Game>("game");
 	enemy = FindGO<Enemy>("enemy");
 	player = FindGO<Player>("player");
-	b_s_attack = FindGO<Battle_ship_attack>("battle_ship_attack");
+	b_s_attack = FindGO<BattleShipBullet>("battle_ship_attack");
 }
 
 Enemy_HP_UI::~Enemy_HP_UI()
