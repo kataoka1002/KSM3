@@ -66,7 +66,8 @@ public:
 	Quaternion custom_model_body_rotation;
 	Vector3 custom_model_body_position = { 10500.0f,0.0f,0.0f };//10000
 
-	int custom_point[2][3] = { {0,0,0},{0,0,0} };
+	int custom_point[2][3] = { {0,0,0},
+							   {0,0,0} };
 
 	int selection_position=0;
 	int fast_count=0;

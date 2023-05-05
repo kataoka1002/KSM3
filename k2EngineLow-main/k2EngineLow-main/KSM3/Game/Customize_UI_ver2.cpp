@@ -1,19 +1,15 @@
 #include "stdafx.h"
 #include "Customize_UI_ver2.h"
 #include"Player.h"
-
 #include "Left_arm_weapons.h"
 #include"Right_arm_weapons.h"
 #include "Core_weapons.h"
 #include "Shoulder_weapons.h"
 #include "Right_leg_weapons.h"
 #include "Left_leg_weapons.h"
-
 #include "Drop_item.h"
-
 #include"Customize_area.h"
 #include "GameCamera.h"
-
 
 
 Customize_UI_ver2::Customize_UI_ver2() {
@@ -31,7 +27,7 @@ Customize_UI_ver2::Customize_UI_ver2() {
 	cui_drop_item = FindGO<Drop_item>("drop_item");
 	customize_area = NewGO<Customize_area>(1, "customize_area");
 
-	//UI‚Ì“Ç‚İ‚İ
+	//UIã®èª­ã¿è¾¼ã¿
 	select_sheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
 	select_sheet.SetPosition(select_sheet_position);
 	select_sheet.Update();
@@ -76,6 +72,13 @@ void Customize_UI_ver2::trance_setup() {
 	for (int i = 0; i < 4; i++) {
 		trance_sheet[i].Update();
 	}
+}
+
+Customize_UI_ver2::~Customize_UI_ver2() {
+	C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+	//DeleteGO(cui_drop_item);
+	DeleteGO(customize_area);
+	custom_player->game_state = 0;
 }
 
 void Customize_UI_ver2::Setup() {
@@ -154,6 +157,7 @@ void Customize_UI_ver2::Setup() {
 	custom_kinds = cui_drop_item->drop_kinds;
 }
 
+
 Customize_UI_ver2::~Customize_UI_ver2() {
 	C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
 	C_UI_2_GameCamera->trance_Finish = false;
@@ -163,6 +167,7 @@ Customize_UI_ver2::~Customize_UI_ver2() {
 
 }
 
+
 void Customize_UI_ver2::Update() {
 	Custom_model_Core();
 	Custom_model_Right_arm();
@@ -171,13 +176,13 @@ void Customize_UI_ver2::Update() {
 	Custom_model_Right_leg();
 	Custom_model_Left_leg();
 
-	//‘JˆÚ’†
+	//é·ç§»ä¸­
 	if (trance_state == 1) {
 		custom_model_body_rotation.AddRotationDegY(50.0f);
 		trance();
 	}
 
-	//‘JˆÚI—¹
+	//é·ç§»çµ‚äº†
 	if (trance_state == 0) {
 		custom_model_body_rotation.AddRotationDegY(2.0f);
 		if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5) {
@@ -193,12 +198,12 @@ void Customize_UI_ver2::Update() {
 		{
 		case 0:
 			if (fast_count == 0) {
-				//•\¦w¦
-				//‚Ç‚±‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Ì‚©
+				//è¡¨ç¤ºæŒ‡ç¤º
+				//ã©ã“ã‚’é¸æŠã—ã¦ã„ã‚‹ã®ã‹
 				select_sheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
 				select_sheet.SetPosition(select_sheet_position);
 				select_sheet.Update();
-				//ƒpƒ‰ƒ[ƒ^[ƒV[ƒg
+				//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚·ãƒ¼ãƒˆ
 				switch (custom_player->p_custom_point[0][1])
 				{
 				case 0:
@@ -217,7 +222,7 @@ void Customize_UI_ver2::Update() {
 				}
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && custom_player->p_custom_point[0][1] == 0 && window_count == 0) {
-				//“K‰Šm”F
+				//é©å¿œç¢ºèª
 				window_open = true;
 				confirmatino_window_open = true;
 				window_select = true;
@@ -226,7 +231,7 @@ void Customize_UI_ver2::Update() {
 			break;
 		case 1:
 			if (fast_count == 0) {
-				//•\¦w¦
+				//è¡¨ç¤ºæŒ‡ç¤º
 				select_sheet.Init("Assets/sprite/select_sheet_02.DDS", 1166.0f, 175.0f);
 				select_sheet.SetPosition(select_sheet_position);
 				select_sheet.Update();
@@ -249,12 +254,12 @@ void Customize_UI_ver2::Update() {
 				}
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 0) {
-				//“K‰Šm”F
+				//é©å¿œç¢ºèª
 			}
 			break;
 		case 2:
 			if (fast_count == 0) {
-				//•\¦w¦
+				//è¡¨ç¤ºæŒ‡ç¤º
 				select_sheet.Init("Assets/sprite/select_sheet_03.DDS", 1166.0f, 175.0f);
 				select_sheet.SetPosition(select_sheet_position);
 				select_sheet.Update();
@@ -277,7 +282,7 @@ void Customize_UI_ver2::Update() {
 			}
 
 			if (g_pad[0]->IsTrigger(enButtonA) && custom_player->p_custom_point[0][0] == 0 && window_count == 0) {
-				//“K‰Šm”F
+				//é©å¿œç¢ºèª
 				window_open = true;
 				confirmatino_window_open = true;
 				window_select = true;
@@ -286,7 +291,7 @@ void Customize_UI_ver2::Update() {
 			break;
 		case 3:
 			if (fast_count == 0) {
-				//•\¦w¦
+				//è¡¨ç¤ºæŒ‡ç¤º
 				select_sheet.Init("Assets/sprite/select_sheet_04.DDS", 1166.0f, 175.0f);
 				select_sheet.SetPosition(select_sheet_position);
 				select_sheet.Update();
@@ -308,7 +313,7 @@ void Customize_UI_ver2::Update() {
 				}
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && custom_player->p_custom_point[0][2] == 0 && window_count == 0) {
-				//“K‰Šm”F
+				//é©å¿œç¢ºèª
 				window_open = true;
 				confirmatino_window_open = true;
 				window_select = true;
@@ -317,7 +322,7 @@ void Customize_UI_ver2::Update() {
 			break;
 		case 4:
 			if (fast_count == 0) {
-				//•\¦w¦
+				//è¡¨ç¤ºæŒ‡ç¤º
 				select_sheet.Init("Assets/sprite/select_sheet_05.DDS", 1166.0f, 175.0f);
 				select_sheet.SetPosition(select_sheet_position);
 				select_sheet.Update();
@@ -339,7 +344,7 @@ void Customize_UI_ver2::Update() {
 				}
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && custom_player->p_custom_point[1][0] == 0 && window_count == 0) {
-				//“K‰Šm”F
+				//é©å¿œç¢ºèª
 				window_open = true;
 				confirmatino_window_open = true;
 				window_select = true;
@@ -348,7 +353,7 @@ void Customize_UI_ver2::Update() {
 			break;
 		case 5:
 			if (fast_count == 0) {
-				//•\¦w¦
+				//è¡¨ç¤ºæŒ‡ç¤º
 				select_sheet.Init("Assets/sprite/select_sheet_06.DDS", 1166.0f, 175.0f);
 				select_sheet.SetPosition(select_sheet_position);
 				select_sheet.Update();
@@ -370,7 +375,7 @@ void Customize_UI_ver2::Update() {
 				}
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && custom_player->p_custom_point[1][2] == 0 && window_count == 0) {
-				//“K‰Šm”F
+				//é©å¿œç¢ºèª
 				window_open = true;
 				confirmatino_window_open = true;
 				window_select = true;
@@ -394,13 +399,13 @@ void Customize_UI_ver2::Update() {
 }
 
 void Customize_UI_ver2::trance() {
-	//•1‰ñ–Ú
+	//é»’1å›ç›®
 	if (trance_sheet_count >= 0 && trance_sheet_count <= 24) {
 		trance_sheet01_position.x -= 160.0f;
 		trance_sheet03_position.x += 160.0f;
 		
 	}
-	//•2‰ñ–Ú
+	//é»’2å›ç›®
 	if (trance_sheet_count >= 20&&trance_sheet_count <= 44) {
 		trance_sheet02_position.x -= 160.0f;
 		trance_sheet04_position.x += 160.0f;
@@ -411,8 +416,8 @@ void Customize_UI_ver2::trance() {
 	trance_sheet[0].SetPosition(trance_sheet01_position);
 	trance_sheet[2].SetPosition(trance_sheet03_position);
 	
-	//•I—¹
-	//ƒJƒƒ‰ˆÚ“®
+	//é»’çµ‚äº†
+	//ã‚«ãƒ¡ãƒ©ç§»å‹•
 	if (trance_sheet_count == 44) {
 		C_UI_2_GameCamera->trance_Finish = true;
 		C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
@@ -420,7 +425,7 @@ void Customize_UI_ver2::trance() {
 		C_UI_2_GameCamera->target = { 10000.0f,0.0f,0.0f };
 		C_UI_2_GameCamera->CameraState = 3;
 	}
-	//•Á–Å
+	//é»’æ¶ˆæ»…
 	if (trance_sheet_count >= 44&&trance_sheet_count<=64) {
 		for (int i = 0; i < 4; i++) {
 			trance_sheet[i].SetMulColor(trance_sheet_color);
@@ -428,8 +433,8 @@ void Customize_UI_ver2::trance() {
 		trance_sheet_color.w -=0.05f;
 	}
 
-	//UIoŒ»
-	//ã‚ÌƒZƒŒƒNƒg•”•ª
+	//UIå‡ºç¾
+	//ä¸Šã®ã‚»ãƒ¬ã‚¯ãƒˆéƒ¨åˆ†
 	if (trance_sheet_count >= 64 && trance_sheet_count < 71) {
 		select_sheet_position.y -= 50.0f;
 		select_sheet.SetPosition(select_sheet_position);
@@ -439,7 +444,7 @@ void Customize_UI_ver2::trance() {
 		select_sheet.SetPosition(select_sheet_position);
 	}
 
-	//ƒpƒ‰ƒ[ƒ^ƒV[ƒg
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚·ãƒ¼ãƒˆ
 	if (trance_sheet_count >= 65 && trance_sheet_count < 81) {
 		parameter_sheet_position.x += 50.0f;
 		parameter_sheet.SetPosition(parameter_sheet_position);
@@ -449,7 +454,7 @@ void Customize_UI_ver2::trance() {
 		parameter_sheet.SetPosition(parameter_sheet_position);
 	}
 
-	//body‚ÌoŒ»
+	//bodyã®å‡ºç¾
 	if (trance_sheet_count >= 80 && trance_sheet_count < 89) {
 		
 		custom_model_body_position.x -= 50.0f;
@@ -457,7 +462,7 @@ void Customize_UI_ver2::trance() {
 		custom_model_body.SetPosition(custom_model_body_position);
 	}
 
-	//‘JˆÚI—¹
+	//é·ç§»çµ‚äº†
 	if (trance_sheet_count == 89) {
 		trance_state = 0;
 		
@@ -475,21 +480,21 @@ void Customize_UI_ver2::trance() {
 
 void Customize_UI_ver2::Window() {
 	if (window_open == true) {
-		//•Ší‚Ìİ’èŠm”F‚ÌƒEƒBƒ“ƒhƒE
+		//æ­¦å™¨ã®è¨­å®šç¢ºèªã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
 		if (confirmatino_window_open == true) {
 			window_count++;
-			//ACCEPT‚Ìˆ—
+			//ACCEPTæ™‚ã®å‡¦ç†
 			if (window_select == true) {
-				//ƒEƒBƒ“ƒhƒE‚Ì•\¦ˆ—
+				//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤ºå‡¦ç†
 				if (window_count == 1) {
 					confirmation_window.Init("Assets/sprite/confirmation_window_yes.DDS", 584.375f, 918.0f);
 				}
-				//ƒZƒŒƒNƒg‚ª•Ï‚í‚Á‚½‚Æ‚«‚Ìˆ—
+				//ã‚»ãƒ¬ã‚¯ãƒˆãŒå¤‰ã‚ã£ãŸã¨ãã®å‡¦ç†
 				if (g_pad[0]->IsTrigger(enButtonRight)) {
 					window_count = 0;
 					window_select = false;
 				}
-				//Œˆ’è‚µ‚½‚Ìˆ—
+				//æ±ºå®šã—ãŸæ™‚ã®å‡¦ç†
 				if (g_pad[0]->IsTrigger(enButtonA) && window_count != 1 && window_open == true) {
 					custom_player->p_custom_point[column][line] = custom_kinds;
 					switch (selection_position)
@@ -518,7 +523,7 @@ void Customize_UI_ver2::Window() {
 					DeleteGO(this);
 				}
 			}
-			//DECLINE‚Ìˆ—
+			//DECLINEæ™‚ã®å‡¦ç†
 			else if (window_select == false) {
 				if (window_count == 1) {
 					confirmation_window.Init("Assets/sprite/confirmation_window_no.DDS", 584.375f, 918.0f);

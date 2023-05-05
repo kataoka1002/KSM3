@@ -14,7 +14,7 @@ namespace nsK2EngineLow {
 	public:
 		ModelRender();
 		~ModelRender();
-		void InitCommon(const char* tkmFilePath);
+		void InitCommon(const char* tkmFilePath, AnimationClip* animationClips);
 
 
 		//‰Šú‰»
