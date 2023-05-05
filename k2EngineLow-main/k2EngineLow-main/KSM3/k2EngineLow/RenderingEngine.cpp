@@ -93,14 +93,16 @@ namespace nsK2EngineLow {
 		// モデルの描画
 		ModelDraw(rc);
 
+		//ここでエフェクトドロー。
+		EffectEngine::GetInstance()->Draw();
+
 		// 画像と文字の描画
 		SpriteFontDraw(rc);
 
 		//ブルームを適用(ON.OFF変更可)
 		//m_bloom.Render(rc, m_mainRenderingTarget);
 
-		//ここでエフェクトドロー。
-		EffectEngine::GetInstance()->Draw();
+		
 
 
 		// メインレンダリングターゲットの絵をフレームバッファにコピー
