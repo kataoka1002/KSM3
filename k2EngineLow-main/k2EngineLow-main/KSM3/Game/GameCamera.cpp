@@ -43,7 +43,7 @@ void GameCamera::Update()
 {
 	Vector3 toCameraPosOld = m_toCameraPos;
 	//カメラを更新。
-	if (m_player->game_state == 3) {
+	if (m_player->game_state == 3&&trance_Finish==true) {
 		m_toCameraPos.Set(0.0f, 10.0f, -300.0f);
 		target.y = 60.0f;
 		/*if (fast_count >= 2) {
