@@ -24,12 +24,19 @@ bool GameCamera::Start()
 
 	}
 	//カメラステートが1(ボス)の時。
-	else if (CameraState==1)
+	else if (CameraState == 1)
 	{
 		m_toCameraPos.Set(0.0f, 125.0f, -400.0f);
 		//近平面,遠平面調整中…。
 		g_camera3D->SetNear(1.0f);
 		g_camera3D->SetFar(10000.0f);
+	}
+	//カメラステートが2(タイトルにします)の時。
+	else if (CameraState == 2)
+	{
+		m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+		g_camera3D->SetNear(1.0f);
+		g_camera3D->SetFar(1000.0f);
 	}
 
 	//プレイヤーのインスタンスを探す。
@@ -125,6 +132,10 @@ void GameCamera::Update()
 			//下を向きすぎないように。
 			m_toCameraPos = toCameraPosOld;
 		}
+	}
+	else if (CameraState == 2)
+	{
+		m_toCameraPos = toCameraPosOld;
 	}
 
 

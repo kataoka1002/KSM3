@@ -2,8 +2,11 @@
 #include "Title.h"
 #include "Game.h"
 #include "Fade.h"
+#include "Player.h"
+#include "GameCamera.h"
 
-Title::Title() {
+Title::Title()
+{
 	title_Render.Init("Assets/sprite/title_test.dds", 1920.0f, 1080.0f);
 	//gameStart_Render.Init("Assets/sprite/title/gameStart.dds", /*1920.0f, 1080.0f*/);
 	////system_Render.Init("Assets/sprite/title/system.dds", /*1920.0f, 1080.0f*/);
@@ -15,23 +18,37 @@ Title::Title() {
 
 Title::~Title()
 {
-
+	//DeleteGO(gameCamera);
+	//DeleteGO(player);
 }
 
 bool Title::Start()
 {
+	//gameCamera= NewGO<GameCamera>(1, "camera");
+	//gameCamera->CameraState = 2;
+	//player = NewGO<Player>(1,"player");
+	//player->game_state = 4;
 	m_fade = FindGO<Fade>("fade");
 	m_fade->StartFadeIn();
+	model_batt.Init("Assets/modelData/battleship_gun_Drop.tkm");
+	model_batt.SetScale(scale);
+	model_mac.Init("Assets/modelData/machine_gun_drop.tkm");
+	model_mac.SetScale(scale);
+
+	title_back.Init("Assets/modelData/title_back.tkm");
+	
 
 	return true;
 }
 
 void Title::Update()
 {
-	switch (State)
-	{
+	model_batt.Update();
+	model_mac.Update();
+	title_back.SetPosition(titel_back);
 
-	}
+	title_back.Update();
+	
 	if (State == 0/*&& g_pad[0]->IsTrigger(enButtonA)*/ )
 	{
 		if (m_isWaitFadeout)
@@ -42,6 +59,8 @@ void Title::Update()
 				//if (g_pad[0]->IsTrigger(enButtonA))
 				//{
 					Game* game = NewGO<Game>(0, "game");
+					//player->game_state = 0;
+					//gameCamera->CameraState = 0;
 					DeleteGO(this);
 				//}
 			}
@@ -108,9 +127,13 @@ void Title::S()
 
 void Title::Render(RenderContext& rc)
 {
-	title_Render.Draw(rc);
+	//title_Render.Draw(rc);
 	//gameStart_Render.Draw(rc);
 	///system_Render.Draw(rc);
 	///nannka_Render.Draw(rc);
 	//yajirusi_Render.Draw(rc);
+	//player->player_modelRender.Draw(rc);
+	title_back.Draw(rc);
+	model_batt.Draw(rc);
+	//model_mac.Draw(rc);
 }
