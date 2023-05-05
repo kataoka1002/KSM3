@@ -73,13 +73,15 @@ void Customize_UI_ver2::trance_setup() {
 		trance_sheet[i].Update();
 	}
 }
-
 Customize_UI_ver2::~Customize_UI_ver2() {
 	C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+	C_UI_2_GameCamera->trance_Finish = false;
 	//DeleteGO(cui_drop_item);
 	DeleteGO(customize_area);
 	custom_player->game_state = 0;
+
 }
+
 
 void Customize_UI_ver2::Setup() {
 	
@@ -158,14 +160,7 @@ void Customize_UI_ver2::Setup() {
 }
 
 
-Customize_UI_ver2::~Customize_UI_ver2() {
-	C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
-	C_UI_2_GameCamera->trance_Finish = false;
-	//DeleteGO(cui_drop_item);
-	DeleteGO(customize_area);
-	custom_player->game_state = 0;
 
-}
 
 
 void Customize_UI_ver2::Update() {
