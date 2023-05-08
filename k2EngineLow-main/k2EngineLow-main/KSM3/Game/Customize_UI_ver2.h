@@ -45,10 +45,10 @@ public:
 	Left_leg_weapons* m_leftLegWeapon = nullptr;
 
 
-	SpriteRender select_sheet;
-	Vector3 select_sheet_position{0.0f,650.0f,0.0f};//350
-	SpriteRender parameter_sheet;
-	Vector3 parameter_sheet_position={ -1200.0f,38.0f,0.0f };//-500
+	SpriteRender m_selectSheet;
+	Vector3 m_selectSheetPosition={0.0f,650.0f,0.0f};//350
+	SpriteRender m_parameterSheet;
+	Vector3 m_parameterSheetPosition ={ -1200.0f,38.0f,0.0f };//-500
 
 
 	SpriteRender m_confirmationWindow;
