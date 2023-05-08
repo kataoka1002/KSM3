@@ -20,6 +20,7 @@ public:
 	Vector3 target;
 
 	int fast_count=0;
+	bool trance_Finish=false;
 
 	float x;
 	float y;

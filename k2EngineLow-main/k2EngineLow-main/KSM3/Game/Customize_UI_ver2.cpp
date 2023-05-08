@@ -12,15 +12,16 @@
 #include "GameCamera.h"
 
 
+
 Customize_UI_ver2::Customize_UI_ver2() 
 {
-	//ƒJƒXƒ^ƒ€ƒGƒŠƒA‚Ì¶¬
+	//ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½Aï¿½Ìï¿½ï¿½ï¿½
 	m_customizeArea = NewGO<Customize_area>(1, "customize_area");
 }
 
 Customize_UI_ver2::~Customize_UI_ver2() 
 {
-	//ƒJƒƒ‰‚ÌˆÊ’u‚ğŒ³‚É–ß‚·
+	//ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ÌˆÊ’uï¿½ï¿½É–ß‚ï¿½
 	//m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
 	//DeleteGO(m_dropItem);
 	DeleteGO(m_customizeArea);
@@ -29,7 +30,7 @@ Customize_UI_ver2::~Customize_UI_ver2()
 
 bool Customize_UI_ver2::Start()
 {
-	//Še•”ˆÊ‚ÌFindGO‚ğs‚¤
+	//ï¿½eï¿½ï¿½ï¿½Ê‚ï¿½FindGOï¿½ï¿½sï¿½ï¿½
 	m_player = FindGO<Player>("player");
 	m_coreWeapon = FindGO<Core_weapons>("core_weapons");
 	m_rightArmWeapon = FindGO<Right_arm_weapons>("right_arm_weapons");
@@ -40,58 +41,174 @@ bool Customize_UI_ver2::Start()
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_dropItem = FindGO<Drop_item>("drop_item");
 
-	//ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒg‚ğ•ÏX
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½gï¿½ï¿½ÏX
 	//m_player->game_state = 3;
 
-	//ƒJƒƒ‰‚Ì”X‚ğİ’è
+	//ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½Xï¿½ï¿½İ’ï¿½
 	/*m_gameCamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
 	m_gameCamera->fast_count = 0;
 	m_gameCamera->target = custom_model_body_position;
 	m_gameCamera->CameraState = 3;*/
 
-	//•Ší‚Ìæ‚è•t‚¯
+	//ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½tï¿½ï¿½
 	//Setup();
+  
+  //UIã®èª­ã¿è¾¼ã¿
+	select_sheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
+	select_sheet.SetPosition(select_sheet_position);
+	select_sheet.Update();
+
+	switch (custom_player->p_custom_point[0][1])
+	{
+	case 0:
+		parameter_sheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
+		parameter_sheet.SetPosition(parameter_sheet_position);
+		parameter_sheet.Update();
+		break;
+	case 1:
+		parameter_sheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+		parameter_sheet.SetPosition(parameter_sheet_position);
+		parameter_sheet.Update();
+		//Custom_model_Shoulder;
+		break;
+	default:
+		break;
+	}
+
+
+  
+  trance_setup();
 	return true;
+}
+
+void Customize_UI_ver2::trance_setup() {
+
+	trance_sheet_count = 0;
+	trance_sheet[0].Init("Assets/sprite/trance_01.DDS", 3840.0f, 2160.0f);
+	trance_sheet[1].Init("Assets/sprite/trance_01.DDS", 3840.0f, 2160.0f);
+	trance_sheet[2].Init("Assets/sprite/trance_02.DDS", 3840.0f, 2160.0f);
+	trance_sheet[3].Init("Assets/sprite/trance_02.DDS", 3840.0f, 2160.0f);
+
+	trance_sheet[0].SetPosition(trance_sheet01_position);
+	trance_sheet[1].SetPosition(trance_sheet02_position);
+	trance_sheet[2].SetPosition(trance_sheet03_position);
+	trance_sheet[3].SetPosition(trance_sheet04_position);
+
+	for (int i = 0; i < 4; i++) {
+		trance_sheet[i].Update();
+	}
 }
 
 void Customize_UI_ver2::Setup() 
 {
-	//ƒRƒA•Ší‚ÆƒvƒŒƒCƒ„[–{‘Ì‚Ìƒ‚ƒfƒ‹‚Ìİ’è
 	Custom_model_Core();
 	Custom_model_body();
+	if (cui_core_weapons->set_weapons == 2) {
+		custom_model_Core.Init("Assets/modelData/Versatile_Perforator.tkm");
+		
+	}
+	if (custom_player->p_custom_point[0][0] != 0) {
+		Custom_model_Right_arm();
+		switch (cui_right_arm_weapons->set_weapons)
+		{
+		case 1:
+			custom_model_Right_arm.Init("Assets/modelData/battleship_gun_right_arm.tkm");
 
-	//Še•”ˆÊ‚É•Ší‚ª•t‚¢‚Ä‚¢‚é‚Ì‚È‚çƒ‚ƒfƒ‹‚ğİ’è‚·‚é
-	if (m_player->p_custom_point[0][0] != 0) 
-	{
-		Custom_model_Right_arm();	//‰E˜r
+			custom_model_Right_arm.SetScale(scale2);
+		default:
+			break;
+		}
 	}
-	if (m_player->p_custom_point[0][2] != 0) 
-	{
-		Custom_model_Left_arm();	//¶˜r
+	if (custom_player->p_custom_point[0][2] != 0) {
+		Custom_model_Left_arm();
+		switch (cui_left_arm_weapons->set_weapons)
+		{
+		case 1:
+			custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
+			
+
+			custom_model_Left_arm.SetScale(scale2);
+		default:
+			break;
+		}
 	}
-	if (m_player->p_custom_point[0][1] != 0) 
-	{
-		Custom_model_Shoulder();	//Œ¨
+	if (custom_player->p_custom_point[0][1] != 0) {
+		Custom_model_Shoulder();
+		switch (cui_shoulder_weapons->set_weapons)
+		{
+		case 1:
+			custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
+			
+
+			custom_model_shoulder.SetScale(scale2);
+		default:
+			break;
+		}
 	}
-	if (m_player->p_custom_point[1][0] != 0) 
-	{
-		Custom_model_Right_leg();	//‰E‘«
+	if (custom_player->p_custom_point[1][0] != 0) {
+		Custom_model_Right_leg();
+		switch (cui_right_leg_weapons->set_weapons)
+		{
+		case 1:
+			custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
+			
+
+			custom_model_Right_leg.SetScale(scale2);
+		default:
+			break;
+		}
 	}
-	if (m_player->p_custom_point[1][2] != 0) 
-	{
-		Custom_model_Left_leg();	//¶‘«
+	if (custom_player->p_custom_point[1][2] != 0) {
+		Custom_model_Left_leg();
+		switch (cui_left_leg_weapons->set_weapons)
+		{
+		case 1:
+			custom_model_Left_leg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
+			
+
+			custom_model_Left_leg.SetScale(scale2);
+		default:
+			break;
+		}
+
 	}
 
-	//E‚Á‚½•Ší‚Ìí—Ş‚ğ‹³‚¦‚Ä‚â‚é
+	//ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½Ş‚ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½
 	//custom_kinds = m_dropItem->drop_kinds;
 }
 
+
 void Customize_UI_ver2::Update() 
 {
-	//ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒg‚ª‚R(ƒJƒXƒ^ƒ€’†)‚¾‚Á‚½‚çˆ—
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½gï¿½ï¿½ï¿½R(ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½çˆï¿½ï¿½
 	if (m_player->game_state == 3)
 	{
-		//ƒZƒŒƒNƒgŒn‚ÌUIˆ—
+  Custom_model_Core();
+	Custom_model_Right_arm();
+	Custom_model_Left_arm();
+	Custom_model_Shoulder();
+	Custom_model_Right_leg();
+	Custom_model_Left_leg();
+
+	//é·ç§»ä¸­
+	if (trance_state == 1) {
+		custom_model_body_rotation.AddRotationDegY(50.0f);
+		trance();
+	}
+
+	//é·ç§»çµ‚äº†
+	if (trance_state == 0) {
+		custom_model_body_rotation.AddRotationDegY(2.0f);
+		if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5) {
+			selection_position++;
+			fast_count = 0;
+		}
+		else if (g_pad[0]->IsTrigger(enButtonLB1) && selection_position >= 1) {
+			selection_position--;
+			fast_count = 0;
+		}
+  
+		//ï¿½Zï¿½ï¿½ï¿½Nï¿½gï¿½nï¿½ï¿½UIï¿½ï¿½ï¿½ï¿½
 		Custom_UI();
 
 		if (window_open == true)
@@ -99,44 +216,44 @@ void Customize_UI_ver2::Update()
 			Window();
 		}
 		
-		//Bƒ{ƒ^ƒ“‚ÅƒJƒXƒ^ƒ€I—¹
+		//Bï¿½{ï¿½^ï¿½ï¿½ï¿½ÅƒJï¿½Xï¿½^ï¿½ï¿½ï¿½Iï¿½ï¿½
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
 			//DeleteGO(this);
 		}
 
-		//Å‰‚Ì1ƒtƒŒ[ƒ€‚ğ”‚¦‚é‚½‚ß‚Ì•¨
+		//ï¿½Åï¿½ï¿½ï¿½1ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ğ”‚ï¿½ï¿½é‚½ï¿½ß‚Ì•ï¿½
 		fast_count++;
 	}
 }
 
 void Customize_UI_ver2::Custom_UI()
 {
-	//Rƒ{ƒ^ƒ“‚ÅƒJ[ƒ\ƒ‹‚ğ‰E‚ÉˆÚ“®
+	//Rï¿½{ï¿½^ï¿½ï¿½ï¿½ÅƒJï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½Eï¿½ÉˆÚ“ï¿½
 	if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5)
 	{
 		selection_position++;
 		fast_count = 0;
 	}
-	//Lƒ{ƒ^ƒ“‚ÅƒJ[ƒ\ƒ‹‚ğ¶‚ÉˆÚ“®
+	//Lï¿½{ï¿½^ï¿½ï¿½ï¿½ÅƒJï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½ÉˆÚ“ï¿½
 	else if (g_pad[0]->IsTrigger(enButtonLB1) && selection_position >= 1)
 	{
 		selection_position--;
 		fast_count = 0;
 	}
 
-	//ƒJ[ƒ\ƒ‹‚ÌêŠ‚É‚æ‚Á‚Äˆ—‚ğ•Ï‚¦‚é
+	//ï¿½Jï¿½[ï¿½\ï¿½ï¿½ï¿½ÌêŠï¿½É‚ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 	switch (selection_position)
 	{
-	case 0:	//Œ¨
-		if (fast_count == 0) //ƒJƒEƒ“ƒg‚ª0‚Ì‚Æ‚«‚Ì‚İˆ—‚·‚é(1‰ñ‚Ì‚İˆ—)
+	case 0:	//ï¿½ï¿½
+		if (fast_count == 0) //ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½0ï¿½Ì‚Æ‚ï¿½ï¿½Ì‚İï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(1ï¿½ï¿½Ì‚İï¿½ï¿½ï¿½)
 		{
-			//‚Ç‚±‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Ì‚©‚ğ‹³‚¦‚éƒXƒvƒ‰ƒCƒg(ƒJ[ƒ\ƒ‹)
+			//ï¿½Ç‚ï¿½ï¿½ï¿½Iï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g(ï¿½Jï¿½[ï¿½\ï¿½ï¿½)
 			m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
 			m_selectSheet.SetPosition(m_selectSheetPosition);
 			m_selectSheet.Update();
 
-			//æ‚è•t‚¯‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒpƒ‰ƒ[ƒ^[ƒV[ƒg‚ğ•Ï‚¦‚é
+			//ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½Vï¿½[ï¿½gï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 			switch (m_player->p_custom_point[0][1])
 			{
 			case 0:
@@ -161,22 +278,22 @@ void Customize_UI_ver2::Custom_UI()
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][1] == 0 && window_count == 0)
 		{
-			//“K‰Šm”F
+			//ï¿½Kï¿½ï¿½ï¿½mï¿½F
 			window_open = true;
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 0, line = 1;
 		}
 		break;
-	case 1:	//ƒRƒA
+	case 1:	//ï¿½Rï¿½A
 		if (fast_count == 0)
 		{
-			//‚Ç‚±‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Ì‚©‚ğ‹³‚¦‚éƒXƒvƒ‰ƒCƒg(ƒJ[ƒ\ƒ‹)
+			//ï¿½Ç‚ï¿½ï¿½ï¿½Iï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g(ï¿½Jï¿½[ï¿½\ï¿½ï¿½)
 			m_selectSheet.Init("Assets/sprite/select_sheet_02.DDS", 1166.0f, 175.0f);
 			m_selectSheet.SetPosition(m_selectSheetPosition);
 			m_selectSheet.Update();
 
-			//æ‚è•t‚¯‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒpƒ‰ƒ[ƒ^[ƒV[ƒg‚ğ•Ï‚¦‚é
+			//ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½Vï¿½[ï¿½gï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 			switch (m_coreWeapon->set_weapons)
 			{
 			case 1:
@@ -197,18 +314,18 @@ void Customize_UI_ver2::Custom_UI()
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 0)
 		{
-			//“K‰Šm”F
+			//ï¿½Kï¿½ï¿½ï¿½mï¿½F
 		}
 		break;
-	case 2:	//‰E˜r
+	case 2:	//ï¿½Eï¿½r
 		if (fast_count == 0)
 		{
-			//‚Ç‚±‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Ì‚©‚ğ‹³‚¦‚éƒXƒvƒ‰ƒCƒg(ƒJ[ƒ\ƒ‹)
+			//ï¿½Ç‚ï¿½ï¿½ï¿½Iï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g(ï¿½Jï¿½[ï¿½\ï¿½ï¿½)
 			m_selectSheet.Init("Assets/sprite/select_sheet_03.DDS", 1166.0f, 175.0f);
 			m_selectSheet.SetPosition(m_selectSheetPosition);
 			m_selectSheet.Update();
 
-			//æ‚è•t‚¯‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒpƒ‰ƒ[ƒ^[ƒV[ƒg‚ğ•Ï‚¦‚é
+			//ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½Vï¿½[ï¿½gï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 			switch (m_player->p_custom_point[0][0])
 			{
 			case 0:
@@ -228,27 +345,28 @@ void Customize_UI_ver2::Custom_UI()
 
 			default:
 				break;
+
 			}
-		}
+
 
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][0] == 0 && window_count == 0)
 		{
-			//“K‰Šm”F
+			//ï¿½Kï¿½ï¿½ï¿½mï¿½F
 			window_open = true;
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 0, line = 0;
 		}
 		break;
-	case 3:	//¶˜r
+	case 3:	//ï¿½ï¿½ï¿½r
 		if (fast_count == 0)
 		{
-			//‚Ç‚±‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Ì‚©‚ğ‹³‚¦‚éƒXƒvƒ‰ƒCƒg(ƒJ[ƒ\ƒ‹)
+			//ï¿½Ç‚ï¿½ï¿½ï¿½Iï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g(ï¿½Jï¿½[ï¿½\ï¿½ï¿½)
 			m_selectSheet.Init("Assets/sprite/select_sheet_04.DDS", 1166.0f, 175.0f);
 			m_selectSheet.SetPosition(m_selectSheetPosition);
 			m_selectSheet.Update();
 
-			//æ‚è•t‚¯‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒpƒ‰ƒ[ƒ^[ƒV[ƒg‚ğ•Ï‚¦‚é
+			//ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½Vï¿½[ï¿½gï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 			switch (m_player->p_custom_point[0][2])
 			{
 			case 0:
@@ -273,22 +391,22 @@ void Customize_UI_ver2::Custom_UI()
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][2] == 0 && window_count == 0)
 		{
-			//“K‰Šm”F
+			//ï¿½Kï¿½ï¿½ï¿½mï¿½F
 			window_open = true;
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 0, line = 2;
 		}
 		break;
-	case 4:	//‰E‘«
+	case 4:	//ï¿½Eï¿½ï¿½
 		if (fast_count == 0)
 		{
-			//‚Ç‚±‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Ì‚©‚ğ‹³‚¦‚éƒXƒvƒ‰ƒCƒg(ƒJ[ƒ\ƒ‹)
+			//ï¿½Ç‚ï¿½ï¿½ï¿½Iï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g(ï¿½Jï¿½[ï¿½\ï¿½ï¿½)
 			m_selectSheet.Init("Assets/sprite/select_sheet_05.DDS", 1166.0f, 175.0f);
 			m_selectSheet.SetPosition(m_selectSheetPosition);
 			m_selectSheet.Update();
 
-			//æ‚è•t‚¯‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒpƒ‰ƒ[ƒ^[ƒV[ƒg‚ğ•Ï‚¦‚é
+			//ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½Vï¿½[ï¿½gï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 			switch (m_player->p_custom_point[1][0])
 			{
 			case 0:
@@ -309,26 +427,62 @@ void Customize_UI_ver2::Custom_UI()
 
 			default:
 				break;
+
 			}
+			break;
+		case 5:
+			if (fast_count == 0) {
+				//è¡¨ç¤ºæŒ‡ç¤º
+				select_sheet.Init("Assets/sprite/select_sheet_06.DDS", 1166.0f, 175.0f);
+				select_sheet.SetPosition(select_sheet_position);
+				select_sheet.Update();
+				switch (custom_player->p_custom_point[1][2])
+				{
+				case 0:
+					parameter_sheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
+					parameter_sheet.SetPosition(parameter_sheet_position);
+					parameter_sheet.Update();
+					break;
+				case 1:
+					parameter_sheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+					parameter_sheet.SetPosition(parameter_sheet_position);
+					parameter_sheet.Update();
+					//Custom_model_Shoulder;
+					break;
+				default:
+					break;
+				}
+			}
+			if (g_pad[0]->IsTrigger(enButtonA) && custom_player->p_custom_point[1][2] == 0 && window_count == 0) {
+				//é©å¿œç¢ºèª
+				window_open = true;
+				confirmatino_window_open = true;
+				window_select = true;
+				column = 1, line = 2;
+			}
+			break;
+		default:
+			break;
 		}
+
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][0] == 0 && window_count == 0)
 		{
-			//“K‰Šm”F
+			//ï¿½Kï¿½ï¿½ï¿½mï¿½F
 			window_open = true;
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 1, line = 0;
 		}
 		break;
-	case 5:	//¶‘«
+	case 5:	//ï¿½ï¿½ï¿½ï¿½
 		if (fast_count == 0)
 		{
-			//‚Ç‚±‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Ì‚©‚ğ‹³‚¦‚éƒXƒvƒ‰ƒCƒg(ƒJ[ƒ\ƒ‹)
+			//ï¿½Ç‚ï¿½ï¿½ï¿½Iï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g(ï¿½Jï¿½[ï¿½\ï¿½ï¿½)
 			m_selectSheet.Init("Assets/sprite/select_sheet_06.DDS", 1166.0f, 175.0f);
 			m_selectSheet.SetPosition(m_selectSheetPosition);
 			m_selectSheet.Update();
 
-			//æ‚è•t‚¯‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒpƒ‰ƒ[ƒ^[ƒV[ƒg‚ğ•Ï‚¦‚é
+			//ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½Vï¿½[ï¿½gï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 			switch (m_player->p_custom_point[1][2])
 			{
 			case 0:
@@ -353,49 +507,137 @@ void Customize_UI_ver2::Custom_UI()
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][2] == 0 && window_count == 0)
 		{
-			//“K‰Šm”F
+			//ï¿½Kï¿½ï¿½ï¿½mï¿½F
 			window_open = true;
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 1, line = 2;
+
+		if (g_pad[0]->IsTrigger(enButtonB)) {
+			DeleteGO(this);
 		}
-		break;
-	default:
-		break;
+		fast_count++;
+
+		if (window_open == true) {
+			Window();
+		}
 	}
+	custom_model_body.SetRotation(custom_model_body_rotation);
+	custom_model_body.Update();
+}
+
+void Customize_UI_ver2::trance() {
+	//é»’1å›ç›®
+	if (trance_sheet_count >= 0 && trance_sheet_count <= 24) {
+		trance_sheet01_position.x -= 160.0f;
+		trance_sheet03_position.x += 160.0f;
+		
+	}
+	//é»’2å›ç›®
+	if (trance_sheet_count >= 20&&trance_sheet_count <= 44) {
+		trance_sheet02_position.x -= 160.0f;
+		trance_sheet04_position.x += 160.0f;
+		
+	}
+	trance_sheet[1].SetPosition(trance_sheet02_position);
+	trance_sheet[3].SetPosition(trance_sheet04_position);
+	trance_sheet[0].SetPosition(trance_sheet01_position);
+	trance_sheet[2].SetPosition(trance_sheet03_position);
+	
+	//é»’çµ‚äº†
+	//ã‚«ãƒ¡ãƒ©ç§»å‹•
+	if (trance_sheet_count == 44) {
+		C_UI_2_GameCamera->trance_Finish = true;
+		C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
+		C_UI_2_GameCamera->fast_count = 0;
+		C_UI_2_GameCamera->target = { 10000.0f,0.0f,0.0f };
+		C_UI_2_GameCamera->CameraState = 3;
+	}
+	//é»’æ¶ˆæ»…
+	if (trance_sheet_count >= 44&&trance_sheet_count<=64) {
+		for (int i = 0; i < 4; i++) {
+			trance_sheet[i].SetMulColor(trance_sheet_color);
+
+		}
+		trance_sheet_color.w -=0.05f;
+	}
+
+	//UIå‡ºç¾
+	//ä¸Šã®ã‚»ãƒ¬ã‚¯ãƒˆéƒ¨åˆ†
+	if (trance_sheet_count >= 64 && trance_sheet_count < 71) {
+		select_sheet_position.y -= 50.0f;
+		select_sheet.SetPosition(select_sheet_position);
+	}
+  	if (trance_sheet_count >= 71&& trance_sheet_count <= 75) {
+		select_sheet_position.y +=10.0f;
+		select_sheet.SetPosition(select_sheet_position);
+	}
+
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚·ãƒ¼ãƒˆ
+	if (trance_sheet_count >= 65 && trance_sheet_count < 81) {
+		parameter_sheet_position.x += 50.0f;
+		parameter_sheet.SetPosition(parameter_sheet_position);
+	}
+	if (trance_sheet_count >= 81 && trance_sheet_count < 86) {
+		parameter_sheet_position.x -= 10.0f;
+		parameter_sheet.SetPosition(parameter_sheet_position);
+	}
+
+	//bodyã®å‡ºç¾
+	if (trance_sheet_count >= 80 && trance_sheet_count < 89) {
+		
+		custom_model_body_position.x -= 50.0f;
+		
+		custom_model_body.SetPosition(custom_model_body_position);
+	}
+
+	//é·ç§»çµ‚äº†
+	if (trance_sheet_count == 89) {
+		trance_state = 0;
+		
+	}
+
+	custom_model_body.Update();
+	parameter_sheet.Update();
+	select_sheet.Update();
+	trance_sheet[0].Update();
+	trance_sheet[1].Update();
+	trance_sheet[2].Update();
+	trance_sheet[3].Update();
+	trance_sheet_count++;
 }
 
 void Customize_UI_ver2::Window()
 {
-	//•Ší‚Ìİ’èŠm”F‚ÌƒEƒBƒ“ƒhƒE‚ğ•\¦
+	//ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½mï¿½Fï¿½ÌƒEï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½ï¿½\ï¿½ï¿½
 	if (confirmatino_window_open == true)
 	{
-		//1‰ñ‚¾‚¯ˆ—‚·‚éˆ×‚ÌƒJƒEƒ“ƒg
+		//1ï¿½ñ‚¾‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×‚ÌƒJï¿½Eï¿½ï¿½ï¿½g
 		window_count++;
 
-		//ACCEPT‚Ìˆ—
+		//ACCEPTï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		if (window_select == true)
 		{
-			//1ƒtƒŒ[ƒ€–Ú‚ÉƒXƒvƒ‰ƒCƒg‚Ì‰Šú‰»
+			//1ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ú‚ÉƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½Ìï¿½ï¿½ï¿½
 			if (window_count == 1)
 			{
 				m_confirmationWindow.Init("Assets/sprite/confirmation_window_yes.DDS", 584.375f, 918.0f);
 			}
 
-			//‰Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚·‚Æ‹‘”Û‚·‚éƒEƒBƒ“ƒhƒE‚É•ÏX‚³‚ê‚é
+			//ï¿½Eï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‹ï¿½ï¿½Û‚ï¿½ï¿½ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½É•ÏXï¿½ï¿½ï¿½ï¿½ï¿½
 			if (g_pad[0]->IsTrigger(enButtonRight))
 			{
 				window_count = 0;
 				window_select = false;
 			}
 
-			//Œˆ’è‚µ‚½‚Ìˆ—
+			//ï¿½ï¿½ï¿½è‚µï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 			if (g_pad[0]->IsTrigger(enButtonA) && window_count != 1)
 			{
-				//ƒvƒŒƒCƒ„[‚Ì‘•”õ”z—ñ‚É•Ší‚Ìí—Ş‚ğ‹³‚¦‚é
+				//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì‘ï¿½ï¿½ï¿½zï¿½ï¿½É•ï¿½ï¿½ï¿½Ìï¿½Ş‚ï¿½ï¿½ï¿½ï¿½
 				m_player->p_custom_point[column][line] = custom_kinds;
 
-				//©•ª‚ªƒJ[ƒ\ƒ‹‚ğ‡‚í‚¹‚Ä‚¢‚éêŠ‚É‚æ‚Á‚Ä¶¬‚·‚é•Ší‚ğ•Ï‚¦‚é
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½í‚¹ï¿½Ä‚ï¿½ï¿½ï¿½êŠï¿½É‚ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é•ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½ï¿½
 				switch (selection_position)
 				{
 				case 0:
@@ -417,43 +659,45 @@ void Customize_UI_ver2::Window()
 					m_leftLegWeapon = NewGO<Left_leg_weapons>(2, "left_leg_weapons");
 				default:
 					break;
+
 				}
 
-				//ƒJƒXƒ^ƒ€I—¹
+				//ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½Iï¿½ï¿½
 				//DeleteGO(this);
 				m_player->game_state = 0;
-				//’ˆÓ‘‚«‚ğÁ‚·
+				//ï¿½ï¿½ï¿½Óï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				confirmatino_window_open = false;
-				//FX‰Šú’l‚É–ß‚·
+				//ï¿½Fï¿½Xï¿½ï¿½ï¿½ï¿½lï¿½É–ß‚ï¿½
 				selection_position = 0;
 				fast_count = 0;
 				window_count = 0;
 				window_open = false;
 				window_select = false;
-				//‚Ç‚±‚Ì•”ˆÊ‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚©‚ÌƒXƒvƒ‰ƒCƒg‚à‰Šú‰»‚µ‚Ä‚¨‚­
+        C_UI_2_GameCamera->trance_Finish = false;
+				//ï¿½Ç‚ï¿½ï¿½Ì•ï¿½ï¿½Ê‚ï¿½Iï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½ÌƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 				m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
 
-				//ƒQ[ƒ€ƒJƒƒ‰‚ğŒ³‚É–ß‚·
+				//ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É–ß‚ï¿½
 				m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
 			}
 		}
-		//DECLINE‚Ìˆ—
+		//DECLINEï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		else if (window_select == false)
 		{
-			//1ƒtƒŒ[ƒ€–Ú‚ÉƒXƒvƒ‰ƒCƒg‚Ì‰Šú‰»
+			//1ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ú‚ÉƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½Ìï¿½ï¿½ï¿½
 			if (window_count == 1)
 			{
 				m_confirmationWindow.Init("Assets/sprite/confirmation_window_no.DDS", 584.375f, 918.0f);
 			}
 
-			//¶ƒ{ƒ^ƒ“‚ğ‰Ÿ‚·‚Æ³”F‚·‚éƒEƒBƒ“ƒhƒE‚É•ÏX‚³‚ê‚é
+			//ï¿½ï¿½ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æï¿½ï¿½Fï¿½ï¿½ï¿½ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½É•ÏXï¿½ï¿½ï¿½ï¿½ï¿½
 			if (g_pad[0]->IsTrigger(enButtonLeft))
 			{
 				window_select = true;
 				window_count = 0;
 			}
 
-			//A‚©Bƒ{ƒ^ƒ“‚Å’ˆÓ‘‚«‚ğÁ‚·
+			//Aï¿½ï¿½Bï¿½{ï¿½^ï¿½ï¿½ï¿½Å’ï¿½ï¿½Óï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			if (g_pad[0]->IsTrigger(enButtonA) || g_pad[0]->IsTrigger(enButtonB) && window_count != 1)
 			{
 				window_open = false;
@@ -461,32 +705,28 @@ void Customize_UI_ver2::Window()
 				window_count = 0;
 			}
 		}
-		//’ˆÓ‘‚«‚ÌXV
+		//ï¿½ï¿½ï¿½Óï¿½ï¿½ï¿½ï¿½ÌXï¿½V
 		m_confirmationWindow.Update();
 	}
 }
 
-void Customize_UI_ver2::Custom_model_body() 
-{
-	custom_model_body.Init("Assets/modelData/test_player.tkm");
+void Customize_UI_ver2::Custom_model_body() {
+	custom_model_body.Init("Assets/modelData/player.tkm");
+
 	custom_model_body.SetPosition(custom_model_body_position);
-	custom_model_body_rotation.SetRotationDegY(-135.0f);
+	//custom_model_body_rotation.SetRotationDegY(-135.0f);
 	custom_model_body.SetRotation(custom_model_body_rotation);
 	custom_model_body.Update();
 }
 
-void Customize_UI_ver2::Custom_model_Core() 
-{
-	//ƒRƒAƒEƒFƒ|ƒ“‚Ìí—Ş‚Åƒ‚ƒfƒ‹‚ğ•Ï‚¦‚é
-	if (m_coreWeapon->set_weapons == 2) 
-	{
-		custom_model_Core.Init("Assets/modelData/Versatile_Perforator.tkm");
-		cw_lp = { 0.0f,70.0f,10.0f };	//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“İ’è
-	}
 
-	custom_model_body_rotation.SetRotationDegY(-135.0f);
+void Customize_UI_ver2::Custom_model_Core() {
+	cw_lp = { 0.0f,80.0f,10.0f };
+	//custom_model_body_rotation.SetRotationDegY(-135.0f);
 	Quaternion originRotation = custom_model_body_rotation;
 	Vector3 cw_position = custom_model_body_position;
+	
+
 	originRotation.Multiply(cw_lp);
 	cw_position += cw_lp;
 	Quaternion cw_Rotation = originRotation;
@@ -500,24 +740,25 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 {
 	right_arm_weapon_set = true;
 
-	//•t‚¢‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒ‚ƒfƒ‹•ÏX(ƒJƒXƒ^ƒ€‰æ–Ê)
+	//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒï¿½ï¿½fï¿½ï¿½ï¿½ÏX(ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½)
 	switch (m_rightArmWeapon->set_weapons)
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 2:	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Right_arm.Init("Assets/modelData/machine_gun_drop.tkm");
 		custom_model_Right_arm.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		raw_lp = { 60.0f,100.0f,-10.0f };
 
 		break;
-	case 6:	//íŠÍ–C
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 6:	//ï¿½ï¿½Í–C
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Right_arm.Init("Assets/modelData/battleship_gun_right_arm.tkm");
+
 		custom_model_Right_arm.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		raw_lp = { 60.0f,70.0f,-10.0f };
 
 		break;
@@ -525,14 +766,16 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 		break;
 	}
 
-	//•Šíƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“‚ÌŒvZ
+
+	//ï¿½ï¿½ï¿½íƒ‚ï¿½fï¿½ï¿½ï¿½Ìƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÌŒvï¿½Z
 	Quaternion originRotation = custom_model_body_rotation;
 	Vector3 raw_position = custom_model_body_position;
+
 	originRotation.Multiply(raw_lp);
 	raw_position += raw_lp;
 	Quaternion raw_Rotation = originRotation;
 
-	//XV
+	//ï¿½Xï¿½V
 	custom_model_Right_arm.SetRotation(raw_Rotation);
 	custom_model_Right_arm.SetPosition(raw_position);
 	custom_model_Right_arm.Update();
@@ -542,39 +785,43 @@ void Customize_UI_ver2::Custom_model_Left_arm()
 {
 	Left_arm_weapon_set = true;
 
-	//•t‚¢‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒ‚ƒfƒ‹•ÏX(ƒJƒXƒ^ƒ€‰æ–Ê)
+
+	//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒï¿½ï¿½fï¿½ï¿½ï¿½ÏX(ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½)
 	switch (m_leftArmWeapon->set_weapons)
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 2:	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Left_arm.Init("Assets/modelData/machine_gun_drop.tkm");
 		custom_model_Left_arm.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		law_lp = { -60.0f,100.0f,-10.0f };
 
 		break;
-	case 6:	//íŠÍ–C
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 6:	//ï¿½ï¿½Í–C
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
 		custom_model_Left_arm.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		law_lp = { -60.0f,70.0f,-10.0f };
+
 
 		break;
 	default:
 		break;
 	}
 
-	//•Šíƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+
+	//ï¿½ï¿½ï¿½íƒ‚ï¿½fï¿½ï¿½ï¿½Ìƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 	Quaternion originRotation = custom_model_body_rotation;
 	Vector3 law_position = custom_model_body_position;
+
 	originRotation.Multiply(law_lp);
 	law_position += law_lp;
 	Quaternion law_Rotation = originRotation;
 
-	//XV
+	//ï¿½Xï¿½V
 	custom_model_Left_arm.SetRotation(law_Rotation);
 	custom_model_Left_arm.SetPosition(law_position);
 	custom_model_Left_arm.Update();
@@ -584,24 +831,26 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 {
 	Shoulder_weapon_set = true;
 
-	//•t‚¢‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒ‚ƒfƒ‹•ÏX(ƒJƒXƒ^ƒ€‰æ–Ê)
+
+	//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒï¿½ï¿½fï¿½ï¿½ï¿½ÏX(ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½)
 	switch (m_shoulderWeapon->set_weapons)
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 2:	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_shoulder.Init("Assets/modelData/machine_gun_drop.tkm");
 		custom_model_shoulder.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		sw_lp = { 0.0f,110.0f,0.0f };
 
+
 		break;
-	case 6:	//íŠÍ–C
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 6:	//ï¿½ï¿½Í–C
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
 		custom_model_shoulder.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		sw_lp = { 0.0f,110.0f,0.0f };
 
 		break;
@@ -609,14 +858,16 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 		break;
 	}
 
-	//•Šíƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+
+	//ï¿½ï¿½ï¿½íƒ‚ï¿½fï¿½ï¿½ï¿½Ìƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 	Quaternion originRotation = custom_model_body_rotation;
 	Vector3 sw_position = custom_model_body_position;
+
 	originRotation.Multiply(sw_lp);
 	sw_position += sw_lp;
 	Quaternion sw_Rotation = originRotation;
 
-	//XV
+	//ï¿½Xï¿½V
 	custom_model_shoulder.SetRotation(sw_Rotation);
 	custom_model_shoulder.SetPosition(sw_position);
 	custom_model_shoulder.Update();
@@ -626,39 +877,43 @@ void Customize_UI_ver2::Custom_model_Right_leg()
 {
 	Right_leg_weapon_set = true;
 
-	//•t‚¢‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒ‚ƒfƒ‹•ÏX(ƒJƒXƒ^ƒ€‰æ–Ê)
+
+	//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒï¿½ï¿½fï¿½ï¿½ï¿½ÏX(ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½)
 	switch (m_rightLegWeapon->set_weapons)
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 2:	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Right_leg.Init("Assets/modelData/machine_gun_drop.tkm");
 		custom_model_Right_leg.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		rlw_lp = { 90.0f,30.0f,0.0f };
 
 		break;
-	case 6:	//íŠÍ–C
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 6:	//ï¿½ï¿½Í–C
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
 		custom_model_Right_leg.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		rlw_lp = { 90.0f,30.0f,55.0f };
+
 
 		break;
 	default:
 		break;
 	}
 
-	//•Šíƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+
+	//ï¿½ï¿½ï¿½íƒ‚ï¿½fï¿½ï¿½ï¿½Ìƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 	Quaternion originRotation = custom_model_body_rotation;
 	Vector3 rlw_position = custom_model_body_position;
+
 	originRotation.Multiply(rlw_lp);
 	rlw_position += rlw_lp;
 	Quaternion rlw_Rotation = originRotation;
 
-	//XV
+	//ï¿½Xï¿½V
 	custom_model_Right_leg.SetRotation(rlw_Rotation);
 	custom_model_Right_leg.SetPosition(rlw_position);
 	custom_model_Right_leg.Update();
@@ -668,82 +923,86 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 {
 	Left_leg_weapon_set = true;
 
-	//•t‚¢‚Ä‚¢‚é•Ší‚É‚æ‚Á‚Äƒ‚ƒfƒ‹•ÏX(ƒJƒXƒ^ƒ€‰æ–Ê)
+
+	//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½É‚ï¿½ï¿½Äƒï¿½ï¿½fï¿½ï¿½ï¿½ÏX(ï¿½Jï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½)
 	switch (m_leftLegWeapon->set_weapons)
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 2:	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Left_leg.Init("Assets/modelData/machine_gun_drop.tkm");
 		custom_model_Left_leg.SetScale(scale2);
 
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“İ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½İ’ï¿½
 		llw_lp = { -90.0f,30.0f,0.0f };
 
 		break;
-	case 6:	//íŠÍ–C
-		//ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	case 6:	//ï¿½ï¿½Í–C
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 		custom_model_Left_leg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
 		custom_model_Left_leg.SetScale(scale2);
-		//ƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“İ’è
+		//ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½İ’ï¿½
 		llw_lp = { -90.0f,30.0f,55.0f };
+
 
 		break;
 	default:
 		break;
 	}
 
-	//•Šíƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
+
+	//ï¿½ï¿½ï¿½íƒ‚ï¿½fï¿½ï¿½ï¿½Ìƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 	Quaternion originRotation = custom_model_body_rotation;
 	Vector3 llw_position = custom_model_body_position;
+
 	originRotation.Multiply(llw_lp);
 	llw_position += llw_lp;
 	Quaternion llw_Rotation = originRotation;
 
-	//XV
+	//ï¿½Xï¿½V
 	custom_model_Left_leg.SetRotation(llw_Rotation);
 	custom_model_Left_leg.SetPosition(llw_position);
 	custom_model_Left_leg.Update();
 }
 
+
 void Customize_UI_ver2::Render(RenderContext& rc)
 {
-	//ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒg‚ª3‚¾‚Á‚½‚çDraw‚·‚é
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½gï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Drawï¿½ï¿½ï¿½ï¿½
 	if (m_player->game_state == 3)
 	{
-		m_selectSheet.Draw(rc);
-		m_parameterSheet.Draw(rc);
+		select_sheet.Draw(rc);
+	parameter_sheet.Draw(rc);
+		trance_sheet[0].Draw(rc);
+		trance_sheet[1].Draw(rc);
+		trance_sheet[2].Draw(rc);
+		trance_sheet[3].Draw(rc);
+		
+	
+		
 		custom_model_Core.Draw(rc);
 		custom_model_body.Draw(rc);
 
-		//ƒJƒXƒ^ƒ€‰æ–Ê‚Å‚Ì‚»‚ê‚¼‚ê‚Ì•”ˆÊ‚Ì•Šíƒ‚ƒfƒ‹‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚È‚ç•\¦
-		if (right_arm_weapon_set == true)
-		{
+
+		if (right_arm_weapon_set == true) {
 			custom_model_Right_arm.Draw(rc);
+
 		}
-		if (Left_arm_weapon_set == true)
-		{
+		if (Left_arm_weapon_set == true) {
 			custom_model_Left_arm.Draw(rc);
 		}
-		if (Shoulder_weapon_set == true)
-		{
+		if (Shoulder_weapon_set == true) {
 			custom_model_shoulder.Draw(rc);
 		}
-		if (Right_leg_weapon_set == true)
-		{
+		if (Right_leg_weapon_set == true) {
 			custom_model_Right_leg.Draw(rc);
 		}
-		if (Left_leg_weapon_set == true)
-		{
+		if (Left_leg_weapon_set == true) {
 			custom_model_Left_leg.Draw(rc);
 		}
 
-		//’ˆÓ‘‚«‚Ì•\¦
-		if (window_open == true)
-		{
-			if (confirmatino_window_open == true)
-			{
-				m_confirmationWindow.Draw(rc);
+		if (window_open == true) {
+			if (confirmatino_window_open == true) {
+				confirmation_window.Draw(rc);
 			}
 		}
-	}
 }

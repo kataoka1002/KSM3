@@ -24,7 +24,7 @@ public:
 	int game_state = 0;
 	ModelRender Core_Weapons_Render;
 
-	Vector3 cw_localPosition = { 0.0f,70.0f,10.0f };
+	Vector3 cw_localPosition = { 0.0f,80.0f,10.0f };
 	Vector3 scale = { 1.0f,1.0f,1.5f };
 	bool atack_state = false;
 	int set_weapons = 2;//0:空オブジェクト 1:ギガプラズマ  2:Versatile_Perforator

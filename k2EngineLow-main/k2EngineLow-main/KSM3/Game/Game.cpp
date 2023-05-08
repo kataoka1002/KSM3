@@ -54,7 +54,7 @@ Game::Game()
 	}
 
 	boss = NewGO<Boss>(1, "boss");//15100
-	boss->boss_position = { 0.0f,0.0f,5100.0f };
+	boss->boss_position = { 0.0f,0.0f,15100.0f };
 
 	//drop_item = NewGO< Drop_item>(1, "drop_item");
 	background = NewGO< BackGround>(1, "background");
