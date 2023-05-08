@@ -2,8 +2,6 @@
 #include "Title.h"
 #include "Game.h"
 #include "Fade.h"
-#include "Player.h"
-#include "GameCamera.h"
 
 Title::Title()
 {
@@ -18,8 +16,7 @@ Title::Title()
 
 Title::~Title()
 {
-	//DeleteGO(gameCamera);
-	//DeleteGO(player);
+
 }
 
 bool Title::Start()
@@ -34,60 +31,62 @@ bool Title::Start()
 	model_giga.SetScale(scale);
 
 	title_back.Init("Assets/modelData/title_back.tkm");
-
+	
 	return true;
 }
 
 void Title::Update()
 {
-	if (pattern == 0)
+	if (pattern == 0)//迫ってくるbattをその場で眼だけで追う。
 	{
-		model_position.x += 0.5f;
+		model_position.x += 0.6f;
 		model_batt.SetPosition(model_position);
-		model_mac.SetPosition(model_position);
 
 		y_Rot.SetRotationDegY(120.0f);
 		x_Rot.SetRotationDegX(-25.0f);
-
 		m_Rot = x_Rot * y_Rot;
-
 		model_batt.SetRotation(m_Rot);
-		model_mac.SetRotation(m_Rot);
-	}
-	else if (pattern == 1)
-	{
-		model_batt.SetPosition(model_position);//{ 0.0f,0.0f,200.0f }
-		model_mac.SetPosition(model_position);
-		//y_Rot.SetRotationDegY(120.0f);
-		//x_Rot.SetRotationDegX(-45.0f);
-		//m_Rot = x_Rot * y_Rot;
 
-		y_Rot.AddRotationDegY(2.0f);
-		model_batt.SetRotation(y_Rot);
-		model_mac.SetRotation(y_Rot);
+		target = model_position;
+		target.x += 50.0f;
+		g_camera3D->SetTarget(target);
+		pos = { 0.0f,-50.0f,-00.0f };
+		g_camera3D->SetPosition(pos);
 	}
-	else if (pattern == 2)
+	else if (pattern == 1)//上前からmacを後ろまで追っていく感じ。
+	{
+		model_mac.SetPosition(model_position);
+
+		y_Rot.SetRotationDegY(100.0f);
+		model_mac.SetRotation(y_Rot);
+
+		pos.x -= 1.2f;
+		target.x -= 1.20f;
+		g_camera3D->SetTarget(target);
+		g_camera3D->SetPosition(pos);
+	}
+	else if (pattern == 2)//ローアングルからgigaを見上げる感じで。
 	{
 		model_position.z -= 0.5f;
-		model_batt.SetPosition(model_position);
-		model_mac.SetPosition(model_position);
+		//model_batt.SetPosition(model_position);
+		//model_mac.SetPosition(model_position);
+		model_giga.SetPosition(model_position);
 
 		y_Rot.SetRotationDegY(180.0f);
 		x_Rot.SetRotationDegX(-15.0f);
-
 		m_Rot = x_Rot * y_Rot;
+		//model_batt.SetRotation(m_Rot);
+		//model_mac.SetRotation(m_Rot);
+		model_giga.SetRotation(m_Rot);
 
-		model_batt.SetRotation(m_Rot);
-		model_mac.SetRotation(m_Rot);
+		g_camera3D->SetTarget(model_position);
+		pos = { 0.0f,-50.0f,-00.0f };
+		g_camera3D->SetPosition(pos);
 	}
-	else if (pattern == 3)
-	{
-
-	}
-	
 
 	model_batt.Update();
 	model_mac.Update();
+	model_giga.Update();
 	title_back.SetPosition(titel_back);
 
 	title_back.Update();
@@ -96,33 +95,35 @@ void Title::Update()
 	switch (time)
 	{
 	case 0:
-		//model_position = { 0.0f,00.0f,200.0f };
-		if (m_timer >=5.0f)
+		if (m_timer >=10.0f)
 		{
 			time = 1;
+			model_position = { -300.0f,00.0f,200.0f };
+			target = { -300.0f,-50.0f,500.0f };
+			pos = { 600.0f,100.0f,100.0f };
 			pattern = 1;
 			m_timer = 0.0f;
 		}
 		break;
 	case 1:
-		//model_position = { 0.0f,00.0f,200.0f };
-		if (m_timer >= 5.0f)
+		if (m_timer >= 10.0f)
 		{
 			time = 2;
+			model_position = { 0.0f,00.0f,200.0f };
 			pattern = 2;
 			m_timer = 0.0f;
 		}
+		break;
 	case 2:
-		//model_position= { 0.0f,80.0f,300.0f };
-		if (m_timer >= 5.0f)
+		if (m_timer >= 10.0f)
 		{
 			time = 0;
+			model_position= { -300.0f,50.0f,200.0f };
 			pattern = 0;
 			m_timer = 0.0f;
 		}
+		break;
 	}
-
-
 	
 	if (State == 0/*&& g_pad[0]->IsTrigger(enButtonA)*/ )
 	{
@@ -161,7 +162,8 @@ void Title::Update()
 	{
 		m_alpha += g_gameTime->GetFrameDeltaTime() * 1.2f;
 	}	
-	title_Render.Update();
+
+	//title_Render.Update();
 }
 
 void Title::S()
@@ -209,12 +211,16 @@ void Title::Render(RenderContext& rc)
 	//yajirusi_Render.Draw(rc);
 	//player->player_modelRender.Draw(rc);
 	title_back.Draw(rc);
-	if (time == 0)
+	if (pattern == 0)
 	{
 		model_batt.Draw(rc);
 	}
-	else if (time == 1)
+	else if (pattern == 1)
 	{
 		model_mac.Draw(rc);
+	}
+	else if (pattern == 2)
+	{
+		model_giga.Draw(rc);
 	}
 }
