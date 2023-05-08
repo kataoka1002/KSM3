@@ -3,11 +3,15 @@
 #include "Player.h"
 #include "Core_weapons.h"
 #include "Enemy.h"
+#include "Enemy_Far.h"
+#include "Enemy_Near.h"
+#include "Game.h"
 
 Core_weapons_attack::Core_weapons_attack() {
 	C_W_A_player = FindGO<Player>("player");
 	C_W_A_core_weapons = FindGO<Core_weapons>("core_weapons");
 	c_w_a_enemy = FindGO<Enemy>("enemy");
+	m_game = FindGO<Game>("game");
 	Setup();
 }
 
@@ -18,6 +22,7 @@ void Core_weapons_attack::Setup() {
 		break;
 	case 2:
 		C_W_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
+		C_W_Bullet.SetScale(4.0f);
 		C_W_aiming = C_W_A_core_weapons->cw_Rotation;
 		firing_position= C_W_A_core_weapons->cw_position;
 		firing_position.y += 12.0f;
@@ -43,16 +48,50 @@ void Core_weapons_attack::Update() {
 		if (firing_position.y <= 0.0f) {
 			DeleteGO(this);
 		}
-		if (C_W_A_player->enemy_survival == true) {
+		//if (C_W_A_player->enemy_survival == true) {
 			Vector3 diff;// = firing_position - c_w_a_enemy->m_enemyPosition;
-			if (diff.Length() <= 100.0f)
+			//if (diff.Length() <= 100.0f)
+			//{
+			//	if (C_W_A_core_weapons->set_weapons == 2) {
+			//		//c_w_a_enemy->m_enemyHP -= 10.0f;
+			//	}
+			//	DeleteGO(this);
+			//}
+		//}
+
+						//エネミーの数だけ繰り返す
+			for (auto enemy : m_game->m_enemyObject)
 			{
-				if (C_W_A_core_weapons->set_weapons == 2) {
-					//c_w_a_enemy->m_enemyHP -= 10.0f;
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemy->m_enemyPosition;
+				if (diff.Length() <= 200.0f)
+				{
+					enemy->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
 				}
-				DeleteGO(this);
 			}
-		}
+			//エネミーFarの数だけ繰り返す
+			for (auto enemyFar : m_game->m_enemyFarObject)
+			{
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemyFar->m_enemyPosition;
+				if (diff.Length() <= 200.0f)
+				{
+					enemyFar->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
+			}
+			//エネミーNearの数だけ繰り返す
+			for (auto enemyNear : m_game->m_enemyNearObject)
+			{
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemyNear->m_enemyPosition;
+				if (diff.Length() <= 200.0f)
+				{
+					enemyNear->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
+			}
 	}
 }
 

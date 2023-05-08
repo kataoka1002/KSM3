@@ -3,13 +3,14 @@ class Player;
 class Customize_UI;
 class Customize_UI_ver2;
 class Left_arm_weapons;
+class GameCamera;
 
 class Drop_item:public IGameObject
 {
 public:
 	Drop_item();
 	~Drop_item();
-
+	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 	void Float();
@@ -22,6 +23,7 @@ public:
 	Left_arm_weapons* left_arm_weapons;
 	Customize_UI* customize_UI = nullptr;
 	Customize_UI_ver2* customize_UI_ver2 = nullptr;
+	GameCamera* m_gameCamera;
 
 	Vector3 Drop_position;//DropˆÊ’u
 

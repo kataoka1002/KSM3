@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
+#include "MachineGunAttack.h"
 #include "Right_leg_UI.h"
 
 Right_leg_weapons::Right_leg_weapons() {
@@ -11,22 +12,29 @@ Right_leg_weapons::Right_leg_weapons() {
 }
 
 Right_leg_weapons::~Right_leg_weapons() {
-	if (atack_state == true) {
+	/*if (atack_state == true) {
 		if (battle_ship_attack->Landing_state_BB == false) {
 			DeleteGO(battle_ship_attack);
 		}
-	}
+	}*/
 }
 
 void Right_leg_weapons::R_l_w_set() {
 	switch (r_l_w_player->p_custom_point[1][0])
 	{
-	case 1:
+	case 2:
+		Right_leg_weapons_Render.Init("Assets/modelData/machine_gun_drop.tkm");
+		Right_leg_weapons_Render.SetScale(scale2);
+		Right_leg_weapons_Render.Update();
+		set_weapons = r_l_w_player->p_custom_point[1][0];
+		break;
+	case 6:
 		Right_leg_weapons_Render.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
 		Right_leg_weapons_Render.SetScale(scale2);
 		Right_leg_weapons_Render.Update();
 		set_weapons = r_l_w_player->p_custom_point[1][0];
 		break;
+
 	default:
 		break;
 	}
@@ -41,9 +49,20 @@ void Right_leg_weapons::Update() {
 	if (r_l_w_player->game_state == 0) {
 		Move();
 		//攻撃
-		if (g_pad[0]->IsPress(enButtonRB1)) {
-			if (r_l_w_player->p_custom_point[1][0] == 1 && firing_cound % 180 == 0) {
-				battle_ship_attack = NewGO<BattleShipBullet>(1,"battle_ship_attack");
+		if (g_pad[0]->IsPress(enButtonRB1)) 
+		{
+			//武器がマシンガンの場合
+			if (r_l_w_player->p_custom_point[1][0] == 2 && firing_cound % 5 == 0)
+			{
+				//弾にポジションと回転を教えて生成する
+				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
+				m_machineGunAttack->m_rot = r_l_Rotation;
+				m_machineGunAttack->m_position = r_l_w_position;
+				atack_state = true;
+			}
+			else if (r_l_w_player->p_custom_point[1][0] == 6 && firing_cound % 180 == 0) 
+			{
+				battle_ship_attack = NewGO<Battle_ship_attack>(1,"battle_ship_attack");
 				battle_ship_attack->B_S_aiming = r_l_Rotation;
 				battle_ship_attack->firing_position = r_l_w_position;
 				atack_state = true;
@@ -64,7 +83,20 @@ void Right_leg_weapons::Update() {
 void Right_leg_weapons::Move() {
 	Quaternion originRotation = r_l_w_player->player_rotation;
 	r_l_w_position = r_l_w_player->player_position;
-	Vector3 lp = r_l_w_localPosition;
+
+	//武器によって取り付けるポジションの変更
+	Vector3 lp;
+	switch (r_l_w_player->p_custom_point[1][0])
+	{
+	case 2:	//マシンガン
+		lp = { 90.0f,30.0f,0.0f };
+		break;
+	case 6:	//戦艦砲
+		lp = { 90.0f,30.0f,55.0f };
+		break;
+	default:
+		break;
+	}
 	originRotation.Multiply(lp);
 	r_l_w_position += lp;
 	r_l_Rotation = originRotation;

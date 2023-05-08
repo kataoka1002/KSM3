@@ -29,10 +29,6 @@ Enemy::~Enemy()
 {
 	//エネミーが生きているかをプレーヤーに教える
 	m_player->enemy_survival = false;	
-	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
-	if (m_defeatState == true) {
-		m_dropItem->drop_kinds = m_setWeapon;
-	}
 
 	DeleteGO(m_machineGunSE);
 	DeleteGO(m_asiotoSE);
@@ -41,6 +37,7 @@ Enemy::~Enemy()
 
 bool Enemy::Start() 
 {
+	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 	
 	//エネミーの設定
@@ -411,9 +408,17 @@ void Enemy::ItemDrop()
 	//体力が0になったらアイテムを落とす
 	if (m_enemyHP <= 0.0f)
 	{
+		//アイテム生成
 		m_dropItem = NewGO<Drop_item>(1, "drop_item");
 		m_dropItem->Drop_position = m_enemyPosition;
 		m_dropItem->Drop_position.y += 50.0f;
+
+		//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
+		m_dropItem->drop_kinds = m_setWeapon;
+
+		//コンテナにくっつける
+		m_game->m_dropItemObject.push_back(m_dropItem);
+
 		m_defeatState = true;
 		DeleteGO(this);
 	}
@@ -434,7 +439,7 @@ void Enemy::WeaponMove()
 
 void Enemy::Damage()
 {
-	//m_battleShipAttack = FindGO<BattleShipBullet>("buttle_ship_attack");
+	//m_battleShipAttack = FindGO<Battle_ship_attack>("buttle_ship_attack");
 	/*Vector3 diff = m_battleShipAttack->firing_position - m_enemyPosition;
 	if (diff.Length() <= 100.0f)
 	{

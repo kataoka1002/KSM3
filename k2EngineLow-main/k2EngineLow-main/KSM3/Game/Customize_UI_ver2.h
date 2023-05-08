@@ -18,6 +18,7 @@ class Customize_UI_ver2 :public IGameObject
 public:
 	Customize_UI_ver2();
 	~Customize_UI_ver2();
+	bool Start();
 	void Update();
 	void Setup();
 	void Render(RenderContext& rc);
@@ -31,27 +32,25 @@ public:
 	void Custom_UI();
 	void Window();
 
-	GameCamera* C_UI_2_GameCamera;
 
-	int custom_kinds = 0;
-	
-	Core_weapons* cui_core_weapons;
-	Drop_item* cui_drop_item;
-	Right_arm_weapons* cui_right_arm_weapons;
-	Left_arm_weapons* cui_left_arm_weapons;
-	Shoulder_weapons* cui_shoulder_weapons;
-	Right_leg_weapons* cui_right_leg_weapons;
-	Left_leg_weapons* cui_left_leg_weapons;
+	GameCamera* m_gameCamera = nullptr;
+	Core_weapons* m_coreWeapon = nullptr;
+	Drop_item* m_dropItem = nullptr;
+	Right_arm_weapons* m_rightArmWeapon = nullptr;
+	Left_arm_weapons* m_leftArmWeapon = nullptr;
+	Shoulder_weapons* m_shoulderWeapon = nullptr;
+	Right_leg_weapons* m_rightLegWeapon = nullptr;
+	Left_leg_weapons* m_leftLegWeapon = nullptr;
 
-	SpriteRender select_sheet;
-	Vector3 select_sheet_position{0.0f,350.0f,0.0f};
-	SpriteRender parameter_sheet;
-	Vector3 parameter_sheet_position={ -500.0f,38.0f,0.0f };
+	SpriteRender m_selectSheet;
+	Vector3 m_selectSheetPosition{0.0f,350.0f,0.0f};
+	SpriteRender m_parameterSheet;
+	Vector3 m_parameterSheetPosition={ -500.0f,38.0f,0.0f };
 
-	SpriteRender confirmation_window;
+	SpriteRender m_confirmationWindow;
 
-	Player* custom_player;
-	Customize_area* customize_area;
+	Player* m_player = nullptr;
+	Customize_area* m_customizeArea;
 	
 	ModelRender custom_model_body;
 	ModelRender custom_model_Core;
@@ -66,7 +65,7 @@ public:
 
 	int custom_point[2][3] = { {0,0,0},
 							   {0,0,0} };
-
+	int custom_kinds = 0;
 	int selection_position=0;
 	int fast_count=0;
 	int window_count = 0;
