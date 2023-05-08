@@ -2,7 +2,7 @@
 #define HP 200.0f
 
 class Player;
-class BattleShipBullet;
+class Battle_ship_attack;
 class Drop_item;
 
 class Enemy_Near :public IGameObject
@@ -39,7 +39,7 @@ public:
 	Point* m_point = nullptr;
 
 	Player* m_player = nullptr;
-	BattleShipBullet* m_battleShipAttack = nullptr;
+	Battle_ship_attack* m_battleShipAttack = nullptr;
 	Drop_item* m_dropItem = nullptr;
 	EffectEmitter* sunabokoriEffect = nullptr;			//çªÇ⁄Ç±ÇË
 	SoundSource* m_asiotoSE = nullptr;					//ë´âπ

@@ -1,7 +1,9 @@
 #pragma once
 class Player;
-class BattleShipBullet;
+class Battle_ship_attack;
 class Shoulder_UI;
+class MachineGunAttack;
+
 
 class Shoulder_weapons:public IGameObject
 {
@@ -15,8 +17,10 @@ public:
 	void S_w_set();
 
 	Player* s_w_player = nullptr;
-	BattleShipBullet* battle_ship_attack;
-	Shoulder_UI* shoulder_ui;
+	Battle_ship_attack* battle_ship_attack = nullptr;
+	Shoulder_UI* shoulder_ui = nullptr;
+	MachineGunAttack* m_machineGunAttack = nullptr;
+
 
 	Quaternion Shoulder_Rotation;
 	Vector3 s_w_position;
@@ -25,7 +29,7 @@ public:
 	int game_state = 0;
 	ModelRender Shoulder_weapons_Render;
 
-	Vector3 s_w_localPosition = {0.0f,110.0f,0.0f };
+	Vector3 s_w_localPosition = { 0.0f,110.0f,0.0f };
 	Vector3 scale2 = { 2.0f,2.0f,2.0f };
 
 	bool atack_state = false;

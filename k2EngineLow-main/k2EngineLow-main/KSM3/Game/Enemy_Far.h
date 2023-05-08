@@ -2,8 +2,9 @@
 #define HP 200.0f
 
 class Player;
-class BattleShipBullet;
+class Battle_ship_attack;
 class Drop_item;
+class Game;
 
 class Enemy_Far :public IGameObject
 {
@@ -37,9 +38,9 @@ public:
 	std::vector<Point> m_pointList;
 	Point* m_point = nullptr;
 
-
+	Game* m_game = nullptr;
 	Player* m_player = nullptr;
-	BattleShipBullet* m_battleShipAttack = nullptr;
+	Battle_ship_attack* m_battleShipAttack = nullptr;
 	Drop_item* m_dropItem = nullptr;
 	EffectEmitter* sunabokoriEffect = nullptr;
 	SoundSource* m_battleshipGunSE = nullptr;			//ƒ}ƒVƒ“ƒKƒ“SE

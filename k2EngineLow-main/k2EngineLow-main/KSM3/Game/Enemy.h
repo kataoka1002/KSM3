@@ -39,7 +39,7 @@ public:
 	std::vector<Point> m_pointList;
 	Point* m_point = nullptr;
 
-
+	Game* m_game = nullptr;
 	Player* m_player = nullptr;
 	BattleShipBullet* m_battleShipAttack = nullptr;
 	Drop_item* m_dropItem = nullptr;

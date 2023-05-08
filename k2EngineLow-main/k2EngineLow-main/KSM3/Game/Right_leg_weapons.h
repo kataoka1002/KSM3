@@ -1,7 +1,8 @@
 #pragma once
 class Player;
-class BattleShipBullet;
+class Battle_ship_attack;
 class Right_leg_UI;
+class MachineGunAttack;
 
 class Right_leg_weapons:public IGameObject
 {
@@ -15,8 +16,10 @@ public:
 	void R_l_w_set();
 
 	Player* r_l_w_player = nullptr;
-	BattleShipBullet* battle_ship_attack;
-	Right_leg_UI*right_leg_ui;
+	Battle_ship_attack* battle_ship_attack = nullptr;
+	Right_leg_UI*right_leg_ui = nullptr;
+	MachineGunAttack* m_machineGunAttack = nullptr;
+
 
 	Quaternion r_l_Rotation;
 	Vector3 r_l_w_position;
