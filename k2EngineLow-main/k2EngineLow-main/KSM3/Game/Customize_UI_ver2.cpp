@@ -54,21 +54,21 @@ bool Customize_UI_ver2::Start()
 	//Setup();
   
   //UIの読み込み
-	select_sheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
-	select_sheet.SetPosition(select_sheet_position);
-	select_sheet.Update();
+	m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
+	m_selectSheet.SetPosition(m_selectSheetPosition);
+	m_selectSheet.Update();
 
-	switch (custom_player->p_custom_point[0][1])
+	switch (m_player->p_custom_point[0][1])
 	{
 	case 0:
-		parameter_sheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-		parameter_sheet.SetPosition(parameter_sheet_position);
-		parameter_sheet.Update();
+		m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
+		m_parameterSheet.SetPosition(m_parameterSheetPosition);
+		m_parameterSheet.Update();
 		break;
 	case 1:
-		parameter_sheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-		parameter_sheet.SetPosition(parameter_sheet_position);
-		parameter_sheet.Update();
+		m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+		m_parameterSheet.SetPosition(m_parameterSheetPosition);
+		m_parameterSheet.Update();
 		//Custom_model_Shoulder;
 		break;
 	default:
@@ -103,13 +103,13 @@ void Customize_UI_ver2::Setup()
 {
 	Custom_model_Core();
 	Custom_model_body();
-	if (cui_core_weapons->set_weapons == 2) {
+	if (m_coreWeapon->set_weapons == 2) {
 		custom_model_Core.Init("Assets/modelData/Versatile_Perforator.tkm");
 		
 	}
-	if (custom_player->p_custom_point[0][0] != 0) {
+	if (m_player->p_custom_point[0][0] != 0) {
 		Custom_model_Right_arm();
-		switch (cui_right_arm_weapons->set_weapons)
+		switch (m_rightArmWeapon->set_weapons)
 		{
 		case 1:
 			custom_model_Right_arm.Init("Assets/modelData/battleship_gun_right_arm.tkm");
@@ -119,9 +119,9 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (custom_player->p_custom_point[0][2] != 0) {
+	if (m_player->p_custom_point[0][2] != 0) {
 		Custom_model_Left_arm();
-		switch (cui_left_arm_weapons->set_weapons)
+		switch (m_leftArmWeapon->set_weapons)
 		{
 		case 1:
 			custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
@@ -132,9 +132,9 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (custom_player->p_custom_point[0][1] != 0) {
+	if (m_player->p_custom_point[0][1] != 0) {
 		Custom_model_Shoulder();
-		switch (cui_shoulder_weapons->set_weapons)
+		switch (m_shoulderWeapon->set_weapons)
 		{
 		case 1:
 			custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
@@ -145,9 +145,9 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (custom_player->p_custom_point[1][0] != 0) {
+	if (m_player->p_custom_point[1][0] != 0) {
 		Custom_model_Right_leg();
-		switch (cui_right_leg_weapons->set_weapons)
+		switch (m_rightLegWeapon->set_weapons)
 		{
 		case 1:
 			custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
@@ -158,9 +158,9 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (custom_player->p_custom_point[1][2] != 0) {
+	if (m_player->p_custom_point[1][2] != 0) {
 		Custom_model_Left_leg();
-		switch (cui_left_leg_weapons->set_weapons)
+		switch (m_leftLegWeapon->set_weapons)
 		{
 		case 1:
 			custom_model_Left_leg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
@@ -178,52 +178,73 @@ void Customize_UI_ver2::Setup()
 }
 
 
-void Customize_UI_ver2::Update() 
+void Customize_UI_ver2::Update()
 {
-	//�v���C���[�̃X�e�[�g���R(�J�X�^����)������珈��
+	//カスタマイズ画面の時のみ実行
 	if (m_player->game_state == 3)
 	{
-  Custom_model_Core();
-	Custom_model_Right_arm();
-	Custom_model_Left_arm();
-	Custom_model_Shoulder();
-	Custom_model_Right_leg();
-	Custom_model_Left_leg();
-
-	//遷移中
-	if (trance_state == 1) {
-		custom_model_body_rotation.AddRotationDegY(50.0f);
-		trance();
-	}
-
-	//遷移終了
-	if (trance_state == 0) {
-		custom_model_body_rotation.AddRotationDegY(2.0f);
-		if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5) {
-			selection_position++;
-			fast_count = 0;
-		}
-		else if (g_pad[0]->IsTrigger(enButtonLB1) && selection_position >= 1) {
-			selection_position--;
-			fast_count = 0;
-		}
-  
-		//�Z���N�g�n��UI����
-		Custom_UI();
-
-		if (window_open == true)
+		//それぞれのモデルがnullじゃないなら実行
+		if (m_coreWeapon != nullptr)
 		{
-			Window();
+			Custom_model_Core();
 		}
-		
-		//B�{�^���ŃJ�X�^���I��
-		if (g_pad[0]->IsTrigger(enButtonB))
+		if (m_rightArmWeapon != nullptr)
 		{
-			//DeleteGO(this);
+			Custom_model_Right_arm();
+		}
+		if (m_leftArmWeapon != nullptr)
+		{
+			Custom_model_Left_arm();
+		}
+		if (m_shoulderWeapon != nullptr)
+		{
+			Custom_model_Shoulder();
+		}
+		if (m_rightLegWeapon != nullptr)
+		{
+			Custom_model_Right_leg();
+		}
+		if (m_leftLegWeapon != nullptr)
+		{
+			Custom_model_Left_leg();
 		}
 
-		//�ŏ���1�t���[���𐔂��邽�߂̕�
-		fast_count++;
+
+		//遷移中
+		if (trance_state == 1) {
+			custom_model_body_rotation.AddRotationDegY(50.0f);
+			trance();
+		}
+
+		//遷移終了
+		if (trance_state == 0) {
+			custom_model_body_rotation.AddRotationDegY(2.0f);
+			if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5) {
+				selection_position++;
+				fast_count = 0;
+			}
+			else if (g_pad[0]->IsTrigger(enButtonLB1) && selection_position >= 1) {
+				selection_position--;
+				fast_count = 0;
+			}
+
+			//�Z���N�g�n��UI����
+			Custom_UI();
+
+			if (window_open == true)
+			{
+				Window();
+			}
+
+			//B�{�^���ŃJ�X�^���I��
+			if (g_pad[0]->IsTrigger(enButtonB))
+			{
+				//DeleteGO(this);
+			}
+
+			//�ŏ���1�t���[���𐔂��邽�߂̕�
+			fast_count++;
+		}
 	}
 }
 
@@ -349,15 +370,15 @@ void Customize_UI_ver2::Custom_UI()
 			}
 
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][0] == 0 && window_count == 0)
-		{
-			//�K���m�F
-			window_open = true;
-			confirmatino_window_open = true;
-			window_select = true;
-			column = 0, line = 0;
-		}
-		break;
+			if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][0] == 0 && window_count == 0)
+			{
+				//�K���m�F
+				window_open = true;
+				confirmatino_window_open = true;
+				window_select = true;
+				column = 0, line = 0;
+			}
+			break;
 	case 3:	//���r
 		if (fast_count == 0)
 		{
@@ -430,50 +451,6 @@ void Customize_UI_ver2::Custom_UI()
 
 			}
 			break;
-		case 5:
-			if (fast_count == 0) {
-				//表示指示
-				select_sheet.Init("Assets/sprite/select_sheet_06.DDS", 1166.0f, 175.0f);
-				select_sheet.SetPosition(select_sheet_position);
-				select_sheet.Update();
-				switch (custom_player->p_custom_point[1][2])
-				{
-				case 0:
-					parameter_sheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-					parameter_sheet.SetPosition(parameter_sheet_position);
-					parameter_sheet.Update();
-					break;
-				case 1:
-					parameter_sheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-					parameter_sheet.SetPosition(parameter_sheet_position);
-					parameter_sheet.Update();
-					//Custom_model_Shoulder;
-					break;
-				default:
-					break;
-				}
-			}
-			if (g_pad[0]->IsTrigger(enButtonA) && custom_player->p_custom_point[1][2] == 0 && window_count == 0) {
-				//適応確認
-				window_open = true;
-				confirmatino_window_open = true;
-				window_select = true;
-				column = 1, line = 2;
-			}
-			break;
-		default:
-			break;
-		}
-
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][0] == 0 && window_count == 0)
-		{
-			//�K���m�F
-			window_open = true;
-			confirmatino_window_open = true;
-			window_select = true;
-			column = 1, line = 0;
-		}
-		break;
 	case 5:	//����
 		if (fast_count == 0)
 		{
@@ -513,18 +490,22 @@ void Customize_UI_ver2::Custom_UI()
 			window_select = true;
 			column = 1, line = 2;
 
-		if (g_pad[0]->IsTrigger(enButtonB)) {
-			DeleteGO(this);
-		}
-		fast_count++;
+			if (g_pad[0]->IsTrigger(enButtonB)) {
+				DeleteGO(this);
+			}
+			fast_count++;
 
-		if (window_open == true) {
-			Window();
+			if (window_open == true) {
+				Window();
+			}
+		}
+		custom_model_body.SetRotation(custom_model_body_rotation);
+		custom_model_body.Update();
+		}
 		}
 	}
-	custom_model_body.SetRotation(custom_model_body_rotation);
-	custom_model_body.Update();
 }
+
 
 void Customize_UI_ver2::trance() {
 	//黒1回目
@@ -547,11 +528,11 @@ void Customize_UI_ver2::trance() {
 	//黒終了
 	//カメラ移動
 	if (trance_sheet_count == 44) {
-		C_UI_2_GameCamera->trance_Finish = true;
-		C_UI_2_GameCamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
-		C_UI_2_GameCamera->fast_count = 0;
-		C_UI_2_GameCamera->target = { 10000.0f,0.0f,0.0f };
-		C_UI_2_GameCamera->CameraState = 3;
+		m_gameCamera->trance_Finish = true;
+		m_gameCamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
+		m_gameCamera->fast_count = 0;
+		m_gameCamera->target = { 10000.0f,0.0f,0.0f };
+		m_gameCamera->CameraState = 3;
 	}
 	//黒消滅
 	if (trance_sheet_count >= 44&&trance_sheet_count<=64) {
@@ -565,22 +546,22 @@ void Customize_UI_ver2::trance() {
 	//UI出現
 	//上のセレクト部分
 	if (trance_sheet_count >= 64 && trance_sheet_count < 71) {
-		select_sheet_position.y -= 50.0f;
-		select_sheet.SetPosition(select_sheet_position);
+		m_selectSheetPosition.y -= 50.0f;
+		m_selectSheet.SetPosition(m_selectSheetPosition);
 	}
   	if (trance_sheet_count >= 71&& trance_sheet_count <= 75) {
-		select_sheet_position.y +=10.0f;
-		select_sheet.SetPosition(select_sheet_position);
+		m_selectSheetPosition.y +=10.0f;
+		m_selectSheet.SetPosition(m_selectSheetPosition);
 	}
 
 	//パラメータシート
 	if (trance_sheet_count >= 65 && trance_sheet_count < 81) {
-		parameter_sheet_position.x += 50.0f;
-		parameter_sheet.SetPosition(parameter_sheet_position);
+		m_parameterSheetPosition.x += 50.0f;
+		m_parameterSheet.SetPosition(m_parameterSheetPosition);
 	}
 	if (trance_sheet_count >= 81 && trance_sheet_count < 86) {
-		parameter_sheet_position.x -= 10.0f;
-		parameter_sheet.SetPosition(parameter_sheet_position);
+		m_parameterSheetPosition.x -= 10.0f;
+		m_parameterSheet.SetPosition(m_parameterSheetPosition);
 	}
 
 	//bodyの出現
@@ -598,8 +579,8 @@ void Customize_UI_ver2::trance() {
 	}
 
 	custom_model_body.Update();
-	parameter_sheet.Update();
-	select_sheet.Update();
+	m_parameterSheet.Update();
+	m_selectSheet.Update();
 	trance_sheet[0].Update();
 	trance_sheet[1].Update();
 	trance_sheet[2].Update();
@@ -673,7 +654,7 @@ void Customize_UI_ver2::Window()
 				window_count = 0;
 				window_open = false;
 				window_select = false;
-        C_UI_2_GameCamera->trance_Finish = false;
+				m_gameCamera->trance_Finish = false;
 				//�ǂ��̕��ʂ�I��Ă��邩�̃X�v���C�g�����Ă���
 				m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
 
@@ -970,15 +951,15 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 	//�v���C���[�̃X�e�[�g��3�������Draw����
 	if (m_player->game_state == 3)
 	{
-		select_sheet.Draw(rc);
-	parameter_sheet.Draw(rc);
+		m_selectSheet.Draw(rc);
+		m_parameterSheet.Draw(rc);
 		trance_sheet[0].Draw(rc);
 		trance_sheet[1].Draw(rc);
 		trance_sheet[2].Draw(rc);
 		trance_sheet[3].Draw(rc);
-		
-	
-		
+
+
+
 		custom_model_Core.Draw(rc);
 		custom_model_body.Draw(rc);
 
@@ -1002,7 +983,8 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 
 		if (window_open == true) {
 			if (confirmatino_window_open == true) {
-				confirmation_window.Draw(rc);
+				m_confirmationWindow.Draw(rc);
 			}
 		}
+	}
 }
