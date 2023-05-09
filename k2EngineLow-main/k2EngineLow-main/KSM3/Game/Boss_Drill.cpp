@@ -6,6 +6,7 @@
 #include "Boss.h"
 #include "Boss_Drill_attack.h"
 #include "Drop_item.h"
+#include "Boss_Shovel.h"
 
 Boss_Drill::Boss_Drill()
 {
@@ -15,10 +16,10 @@ Boss_Drill::Boss_Drill()
 Boss_Drill::~Boss_Drill()
 {
 	DeleteGO(b_boss_weapons);
-	if (defeatState == true)
+	/*if (defeatState == true)
 	{
 		drop_item->drop_kinds = set_weapons;
-	}
+	}*/
 }
 
 void Boss_Drill::Setup()
@@ -81,9 +82,12 @@ void Boss_Drill::Update()
 	boss_Drill_Render.Update();
 	if (drill_HP<=0.0f)
 	{
-		drop_item = NewGO<Drop_item>(1, "drop_item");
-		drop_item->Drop_position.y += 50.0f;
-		defeatState = true;
+		//drop_item = NewGO<Drop_item>(1, "drop_item");
+		//drop_item->Drop_position.y += 50.0f;
+		//defeatState = true;
+		
+		//Ž©•ª‚ªŽ€‚Ê‚Æ“¯Žž‚ÉƒVƒ‡ƒxƒ‹‚àÁ‚·
+		DeleteGO(b_w_boss->b_boss_shovel);
 		DeleteGO(this);
 	}
 }

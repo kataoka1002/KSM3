@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "Boss.h"
 #include "Boss_Riser.h"
+#include "Boss_Drill.h"
 
 Battle_ship_attack::Battle_ship_attack() 
 {
@@ -17,6 +18,7 @@ bool Battle_ship_attack::Start()
 {
 	m_player = FindGO<Player>("player");
 	m_game = FindGO<Game>("game");
+	//m_boss = FindGO<Boss>("boss");
 
 	Setup();
 
@@ -67,64 +69,6 @@ void Battle_ship_attack::Update()
 
 			DeleteGO(this);
 		}
-
-		//if (b_s_attack_player->enemy_survival == true) 
-		//{
-			//エネミーの数だけ繰り返す
-			for (auto enemy : m_game->m_enemyObject) 
-			{
-				//弾とエネミーの距離を測り一定以下なら体力減少
-				Vector3 diff = firing_position - enemy->m_enemyPosition;
-				if (diff.Length() <= 100.0f)
-				{
-					enemy->m_enemyHP -= 50.0f;
-					DeleteGO(this);	//弾は消える
-				}
-			}
-			//エネミーFarの数だけ繰り返す
-			for (auto enemyFar : m_game->m_enemyFarObject)
-			{
-				//弾とエネミーの距離を測り一定以下なら体力減少
-				Vector3 diff = firing_position - enemyFar->m_enemyPosition;
-				if (diff.Length() <= 100.0f)
-				{
-					enemyFar->m_enemyHP -= 50.0f;
-					DeleteGO(this);	//弾は消える
-				}
-			}
-			//エネミーNearの数だけ繰り返す
-			for (auto enemyNear : m_game->m_enemyNearObject)
-			{
-				//弾とエネミーの距離を測り一定以下なら体力減少
-				Vector3 diff = firing_position - enemyNear->m_enemyPosition;
-				if (diff.Length() <= 100.0f)
-				{
-					enemyNear->m_enemyHP -= 50.0f;
-					DeleteGO(this);	//弾は消える
-				}
-			}
-			/*for (auto boss : m_game->m_bossObject)
-			{
-				Vector3 diff = firing_position - boss->boss_position;
-				if (diff.Length() <= 100.0f)
-				{
-					boss->boss_HP -= 50.0f;
-					DeleteGO(this);
-				}
-			}*/
-			/*for (auto boss_riser : m_game->m_riserObject)
-			{
-				Vector3 diff = firing_position - boss_riser->b_w_position;
-				if (diff.Length() <= 100.0f)
-				{
-					boss_riser->riser_HP -= 50.0f;
-					DeleteGO(this);
-				}
-			}*/
-			
-
-		//}
-
 	}
 }
 
@@ -170,6 +114,31 @@ void Battle_ship_attack::Damage()
 		{
 			enemyNear->m_enemyHP -= 50.0f;
 			DeleteGO(this);	//弾は消える
+		}
+	}
+
+	//弾とボスの距離を測り一定以下なら体力減少
+	if (m_game->boss != nullptr)
+	{
+		Vector3 diff = firing_position - m_game->boss->boss_position;
+		if (diff.Length() <= 500.0f)
+		{
+			m_game->boss->boss_HP -= 50.0f;
+			DeleteGO(this);	//弾は消える
+		}
+	}
+
+	//弾とドリルの距離を測り一定以下なら体力減少
+	if (m_game->boss != nullptr)
+	{
+		if (m_game->boss->b_boss_drill != nullptr)
+		{
+			Vector3 diff = firing_position - m_game->boss->b_boss_drill->b_w_position;
+			if (diff.Length() <= 500.0f)
+			{
+				m_game->boss->b_boss_drill->drill_HP -= 50.0f;
+				DeleteGO(this);	//弾は消える
+			}
 		}
 	}
 }

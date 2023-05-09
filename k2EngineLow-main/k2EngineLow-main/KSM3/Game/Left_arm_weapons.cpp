@@ -64,7 +64,7 @@ void Left_arm_weapons::Update()
 				m_machineGunAttack->m_position = l_a_w_position;
 				atack_state = true;
 			}
-			else if (l_a_w_player->p_custom_point[0][2] == 1 && firing_cound % 180 == 0) 
+			else if (l_a_w_player->p_custom_point[0][2] == 6 && firing_cound % 180 == 0) 
 			{
 				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
 				battle_ship_attack->B_S_aiming = l_a_Rotation;

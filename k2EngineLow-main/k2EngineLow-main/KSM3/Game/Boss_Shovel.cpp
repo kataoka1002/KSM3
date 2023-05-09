@@ -15,10 +15,10 @@ Boss_Shovel::Boss_Shovel()
 Boss_Shovel::~Boss_Shovel()
 {
 	DeleteGO(b_boss_weapons);
-	if (defeatState == true)
+	/*if (defeatState == true)
 	{
 		drop_item->drop_kinds = set_weapons;
-	}
+	}*/
 }
 
 bool Boss_Shovel::Start()
@@ -96,9 +96,9 @@ void Boss_Shovel::Update()
 
 	if (shovel_HP<=0.0f)
 	{
-		drop_item = NewGO<Drop_item>(1, "drop_item");
+		/*drop_item = NewGO<Drop_item>(1, "drop_item");
 		drop_item->Drop_position.y += 50.0f;
-		defeatState = true;
+		defeatState = true;*/
 		DeleteGO(this);
 	}
 }

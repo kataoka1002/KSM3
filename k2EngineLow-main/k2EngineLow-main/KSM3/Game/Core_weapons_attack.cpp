@@ -6,11 +6,13 @@
 #include "Enemy_Far.h"
 #include "Enemy_Near.h"
 #include "Game.h"
+#include "Boss.h"
+#include "Boss_Drill.h"
 
 Core_weapons_attack::Core_weapons_attack() {
 	C_W_A_player = FindGO<Player>("player");
 	C_W_A_core_weapons = FindGO<Core_weapons>("core_weapons");
-	c_w_a_enemy = FindGO<Enemy>("enemy");
+	//c_w_a_enemy = FindGO<Enemy>("enemy");
 	m_game = FindGO<Game>("game");
 	Setup();
 }
@@ -44,54 +46,72 @@ Core_weapons_attack::~Core_weapons_attack() {
 void Core_weapons_attack::Update() {
 	if (C_W_A_player->game_state == 0) {
 		Move();
+		Damage();
 		C_W_Bullet.Update();
 		if (firing_position.y <= 0.0f) {
 			DeleteGO(this);
 		}
-		//if (C_W_A_player->enemy_survival == true) {
-			Vector3 diff;// = firing_position - c_w_a_enemy->m_enemyPosition;
-			//if (diff.Length() <= 100.0f)
-			//{
-			//	if (C_W_A_core_weapons->set_weapons == 2) {
-			//		//c_w_a_enemy->m_enemyHP -= 10.0f;
-			//	}
-			//	DeleteGO(this);
-			//}
-		//}
+	}
+}
 
-						//エネミーの数だけ繰り返す
-			for (auto enemy : m_game->m_enemyObject)
+void Core_weapons_attack::Damage()
+{
+	//エネミーの数だけ繰り返す
+	for (auto enemy : m_game->m_enemyObject)
+	{
+		//弾とエネミーの距離を測り一定以下なら体力減少
+		Vector3 diff = firing_position - enemy->m_enemyPosition;
+		if (diff.Length() <= 200.0f)
+		{
+			enemy->m_enemyHP -= 50.0f;
+			DeleteGO(this);	//弾は消える
+		}
+	}
+	//エネミーFarの数だけ繰り返す
+	for (auto enemyFar : m_game->m_enemyFarObject)
+	{
+		//弾とエネミーの距離を測り一定以下なら体力減少
+		Vector3 diff = firing_position - enemyFar->m_enemyPosition;
+		if (diff.Length() <= 200.0f)
+		{
+			enemyFar->m_enemyHP -= 50.0f;
+			DeleteGO(this);	//弾は消える
+		}
+	}
+	//エネミーNearの数だけ繰り返す
+	for (auto enemyNear : m_game->m_enemyNearObject)
+	{
+		//弾とエネミーの距離を測り一定以下なら体力減少
+		Vector3 diff = firing_position - enemyNear->m_enemyPosition;
+		if (diff.Length() <= 200.0f)
+		{
+			enemyNear->m_enemyHP -= 50.0f;
+			DeleteGO(this);	//弾は消える
+		}
+	}
+	//弾とボスの距離を測り一定以下なら体力減少
+	if (m_game->boss != nullptr)
+	{
+		Vector3 diff = firing_position - m_game->boss->boss_position;
+		if (diff.Length() <= 1000.0f)
+		{
+			m_game->boss->boss_HP -= 50.0f;
+			DeleteGO(this);	//弾は消える
+		}
+	}
+
+	//弾とドリルの距離を測り一定以下なら体力減少
+	if (m_game->boss != nullptr)
+	{
+		if (m_game->boss->b_boss_drill != nullptr)
+		{
+			Vector3 diff = firing_position - m_game->boss->b_boss_drill->b_w_position;
+			if (diff.Length() <= 500.0f)
 			{
-				//弾とエネミーの距離を測り一定以下なら体力減少
-				Vector3 diff = firing_position - enemy->m_enemyPosition;
-				if (diff.Length() <= 200.0f)
-				{
-					enemy->m_enemyHP -= 50.0f;
-					DeleteGO(this);	//弾は消える
-				}
+				m_game->boss->b_boss_drill->drill_HP -= 50.0f;
+				DeleteGO(this);	//弾は消える
 			}
-			//エネミーFarの数だけ繰り返す
-			for (auto enemyFar : m_game->m_enemyFarObject)
-			{
-				//弾とエネミーの距離を測り一定以下なら体力減少
-				Vector3 diff = firing_position - enemyFar->m_enemyPosition;
-				if (diff.Length() <= 200.0f)
-				{
-					enemyFar->m_enemyHP -= 50.0f;
-					DeleteGO(this);	//弾は消える
-				}
-			}
-			//エネミーNearの数だけ繰り返す
-			for (auto enemyNear : m_game->m_enemyNearObject)
-			{
-				//弾とエネミーの距離を測り一定以下なら体力減少
-				Vector3 diff = firing_position - enemyNear->m_enemyPosition;
-				if (diff.Length() <= 200.0f)
-				{
-					enemyNear->m_enemyHP -= 50.0f;
-					DeleteGO(this);	//弾は消える
-				}
-			}
+		}
 	}
 }
 

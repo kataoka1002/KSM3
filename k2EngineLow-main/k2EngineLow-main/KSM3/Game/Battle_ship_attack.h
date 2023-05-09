@@ -19,6 +19,7 @@ public:
 
 	Player* m_player = nullptr;
 	Game* m_game = nullptr;
+	Boss* m_boss = nullptr;
 
 	ModelRender m_bulletModel;
 	Quaternion B_S_aiming;

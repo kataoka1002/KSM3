@@ -10,12 +10,6 @@ using namespace std;
 
 Drop_item::Drop_item() 
 {
-	//drop_kinds = 2;
-
-	//drop_weapons[1] = 1;
-
-	//Drop_position = { 200.0f,50.0f,500.0f };
-
 	
 }
 
@@ -41,10 +35,12 @@ void Drop_item::Set_Drop_item()
 	if (drop_kinds == 2)
 	{
 		Drop_item_Render.Init("Assets/modelData/machine_gun_drop.tkm");
+		Drop_item_Render.SetScale(2.5f);
 	}
 	else if (drop_kinds == 6)
 	{
 		Drop_item_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
+		Drop_item_Render.SetScale(2.5f);
 	}
 
 	//Drop_item_Render.SetPosition(Drop_position);
