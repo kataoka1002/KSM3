@@ -17,7 +17,10 @@
 #include "Boss_Riser.h"
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
+
 //#include "Fade.h"
+
+#include "Customize_UI_ver2.h"
 
 
 Game::Game()
@@ -28,9 +31,10 @@ Game::Game()
 	//プレイヤーの作成
 	player = NewGO<Player>(1, "player");
 
+
 	
 	//エネミーを複数体生成
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
 		enemy->m_enemyPosition = { 0.0f,0.0f,3000.0f };
@@ -56,6 +60,7 @@ Game::Game()
 		Boss* boss = NewGO<Boss>(1, "boss");
 		boss->boss_position = { 0.0f,0.0f,15100.0f };
 
+
 		m_bossObject.push_back(boss);
 	}
 	for (int i = 0; i < 1; i++)
@@ -68,12 +73,18 @@ Game::Game()
 	//boss = NewGO<Boss>(1, "boss");//15100
 	//boss->boss_position = { 0.0f,0.0f,15100.0f };
 
-	drop_item = NewGO< Drop_item>(1, "drop_item");
+
+	//drop_item = NewGO< Drop_item>(1, "drop_item");
 	background = NewGO< BackGround>(1, "background");
 
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 	core_weapons = NewGO<Core_weapons>(2, "core_weapons");
 	game_ui = NewGO<Game_UI>(0, "game_ui");
+
+	//カスタム画面の作成
+	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
+
+
 	//e_h_ui = NewGO<Enemy_HP_UI>(1 , "enemy_hp_ui");
 }
 
@@ -97,6 +108,7 @@ Game::~Game()
 	{
 		DeleteGO(enemyNear);
 	}
+
 	for (auto boss : m_bossObject)
 	{
 		DeleteGO(boss);
@@ -108,9 +120,19 @@ Game::~Game()
 
 	DeleteGO(player);
 
-	if (drop_item->GetState == false) {
-		DeleteGO(drop_item);
+	//プッシュしたアイテムを削除していく
+	for (auto dropItem : m_dropItemObject)
+	{
+		DeleteGO(dropItem);
 	}
+
+	DeleteGO(player);
+	DeleteGO(m_customizeUI);
+
+
+	/*if (drop_item->GetState == false) {
+		DeleteGO(drop_item);
+	}*/
 	DeleteGO(background);
 
 	DeleteGO(gamecamera);
@@ -197,7 +219,6 @@ void Game::Update()
 		result = NewGO<Result>(1, "result");
 		DeleteGO(this);
 	}
-
 }
 
 void Game::Render(RenderContext& rc)

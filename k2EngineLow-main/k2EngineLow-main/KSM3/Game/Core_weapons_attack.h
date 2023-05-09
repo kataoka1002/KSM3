@@ -2,6 +2,7 @@
 class Player;
 class Core_weapons;
 class Enemy;
+class Game;
 
 
 class Core_weapons_attack:public IGameObject
@@ -18,6 +19,7 @@ public:
 	Player* C_W_A_player;
 	Core_weapons* C_W_A_core_weapons;
 	Enemy* c_w_a_enemy;
+	Game* m_game;
 
 	ModelRender C_W_Bullet;
 	Quaternion C_W_aiming;

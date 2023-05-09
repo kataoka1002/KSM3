@@ -18,6 +18,7 @@ class Customize_UI_ver2 :public IGameObject
 public:
 	Customize_UI_ver2();
 	~Customize_UI_ver2();
+	bool Start();
 	void Update();
 	void Setup();
 	void Render(RenderContext& rc);
@@ -33,27 +34,27 @@ public:
 	void trance_setup();
 	void trance();
 
-	GameCamera* C_UI_2_GameCamera;
 
-	int custom_kinds = 0;
-	
-	Core_weapons* cui_core_weapons;
-	Drop_item* cui_drop_item;
-	Right_arm_weapons* cui_right_arm_weapons;
-	Left_arm_weapons* cui_left_arm_weapons;
-	Shoulder_weapons* cui_shoulder_weapons;
-	Right_leg_weapons* cui_right_leg_weapons;
-	Left_leg_weapons* cui_left_leg_weapons;
+	GameCamera* m_gameCamera = nullptr;
+	Core_weapons* m_coreWeapon = nullptr;
+	Drop_item* m_dropItem = nullptr;
+	Right_arm_weapons* m_rightArmWeapon = nullptr;
+	Left_arm_weapons* m_leftArmWeapon = nullptr;
+	Shoulder_weapons* m_shoulderWeapon = nullptr;
+	Right_leg_weapons* m_rightLegWeapon = nullptr;
+	Left_leg_weapons* m_leftLegWeapon = nullptr;
 
-	SpriteRender select_sheet;
-	Vector3 select_sheet_position{0.0f,650.0f,0.0f};//350
-	SpriteRender parameter_sheet;
-	Vector3 parameter_sheet_position={ -1200.0f,38.0f,0.0f };//-500
 
-	SpriteRender confirmation_window;
+	SpriteRender m_selectSheet;
+	Vector3 m_selectSheetPosition={0.0f,650.0f,0.0f};//350
+	SpriteRender m_parameterSheet;
+	Vector3 m_parameterSheetPosition ={ -1200.0f,38.0f,0.0f };//-500
 
-	Player* custom_player;
-	Customize_area* customize_area;
+
+	SpriteRender m_confirmationWindow;
+
+	Player* m_player = nullptr;
+	Customize_area* m_customizeArea;
 	
 	ModelRender custom_model_body;
 	ModelRender custom_model_Core;
@@ -68,40 +69,40 @@ public:
 
 	int custom_point[2][3] = { {0,0,0},
 							   {0,0,0} };
-
+	int custom_kinds = 0;
 	int selection_position=0;
 	int fast_count=0;
 	int window_count = 0;
-	Vector3 cw_lp;//ƒRƒA‘•”õ‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
-	Vector3 raw_lp;//‰E˜r‘•”õ‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
-	Vector3 law_lp;//¶˜r‘•”õ‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
-	Vector3 sw_lp;//Œ¨‘•”õ‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
-	Vector3 rlw_lp;//‰E‘«‘•”õ‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
-	Vector3 llw_lp;//¶‘«‘•”õ‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
+	Vector3 cw_lp;//ã‚³ã‚¢è£…å‚™ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³
+	Vector3 raw_lp;//å³è…•è£…å‚™ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³
+	Vector3 law_lp;//å·¦è…•è£…å‚™ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³
+	Vector3 sw_lp;//è‚©è£…å‚™ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³
+	Vector3 rlw_lp;//å³è¶³è£…å‚™ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³
+	Vector3 llw_lp;//å·¦è¶³è£…å‚™ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³
 
-	bool right_arm_weapon_set = false;//‰Eè‚Ì‘•”õ‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚©
-	bool Left_arm_weapon_set = false;//¶è‚Ì‘•”õ‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚©
-	bool Shoulder_weapon_set = false;//Œ¨‚Ì‘•”õ‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚©
-	bool Right_leg_weapon_set = false;//‰E‘«‚Ì‘•”õ‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚©
-	bool Left_leg_weapon_set = false;//¶‘«‚Ì‘•”õ‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚©
+	bool right_arm_weapon_set = false;//å³æ‰‹ã®è£…å‚™ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹
+	bool Left_arm_weapon_set = false;//å·¦æ‰‹ã®è£…å‚™ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹
+	bool Shoulder_weapon_set = false;//è‚©ã®è£…å‚™ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹
+	bool Right_leg_weapon_set = false;//å³è¶³ã®è£…å‚™ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹
+	bool Left_leg_weapon_set = false;//å·¦è¶³ã®è£…å‚™ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹
 
-	Vector3 scale2 = { 2.0f, 2.0f, 2.0f };//2”{‚Ìscale
-	bool window_open=false;//ƒEƒBƒ“ƒhƒE‚ªƒI[ƒvƒ“‚·‚é‚©
-	bool confirmatino_window_open = false;//Šm”FƒEƒBƒ“ƒhƒE‚Ì•\¦Šm”F
-	bool window_select = false;//ƒEƒBƒ“ƒhƒE‚Ì‘I‘ğˆ‚Ì‚Ç‚Á‚¿‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚é‚©
+	Vector3 scale2 = { 2.0f, 2.0f, 2.0f };//2å€ã®scale
+	bool window_open=false;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ã‹
+	bool confirmatino_window_open = false;//ç¢ºèªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤ºç¢ºèª
+	bool window_select = false;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®é¸æŠè‚¢ã®ã©ã£ã¡ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹ã‹
 	int column = 0, line=0;
 
-	int trance_state = 1;//‘JˆÚ‚ÌƒXƒe[ƒg0:‘JˆÚI—¹ 1:‘JˆÚ’†
+	int trance_state = 1;//é·ç§»ã®ã‚¹ãƒ†ãƒ¼ãƒˆ0:é·ç§»çµ‚äº† 1:é·ç§»ä¸­
 
-	SpriteRender trance_sheet[4];//‘JˆÚ‚Ì•‰B‚µ 1,2:‰º 3,4:ã
+	SpriteRender trance_sheet[4];//é·ç§»æ™‚ã®é»’éš ã— 1,2:ä¸‹ 3,4:ä¸Š
 
 	Vector3 trance_sheet01_position = { 2880.0f,-530.0f,0.0f };
 	Vector3 trance_sheet02_position = { 2880.0f,-530.0f,0.0f };
 	Vector3 trance_sheet03_position = { -2880.0f,530.0f,0.0f };
 	Vector3 trance_sheet04_position = { -2880.0f,530.0f,0.0f };
 
-	int trance_sheet_count=0;//‘JˆÚƒJƒEƒ“ƒg
-	Vector4 trance_sheet_color{ 0.0f,0.0f,0.0f,1.0f };
-	//float trance_sheet_ƒ¿ = 1;//ƒAƒ‹ƒtƒ@’l
+	int trance_sheet_count=0;//é·ç§»ã‚«ã‚¦ãƒ³ãƒˆ
+	Vector4 trance_sheet_color={ 0.0f,0.0f,0.0f,1.0f };
+	//float trance_sheet_Î± = 1;//ã‚¢ãƒ«ãƒ•ã‚¡å€¤
 };
 

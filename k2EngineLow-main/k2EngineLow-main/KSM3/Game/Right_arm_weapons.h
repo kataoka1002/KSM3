@@ -1,22 +1,25 @@
 #pragma once
 
 class Player;
-class BattleShipBullet;
+class Battle_ship_attack;
 class Right_arm_UI;
+class MachineGunAttack;
 
 class Right_arm_weapons :public IGameObject
 {
 public:
 	Right_arm_weapons();
 	~Right_arm_weapons();
+	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 	void Move();
 	void R_a_w_set();
 
 	Player* r_a_w_player = nullptr;
-	BattleShipBullet* battle_ship_attack;
-	Right_arm_UI* right_arm_ui;
+	Battle_ship_attack* battle_ship_attack = nullptr;
+	Right_arm_UI* right_arm_ui = nullptr;
+	MachineGunAttack* m_machineGunAttack = nullptr;
 
 	Quaternion r_a_Rotation;
 	Vector3 r_a_w_position;
@@ -31,8 +34,7 @@ public:
 	bool atack_state = false;
 	int set_weapons = 0;
 
-	int firing_cound=0;
-	int fast = 0;
+	int firing_count=0;
 
 	float R_a_w_HP = 0.0f;
 };

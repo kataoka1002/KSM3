@@ -18,7 +18,11 @@ class Boss;
 class Boss_Riser;
 class Game_UI;
 class Enemy_HP_UI;
+
 //class Fade;
+
+class Customize_UI_ver2;
+
 
 //エフェクトの列挙
 enum EffectName {
@@ -36,8 +40,6 @@ enum SoundName {
 	enGigatonCannon,	//ギガトンキャノン
 	enButtleShipGun		//戦艦砲
 };
-
-
 
 class Game :public IGameObject
 {
@@ -70,13 +72,19 @@ public:
 	GameCamera* gamecamera;
 	Game_UI* game_ui;
 	Enemy_HP_UI* e_h_ui;
+
 	//Fade* m_fade = nullptr;		//フェード。
+
+
+	std::vector<Boss_Riser*>m_riserObject;
+
+	Customize_UI_ver2* m_customizeUI;
 
 	std::vector<Enemy*>	m_enemyObject;
 	std::vector<Enemy_Far*> m_enemyFarObject;
-	std::vector<Enemy_Near*>m_enemyNearObject;
-	std::vector<Boss*>m_bossObject;
-	std::vector<Boss_Riser*>m_riserObject;
+	std::vector<Enemy_Near*> m_enemyNearObject;
+	std::vector<Drop_item*> m_dropItemObject;
+
 
 	
 	Vector3 dv;

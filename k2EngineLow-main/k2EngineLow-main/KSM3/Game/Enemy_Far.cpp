@@ -26,15 +26,16 @@ Enemy_Far::~Enemy_Far()
 	//エネミーが生きているかをプレーヤーに教える
 	m_player->enemy_survival = false;	
 	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
-	if (m_defeatState == true) {
+	/*if (m_defeatState == true) {
 		m_dropItem->drop_kinds = m_setWeapon;
-	}
+	}*/
 
 	DeleteGO(m_asiotoSE);
 }
 
 bool Enemy_Far::Start()
 {
+	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 
 
@@ -404,6 +405,11 @@ void Enemy_Far::ItemDrop()
 		m_dropItem = NewGO<Drop_item>(1, "drop_item");
 		m_dropItem->Drop_position = m_enemyPosition;
 		m_dropItem->Drop_position.y += 50.0f;
+		m_dropItem->drop_kinds = m_setWeapon;
+		
+		//コンテナにくっつける
+		m_game->m_dropItemObject.push_back(m_dropItem);
+
 		m_defeatState = true;
 		DeleteGO(this);
 	}
@@ -424,7 +430,7 @@ void Enemy_Far::WeaponMove()
 
 void Enemy_Far::Damage()
 {
-	//m_battleShipAttack = FindGO<BattleShipBullet>("buttle_ship_attack");
+	//m_battleShipAttack = FindGO<Battle_ship_attack>("buttle_ship_attack");
 	/*Vector3 diff = m_battleShipAttack->firing_position - m_enemyPosition;
 	if (diff.Length() <= 100.0f)
 	{
