@@ -28,6 +28,12 @@ void Right_leg_weapons::R_l_w_set() {
 		Right_leg_weapons_Render.Update();
 		set_weapons = r_l_w_player->p_custom_point[1][0];
 		break;
+	case 4:
+		Right_leg_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
+		Right_leg_weapons_Render.SetScale(1.0f);
+		Right_leg_weapons_Render.Update();
+		set_weapons = r_l_w_player->p_custom_point[1][0];
+		break;
 	case 6:
 		Right_leg_weapons_Render.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
 		Right_leg_weapons_Render.SetScale(scale2);
@@ -53,6 +59,14 @@ void Right_leg_weapons::Update() {
 		{
 			//武器がマシンガンの場合
 			if (r_l_w_player->p_custom_point[1][0] == 2 && firing_cound % 5 == 0)
+			{
+				//弾にポジションと回転を教えて生成する
+				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
+				m_machineGunAttack->m_rot = r_l_Rotation;
+				m_machineGunAttack->m_position = r_l_w_position;
+				atack_state = true;
+			}
+			else if (r_l_w_player->p_custom_point[1][0] == 4 && firing_cound % 180 == 0)
 			{
 				//弾にポジションと回転を教えて生成する
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
@@ -89,6 +103,9 @@ void Right_leg_weapons::Move() {
 	switch (r_l_w_player->p_custom_point[1][0])
 	{
 	case 2:	//マシンガン
+		lp = { 90.0f,30.0f,0.0f };
+		break;
+	case 4:	//ギガトンキャノン
 		lp = { 90.0f,30.0f,0.0f };
 		break;
 	case 6:	//戦艦砲

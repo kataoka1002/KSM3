@@ -29,6 +29,12 @@ void Left_leg_weapons::L_l_w_set() {
 		Left_leg_weapons_Render.Update();
 		set_weapons = l_l_w_player->p_custom_point[1][2];
 		break;
+	case 4:
+		Left_leg_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
+		Left_leg_weapons_Render.SetScale(1.0f);
+		Left_leg_weapons_Render.Update();
+		set_weapons = l_l_w_player->p_custom_point[1][2];
+		break;
 	case 6:
 		Left_leg_weapons_Render.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
 		Left_leg_weapons_Render.SetScale(scale2);
@@ -53,6 +59,14 @@ void Left_leg_weapons::Update() {
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
 			if (l_l_w_player->p_custom_point[1][2] == 2 && firing_cound % 5 == 0)
+			{
+				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
+				m_machineGunAttack->m_rot = l_l_Rotation;
+				m_machineGunAttack->m_position = l_l_w_position;
+				atack_state = true;
+			}
+			else if (l_l_w_player->p_custom_point[1][2] == 4 && firing_cound % 180 == 0)
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
@@ -89,6 +103,9 @@ void Left_leg_weapons::Move() {
 	switch (l_l_w_player->p_custom_point[1][2])
 	{
 	case 2:	//ƒ}ƒVƒ“ƒKƒ“
+		lp = { -90.0f,30.0f,0.0f };
+		break;
+	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
 		lp = { -90.0f,30.0f,0.0f };
 		break;
 	case 6:	//íŠÍ–C

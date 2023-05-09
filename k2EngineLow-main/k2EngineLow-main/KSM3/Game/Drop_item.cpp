@@ -37,6 +37,11 @@ void Drop_item::Set_Drop_item()
 		Drop_item_Render.Init("Assets/modelData/machine_gun_drop.tkm");
 		Drop_item_Render.SetScale(2.5f);
 	}
+	else if (drop_kinds == 4)
+	{
+		Drop_item_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
+		Drop_item_Render.SetScale(1.0f);
+	}
 	else if (drop_kinds == 6)
 	{
 		Drop_item_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");

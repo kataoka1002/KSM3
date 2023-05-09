@@ -420,8 +420,8 @@ void Enemy::ItemDrop()
 
 		//コンテナにくっつける
 		m_game->m_dropItemObject.push_back(m_dropItem);
-		Game* game = FindGO<Game>("game");
-		game->AddDefeatedEnemyNumber();
+		m_game->AddDefeatedEnemyNumber();
+
 		m_defeatState = true;
 		DeleteGO(this);
 	}

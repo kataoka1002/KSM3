@@ -4,6 +4,7 @@
 class Player;
 class Battle_ship_attack;
 class Drop_item;
+class Game;
 
 class Enemy_Near :public IGameObject
 {
@@ -45,6 +46,7 @@ public:
 	SoundSource* m_asiotoSE = nullptr;					//足音
 	SoundSource* m_dashSE = nullptr;					//ダッシュ音
 	SoundSource* m_cannonSE = nullptr;					//ギガトンキャノンSE
+	Game* m_game = nullptr;
 
 
 	ModelRender m_enemyModel;						//エネミーモデル
