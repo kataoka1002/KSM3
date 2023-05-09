@@ -418,6 +418,8 @@ void Enemy_Near::ItemDrop()
 		m_dropItem = NewGO<Drop_item>(1, "drop_item");
 		m_dropItem->Drop_position = m_enemyPosition;
 		m_dropItem->Drop_position.y += 50.0f;
+		Game* game = FindGO<Game>("game");
+		game->AddDefeatedEnemyNumber();
 		m_defeatState = true;
 		DeleteGO(this);
 	}

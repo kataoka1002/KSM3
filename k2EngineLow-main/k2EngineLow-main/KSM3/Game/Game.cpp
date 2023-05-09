@@ -17,6 +17,8 @@
 #include "Boss_Riser.h"
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
+#include <time.h>
+#include <stdlib.h>
 
 //#include "Fade.h"
 
@@ -162,7 +164,16 @@ void Game::Update()
 			boss->boss_position = { 0.0f,0.0f,15100.0f };
 		}
 	}
-
+	if (boss != nullptr) {
+		if (player->boss_survival == true) {
+			boss_time += g_gameTime->GetFrameDeltaTime();
+			boss_time_score += g_gameTime->GetFrameDeltaTime();
+			if (boss_time_score >= 1.0f) {
+				time_score -= 150;
+				boss_time_score = 0.0f;
+			}
+		}
+	}
 
 	//wchar_t wcsbuf[256];
 	//swprintf_s(wcsbuf, 256, L"%d秒経過!!", int(m_timer));

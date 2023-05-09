@@ -407,7 +407,8 @@ void Enemy_Far::ItemDrop()
 		
 		//ƒRƒ“ƒeƒi‚É‚­‚Á‚Â‚¯‚é
 		m_game->m_dropItemObject.push_back(m_dropItem);
-
+		Game* game = FindGO<Game>("game");
+		game->AddDefeatedEnemyNumber();
 		m_defeatState = true;
 		DeleteGO(this);
 	}
