@@ -25,11 +25,9 @@ Enemy_Near::Enemy_Near()
 Enemy_Near::~Enemy_Near()
 {
 	//エネミーが生きているかをプレーヤーに教える
-	m_player->enemy_survival = false;	
-	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
-	if (m_defeatState == true) {
-		m_dropItem->drop_kinds = m_setWeapon;
-	}
+	//m_player->enemy_survival = false;	
+
+	m_player->killEnemy++;	//殺した数を増やす
 
 	DeleteGO(m_asiotoSE);
 	DeleteGO(m_dashSE);

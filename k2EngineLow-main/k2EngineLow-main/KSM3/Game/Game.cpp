@@ -41,7 +41,7 @@ Game::Game()
 		
 		m_enemyObject.push_back(enemy);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
 		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
@@ -55,19 +55,12 @@ Game::Game()
 
 		m_enemyNearObject.push_back(enemyNear);
 	}
-	for (int i = 0; i < 1; i++)
-	{
-		Boss* boss = NewGO<Boss>(1, "boss");
-		boss->boss_position = { 0.0f,0.0f,15100.0f };
 
-
-		m_bossObject.push_back(boss);
-	}
-	for (int i = 0; i < 1; i++)
+	/*for (int i = 0; i < 1; i++)
 	{
 		Boss_Riser* boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
 		boss_riser->b_w_position = boss_riser->b_w_localposition;
-	}
+	}*/
 
 
 	//boss = NewGO<Boss>(1, "boss");//15100
@@ -109,14 +102,10 @@ Game::~Game()
 		DeleteGO(enemyNear);
 	}
 
-	for (auto boss : m_bossObject)
-	{
-		DeleteGO(boss);
-	}
-	for (auto boss_riser : m_bossObject)
-	{
-		DeleteGO(boss_riser);
-	}
+	
+	DeleteGO(boss);
+	
+	
 
 	DeleteGO(player);
 
@@ -164,6 +153,16 @@ bool Game::Start()
 
 void Game::Update()
 {
+	//敵を10体以上殺したらボス戦
+	if (player->killEnemy >= 10 && boss == nullptr)
+	{
+		for (int i = 0; i < 1; i++)
+		{
+			boss = NewGO<Boss>(1, "boss");
+			boss->boss_position = { 0.0f,0.0f,15100.0f };
+		}
+	}
+
 
 	//wchar_t wcsbuf[256];
 	//swprintf_s(wcsbuf, 256, L"%d秒経過!!", int(m_timer));

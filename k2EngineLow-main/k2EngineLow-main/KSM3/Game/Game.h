@@ -72,11 +72,12 @@ public:
 	GameCamera* gamecamera;
 	Game_UI* game_ui;
 	Enemy_HP_UI* e_h_ui;
+	Boss* boss = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 
-	std::vector<Boss*>m_bossObject;
-	std::vector<Boss_Riser*>m_riserObject;
+	//std::vector<Boss*>m_bossObject;
+	//std::vector<Boss_Riser*>m_riserObject;
 
 	Customize_UI_ver2* m_customizeUI;
 

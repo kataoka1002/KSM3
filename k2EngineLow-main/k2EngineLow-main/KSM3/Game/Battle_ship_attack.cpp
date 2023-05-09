@@ -103,7 +103,7 @@ void Battle_ship_attack::Update()
 					DeleteGO(this);	//弾は消える
 				}
 			}
-			for (auto boss : m_game->m_bossObject)
+			/*for (auto boss : m_game->m_bossObject)
 			{
 				Vector3 diff = firing_position - boss->boss_position;
 				if (diff.Length() <= 100.0f)
@@ -111,8 +111,8 @@ void Battle_ship_attack::Update()
 					boss->boss_HP -= 50.0f;
 					DeleteGO(this);
 				}
-			}
-			for (auto boss_riser : m_game->m_riserObject)
+			}*/
+			/*for (auto boss_riser : m_game->m_riserObject)
 			{
 				Vector3 diff = firing_position - boss_riser->b_w_position;
 				if (diff.Length() <= 100.0f)
@@ -120,7 +120,7 @@ void Battle_ship_attack::Update()
 					boss_riser->riser_HP -= 50.0f;
 					DeleteGO(this);
 				}
-			}
+			}*/
 			
 
 		//}

@@ -28,7 +28,9 @@ Enemy::Enemy()
 Enemy::~Enemy() 
 {
 	//エネミーが生きているかをプレーヤーに教える
-	m_player->enemy_survival = false;	
+	//m_player->enemy_survival = false;	
+
+	m_player->killEnemy++;	//殺した数を増やす
 
 	DeleteGO(m_machineGunSE);
 	DeleteGO(m_asiotoSE);

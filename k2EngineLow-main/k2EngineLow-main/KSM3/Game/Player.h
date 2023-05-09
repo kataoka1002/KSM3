@@ -45,6 +45,7 @@ public:
 	EffectEmitter* sunabokoriEffect = nullptr;
 	int effectCount = 0;
 
+	int killEnemy = 0;	//敵を殺した数(10になるとウェーブが進む)
 		
 	int p_custom_point[2][3] = { {0,0,0},{0,0,0} }; //[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足
 	 

@@ -34,7 +34,7 @@ public:
 	Boss_Turbo* b_boss_turbo;
 	Result* result;
 
-	std::vector<Boss_Riser*>m_riserObject;
+	//std::vector<Boss_Riser*>m_riserObject;
 
 	ModelRender boss_modelRender;//モデルレンダー
 	Vector3 boss_position;//座標
