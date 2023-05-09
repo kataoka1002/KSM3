@@ -65,23 +65,13 @@ void Drop_item::Update()
 			GetState = true;
 			
 			//アイテムを拾ったらカスタマイズ画面に飛ぶ
-			//customize_UI_ver2 = NewGO<Customize_UI_ver2>(3, "customize_UI_ver2");
-
 			//カスタム画面のセットアップを行う
 			customize_UI_ver2->Setup();
-			//カスタム画面の初期化
-			//customize_UI_ver2->Custom_UI();
 			//拾った武器の種類を教えてやる
 			customize_UI_ver2->custom_kinds = drop_kinds;
 			customize_UI_ver2->trance_setup();
 			//プレイヤーのステート変更(カスタム画面へ)
 			drop_player->game_state = 3;
-
-			//カスタム画面のカメラの設定
-			/*m_gameCamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
-			m_gameCamera->fast_count = 0;
-			m_gameCamera->target = customize_UI_ver2->custom_model_body_position;
-			m_gameCamera->CameraState = 3;*/
 			
 			DeleteGO(this);
 		}

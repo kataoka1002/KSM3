@@ -3,6 +3,7 @@
 #include <math.h>
 #include "Left_arm_weapons.h"
 #include "Customize_UI_ver2.h"
+#include "Game.h"
 
 
 Player::Player() 
@@ -12,16 +13,6 @@ Player::Player()
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
 	//キャラコンの設定
 	characterController.Init(70.0f, 150.0f, player_position);
-
-	
-
-	////回転テーブル
-	//int i;
-	//for (i = 0; i < 360; i++) {
-	//	fsin[i] = (float)sin(i * 3.1415926535 / 180);
-	//	fcos[i] = (float)cos(i * 3.1415926535 / 180);
-	//}
-	
 }
 
 Player::~Player()
@@ -59,22 +50,20 @@ void Player::Move()
 	player_moveSpeed = { 0.0f,0.0f,0.0f };//移動速度の初期化
 
 	Vector3 stickL;
-	float throttle;
+	float throttle = 0;
 	stickL.x = g_pad[0]->GetLStickXF();
 	//スティックを倒した量の取得
 	throttle = g_pad[0]->GetRTrigger();
-	//brake = g_pad[0]->IsPress(enButtonLB2);
 
-	//Vector3 forward = g_camera3D->GetForward();
 	Vector3 right = g_camera3D->GetRight();
 	right.y = 0.0f;
 	right *= stickL.x * 120.0f;
 
-	//float cx, cy;
-
-	//forward.y = 0.0f;
-	
-	//forward *= throttle * 120.0f;
+	//スピードが0じゃないならエフェクトを出す
+	if (throttle != 0)
+	{
+		MakeEfe();
+	}
 
 	playerFowrad.Normalize();
 
@@ -115,6 +104,24 @@ void Player::Move()
 	//座標を教える。
 	player_modelRender.SetPosition(player_position);
 	player_modelRender.SetRotation(player_rotation);
+}
+
+void Player::MakeEfe()
+{
+	//動いている間3フレームごとに砂ぼこりを発生させる
+	if (effectCount > 3) 
+	{
+		//砂ぼこりエフェクトの初期化と再生
+		sunabokoriEffect = NewGO<EffectEmitter>(0);
+		sunabokoriEffect->Init(enSunabokori);
+		sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
+		sunabokoriEffect->SetRotation(player_rotation);
+		sunabokoriEffect->SetPosition(player_position);
+		sunabokoriEffect->Play();
+
+		effectCount = 0;	//カウントリセット
+	}
+	effectCount++;
 }
 
 void Player::pause() 
