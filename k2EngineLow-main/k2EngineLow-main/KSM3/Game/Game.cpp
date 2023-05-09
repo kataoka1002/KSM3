@@ -50,7 +50,7 @@ Game::Game()
 
 		m_enemyFarObject.push_back(enemyFar);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
 		enemyNear->m_enemyPosition = { 0.0f,0.0f,2000.0f };

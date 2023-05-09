@@ -28,6 +28,12 @@ void Shoulder_weapons::S_w_set() {
 		Shoulder_weapons_Render.Update();
 		set_weapons = s_w_player->p_custom_point[0][1];
 		break;
+	case 4:
+		Shoulder_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
+		Shoulder_weapons_Render.SetScale(1.0f);
+		Shoulder_weapons_Render.Update();
+		set_weapons = s_w_player->p_custom_point[0][1];
+		break;
 	case 6:
 		Shoulder_weapons_Render.Init("Assets/modelData/battleship_gun_shoulder.tkm");
 		Shoulder_weapons_Render.SetScale(scale2);
@@ -52,6 +58,14 @@ void Shoulder_weapons::Update() {
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
 			if (s_w_player->p_custom_point[0][1] == 2 && firing_cound % 5 == 0)
+			{
+				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
+				m_machineGunAttack->m_rot = Shoulder_Rotation;
+				m_machineGunAttack->m_position = s_w_position;
+				atack_state = true;
+			}
+			else if (s_w_player->p_custom_point[0][1] == 4 && firing_cound % 180 == 0)
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
@@ -88,6 +102,9 @@ void Shoulder_weapons::Move() {
 	switch (s_w_player->p_custom_point[0][1])
 	{
 	case 2:	//ƒ}ƒVƒ“ƒKƒ“
+		lp = { 0.0f,110.0f,0.0f };
+		break;
+	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
 		lp = { 0.0f,110.0f,0.0f };
 		break;
 	case 6:	//íŠÍ–C

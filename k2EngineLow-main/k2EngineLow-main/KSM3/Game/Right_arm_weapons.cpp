@@ -49,6 +49,12 @@ void Right_arm_weapons::R_a_w_set()
 		Right_arm_weapons_Render.Update();
 		set_weapons = r_a_w_player->p_custom_point[0][0];
 		break;
+	case 4:
+		Right_arm_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
+		Right_arm_weapons_Render.SetScale(1.0f);
+		Right_arm_weapons_Render.Update();
+		set_weapons = r_a_w_player->p_custom_point[0][0];
+		break;
 	case 6:
 		Right_arm_weapons_Render.Init("Assets/modelData/battleship_gun_right_arm.tkm");
 		Right_arm_weapons_Render.SetScale(scale2);
@@ -70,6 +76,15 @@ void Right_arm_weapons::Update()
 		{
 			//•Ší‚ªƒ}ƒVƒ“ƒKƒ“‚Ìê‡
 			if (r_a_w_player->p_custom_point[0][0] == 2 && firing_count % 5 == 0)
+			{
+				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
+				m_machineGunAttack->m_rot = r_a_Rotation;
+				m_machineGunAttack->m_position = r_a_w_position;
+				atack_state = true;
+			}
+			//•Ší‚ªƒMƒKƒgƒ“ƒLƒƒƒmƒ“‚Ìê‡
+			else if (r_a_w_player->p_custom_point[0][0] == 4 && firing_count % 180 == 0)
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
@@ -110,6 +125,9 @@ void Right_arm_weapons::Move()
 	switch (r_a_w_player->p_custom_point[0][0])
 	{
 	case 2:	//ƒ}ƒVƒ“ƒKƒ“
+		lp = { 60.0f,100.0f,-10.0f };
+		break;
+	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
 		lp = { 60.0f,100.0f,-10.0f };
 		break;
 	case 6:	//íŠÍ–C

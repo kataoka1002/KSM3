@@ -36,7 +36,7 @@ Enemy_Near::~Enemy_Near()
 bool Enemy_Near::Start()
 {
 	m_player = FindGO<Player>("player");
-
+	m_game = FindGO<Game>("game");
 
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");
@@ -74,11 +74,11 @@ void Enemy_Near::SetUp()
 	m_setWeapon = 4;//ここはいったん仮で定数設定してるだけで後々ランダムにしていく予定
 	//set_weapons = rand() % 1 + 1;
 	if (m_setWeapon == 4) {	//ギガトンキャノン
-		/*m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
+		m_enemyWeaponModel.Init("Assets/modelData/GIgaton_cannon.tkm");
+		m_enemyWeaponModel.SetScale(1.3f);
 		m_enemyWeaponModel.SetPosition(m_weaponPosition);
 		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();*/
+		m_enemyWeaponModel.Update();
 	}
 }
 
@@ -415,13 +415,19 @@ void Enemy_Near::ItemDrop()
 	//体力が0になったらアイテムを落とす
 	if (m_enemyHP <= 0.0f)
 	{
+		DeleteGO(this);
 		m_dropItem = NewGO<Drop_item>(1, "drop_item");
 		m_dropItem->Drop_position = m_enemyPosition;
 		m_dropItem->Drop_position.y += 50.0f;
-		Game* game = FindGO<Game>("game");
-		game->AddDefeatedEnemyNumber();
+		//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
+		m_dropItem->drop_kinds = m_setWeapon;
+
+		//コンテナにくっつける
+		m_game->m_dropItemObject.push_back(m_dropItem);
+		m_game->AddDefeatedEnemyNumber();//倒した数を増やす
+
 		m_defeatState = true;
-		DeleteGO(this);
+		//DeleteGO(this);
 	}
 }
 
@@ -429,7 +435,7 @@ void Enemy_Near::WeaponMove()
 {
 	//武器がエネミーと同じ動きをするようにする(親子関係)
 	Quaternion originRotation = m_enemyRotation;			//回転はエネミーと同じ
-	Vector3 localPosition = { 0.0f,40.0f,40.0f };			//親から見た位置の定義
+	Vector3 localPosition = { 0.0f,40.0f,0.0f };			//親から見た位置の定義
 	originRotation.Multiply(localPosition);					//何かしらの計算
 	//最終的な武器の回転を決定
 	m_weaponRotation = originRotation;
