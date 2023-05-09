@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Boss.h"
 #include "Boss_Riser_attack.h"
+#include "Drop_item.h"
 
 Boss_Riser::Boss_Riser()
 {
@@ -14,6 +15,10 @@ Boss_Riser::Boss_Riser()
 Boss_Riser::~Boss_Riser()
 {
 	DeleteGO(b_boss_weapons);	
+	if (defeatState == true)
+	{
+		drop_item->drop_kinds = set_weapons;
+	}
 }
 
 void Boss_Riser::Setup()
@@ -72,6 +77,13 @@ void Boss_Riser::Update()
 	//PlayerSearch();
 
 	boss_Riser_Render.SetScale(15.0f);
+	if (riser_HP<=0.0f)
+	{
+		//drop_item = NewGO<Drop_item>(1, "drop_item");
+		//drop_item->Drop_position.y += 50.0f;
+		defeatState = true;
+		DeleteGO(this);
+	}
 }
 
 void Boss_Riser::Move()

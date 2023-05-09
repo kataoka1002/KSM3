@@ -18,8 +18,11 @@ class Boss;
 class Boss_Riser;
 class Game_UI;
 class Enemy_HP_UI;
-class Fade;
+
+//class Fade;
+
 class Customize_UI_ver2;
+
 
 //エフェクトの列挙
 enum EffectName {
@@ -67,17 +70,21 @@ public:
 	BackGround* background;
 	Core_weapons* core_weapons;
 	GameCamera* gamecamera;
-	Boss* boss;
-	Boss_Riser* boss_riser;
 	Game_UI* game_ui;
 	Enemy_HP_UI* e_h_ui;
-	Fade* m_fade = nullptr;		//フェード。
+
+	//Fade* m_fade = nullptr;		//フェード。
+
+
+	std::vector<Boss_Riser*>m_riserObject;
+
 	Customize_UI_ver2* m_customizeUI;
 
 	std::vector<Enemy*>	m_enemyObject;
 	std::vector<Enemy_Far*> m_enemyFarObject;
 	std::vector<Enemy_Near*> m_enemyNearObject;
 	std::vector<Drop_item*> m_dropItemObject;
+
 
 	
 	Vector3 dv;

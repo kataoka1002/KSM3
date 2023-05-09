@@ -5,6 +5,8 @@
 #include "Enemy_Far.h"
 #include "Enemy_Near.h"
 #include "Game.h"
+#include "Boss.h"
+#include "Boss_Riser.h"
 
 Battle_ship_attack::Battle_ship_attack() 
 {
@@ -23,13 +25,13 @@ bool Battle_ship_attack::Start()
 
 void Battle_ship_attack::Setup() 
 {
-	//���f���̏�����
+	//モデルの初期化
 	m_bulletModel.Init("Assets/modelData/battleship_gun_bullet.tkm");
 	m_bulletModel.SetScale(5.0f);
 
 	m_bulletForward = m_player->playerFowrad;
 	firing_position.y += 10.0f;
-	//�X�V
+	//更新
 	m_bulletModel.SetRotation(B_S_aiming);
 	m_bulletModel.SetPosition(firing_position);
 }
@@ -65,6 +67,64 @@ void Battle_ship_attack::Update()
 
 			DeleteGO(this);
 		}
+
+		//if (b_s_attack_player->enemy_survival == true) 
+		//{
+			//エネミーの数だけ繰り返す
+			for (auto enemy : m_game->m_enemyObject) 
+			{
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemy->m_enemyPosition;
+				if (diff.Length() <= 100.0f)
+				{
+					enemy->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
+			}
+			//エネミーFarの数だけ繰り返す
+			for (auto enemyFar : m_game->m_enemyFarObject)
+			{
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemyFar->m_enemyPosition;
+				if (diff.Length() <= 100.0f)
+				{
+					enemyFar->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
+			}
+			//エネミーNearの数だけ繰り返す
+			for (auto enemyNear : m_game->m_enemyNearObject)
+			{
+				//弾とエネミーの距離を測り一定以下なら体力減少
+				Vector3 diff = firing_position - enemyNear->m_enemyPosition;
+				if (diff.Length() <= 100.0f)
+				{
+					enemyNear->m_enemyHP -= 50.0f;
+					DeleteGO(this);	//弾は消える
+				}
+			}
+			for (auto boss : m_game->m_bossObject)
+			{
+				Vector3 diff = firing_position - boss->boss_position;
+				if (diff.Length() <= 100.0f)
+				{
+					boss->boss_HP -= 50.0f;
+					DeleteGO(this);
+				}
+			}
+			for (auto boss_riser : m_game->m_riserObject)
+			{
+				Vector3 diff = firing_position - boss_riser->b_w_position;
+				if (diff.Length() <= 100.0f)
+				{
+					boss_riser->riser_HP -= 50.0f;
+					DeleteGO(this);
+				}
+			}
+			
+
+		//}
+
 	}
 }
 
@@ -79,37 +139,37 @@ void Battle_ship_attack::Move()
 
 void Battle_ship_attack::Damage()
 {
-	//�G�l�~�[�̐������J��Ԃ�
+	//エネミーの数だけ繰り返す
 	for (auto enemy : m_game->m_enemyObject)
 	{
-		//�e�ƃG�l�~�[�̋����𑪂���ȉ��Ȃ�̗͌���
+		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemy->m_enemyPosition;
 		if (diff.Length() <= 100.0f)
 		{
 			enemy->m_enemyHP -= 50.0f;
-			DeleteGO(this);	//�e�͏�����
+			DeleteGO(this);	//弾は消える
 		}
 	}
-	//�G�l�~�[Far�̐������J��Ԃ�
+	//エネミーFarの数だけ繰り返す
 	for (auto enemyFar : m_game->m_enemyFarObject)
 	{
-		//�e�ƃG�l�~�[�̋����𑪂���ȉ��Ȃ�̗͌���
+		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemyFar->m_enemyPosition;
 		if (diff.Length() <= 100.0f)
 		{
 			enemyFar->m_enemyHP -= 50.0f;
-			DeleteGO(this);	//�e�͏�����
+			DeleteGO(this);	//弾は消える
 		}
 	}
-	//�G�l�~�[Near�̐������J��Ԃ�
+	//エネミーNearの数だけ繰り返す
 	for (auto enemyNear : m_game->m_enemyNearObject)
 	{
-		//�e�ƃG�l�~�[�̋����𑪂���ȉ��Ȃ�̗͌���
+		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemyNear->m_enemyPosition;
 		if (diff.Length() <= 100.0f)
 		{
 			enemyNear->m_enemyHP -= 50.0f;
-			DeleteGO(this);	//�e�͏�����
+			DeleteGO(this);	//弾は消える
 		}
 	}
 }

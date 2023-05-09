@@ -3,6 +3,7 @@
 class Player;
 class Enemy;
 class Game;
+class Boss;
 
 class Battle_ship_attack :public IGameObject
 {

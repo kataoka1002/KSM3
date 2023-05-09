@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Boss.h"
 #include "Boss_Cannon_attack.h"
+#include "Drop_item.h"
 
 Boss_Cannon::Boss_Cannon()
 {
@@ -14,6 +15,10 @@ Boss_Cannon::Boss_Cannon()
 Boss_Cannon::~Boss_Cannon()
 {
 	DeleteGO(b_boss_weapons);
+	if (defeatState == true)
+	{
+		drop_item->drop_kinds = set_weapons;
+	}
 }
 
 void Boss_Cannon::Setup()
@@ -72,6 +77,15 @@ void Boss_Cannon::Update()
 	//PlayerSearch();
 
 	boss_Cannon_Render.SetScale(15.0f);
+
+	if (connon_HP <= 0.0f)
+	{
+		drop_item = NewGO<Drop_item>(1, "drop_item");
+		drop_item->Drop_position = b_w_position;
+		drop_item->Drop_position.y += 50.0f;
+		defeatState = true;
+		DeleteGO(this);
+	}
 }
 
 void Boss_Cannon::Move()

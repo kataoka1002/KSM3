@@ -34,6 +34,7 @@ public:
 	Boss_Turbo* b_boss_turbo;
 	Result* result;
 
+	std::vector<Boss_Riser*>m_riserObject;
 
 	ModelRender boss_modelRender;//モデルレンダー
 	Vector3 boss_position;//座標
@@ -41,6 +42,7 @@ public:
 	Quaternion boss_rotation;//クォータニオン
 	Vector3 boss_moveSpeed;//移動速度
 	Vector3 boss_forward{ 0.0f,0.0f,-1.0f };//エネミーの正面ベクトル
+	Vector3 riser_pos;
 
 	bool defeat_state = false;
 

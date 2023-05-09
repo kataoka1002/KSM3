@@ -1,15 +1,18 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Game.h"
-#include "Fade.h"
+//#include "Fade.h"
+#include "Lighting.h"
 
 Title::Title()
 {
-	title_Render.Init("Assets/sprite/title_test.dds", 1920.0f, 1080.0f);
+	//title_Render.Init("Assets/sprite/title_test.dds", 1920.0f, 1080.0f);
 	//gameStart_Render.Init("Assets/sprite/title/gameStart.dds", /*1920.0f, 1080.0f*/);
 	////system_Render.Init("Assets/sprite/title/system.dds", /*1920.0f, 1080.0f*/);
 	////nannka_Render.Init("Assets/sprite/title/nannka.dds", /*1920.0f, 1080.0f*/);
 	//yajirusi_Render.Init("Assets/sprite/title/yajirusi/dds", /*1920.0f, 1080.0f*/);
+
+	Lighting* lighting = NewGO<Lighting>(1, "lighting");
 
 	title_Render.SetScale(title_scale);
 }
@@ -21,8 +24,8 @@ Title::~Title()
 
 bool Title::Start()
 {
-	m_fade = FindGO<Fade>("fade");
-	m_fade->StartFadeIn();
+	//m_fade = FindGO<Fade>("fade");
+	//m_fade->StartFadeIn();
 	model_batt.Init("Assets/modelData/battleship_gun_Drop.tkm");
 	model_batt.SetScale(scale);
 	model_mac.Init("Assets/modelData/machine_gun_drop.tkm");
@@ -127,41 +130,41 @@ void Title::Update()
 	
 	if (State == 0/*&& g_pad[0]->IsTrigger(enButtonA)*/ )
 	{
-		if (m_isWaitFadeout)
-		{
-			if (!m_fade->IsFade())
-			{
+		//if (m_isWaitFadeout)
+		//{
+		//	if (!m_fade->IsFade())
+		//	{
 				//ƒQ[ƒ€–{•Ò‚Ö‚Ì‘JˆÚ
-				//if (g_pad[0]->IsTrigger(enButtonA))
-				//{
+				if (g_pad[0]->IsTrigger(enButtonA))
+				{
 					Game* game = NewGO<Game>(0, "game");
 					//player->game_state = 0;
 					//gameCamera->CameraState = 0;
 					DeleteGO(this);
-				//}
-			}
-		}
-		else 
-		{
-			if (g_pad[0]->IsTrigger(enButtonA)) 
-			{
-				m_isWaitFadeout = true;
-				m_fade->StartFadeOut();
-				//SoundSource* se = NewGO<SoundSource>(0);
-				//se->Init(1);
-				//se->Play(false);
-			}
-		}
+				}
+		//	}
+		//}
+		//else 
+		//{
+		//	if (g_pad[0]->IsTrigger(enButtonA)) 
+		//	{
+		//		m_isWaitFadeout = true;
+		//		m_fade->StartFadeOut();
+		//		//SoundSource* se = NewGO<SoundSource>(0);
+		//		//se->Init(1);
+		//		//se->Play(false);
+		//	}
+		//}
 	}
 	//ƒ¿’l‚Ì•Ï‰»B???
-	if (m_isWaitFadeout)
-	{
-		m_alpha += g_gameTime->GetFrameDeltaTime() * 20.5f;
-	}
-	else
-	{
-		m_alpha += g_gameTime->GetFrameDeltaTime() * 1.2f;
-	}	
+	//if (m_isWaitFadeout)
+	//{
+	//	m_alpha += g_gameTime->GetFrameDeltaTime() * 20.5f;
+	//}
+	//else
+	//{
+	//	m_alpha += g_gameTime->GetFrameDeltaTime() * 1.2f;
+	//}	
 
 	//title_Render.Update();
 }
