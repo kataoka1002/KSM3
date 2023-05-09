@@ -5,6 +5,8 @@
 #include "Enemy_Far.h"
 #include "Enemy_Near.h"
 #include "Game.h"
+#include "Boss.h"
+#include "Boss_Drill.h"
 
 MachineGunAttack::MachineGunAttack()
 {
@@ -125,6 +127,29 @@ void MachineGunAttack::Damage()
 		{
 			enemyNear->m_enemyHP -= 50.0f;
 			DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
+		}
+	}
+	//íeÇ∆É{ÉXÇÃãóó£Çë™ÇËàÍíËà»â∫Ç»ÇÁëÃóÕå∏è≠
+	if (m_game->boss != nullptr)
+	{
+		Vector3 diff = m_position - m_game->boss->boss_position;
+		if (diff.Length() <= 500.0f)
+		{
+			m_game->boss->boss_HP -= 50.0f;
+			DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
+		}
+	}
+	//íeÇ∆ÉhÉäÉãÇÃãóó£Çë™ÇËàÍíËà»â∫Ç»ÇÁëÃóÕå∏è≠
+	if (m_game->boss != nullptr)
+	{
+		if (m_game->boss->b_boss_drill != nullptr)
+		{
+			Vector3 diff = m_position - m_game->boss->b_boss_drill->b_w_position;
+			if (diff.Length() <= 500.0f)
+			{
+				m_game->boss->b_boss_drill->drill_HP -= 50.0f;
+				DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
+			}
 		}
 	}
 }

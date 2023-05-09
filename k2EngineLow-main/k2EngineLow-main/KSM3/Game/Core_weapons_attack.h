@@ -3,6 +3,7 @@ class Player;
 class Core_weapons;
 class Enemy;
 class Game;
+class Boss;
 
 
 class Core_weapons_attack:public IGameObject
@@ -15,11 +16,13 @@ public:
 	void Update();
 	void Move();
 	void Render(RenderContext& rc);
+	void Damage();
 
-	Player* C_W_A_player;
-	Core_weapons* C_W_A_core_weapons;
-	Enemy* c_w_a_enemy;
-	Game* m_game;
+	Player* C_W_A_player = nullptr;
+	Core_weapons* C_W_A_core_weapons = nullptr;
+	Enemy* c_w_a_enemy = nullptr;
+	Game* m_game = nullptr;
+	
 
 	ModelRender C_W_Bullet;
 	Quaternion C_W_aiming;

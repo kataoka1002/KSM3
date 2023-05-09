@@ -2,6 +2,7 @@
 
 class Player;
 class Game;
+class Boss;
 
 class MachineGunAttack :public IGameObject
 {
@@ -17,6 +18,7 @@ public:
 
 	Player* m_player = nullptr;
 	Game* m_game = nullptr;
+	Boss* m_boss = nullptr;
 
 	ModelRender m_bulletModel;
 	Vector3 m_position;
