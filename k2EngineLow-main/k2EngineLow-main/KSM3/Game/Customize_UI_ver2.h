@@ -102,7 +102,7 @@ public:
 	Vector3 trance_sheet04_position = { -2880.0f,530.0f,0.0f };
 
 	int trance_sheet_count=0;//遷移カウント
-	Vector4 trance_sheet_color{ 0.0f,0.0f,0.0f,1.0f };
+	Vector4 trance_sheet_color={ 0.0f,0.0f,0.0f,1.0f };
 	//float trance_sheet_α = 1;//アルファ値
 };
 

@@ -54,6 +54,19 @@ bool Customize_UI_ver2::Start()
 	//Setup();
   
   //UIの読み込み
+	
+
+
+  
+  trance_setup();
+	return true;
+}
+
+void Customize_UI_ver2::trance_setup() {
+	//変数の初期化
+	window_select = false;
+	confirmatino_window_open = false;
+	window_open = false;
 	m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
 	m_selectSheet.SetPosition(m_selectSheetPosition);
 	m_selectSheet.Update();
@@ -65,23 +78,31 @@ bool Customize_UI_ver2::Start()
 		m_parameterSheet.SetPosition(m_parameterSheetPosition);
 		m_parameterSheet.Update();
 		break;
-	case 1:
+	case 2:
 		m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
 		m_parameterSheet.SetPosition(m_parameterSheetPosition);
 		m_parameterSheet.Update();
-		//Custom_model_Shoulder;
 		break;
+	case 6:
+		m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+		m_parameterSheet.SetPosition(m_parameterSheetPosition);
+		m_parameterSheet.Update();
+		break;
+
 	default:
 		break;
 	}
 
-
-  
-  trance_setup();
-	return true;
-}
-
-void Customize_UI_ver2::trance_setup() {
+	fast_count = 0;
+	trance_sheet_color={ 0.0f,0.0f,0.0f,1.0f };
+	m_selectSheetPosition = { 0.0f,650.0f,0.0f };
+	m_parameterSheetPosition = { -1200.0f,38.0f,0.0f };
+	custom_model_body_position = { 10500.0f,0.0f,0.0f };
+	trance_state = 1;
+	trance_sheet01_position = { 2880.0f,-530.0f,0.0f };
+	trance_sheet02_position = { 2880.0f,-530.0f,0.0f };
+	trance_sheet03_position = { -2880.0f,530.0f,0.0f };
+	trance_sheet04_position = { -2880.0f,530.0f,0.0f };
 
 	trance_sheet_count = 0;
 	trance_sheet[0].Init("Assets/sprite/trance_01.DDS", 3840.0f, 2160.0f);
@@ -94,7 +115,15 @@ void Customize_UI_ver2::trance_setup() {
 	trance_sheet[2].SetPosition(trance_sheet03_position);
 	trance_sheet[3].SetPosition(trance_sheet04_position);
 
+	m_selectSheet.SetPosition(m_selectSheetPosition);
+	m_parameterSheet.SetPosition(m_parameterSheetPosition);
+	custom_model_body.SetPosition(custom_model_body_position);
+	
+	m_selectSheet.Update();
+	m_parameterSheet.Update();
+	custom_model_body.Update();
 	for (int i = 0; i < 4; i++) {
+		trance_sheet[i].SetMulColor(trance_sheet_color);
 		trance_sheet[i].Update();
 	}
 }
@@ -111,23 +140,53 @@ void Customize_UI_ver2::Setup()
 		Custom_model_Right_arm();
 		switch (m_rightArmWeapon->set_weapons)
 		{
-		case 1:
+		case 2:	//�}�V���K��
+			//���f���̏���
+			custom_model_Right_arm.Init("Assets/modelData/machine_gun_drop.tkm");
+			custom_model_Right_arm.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			raw_lp = { 60.0f,100.0f,-10.0f };
+
+			break;
+		case 6:	//��͖C
+			//���f���̏���
 			custom_model_Right_arm.Init("Assets/modelData/battleship_gun_right_arm.tkm");
 
 			custom_model_Right_arm.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			raw_lp = { 60.0f,70.0f,-10.0f };
+
+			break;
 		default:
 			break;
 		}
 	}
 	if (m_player->p_custom_point[0][2] != 0) {
 		Custom_model_Left_arm();
+		//�t���Ă��镐��ɂ��ă��f���ύX(�J�X�^�����)
 		switch (m_leftArmWeapon->set_weapons)
 		{
-		case 1:
-			custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
-			
-
+		case 2:	//�}�V���K��
+			//���f���̏���
+			custom_model_Left_arm.Init("Assets/modelData/machine_gun_drop.tkm");
 			custom_model_Left_arm.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			law_lp = { -60.0f,100.0f,-10.0f };
+
+			break;
+		case 6:	//��͖C
+			//���f���̏���
+			custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
+			custom_model_Left_arm.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			law_lp = { -60.0f,70.0f,-10.0f };
+
+
+			break;
 		default:
 			break;
 		}
@@ -136,11 +195,25 @@ void Customize_UI_ver2::Setup()
 		Custom_model_Shoulder();
 		switch (m_shoulderWeapon->set_weapons)
 		{
-		case 1:
-			custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
-			
-
+		case 2:	//�}�V���K��
+			//���f���̏���
+			custom_model_shoulder.Init("Assets/modelData/machine_gun_drop.tkm");
 			custom_model_shoulder.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			sw_lp = { 0.0f,110.0f,0.0f };
+
+
+			break;
+		case 6:	//��͖C
+			//���f���̏���
+			custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
+			custom_model_shoulder.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			sw_lp = { 0.0f,110.0f,0.0f };
+
+			break;
 		default:
 			break;
 		}
@@ -149,11 +222,25 @@ void Customize_UI_ver2::Setup()
 		Custom_model_Right_leg();
 		switch (m_rightLegWeapon->set_weapons)
 		{
-		case 1:
-			custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
-			
-
+		case 2:	//�}�V���K��
+			//���f���̏���
+			custom_model_Right_leg.Init("Assets/modelData/machine_gun_drop.tkm");
 			custom_model_Right_leg.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			rlw_lp = { 90.0f,30.0f,0.0f };
+
+			break;
+		case 6:	//��͖C
+			//���f���̏���
+			custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
+			custom_model_Right_leg.SetScale(scale2);
+
+			//���[�J���|�W�V�����̐ݒ�
+			rlw_lp = { 90.0f,30.0f,55.0f };
+
+
+			break;
 		default:
 			break;
 		}
@@ -162,15 +249,27 @@ void Customize_UI_ver2::Setup()
 		Custom_model_Left_leg();
 		switch (m_leftLegWeapon->set_weapons)
 		{
-		case 1:
-			custom_model_Left_leg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
-			
-
+		case 2:	//�}�V���K��
+			//���f���̏���
+			custom_model_Left_leg.Init("Assets/modelData/machine_gun_drop.tkm");
 			custom_model_Left_leg.SetScale(scale2);
+
+			//���[�J���|�W�V�����ݒ�
+			llw_lp = { -90.0f,30.0f,0.0f };
+
+			break;
+		case 6:	//��͖C
+			//���f���̏���
+			custom_model_Left_leg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
+			custom_model_Left_leg.SetScale(scale2);
+			//���[�J���|�W�V�����ݒ�
+			llw_lp = { -90.0f,30.0f,55.0f };
+
+
+			break;
 		default:
 			break;
 		}
-
 	}
 
 	//�E�������̎�ނ���Ă��
@@ -183,11 +282,10 @@ void Customize_UI_ver2::Update()
 	//カスタマイズ画面の時のみ実行
 	if (m_player->game_state == 3)
 	{
-		//それぞれのモデルがnullじゃないなら実行
-		if (m_coreWeapon != nullptr)
-		{
+		////それぞれのモデルがnullじゃないなら実行
+		
 			Custom_model_Core();
-		}
+		
 		if (m_rightArmWeapon != nullptr)
 		{
 			Custom_model_Right_arm();
@@ -219,15 +317,7 @@ void Customize_UI_ver2::Update()
 		//遷移終了
 		if (trance_state == 0) {
 			custom_model_body_rotation.AddRotationDegY(2.0f);
-			if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5) {
-				selection_position++;
-				fast_count = 0;
-			}
-			else if (g_pad[0]->IsTrigger(enButtonLB1) && selection_position >= 1) {
-				selection_position--;
-				fast_count = 0;
-			}
-
+			custom_model_body.SetRotation(custom_model_body_rotation);
 			//�Z���N�g�n��UI����
 			Custom_UI();
 
@@ -244,6 +334,7 @@ void Customize_UI_ver2::Update()
 
 			//�ŏ���1�t���[���𐔂��邽�߂̕�
 			fast_count++;
+			custom_model_body.Update();
 		}
 	}
 }
@@ -333,10 +424,7 @@ void Customize_UI_ver2::Custom_UI()
 				break;
 			}
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 0)
-		{
-			//�K���m�F
-		}
+		
 		break;
 	case 2:	//�E�r
 		if (fast_count == 0)
@@ -368,7 +456,7 @@ void Customize_UI_ver2::Custom_UI()
 				break;
 
 			}
-
+		}
 
 			if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][0] == 0 && window_count == 0)
 			{
@@ -450,7 +538,16 @@ void Customize_UI_ver2::Custom_UI()
 				break;
 
 			}
-			break;
+		}
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][0] == 0 && window_count == 0)
+		{
+			//�K���m�F
+			window_open = true;
+			confirmatino_window_open = true;
+			window_select = true;
+			column = 1, line = 0;
+		}
+		break;
 	case 5:	//����
 		if (fast_count == 0)
 		{
@@ -482,6 +579,7 @@ void Customize_UI_ver2::Custom_UI()
 				break;
 			}
 		}
+
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][2] == 0 && window_count == 0)
 		{
 			//�K���m�F
@@ -490,20 +588,22 @@ void Customize_UI_ver2::Custom_UI()
 			window_select = true;
 			column = 1, line = 2;
 
-			if (g_pad[0]->IsTrigger(enButtonB)) {
-				DeleteGO(this);
-			}
-			fast_count++;
-
-			if (window_open == true) {
-				Window();
-			}
-		}
-		custom_model_body.SetRotation(custom_model_body_rotation);
-		custom_model_body.Update();
-		}
+			
 		}
 	}
+	if (g_pad[0]->IsTrigger(enButtonB)) {
+		m_player->game_state=0;
+		m_gameCamera->trance_Finish = false;
+		m_gameCamera->CameraState = 0;
+		m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+	}
+	fast_count++;
+
+	if (window_open == true) {
+		Window();
+	}
+	custom_model_body.SetRotation(custom_model_body_rotation);
+	custom_model_body.Update();
 }
 
 
@@ -613,7 +713,7 @@ void Customize_UI_ver2::Window()
 			}
 
 			//���肵�����̏���
-			if (g_pad[0]->IsTrigger(enButtonA) && window_count != 1)
+			if (g_pad[0]->IsTrigger(enButtonA) && window_count != 1 && window_count != 2 && window_count != 3)
 			{
 				//�v���C���[�̑���z��ɕ���̎�ނ����
 				m_player->p_custom_point[column][line] = custom_kinds;
@@ -654,11 +754,13 @@ void Customize_UI_ver2::Window()
 				window_count = 0;
 				window_open = false;
 				window_select = false;
-				m_gameCamera->trance_Finish = false;
+				
 				//�ǂ��̕��ʂ�I��Ă��邩�̃X�v���C�g�����Ă���
-				m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
+				/*m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);*/
 
 				//�Q�[���J������ɖ߂�
+				m_gameCamera->trance_Finish = false;
+				m_gameCamera->CameraState = 0;
 				m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
 			}
 		}
@@ -726,7 +828,7 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 	{
 	case 2:	//�}�V���K��
 		//���f���̏���
-		custom_model_Right_arm.Init("Assets/modelData/machine_gun_drop.tkm");
+		
 		custom_model_Right_arm.SetScale(scale2);
 
 		//���[�J���|�W�V�����̐ݒ�
@@ -735,7 +837,6 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 		break;
 	case 6:	//��͖C
 		//���f���̏���
-		custom_model_Right_arm.Init("Assets/modelData/battleship_gun_right_arm.tkm");
 
 		custom_model_Right_arm.SetScale(scale2);
 
@@ -767,12 +868,11 @@ void Customize_UI_ver2::Custom_model_Left_arm()
 	Left_arm_weapon_set = true;
 
 
-	//�t���Ă��镐��ɂ��ă��f���ύX(�J�X�^�����)
 	switch (m_leftArmWeapon->set_weapons)
 	{
 	case 2:	//�}�V���K��
 		//���f���̏���
-		custom_model_Left_arm.Init("Assets/modelData/machine_gun_drop.tkm");
+		
 		custom_model_Left_arm.SetScale(scale2);
 
 		//���[�J���|�W�V�����̐ݒ�
@@ -781,7 +881,7 @@ void Customize_UI_ver2::Custom_model_Left_arm()
 		break;
 	case 6:	//��͖C
 		//���f���̏���
-		custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
+		
 		custom_model_Left_arm.SetScale(scale2);
 
 		//���[�J���|�W�V�����̐ݒ�
@@ -814,11 +914,12 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 
 
 	//�t���Ă��镐��ɂ��ă��f���ύX(�J�X�^�����)
+	
 	switch (m_shoulderWeapon->set_weapons)
 	{
 	case 2:	//�}�V���K��
 		//���f���̏���
-		custom_model_shoulder.Init("Assets/modelData/machine_gun_drop.tkm");
+		
 		custom_model_shoulder.SetScale(scale2);
 
 		//���[�J���|�W�V�����̐ݒ�
@@ -828,7 +929,7 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 		break;
 	case 6:	//��͖C
 		//���f���̏���
-		custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
+		
 		custom_model_shoulder.SetScale(scale2);
 
 		//���[�J���|�W�V�����̐ݒ�
@@ -838,7 +939,6 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 	default:
 		break;
 	}
-
 
 	//���탂�f���̃|�W�V�����̐ݒ�
 	Quaternion originRotation = custom_model_body_rotation;
@@ -864,7 +964,7 @@ void Customize_UI_ver2::Custom_model_Right_leg()
 	{
 	case 2:	//�}�V���K��
 		//���f���̏���
-		custom_model_Right_leg.Init("Assets/modelData/machine_gun_drop.tkm");
+		
 		custom_model_Right_leg.SetScale(scale2);
 
 		//���[�J���|�W�V�����̐ݒ�
@@ -873,7 +973,7 @@ void Customize_UI_ver2::Custom_model_Right_leg()
 		break;
 	case 6:	//��͖C
 		//���f���̏���
-		custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
+		
 		custom_model_Right_leg.SetScale(scale2);
 
 		//���[�J���|�W�V�����̐ݒ�
@@ -906,11 +1006,12 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 
 
 	//�t���Ă��镐��ɂ��ă��f���ύX(�J�X�^�����)
+	
 	switch (m_leftLegWeapon->set_weapons)
 	{
 	case 2:	//�}�V���K��
 		//���f���̏���
-		custom_model_Left_leg.Init("Assets/modelData/machine_gun_drop.tkm");
+		
 		custom_model_Left_leg.SetScale(scale2);
 
 		//���[�J���|�W�V�����ݒ�
@@ -919,7 +1020,7 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 		break;
 	case 6:	//��͖C
 		//���f���̏���
-		custom_model_Left_leg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
+		
 		custom_model_Left_leg.SetScale(scale2);
 		//���[�J���|�W�V�����ݒ�
 		llw_lp = { -90.0f,30.0f,55.0f };
@@ -929,7 +1030,6 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 	default:
 		break;
 	}
-
 
 	//���탂�f���̃|�W�V�����̐ݒ�
 	Quaternion originRotation = custom_model_body_rotation;
