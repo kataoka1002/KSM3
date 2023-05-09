@@ -6,6 +6,7 @@ class Right_arm_weapons;
 class CollisionObject;
 class Enemy;
 class Game;
+class Boss;
 
 class BattleShipBullet :public IGameObject
 {

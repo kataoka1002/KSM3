@@ -7,6 +7,8 @@
 #include "Enemy_Far.h"
 #include "Enemy_Near.h"
 #include "Game.h"
+#include "Boss.h"
+#include "Boss_Riser.h"
 
 BattleShipBullet::BattleShipBullet() {
 	b_s_attack_player = FindGO<Player>("player");
@@ -89,6 +91,25 @@ void BattleShipBullet::Update() {
 					DeleteGO(this);	//’e‚ÍÁ‚¦‚é
 				}
 			}
+			for (auto boss : m_game->m_bossObject)
+			{
+				Vector3 diff = firing_position - boss->boss_position;
+				if (diff.Length() <= 100.0f)
+				{
+					boss->boss_HP -= 50.0f;
+					DeleteGO(this);
+				}
+			}
+			for (auto boss_riser : m_game->m_riserObject)
+			{
+				Vector3 diff = firing_position - boss_riser->b_w_position;
+				if (diff.Length() <= 100.0f)
+				{
+					boss_riser->riser_HP -= 50.0f;
+					DeleteGO(this);
+				}
+			}
+			
 
 		//}
 	}

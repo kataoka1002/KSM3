@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Boss.h"
 #include "Boss_Turbo_attack.h"
+#include "Drop_item.h"
 
 Boss_Turbo::Boss_Turbo()
 {
@@ -14,6 +15,10 @@ Boss_Turbo::Boss_Turbo()
 Boss_Turbo::~Boss_Turbo()
 {
 	DeleteGO(b_boss_weapons);
+	if (defeatState == true)
+	{
+		drop_item->drop_kinds = set_weapons;
+	}
 }
 
 void Boss_Turbo::Setup()
@@ -73,6 +78,13 @@ void Boss_Turbo::Update()
 
 	boss_Turbo_Render.SetScale(13.0f);
 	boss_Turbo_Render.Update();
+	if (turbo_HP<=0.0f)
+	{
+		drop_item = NewGO<Drop_item>(1, "drop_item");
+		drop_item->Drop_position.y += 50.0f;
+		defeatState = true;
+		DeleteGO(this);
+	}
 }
 
 void Boss_Turbo::Move()

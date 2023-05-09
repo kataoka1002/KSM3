@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Boss.h"
 #include "Boss_Shovel_attack.h"
+#include "Drop_item.h"
 
 Boss_Shovel::Boss_Shovel()
 {
@@ -14,6 +15,10 @@ Boss_Shovel::Boss_Shovel()
 Boss_Shovel::~Boss_Shovel()
 {
 	DeleteGO(b_boss_weapons);
+	if (defeatState == true)
+	{
+		drop_item->drop_kinds = set_weapons;
+	}
 }
 
 bool Boss_Shovel::Start()
@@ -22,6 +27,10 @@ bool Boss_Shovel::Start()
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
 	//‰Šú‰»
 	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm");//, 0, 0, m_animationClip, enAnimationClip_Num, enModelUpAxisY);
+	if (defeatState == true)
+	{
+		drop_item->drop_kinds = set_weapons;
+	}
 
 	return true;
 }
@@ -84,6 +93,14 @@ void Boss_Shovel::Update()
 
 	boss_Shovel_Render.SetScale(15.0f);
 	boss_Shovel_Render.Update();
+
+	if (shovel_HP<=0.0f)
+	{
+		drop_item = NewGO<Drop_item>(1, "drop_item");
+		drop_item->Drop_position.y += 50.0f;
+		defeatState = true;
+		DeleteGO(this);
+	}
 }
 
 void Boss_Shovel::Move()

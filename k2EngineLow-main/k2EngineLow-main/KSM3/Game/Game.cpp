@@ -14,9 +14,10 @@
 #include "Core_weapons.h"
 #include "GameCamera.h"
 #include "Boss.h"
+#include "Boss_Riser.h"
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
-#include "Fade.h"
+//#include "Fade.h"
 
 
 Game::Game()
@@ -50,10 +51,22 @@ Game::Game()
 
 		m_enemyNearObject.push_back(enemyNear);
 	}
+	for (int i = 0; i < 1; i++)
+	{
+		Boss* boss = NewGO<Boss>(1, "boss");
+		boss->boss_position = { 0.0f,0.0f,15100.0f };
+
+		m_bossObject.push_back(boss);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		Boss_Riser* boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
+		boss_riser->b_w_position = boss_riser->b_w_localposition;
+	}
 
 
-	boss = NewGO<Boss>(1, "boss");//15100
-	boss->boss_position = { 0.0f,0.0f,15100.0f };
+	//boss = NewGO<Boss>(1, "boss");//15100
+	//boss->boss_position = { 0.0f,0.0f,15100.0f };
 
 	drop_item = NewGO< Drop_item>(1, "drop_item");
 	background = NewGO< BackGround>(1, "background");
@@ -84,9 +97,16 @@ Game::~Game()
 	{
 		DeleteGO(enemyNear);
 	}
+	for (auto boss : m_bossObject)
+	{
+		DeleteGO(boss);
+	}
+	for (auto boss_riser : m_bossObject)
+	{
+		DeleteGO(boss_riser);
+	}
 
 	DeleteGO(player);
-	DeleteGO(boss);
 
 	if (drop_item->GetState == false) {
 		DeleteGO(drop_item);
@@ -114,8 +134,8 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enButtleShipGun, "Assets/audio/enemy/buttleShipAttack.wav");
 
 
-	m_fade = FindGO<Fade>("fade");
-	m_fade->StartFadeIn();
+	//m_fade = FindGO<Fade>("fade");
+	//m_fade->StartFadeIn();
 		
 	return true;
 }
@@ -139,9 +159,9 @@ void Game::Update()
 
 	//if (m_gameState == enGameState_GameClear_Idle)
 //	{
-		if (m_isWaitFadeout)
+		//if (m_isWaitFadeout)
 		{
-			if (!m_fade->IsFade())
+			//if (!m_fade->IsFade())
 			{
 				if (player->game_end_state == 1) 
 				{

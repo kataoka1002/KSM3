@@ -2,7 +2,7 @@
 #include "system/system.h"
 #include "Game.h"
 #include "Title.h"
-#include "Fade.h"
+//#include "Fade.h"
 
 
 // K2EngineLowのグローバルアクセスポイント。
@@ -25,7 +25,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	game = NewGO<Game>(0, "game");*/
 	Title* title = nullptr;
 	title = NewGO<Title>(0, "title");
-	NewGO<Fade>(2, "fade");
+	//NewGO<Fade>(2, "fade");
 
 
 	// ここからゲームループ。

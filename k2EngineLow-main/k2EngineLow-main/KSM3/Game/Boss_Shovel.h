@@ -1,8 +1,10 @@
 #pragma once
+#define HP 500.0f
 
 class Player;
 class Boss;
 class Boss_Shovel_attack;
+class Drop_item;
 
 class Boss_Shovel :public IGameObject
 {
@@ -26,6 +28,7 @@ public:
 	Player* b_w_player = nullptr;
 	Boss* b_w_boss;
 	Boss_Shovel_attack* b_boss_weapons;
+	Drop_item* drop_item;
 
 	//CharacterController boss_riser_characterContller;
 	Quaternion b_w_rotation;
@@ -41,9 +44,11 @@ public:
 
 	bool attack_state = false;
 	bool attack_ok = false;
+	bool defeatState = false;
 	int set_weapons = 0;
 
 	int firing_cound = 0;
 	int fast = 0;
 
+	float shovel_HP = HP;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-class Fade;
+//class Fade;
 
 class Title:public IGameObject
 {
@@ -17,9 +17,9 @@ public:
 	SpriteRender system_Render;		//システム設定ボタン。
 	SpriteRender nannka_Render;		//プラスでなんかつけたいときの。
 	SpriteRender yajirusi_Render;	//何を選択中か分かる用のやじるし。
-	bool m_isWaitFadeout = false;
-	float m_alpha = 0.0f;
-	Fade* m_fade = nullptr;
+	//bool m_isWaitFadeout = false;
+	//float m_alpha = 0.0f;
+	//Fade* m_fade = nullptr;
 	int State = 0;
 
 	ModelRender model_batt;//battleship_gun

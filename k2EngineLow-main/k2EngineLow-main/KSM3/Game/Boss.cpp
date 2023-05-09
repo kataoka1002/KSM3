@@ -19,7 +19,8 @@
 Boss::Boss() 
 {
 	b_player = FindGO<Player>("player");
-	b_boss_riser = NewGO<Boss_Riser>(2, "boss_riser");
+	b_boss_riser = FindGO<Boss_Riser>("boss_riser");
+	//b_boss_riser = NewGO<Boss_Riser>(2, "boss_riser");
 	b_boss_shovel = NewGO<Boss_Shovel>(2, "boss_shovel");
 	b_boss_drill = NewGO<Boss_Drill>(2, "boss_drill");
 	b_boss_cannon = NewGO<Boss_Cannon>(2, "boss_cannon");
@@ -47,11 +48,11 @@ Boss::~Boss()
 }
 
 bool Boss::Start()
-{
-	
+{	
 	//boss_rotation.SetRotationY(Math::PI);
 
 	boss_modelRender.Init("Assets/modelData/Boss_core.tkm");
+	boss_rotation.SetRotationDegY(180.0f);
 	boss_modelRender.SetRotation(boss_rotation);
 	boss_modelRender.SetPosition(boss_position);
 	//キャラクターコントローラーを初期化。
@@ -70,7 +71,7 @@ void Boss::Update()
 
 	if (b_player->game_state == 0) {
 		
-			PlayerSearch();
+			//PlayerSearch();
 		
 		boss_modelRender.Update();
 		/*if (b_player->attack_state_la == true) {
@@ -84,6 +85,7 @@ void Boss::Update()
 			}
 		}*/
 	}
+	boss_modelRender.Update();
 }
 
 void Boss::PlayerSearch()
