@@ -54,7 +54,7 @@ public:
 	SpriteRender m_confirmationWindow;
 
 	Player* m_player = nullptr;
-	Customize_area* m_customizeArea;
+	Customize_area* m_customizeArea = nullptr;
 	
 	ModelRender custom_model_body;
 	ModelRender custom_model_Core;
