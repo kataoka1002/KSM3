@@ -27,7 +27,7 @@ void Boss_Riser::Setup()
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Riser_Render.Init("Assets/modelData/Boss_riser.tkm");
+		boss_Riser_Render.Init("Assets/modelData/Boss_do-ze-.tkm");
 		boss_Riser_Render.Update();
 	}
 	
@@ -76,7 +76,7 @@ void Boss_Riser::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Riser_Render.SetScale(15.0f);
+	boss_Riser_Render.SetScale(12.0f);
 	if (riser_HP<=0.0f)
 	{
 		//drop_item = NewGO<Drop_item>(1, "drop_item");
