@@ -39,7 +39,7 @@ bool Enemy_Far::Start()
 
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/Enemy_model_type2.tkm");
-	m_enemyModel.SetScale(2.0f);
+	m_enemyModel.SetScale(m_enemySize);
 	m_enemyModel.SetRotation(m_enemyRotation);
 	m_enemyModel.SetPosition(m_enemyPosition);
 	//キャラクターコントローラーを初期化。
@@ -84,52 +84,65 @@ void Enemy_Far::Update()
 {
 	if (m_player->game_state == 0)
 	{
-		//砂ぼこりの発生カウント
-		m_sunaHassei++;
-
-		//エネミーからプレイヤーへのベクトル
-		m_toPlayer = m_player->player_position - m_enemyPosition;
-		//プレイヤーとの距離を計算する
-		m_distToPlayer = m_toPlayer.Length();
-		//プレイヤーに向かって伸びるベクトルを正規化する
-		m_toPlayerDir = m_toPlayer;
-		m_toPlayerDir.Normalize();
-
-
-		if (m_distToPlayer > 5000.0f)
+		if (m_defeatState == true)
 		{
-			m_lockOn = true;
+			//砂ぼこりの発生カウント
+			m_sunaHassei++;
+
+			//エネミーからプレイヤーへのベクトル
+			m_toPlayer = m_player->player_position - m_enemyPosition;
+			//プレイヤーとの距離を計算する
+			m_distToPlayer = m_toPlayer.Length();
+			//プレイヤーに向かって伸びるベクトルを正規化する
+			m_toPlayerDir = m_toPlayer;
+			m_toPlayerDir.Normalize();
+
+
+			if (m_distToPlayer > 5000.0f)
+			{
+				m_lockOn = true;
+			}
+			else
+			{
+				m_lockOn = false;
+			}
+
+			//ロックオンしてないならパス移動する
+			if (m_lockOn == true)
+			{
+				PassMove();
+			}
+			if (m_lockOn == false)
+			{
+				PlayerSearch();		//索敵
+				Move();				//エネミー移動
+				Attack();			//攻撃
+			}
+
+			//SE();				//効果音の処理
+			WeaponMove();		//武器の移動回転	
+			ItemDrop();			//倒した時にアイテムを落とす処理
+
+			//エネミーと武器の更新
+			m_enemyModel.SetPosition(m_enemyPosition);
+			m_enemyModel.SetRotation(m_enemyRotation);
+			m_enemyModel.Update();
+			m_enemyWeaponModel.SetPosition(m_weaponPosition);
+			m_enemyWeaponModel.SetRotation(m_weaponRotation);
+			m_enemyWeaponModel.Update();
+
 		}
-		else
+		else if (m_defeatState == false)	//死んだら
 		{
-			m_lockOn = false;
+			m_enemySize -= 0.08f;
+			
+			if (m_enemySize <= 0.0f)
+			{
+				DeleteGO(this);
+			}
+			m_enemyModel.SetScale(m_enemySize);
+			m_enemyModel.Update();
 		}
-
-		//ロックオンしてないならパス移動する
-		if (m_lockOn == true)
-		{
-			PassMove();
-		}
-		if (m_lockOn == false)
-		{
-			PlayerSearch();		//索敵
-			Move();				//エネミー移動
-			Attack();			//攻撃
-		}
-
-		//SE();				//効果音の処理
-		WeaponMove();		//武器の移動回転	
-		ItemDrop();			//倒した時にアイテムを落とす処理
-
-
-		//エネミーと武器の更新
-		m_enemyModel.SetPosition(m_enemyPosition);
-		m_enemyModel.SetRotation(m_enemyRotation);
-		m_enemyModel.Update();
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
-
 	}
 	else if (m_player->game_state == 3)
 	{
@@ -419,8 +432,7 @@ void Enemy_Far::ItemDrop()
 		m_game->m_dropItemObject.push_back(m_dropItem);
 		m_game->AddDefeatedEnemyNumber();
 
-		m_defeatState = true;
-		DeleteGO(this);
+		m_defeatState = false;
 	}
 }
 
@@ -486,5 +498,9 @@ void Enemy_Far::Render(RenderContext& rc)
 {
 	//モデルの描画。
 	m_enemyModel.Draw(rc);
-	m_enemyWeaponModel.Draw(rc);
+	//生きている間だけ武器表示
+	if (m_defeatState == true)
+	{
+		m_enemyWeaponModel.Draw(rc);
+	}
 }

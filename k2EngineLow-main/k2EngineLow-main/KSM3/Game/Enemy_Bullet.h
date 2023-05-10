@@ -22,6 +22,7 @@ public:
 	void Effect(int num);
 	void Render(RenderContext& rc);
 	void EffectDelete(int num);
+	void Damage(int weaponNum);
 
 	Core_weapons* m_coreWeapons = nullptr;
 	Player* m_player = nullptr; 

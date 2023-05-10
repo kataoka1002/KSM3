@@ -1,10 +1,8 @@
 #pragma once
 
 class Left_arm_weapons;
-
 class Customize_UI_ver2;
-
-
+class Result;
 
 class Player:public IGameObject
 {
@@ -32,9 +30,9 @@ public:
 
 	int game_state=0;								//ゲームがどの状態化の管理(0メインゲーム,1ポーズ画面,2空欄,3カスタマイズ)
 
-
+	Result* m_result = nullptr;
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
-	Customize_UI_ver2* p_customize_ui_ver2;
+	Customize_UI_ver2* p_customize_ui_ver2 = nullptr;
 	
 	
 	SpriteRender pouse_spriteRender;				//pause画面用のスプライトレンダー
@@ -63,7 +61,7 @@ public:
 	bool attack_state_s = false;
 	float move_s;
 
-	
+	float m_playerHP = 50000.0f;		//プレイヤーのHP
 
 
 	bool enemy_survival = true;
