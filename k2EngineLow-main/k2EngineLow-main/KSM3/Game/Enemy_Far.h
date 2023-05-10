@@ -64,7 +64,7 @@ public:
 	Vector3 m_toPlayerDir;							//プレイヤーへの方向
 	Vector3 m_Up = { 0.0f,1.0f,0.0f };				//上方向の設定	
 
-	bool m_defeatState = false;						//死んだかどうかフラグ
+	bool m_defeatState = true;						//エネミーが生きているかどうか
 	bool m_enemyEscape = false;						//後退中かどうかフラグ
 	bool m_atackOK = false;							//攻撃フラグ
 	bool m_lockOn = false;
@@ -75,5 +75,6 @@ public:
 	int m_sunaHassei = 0;							//砂ぼこりの発生間隔
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
+	float m_enemySize = 2.0f;						
 };
 

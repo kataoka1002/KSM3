@@ -168,14 +168,17 @@ void Enemy_Bullet::Update()
 		if (m_enemyMama != nullptr)
 		{
 			Move();	
+			Damage(m_enemyMama->m_setWeapon);
 		}
 		else if (m_enemyNearMama != nullptr)
 		{
 			MoveNear();
+			Damage(m_enemyNearMama->m_setWeapon);
 		}
 		else if (m_enemyFarMama != nullptr)
 		{
 			MoveFar();
+			Damage(m_enemyFarMama->m_setWeapon);
 		}
 	}
 }
@@ -293,6 +296,41 @@ void Enemy_Bullet::Effect(int num)
 		m_weaponEffect->SetScale({ 0.7f,0.7f,0.7f });
 		m_weaponEffect->SetPosition(m_position);
 		m_weaponEffect->Play();
+	}
+}
+
+void Enemy_Bullet::Damage(int weaponNum)
+{
+	//武器によってダメージを変える
+	if (weaponNum == 2)			//マシンガン
+	{
+		//弾とプレイヤーの距離を測り一定以下なら体力減少
+		Vector3 diff = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
+		if (diff.Length() <= 100.0f) //ダメージが入る範囲
+		{
+			m_player->m_playerHP -= 0.5f;
+			DeleteGO(this);	//弾は消える
+		}
+	}
+	else if(weaponNum == 4)		//ギガトンキャノン
+	{
+		//弾とプレイヤーの距離を測り一定以下なら体力減少
+		Vector3 diff = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
+		if (diff.Length() <= 100.0f) //ダメージが入る範囲
+		{
+			m_player->m_playerHP -= 0.5f;
+			DeleteGO(this);	//弾は消える
+		}
+	}
+	else if (weaponNum == 6)	//戦艦砲
+	{
+		//弾とプレイヤーの距離を測り一定以下なら体力減少
+		Vector3 diff = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
+		if (diff.Length() <= 100.0f) //ダメージが入る範囲
+		{
+			m_player->m_playerHP -= 0.5f;
+			DeleteGO(this);	//弾は消える
+		}
 	}
 }
 

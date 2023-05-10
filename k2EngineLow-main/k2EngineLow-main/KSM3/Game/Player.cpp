@@ -4,6 +4,7 @@
 #include "Left_arm_weapons.h"
 #include "Customize_UI_ver2.h"
 #include "Game.h"
+#include "Result.h"
 
 
 Player::Player() 
@@ -42,6 +43,15 @@ void Player::Update()
 	else if (game_state == 1) //ポーズ画面
 	{
 		pause();
+	}
+
+	//HPが0以下になるなると死亡
+	if (m_playerHP <= 0)
+	{
+		//死亡の演出
+
+		//リザルトへ
+		m_result = NewGO<Result>(1, "result");
 	}
 }
 
