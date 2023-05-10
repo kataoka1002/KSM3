@@ -72,7 +72,7 @@ void Customize_UI_ver2::trance_setup()
 	m_selectSheet.SetPosition(m_selectSheetPosition);
 	m_selectSheet.Update();
 
-	switch (m_player->p_custom_point[0][1])
+	switch (custom_kinds)
 	{
 	case 0:	//装備なし
 		m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
@@ -424,6 +424,44 @@ void Customize_UI_ver2::Custom_UI()
 			m_selectSheet.Update();
 
 			//取り付けている武器によってパラメーターシートを変える
+			switch (custom_kinds)
+			{
+			case 0:
+				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
+				m_parameterSheet.SetPosition(m_parameterSheetPosition);
+				m_parameterSheet.Update();
+				break;
+			case 2:
+				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+				m_parameterSheet.SetPosition(m_parameterSheetPosition);
+				m_parameterSheet.Update();
+				break;
+			case 4:
+				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
+				m_parameterSheet.SetPosition(m_parameterSheetPosition);
+				m_parameterSheet.Update();
+				break;
+			case 6:
+				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+				m_parameterSheet.SetPosition(m_parameterSheetPosition);
+				m_parameterSheet.Update();
+				break;
+
+			default:
+				break;
+			}
+		}
+		
+		break;
+	case 1:	//コア
+		if (fast_count == 0)
+		{
+			//どこを選択しているかのスプライト設定
+			m_selectSheet.Init("Assets/sprite/select_sheet_02.DDS", 1166.0f, 175.0f);
+			m_selectSheet.SetPosition(m_selectSheetPosition);
+			m_selectSheet.Update();
+
+			//取り付けている武器によってパラメーターシートを変える
 			switch (m_player->p_custom_point[0][1])
 			{
 			case 0:
@@ -459,35 +497,6 @@ void Customize_UI_ver2::Custom_UI()
 			window_select = true;
 			column = 0, line = 1;
 		}
-		break;
-	case 1:	//コア
-		if (fast_count == 0)
-		{
-			//どこを選択しているかのスプライト設定
-			m_selectSheet.Init("Assets/sprite/select_sheet_02.DDS", 1166.0f, 175.0f);
-			m_selectSheet.SetPosition(m_selectSheetPosition);
-			m_selectSheet.Update();
-
-			//取り付けている武器によってパラメーターシートを変える
-			switch (m_coreWeapon->set_weapons)
-			{
-			case 1:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-
-				break;
-			case 2:
-				m_parameterSheet.Init("Assets/sprite/Glare_bassinet_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-
-				break;
-			default:
-				break;
-			}
-		}
-
 		break;
 	case 2:	//右腕
 		if (fast_count == 0)
@@ -818,10 +827,10 @@ void Customize_UI_ver2::Window()
 				switch (selection_position)
 				{
 				case 0:
-					m_shoulderWeapon = NewGO<Shoulder_weapons>(2, "shoulder_weapons");
+					
 					break;
 				case 1:
-					//コア武器は変更されない
+					m_shoulderWeapon = NewGO<Shoulder_weapons>(2, "shoulder_weapons");
 					break;
 				case 2:
 					m_rightArmWeapon = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
