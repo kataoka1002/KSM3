@@ -151,15 +151,15 @@ void Boss::Move()
 void Boss::Damage()
 {
 	//ボス即死コード。
-	//if (g_pad[0]->IsPress(enButtonY))
-	//{
-	//	boss_HP = 0.0f;
-	//}
+	if (g_pad[0]->IsPress(enButtonY))
+	{
+		boss_HP = 0.0f;
+	}
 	
 	//やっつけたらリザルト画面へGO!!
 	if (boss_HP <= 0.0f)
 	{
-		b_player->game_end_state == 1;
+		b_player->game_state = 2;
 		result = NewGO<Result>(1, "result");
 
 		DeleteGO(this);

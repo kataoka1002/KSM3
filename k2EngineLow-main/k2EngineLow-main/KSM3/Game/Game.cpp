@@ -159,6 +159,22 @@ bool Game::Start()
 
 void Game::Update()
 {
+	//敵の全滅コマンド
+	if (g_pad[0]->IsTrigger(enButtonX)) {
+		for (auto enemy : m_enemyObject)
+		{
+			DeleteGO(enemy);
+		}
+		for (auto enemyFar : m_enemyFarObject)
+		{
+			DeleteGO(enemyFar);
+		}
+		for (auto enemyNear : m_enemyNearObject)
+		{
+			DeleteGO(enemyNear);
+		}
+	}
+
 	//敵を10体以上殺したらボス戦
 	if (player->killEnemy >= 10 && boss == nullptr)
 	{
