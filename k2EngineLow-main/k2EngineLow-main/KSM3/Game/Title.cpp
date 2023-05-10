@@ -598,9 +598,7 @@ void Title::Render(RenderContext& rc)
 		MAIN_MENU_Render.Draw(rc);
 	}
 
-	if (title_state == 4) {
-		Loading_Render.Draw(rc);
-	}
+	
 
 	if (title_state == 5) {
 		Option_Render.Draw(rc);
@@ -616,6 +614,9 @@ void Title::Render(RenderContext& rc)
 	
 	for(int i = 0; i < 9; i++) {
 		Menu_trance[i].Draw(rc);
+	}
+	if (title_state == 4) {
+		Loading_Render.Draw(rc);
 	}
 
 	Whiteout.Draw(rc);
