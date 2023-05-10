@@ -36,14 +36,14 @@ Game::Game()
 
 	
 	//エネミーを複数体生成
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
 		enemy->m_enemyPosition = { 0.0f,0.0f,3000.0f };
 		
 		m_enemyObject.push_back(enemy);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
 		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
