@@ -5,6 +5,7 @@
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
+#include "GigatonCannonAttack.h"
 
 Left_arm_weapons::Left_arm_weapons() {
 	l_a_w_player = FindGO<Player>("player");
@@ -73,9 +74,10 @@ void Left_arm_weapons::Update()
 			}
 			else if (l_a_w_player->p_custom_point[0][2] == 4 && firing_cound % 180 == 0)
 			{
-				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
-				battle_ship_attack->B_S_aiming = l_a_Rotation;
-				battle_ship_attack->firing_position = l_a_w_position;
+				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
+				m_gigatonAttack->originRotation = l_a_Rotation;
+				m_gigatonAttack->m_bulletLocalPosition = Vector3{0.0f,0.0f,100.0f};
+				m_gigatonAttack->m_position = l_a_w_position;
 				atack_state = true;
 			}
 			else if (l_a_w_player->p_custom_point[0][2] == 6 && firing_cound % 180 == 0) 

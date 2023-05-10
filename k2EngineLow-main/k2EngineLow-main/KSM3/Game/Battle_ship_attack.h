@@ -15,22 +15,30 @@ public:
 	void Update();
 	void Move();
 	void Damage();
+	void EfeEfe();
 	void Render(RenderContext& rc);
+
 
 	Player* m_player = nullptr;
 	Game* m_game = nullptr;
 	Boss* m_boss = nullptr;
+	EffectEmitter* m_kemuriEffect = nullptr;
+	EffectEmitter* m_tyakudanEffect = nullptr;
+	SoundSource* m_battleShipGunTyakudanSE = nullptr;			//êÌäÕñCSE
+	SoundSource* m_battleShipGunSE = nullptr;			//êÌäÕñCSE
+
 
 	ModelRender m_bulletModel;
 	Quaternion B_S_aiming;
-	Vector3 firing_position;
-	Vector3 m_bulletForward; 
+	Vector3 firing_position = Vector3::Zero;
+	Vector3 m_bulletForward = Vector3::Zero;
+	Vector3 m_kemuriEfePos = Vector3::Zero;
 
 	bool Landing_state_BB = false;
 	float move_speed = 30.0f;
 	float fall_speed = 0.0f;
 	bool atack_state = true;
-	
+	int m_kemuriCount = 0;
 	
 };
 

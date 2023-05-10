@@ -5,6 +5,7 @@
 #include "Enemy_Near.h"
 #include "Enemy_Far.h"
 #include "Player.h"
+#include "Game.h"
 #include "sound/SoundEngine.h"
 
 Enemy_Bullet::Enemy_Bullet() 
@@ -19,7 +20,14 @@ Enemy_Bullet::~Enemy_Bullet()
 	//親によってエフェクトを変える
 	if (m_enemyMama != nullptr)
 	{
-		
+		if (m_enemyMama->m_setWeapon == 2)//マシンガンの弾の煙エフェ
+		{
+			m_tyakudanEffect = NewGO<EffectEmitter>(0);
+			m_tyakudanEffect->Init(enMasinganKemuri);
+			m_tyakudanEffect->SetScale({ 10.0f,10.0f,10.0f });
+			m_tyakudanEffect->SetPosition({ m_position.x,m_position.y,m_position.z });
+			m_tyakudanEffect->Play();
+		}
 	}
 	else if (m_enemyNearMama != nullptr)
 	{
@@ -33,6 +41,13 @@ Enemy_Bullet::~Enemy_Bullet()
 		m_weaponEffect->SetScale({ 5.7f,5.7f,5.7f });
 		m_weaponEffect->SetPosition(m_position);
 		m_weaponEffect->Play();
+
+		//着弾したら効果音発生
+		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
+		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+		m_battleShipGunTyakutiSE->Play(false);
+
 	}
 }
 
@@ -40,7 +55,7 @@ bool Enemy_Bullet::Start()
 {
 	m_player = FindGO<Player>("player");
 	m_coreWeapons = FindGO<Core_weapons>("core_weapons");
-
+	m_game = FindGO<Game>("game");
 
 	//親によって初期情報を変える
 	if (m_enemyMama != nullptr)
@@ -57,6 +72,7 @@ bool Enemy_Bullet::Start()
 			m_bulletModel.SetScale(4.0f);
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
+
 			//最終的な弾の回転を決定
 			m_rot = originRotation;
 			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
@@ -87,7 +103,7 @@ bool Enemy_Bullet::Start()
 
 			//モデルの初期化
 			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale(15.0f);
+			m_bulletModel.SetScale({ 15.0f ,15.0f,10.0f});
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 			//最終的な弾の回転を決定

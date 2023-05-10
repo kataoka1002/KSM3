@@ -5,6 +5,7 @@
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
 #include "Right_arm_UI.h"
+#include "GigatonCannonAttack.h"
 
 
 Right_arm_weapons::Right_arm_weapons() 
@@ -87,9 +88,10 @@ void Right_arm_weapons::Update()
 			else if (r_a_w_player->p_custom_point[0][0] == 4 && firing_count % 180 == 0)
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
-				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->m_rot = r_a_Rotation;
-				m_machineGunAttack->m_position = r_a_w_position;
+				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
+				m_gigatonAttack->originRotation = r_a_Rotation;
+				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 0.0f,0.0f,100.0f };
+				m_gigatonAttack->m_position = r_a_w_position;
 				atack_state = true;
 			}
 			//•Ší‚ªíŠÍ–C‚Ìê‡

@@ -14,11 +14,45 @@ Battle_ship_attack::Battle_ship_attack()
 	
 }
 
+Battle_ship_attack::~Battle_ship_attack()
+{
+	if (m_player->p_custom_point[0][2] != 0)
+		m_player->attack_state_ra = false;
+	if (m_player->p_custom_point[0][1] != 0)
+		m_player->attack_state_s = false;
+	if (m_player->p_custom_point[0][0] != 0)
+		m_player->attack_state_la = false;
+	if (m_player->p_custom_point[1][0] != 0)
+		m_player->attack_state_ll = false;
+	if (m_player->p_custom_point[1][2] != 0)
+		m_player->attack_state_rl = false;
+
+	//着弾したらエフェクト発生
+	m_tyakudanEffect = NewGO<EffectEmitter>(0);
+	m_tyakudanEffect->Init(enTyakudan);
+	m_tyakudanEffect->SetScale({ 5.7f,5.7f,5.7f });
+	m_tyakudanEffect->SetPosition({ firing_position.x,firing_position.y + 50.0f,firing_position.z });
+	m_tyakudanEffect->Play();
+
+	//着弾したら効果音発生
+	m_battleShipGunTyakudanSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_battleShipGunTyakudanSE->Init(enButtleShipTyakudan);		//初期化
+	m_battleShipGunTyakudanSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+	m_battleShipGunTyakudanSE->Play(false);
+}
+
 bool Battle_ship_attack::Start()
 {
 	m_player = FindGO<Player>("player");
 	m_game = FindGO<Game>("game");
 	//m_boss = FindGO<Boss>("boss");
+
+	//発射音の設定と再生
+	m_battleShipGunSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_battleShipGunSE->Init(enButtleShipGun);	//初期化
+	m_battleShipGunSE->SetVolume(1.0f * m_game->SEvol);			//音量調整
+	m_battleShipGunSE->Play(false);
+
 
 	Setup();
 
@@ -36,28 +70,18 @@ void Battle_ship_attack::Setup()
 	//更新
 	m_bulletModel.SetRotation(B_S_aiming);
 	m_bulletModel.SetPosition(firing_position);
-}
 
-Battle_ship_attack::~Battle_ship_attack() 
-{
-	if (m_player->p_custom_point[0][2] != 0)
-		m_player->attack_state_ra = false;
-	if (m_player->p_custom_point[0][1] != 0)
-		m_player->attack_state_s = false;
-	if (m_player->p_custom_point[0][0] != 0)
-		m_player->attack_state_la = false;
-	if (m_player->p_custom_point[1][0] != 0)
-		m_player->attack_state_ll = false;
-	if (m_player->p_custom_point[1][2] != 0)
-		m_player->attack_state_rl = false;
+	m_kemuriEfePos = firing_position;
 }
 
 void Battle_ship_attack::Update()
 {
 	if (m_player->game_state == 0)
 	{
+		EfeEfe();
 		Move();
 		Damage();
+		
 		m_bulletModel.Update();
 		if (firing_position.y <= 0.0f)
 		{
@@ -88,7 +112,7 @@ void Battle_ship_attack::Damage()
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemy->m_enemyPosition;
-		if (diff.Length() <= 100.0f)
+		if (diff.Length() <= 300.0f)
 		{
 			enemy->m_enemyHP -= 50.0f;
 			DeleteGO(this);	//弾は消える
@@ -99,7 +123,7 @@ void Battle_ship_attack::Damage()
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemyFar->m_enemyPosition;
-		if (diff.Length() <= 100.0f)
+		if (diff.Length() <= 300.0f)
 		{
 			enemyFar->m_enemyHP -= 50.0f;
 			DeleteGO(this);	//弾は消える
@@ -110,7 +134,7 @@ void Battle_ship_attack::Damage()
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemyNear->m_enemyPosition;
-		if (diff.Length() <= 100.0f)
+		if (diff.Length() <= 300.0f)
 		{
 			enemyNear->m_enemyHP -= 50.0f;
 			DeleteGO(this);	//弾は消える
@@ -121,7 +145,7 @@ void Battle_ship_attack::Damage()
 	if (m_game->boss != nullptr)
 	{
 		Vector3 diff = firing_position - m_game->boss->boss_position;
-		if (diff.Length() <= 500.0f)
+		if (diff.Length() <= 300.0f)
 		{
 			m_game->boss->boss_HP -= 50.0f;
 			DeleteGO(this);	//弾は消える
@@ -134,12 +158,28 @@ void Battle_ship_attack::Damage()
 		if (m_game->boss->b_boss_drill != nullptr)
 		{
 			Vector3 diff = firing_position - m_game->boss->b_boss_drill->b_w_position;
-			if (diff.Length() <= 500.0f)
+			if (diff.Length() <= 300.0f)
 			{
 				m_game->boss->b_boss_drill->drill_HP -= 50.0f;
 				DeleteGO(this);	//弾は消える
 			}
 		}
+	}
+}
+
+void Battle_ship_attack::EfeEfe()
+{
+	m_kemuriCount++;
+	if (m_kemuriCount >= 2)
+	{
+		//エフェクトの初期化と再生
+		m_kemuriEffect = NewGO<EffectEmitter>(0);
+		m_kemuriEffect->Init(enSenkanhouKemuri);
+		m_kemuriEffect->SetScale({ 5.0f,5.0f,5.0f });
+		m_kemuriEffect->SetRotation(B_S_aiming);
+		m_kemuriEffect->SetPosition({ firing_position.x,firing_position.y + 50.0f,firing_position.z });
+		m_kemuriEffect->Play();
+		m_kemuriCount = 0;
 	}
 }
 
