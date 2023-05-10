@@ -50,7 +50,7 @@ void Player::Move()
 	player_moveSpeed = { 0.0f,0.0f,0.0f };//移動速度の初期化
 
 	Vector3 stickL;
-	float throttle = 0;
+	throttle = 0;
 	stickL.x = g_pad[0]->GetLStickXF();
 	//スティックを倒した量の取得
 	throttle = g_pad[0]->GetRTrigger();
@@ -108,18 +108,38 @@ void Player::Move()
 
 void Player::MakeEfe()
 {
-	//動いている間3フレームごとに砂ぼこりを発生させる
-	if (effectCount > 3) 
+	//プレイヤーのボタンを押している量によって砂ぼこりの量を変える
+	if (throttle < 126.0f)
 	{
-		//砂ぼこりエフェクトの初期化と再生
-		sunabokoriEffect = NewGO<EffectEmitter>(0);
-		sunabokoriEffect->Init(enSunabokori);
-		sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
-		sunabokoriEffect->SetRotation(player_rotation);
-		sunabokoriEffect->SetPosition(player_position);
-		sunabokoriEffect->Play();
+		//動いている間7フレームごとに砂ぼこりを発生させる
+		if (effectCount > 20)
+		{
+			//砂ぼこりエフェクトの初期化と再生
+			sunabokoriEffect = NewGO<EffectEmitter>(0);
+			sunabokoriEffect->Init(enSunabokori);
+			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
+			sunabokoriEffect->SetRotation(player_rotation);
+			sunabokoriEffect->SetPosition(player_position);
+			sunabokoriEffect->Play();
 
-		effectCount = 0;	//カウントリセット
+			effectCount = 0;	//カウントリセット
+		}
+	}
+	else if (throttle > 127.0f)
+	{
+		//動いている間3フレームごとに砂ぼこりを発生させる
+		if (effectCount > 3)
+		{
+			//砂ぼこりエフェクトの初期化と再生
+			sunabokoriEffect = NewGO<EffectEmitter>(0);
+			sunabokoriEffect->Init(enSunabokori);
+			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
+			sunabokoriEffect->SetRotation(player_rotation);
+			sunabokoriEffect->SetPosition(player_position);
+			sunabokoriEffect->Play();
+
+			effectCount = 0;	//カウントリセット
+		}
 	}
 	effectCount++;
 }

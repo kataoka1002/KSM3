@@ -50,16 +50,18 @@ void GameCamera::Update()
 {
 	Vector3 toCameraPosOld = m_toCameraPos;
 	//カメラを更新。
-	if (m_player->game_state == 3&&trance_Finish==true) {
+	if (CameraState == 3) 
+	{
 		m_toCameraPos.Set(0.0f, 10.0f, -300.0f);
-		target.y = 60.0f;
+		target.y = 100.0f;
 		/*if (fast_count >= 2) {
 			camera_customize_ui_ver2 = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 			target = camera_customize_ui_ver2->custom_model_body_position;
 		}
 		fast_count++;*/
 	}
-	else {
+	else 
+	{
 		//注視点を計算する。
 		target = m_player->player_position;
 	}
@@ -86,7 +88,7 @@ void GameCamera::Update()
 		//target.y -= 90.0f;
 	}
 	else {
-		//パッドの入力を使ってカメラを回す。
+		//カスタマイズ画面以外ならパッドの入力を使ってカメラを回す。
 		x = g_pad[0]->GetRStickXF();
 		y = g_pad[0]->GetRStickYF();
 	}

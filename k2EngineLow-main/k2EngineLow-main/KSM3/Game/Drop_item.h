@@ -15,6 +15,7 @@ public:
 	void Render(RenderContext& rc);
 	void Float();
 	void Set_Drop_item();
+	void SetSize();
 	Quaternion Drop_rotation;
 
 	ModelRender Drop_item_Render;
@@ -31,7 +32,8 @@ public:
 	int float_counter = 0;
 	float float_level = 0.25;
 	int touch_flag = 0;
-
+	int dropCount = 0;
+	float modelSize = 0.01f;
 
 	int drop_weapons[12] = {  0,	//non
 							  0,	//Battleship_gun

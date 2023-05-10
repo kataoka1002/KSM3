@@ -131,6 +131,11 @@ void Enemy_Far::Update()
 		m_enemyWeaponModel.Update();
 
 	}
+	else if (m_player->game_state == 3)
+	{
+		//足音停止
+		m_asiotoSE->Stop();
+	}
 }
 
 void Enemy_Far::PassMove()
@@ -400,14 +405,16 @@ void Enemy_Far::ItemDrop()
 	//体力が0になったらアイテムを落とす
 	if (m_enemyHP <= 0.0f)
 	{
+		//死亡爆破エフェ
+		EnemyDead();
+
 		m_dropItem = NewGO<Drop_item>(1, "drop_item");
 		m_dropItem->Drop_position = m_enemyPosition;
 		m_dropItem->Drop_position.y += 50.0f;
 		//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
 		m_dropItem->drop_kinds = m_setWeapon;
 
-
-		
+	
 		//コンテナにくっつける
 		m_game->m_dropItemObject.push_back(m_dropItem);
 		m_game->AddDefeatedEnemyNumber();
@@ -450,6 +457,23 @@ void Enemy_Far::Effect()
 	sunabokoriEffect->SetRotation(m_enemyRotation);
 	sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y + 10.0f ,m_enemyPosition.z });
 	sunabokoriEffect->Play();
+}
+
+void Enemy_Far::EnemyDead()
+{
+	//爆発エフェクトの設定と再生
+	enemyDeadEffect = NewGO<EffectEmitter>(0);
+	enemyDeadEffect->Init(enEnemyDead);
+	enemyDeadEffect->SetScale({ 5.0f,5.0f,5.0f });
+	enemyDeadEffect->SetRotation(m_enemyRotation);
+	enemyDeadEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
+	enemyDeadEffect->Play();
+
+	//爆発音の設定と再生
+	m_enemyDeadSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_enemyDeadSE->Init(enEnemyDeadSE);		//初期化
+	m_enemyDeadSE->SetVolume(1.5f);			//音量調整
+	m_enemyDeadSE->Play(false);
 }
 
 void Enemy_Far::SE()
