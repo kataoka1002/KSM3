@@ -614,9 +614,9 @@ void Title::Render(RenderContext& rc)
 		CONTROLES_Render.Draw(rc);
 	}
 	
-	/*for(int i = 0; i < 9; i++) {
+	for(int i = 0; i < 9; i++) {
 		Menu_trance[i].Draw(rc);
-	}*/
+	}
 
 	Whiteout.Draw(rc);
 }
