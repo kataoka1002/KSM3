@@ -52,6 +52,8 @@ void Title::SetUp()
 
 	Option_Render.Init("Assets/sprite/OPTION.DDS", 1632.0f, 918.0f);
 	Sound_Render.Init("Assets/sprite/SOUND.DDS", 1632.0f, 918.0f);
+	Sound_Render2.Init("Assets/sprite/SOUND2.DDS", 1632.0f, 918.0f);
+	Sound_Render3.Init("Assets/sprite/SOUND3.DDS", 1632.0f, 918.0f);
 	BGM_Sound_ber.Init("Assets/sprite/gage.DDS", 400.0f, 50.0f);
 	BGM_Sound_ber.SetPivot(BGM_ber_pivot);
 	BGM_Sound_ber.SetPosition(BGM_ber_position);
@@ -61,9 +63,9 @@ void Title::SetUp()
 
 	CONTROLES_Render.Init("Assets/sprite/CONTROLES.DDS", 1632.0f, 918.0f);
 
-	Menu_trance[0].Init("Assets/sprite/MENU_contents_TRANCE.DDS", 430.0f, 100.0f);
+	Menu_trance[0].Init("Assets/sprite/MENU_TITLE_TRANCE.DDS", 430.0f, 100.0f);
 	for (int i = 1; i < 9; i++) {
-		Menu_trance[i].Init("Assets/sprite/MENU_TITLE_TRANCE.DDS", 670.0f, 63.0f);
+		Menu_trance[i].Init("Assets/sprite/MENU_contents_TRANCE.DDS", 670.0f, 63.0f);
 	}
 
 	Menu_trance[0].SetPosition(Menu_trance_position0);
@@ -371,12 +373,18 @@ void Title::Menu() {
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 0&&sound_set_state==0) {
 			sound_set_state = 1;
+			SOUND_color.w = 0.5f;
+			Sound_Render2.SetMulColor(SOUND_color);
+			SE_Sound_ber.SetMulColor(SOUND_color);
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 1 && sound_set_state == 0) {
 			sound_set_state = 2;
+			SOUND_color.w = 0.5f;
+			Sound_Render.SetMulColor(SOUND_color);
+			BGM_Sound_ber.SetMulColor(SOUND_color);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonB)) {
+		if (g_pad[0]->IsTrigger(enButtonB) && sound_set_state == 0) {
 			title_state = 5;
 			select_point = 0;
 			fast_count = 0;
@@ -418,9 +426,15 @@ void Title::Menu() {
 
 		if (g_pad[0]->IsTrigger(enButtonB) && fast_count != 1 && select_point == 0 && sound_set_state == 1) {
 			sound_set_state = 0;
+			SOUND_color.w = 1.0f;
+			Sound_Render2.SetMulColor(SOUND_color);
+			SE_Sound_ber.SetMulColor(SOUND_color);
 		}
-		if (g_pad[0]->IsTrigger(enButtonB) && fast_count != 1 && select_point == 2 && sound_set_state == 2) {
+		if (g_pad[0]->IsTrigger(enButtonB) && fast_count != 1 && select_point == 1 && sound_set_state == 2) {
 			sound_set_state = 0;
+			SOUND_color.w = 1.0f;
+			Sound_Render.SetMulColor(SOUND_color);
+			BGM_Sound_ber.SetMulColor(SOUND_color);
 		}
 		fast_count++;
 
@@ -605,6 +619,8 @@ void Title::Render(RenderContext& rc)
 	}
 	if (title_state == 6) {
 		Sound_Render.Draw(rc);
+		Sound_Render2.Draw(rc);
+		Sound_Render3.Draw(rc);
 		BGM_Sound_ber.Draw(rc);
 		SE_Sound_ber.Draw(rc);
 	}
