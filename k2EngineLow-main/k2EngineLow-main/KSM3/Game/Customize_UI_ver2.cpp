@@ -21,6 +21,26 @@ Customize_UI_ver2::Customize_UI_ver2()
 Customize_UI_ver2::~Customize_UI_ver2()
 {
 	DeleteGO(m_customizeArea);
+	if (m_shoulderWeapon != nullptr)
+	{
+		DeleteGO(m_shoulderWeapon);
+	}
+	if (m_rightArmWeapon != nullptr)
+	{
+		DeleteGO(m_rightArmWeapon);
+	}
+	if (m_leftArmWeapon != nullptr)
+	{
+		DeleteGO(m_leftArmWeapon);
+	}
+	if (m_rightLegWeapon != nullptr)
+	{
+		DeleteGO(m_rightLegWeapon);
+	}
+	if (m_leftLegWeapon != nullptr)
+	{
+		DeleteGO(m_leftLegWeapon);
+	}
 }
 
 bool Customize_UI_ver2::Start()
