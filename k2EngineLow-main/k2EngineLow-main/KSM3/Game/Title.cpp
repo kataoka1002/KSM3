@@ -304,8 +304,12 @@ void Title::Menu() {
 		Loading_color.w += 0.1;
 		Loading_Render.SetMulColor(Loading_color);
 		Loading_Render.Update();
-		if (Loading_color.w >= 1.1f) {
+		if (Loading_color.w >= 1.1f) 
+		{
+			//ゲームを始めると同時に音量のデータも送る
 			Game* game = NewGO<Game>(0, "game");
+			game->SEvol = BGM_volume;
+			game->BGMvol = SE_volume;
 			DeleteGO(this);
 		}
 	}

@@ -50,9 +50,9 @@ bool Enemy_Far::Start()
 	);
 
 	//足音の設定
-	m_asiotoSE->Init(enRunning);	//初期化
-	m_asiotoSE->SetVolume(0.8f);	//音量調整
-	m_asiotoSE->Play(true);			//再生
+	m_asiotoSE->Init(enRunning);					//初期化
+	m_asiotoSE->SetVolume(0.8f * m_game->SEvol);	//音量調整
+	m_asiotoSE->Play(true);							//再生
 	m_asiotoSE->Stop();
 
 
@@ -395,7 +395,7 @@ void Enemy_Far::Fire(int m_weaponNum)
 		//爆発音の設定と再生
 		m_battleShipGunSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_battleShipGunSE->Init(enButtleShipGun);	//初期化
-		m_battleShipGunSE->SetVolume(1.0f);			//音量調整
+		m_battleShipGunSE->SetVolume(1.0f * m_game->SEvol);			//音量調整
 		m_battleShipGunSE->Play(false);
 	}
 }
@@ -472,7 +472,7 @@ void Enemy_Far::EnemyDead()
 	//爆発音の設定と再生
 	m_enemyDeadSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_enemyDeadSE->Init(enEnemyDeadSE);		//初期化
-	m_enemyDeadSE->SetVolume(1.5f);			//音量調整
+	m_enemyDeadSE->SetVolume(1.5f * m_game->SEvol);			//音量調整
 	m_enemyDeadSE->Play(false);
 }
 

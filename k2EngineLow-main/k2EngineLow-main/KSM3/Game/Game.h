@@ -90,9 +90,10 @@ public:
 	float boss_time = 0.0f;
 	float boss_time_score = 0.0f;
 	int time_score = 10000;
-
-	
 	Vector3 dv;
+
+	float BGMvol = 1.0f;	//こいつらを音量にかけてやることで調整する
+	float SEvol = 1.0f;
 
 private:
 	ModelRender m_modelRender;		//キャラ
