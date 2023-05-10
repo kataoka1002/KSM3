@@ -410,7 +410,7 @@ void Enemy_Near::Fire(int weaponNum)
 		//”š”­‰¹‚Ìİ’è‚ÆÄ¶
 		m_cannonSE = NewGO<SoundSource>(0);
 		m_cannonSE->Init(enGigatonCannon);					//‰Šú‰»
-		m_cannonSE->SetVolume(2.0f * m_game->SEvol);			//‰¹—Ê’²®
+		m_cannonSE->SetVolume(2.0f * m_game->SEvol);		//‰¹—Ê’²®
 		m_cannonSE->Play(false);
 
 		m_attackFlag = true;		//’e‚ğŒ‚‚Á‚½ƒtƒ‰ƒO‚ğ—§‚Ä‚é

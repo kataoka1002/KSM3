@@ -30,7 +30,10 @@ enum EffectName {
 	enMasinganHibana,	//マシンガンから出る火花
 	enHidan,			//被弾
 	enTyakudan,			//弾が着弾した時
-	enEnemyDead			//敵死亡時のエフェ
+	enEnemyDead,		//敵死亡時のエフェ
+	enSenkanhouKemuri,	//戦艦砲の弾の煙
+	enMasinganKemuri,	//マシンガンの弾の煙
+	enGigatonAttack		//ギガトンキャノンの攻撃エフェ
 };
 
 //サウンドの列挙
@@ -40,7 +43,8 @@ enum SoundName {
 	enMachineGun,		//マシンガン
 	enGigatonCannon,	//ギガトンキャノン
 	enButtleShipGun,	//戦艦砲
-	enEnemyDeadSE			//敵死亡時のSE
+	enEnemyDeadSE,		//敵死亡時のSE
+	enButtleShipTyakudan//戦艦砲の着弾SE
 };
 
 class Game :public IGameObject

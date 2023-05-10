@@ -3,6 +3,7 @@ class Player;
 class Battle_ship_attack;
 class Shoulder_UI;
 class MachineGunAttack;
+class GigatonCannonAttack;
 
 
 class Shoulder_weapons:public IGameObject
@@ -20,6 +21,7 @@ public:
 	Battle_ship_attack* battle_ship_attack = nullptr;
 	Shoulder_UI* shoulder_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
+	GigatonCannonAttack* m_gigatonAttack = nullptr;
 
 
 	Quaternion Shoulder_Rotation;

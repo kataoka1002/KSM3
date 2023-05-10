@@ -6,6 +6,7 @@ class Enemy;
 class Enemy_Near;
 class Enemy_Far;
 class Player;
+class Game;
 
 class Enemy_Bullet:public IGameObject
 {
@@ -26,12 +27,16 @@ public:
 
 	Core_weapons* m_coreWeapons = nullptr;
 	Player* m_player = nullptr; 
+	Game* m_game = nullptr;
 	SoundSource* m_soundSource = nullptr;
+	SoundSource* m_battleShipGunTyakutiSE = nullptr;			//íŠÍ–CSE
+
 
 	Enemy* m_enemyMama = nullptr;
 	Enemy_Near* m_enemyNearMama = nullptr;
 	Enemy_Far* m_enemyFarMama = nullptr;
 	EffectEmitter* m_weaponEffect = nullptr;
+	EffectEmitter* m_tyakudanEffect = nullptr;
 
 
 	ModelRender m_bulletModel;	//ƒ}ƒVƒ“ƒKƒ“‚Ì’e‚Ìƒ‚ƒfƒ‹
