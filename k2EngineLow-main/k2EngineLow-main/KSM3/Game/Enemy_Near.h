@@ -33,6 +33,7 @@ public:
 	void PassMove();				//パス移動
 	void Effect();					//エフェクト
 	void SE();						//効果音
+	void EnemyDead();
 
 
 	//パス移動に必要な奴ら
@@ -43,6 +44,8 @@ public:
 	Battle_ship_attack* m_battleShipAttack = nullptr;
 	Drop_item* m_dropItem = nullptr;
 	EffectEmitter* sunabokoriEffect = nullptr;			//砂ぼこり
+	EffectEmitter* enemyDeadEffect = nullptr;			//死んだときの爆破エフェクト
+	SoundSource* m_enemyDeadSE = nullptr;				//死んだときの爆破SE
 	SoundSource* m_asiotoSE = nullptr;					//足音
 	SoundSource* m_dashSE = nullptr;					//ダッシュ音
 	SoundSource* m_cannonSE = nullptr;					//ギガトンキャノンSE

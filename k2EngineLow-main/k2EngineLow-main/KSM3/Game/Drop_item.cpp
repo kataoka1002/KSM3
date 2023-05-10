@@ -35,26 +35,27 @@ void Drop_item::Set_Drop_item()
 	if (drop_kinds == 2)
 	{
 		Drop_item_Render.Init("Assets/modelData/machine_gun_drop.tkm");
-		Drop_item_Render.SetScale(2.5f);
+		Drop_item_Render.SetScale(modelSize);	//最初は小さめに設定
 	}
 	else if (drop_kinds == 4)
 	{
 		Drop_item_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
-		Drop_item_Render.SetScale(1.0f);
+		Drop_item_Render.SetScale(modelSize);	//最初は小さめに設定
 	}
 	else if (drop_kinds == 6)
 	{
 		Drop_item_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
-		Drop_item_Render.SetScale(2.5f);
+		Drop_item_Render.SetScale(modelSize);	//最初は小さめに設定
 	}
-
-	//Drop_item_Render.SetPosition(Drop_position);
 }
 
 void Drop_item::Update() 
 {
 	if (drop_player->game_state == 0) 
 	{
+		//サイズの処理
+		SetSize();
+
 		//動きの処理
 		Float();
 
@@ -70,6 +71,7 @@ void Drop_item::Update()
 			customize_UI_ver2->Setup();
 			//拾った武器の種類を教えてやる
 			customize_UI_ver2->custom_kinds = drop_kinds;
+			//全ての初期化
 			customize_UI_ver2->trance_setup();
 			//プレイヤーのステート変更(カスタム画面へ)
 			drop_player->game_state = 3;
@@ -77,6 +79,46 @@ void Drop_item::Update()
 			DeleteGO(this);
 		}
 	}
+}
+
+void Drop_item::SetSize()
+{	
+	//落とした武器によって大きさを変える
+	if (drop_kinds == 2)		//マシンガン
+	{
+		//だんだん大きくする
+		modelSize += 0.05;
+
+		//ある程度の大きさになったらストップ
+		if (modelSize >= 2.5f)
+		{
+			modelSize = 2.5f;
+		}
+	}
+	else if (drop_kinds == 4)	//ギガトンキャノン
+	{
+		//だんだん大きくする
+		modelSize += 0.02;
+
+		//ある程度の大きさになったらストップ
+		if (modelSize >= 1.0f)
+		{
+			modelSize = 1.0f;
+		}
+	}
+	else if (drop_kinds == 6)	//戦艦砲
+	{
+		//だんだん大きくする
+		modelSize += 0.05;
+		//ある程度の大きさになったらストップ
+		if (modelSize >= 2.5f)
+		{
+			modelSize = 2.5f;
+		}
+	}
+
+	//更新
+	Drop_item_Render.SetScale(modelSize);
 }
 
 void Drop_item::Float() 

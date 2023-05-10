@@ -52,6 +52,7 @@ public:
 
 	float accelerator = 0;
 	float brake = 0;
+	float throttle = 0;
 	bool attack_state_la = false;
 	bool attack_state_ll = false;
 	bool attack_state_rl = false;

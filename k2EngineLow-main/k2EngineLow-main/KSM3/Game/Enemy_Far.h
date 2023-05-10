@@ -33,6 +33,7 @@ public:
 	void Damage();					//被弾
 	void Effect();					//エフェクト
 	void SE();						//効果音
+	void EnemyDead();
 
 	//パス移動に必要な奴ら
 	std::vector<Point> m_pointList;
@@ -42,7 +43,9 @@ public:
 	Player* m_player = nullptr;
 	Battle_ship_attack* m_battleShipAttack = nullptr;
 	Drop_item* m_dropItem = nullptr;
-	EffectEmitter* sunabokoriEffect = nullptr;
+	EffectEmitter* sunabokoriEffect = nullptr;			//砂ぼこり
+	EffectEmitter* enemyDeadEffect = nullptr;			//死んだときの爆破エフェクト
+	SoundSource* m_enemyDeadSE = nullptr;				//死んだときの爆破SE
 	SoundSource* m_battleshipGunSE = nullptr;			//マシンガンSE
 	SoundSource* m_asiotoSE = nullptr;					//足音
 	SoundSource* m_battleShipGunSE = nullptr;			//戦艦砲SE

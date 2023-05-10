@@ -131,6 +131,13 @@ void Enemy_Near::Update()
 		m_enemyWeaponModel.Update();
 
 	}
+	else if (m_player->game_state == 3)
+	{
+		//足音停止
+		m_asiotoSE->Stop();
+		//ダッシュ音停止
+		m_dashSE->Stop();
+	}
 }
 
 void Enemy_Near::PassMove()
@@ -397,7 +404,7 @@ void Enemy_Near::Fire(int weaponNum)
 		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
 		m_enemyBullet->m_enemyNearMama = this;
 		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet->m_bulletLocalPosition = { 0.0f,50.0f,100.0f };		//ローカルポジション設定
+		m_enemyBullet->m_bulletLocalPosition = { 0.0f,100.0f,130.0f };		//ローカルポジション設定
 		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 
 		//爆発音の設定と再生
@@ -415,7 +422,9 @@ void Enemy_Near::ItemDrop()
 	//体力が0になったらアイテムを落とす
 	if (m_enemyHP <= 0.0f)
 	{
-		DeleteGO(this);
+		//死亡爆破エフェ
+		EnemyDead();
+		
 		m_dropItem = NewGO<Drop_item>(1, "drop_item");
 		m_dropItem->Drop_position = m_enemyPosition;
 		m_dropItem->Drop_position.y += 50.0f;
@@ -427,7 +436,7 @@ void Enemy_Near::ItemDrop()
 		m_game->AddDefeatedEnemyNumber();//倒した数を増やす
 
 		m_defeatState = true;
-		//DeleteGO(this);
+		DeleteGO(this);
 	}
 }
 
@@ -453,6 +462,24 @@ void Enemy_Near::Effect()
 	sunabokoriEffect->SetRotation(m_enemyRotation);
 	sunabokoriEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y + 10.0f ,m_enemyPosition.z });
 	sunabokoriEffect->Play();
+}
+
+void Enemy_Near::EnemyDead()
+{
+	//爆発エフェクトの設定と再生
+	enemyDeadEffect = NewGO<EffectEmitter>(0);
+	enemyDeadEffect->Init(enEnemyDead);
+	enemyDeadEffect->SetScale({ 5.0f,5.0f,5.0f });
+	enemyDeadEffect->SetRotation(m_enemyRotation);
+	enemyDeadEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
+	enemyDeadEffect->Play();
+
+	//爆発音の設定と再生
+	m_enemyDeadSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_enemyDeadSE->Init(enEnemyDeadSE);		//初期化
+	m_enemyDeadSE->SetVolume(1.5f);			//音量調整
+	m_enemyDeadSE->Play(false);
+
 }
 
 void Enemy_Near::SE()
