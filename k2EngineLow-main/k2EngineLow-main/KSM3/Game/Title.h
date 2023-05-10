@@ -84,6 +84,8 @@ public:
 	SpriteRender Option_Render;
 
 	SpriteRender Sound_Render;
+	SpriteRender Sound_Render2;
+	SpriteRender Sound_Render3;
 	int sound_set_state = 0;//0:何もない 1:BGM 2:SE
 	SpriteRender BGM_Sound_ber;
 	float BGM_volume = 1.0f;//BGMのボリューム
@@ -95,19 +97,20 @@ public:
 	Vector3 SE_ber_scale = { 0.85f,0.85f,1.0f };
 	Vector3 BGM_ber_position = { -352.7f,169.4f,0.0f };
 	Vector3 SE_ber_position = { -352.7f,101.5f,0.0f };
+	Vector4 SOUND_color = { 1.0f,1.0f,1.0f,1.0f };
 
 	SpriteRender CONTROLES_Render;
 
 	SpriteRender Menu_trance[9];
 	Vector3 Menu_trance_position0 = { -651.0f,316.5f,0.0f};//タイトル部分
-	Vector3 Menu_trance_position1 = { -663.0f,170.0f,0.0f };//メニュー1段目
-	Vector3 Menu_trance_position2 = { -663.0f,100.0f,0.0f };//メニュー2段目
-	Vector3 Menu_trance_position3 = { -663.0f,30.0f,0.0f };//メニュー3段目
-	Vector3 Menu_trance_position4 = { -663.0f,-39.5f,0.0f };//メニュー4段目
-	Vector3 Menu_trance_position5 = { -663.0f,-107.0f,0.0f };//メニュー5段目
-	Vector3 Menu_trance_position6 = { -663.0f,-176.5f,0.0f };//メニュー6段目
-	Vector3 Menu_trance_position7 = { -663.0f,-244.0f,0.0f };//メニュー6段目
-	Vector3 Menu_trance_position8 = { -663.0f,-394.0f,0.0f };//OK_BACK部分
+	Vector3 Menu_trance_position1 = { -646.0f,170.0f,0.0f };//メニュー1段目
+	Vector3 Menu_trance_position2 = { -646.0f,100.0f,0.0f };//メニュー2段目
+	Vector3 Menu_trance_position3 = { -646.0f,30.0f,0.0f };//メニュー3段目
+	Vector3 Menu_trance_position4 = { -646.0f,-39.5f,0.0f };//メニュー4段目
+	Vector3 Menu_trance_position5 = { -646.0f,-107.0f,0.0f };//メニュー5段目
+	Vector3 Menu_trance_position6 = { -646.0f,-176.5f,0.0f };//メニュー6段目
+	Vector3 Menu_trance_position7 = { -646.0f,-244.0f,0.0f };//メニュー6段目
+	Vector3 Menu_trance_position8 = { -646.0f,-394.0f,0.0f };//OK_BACK部分
 
 	Vector2 Menu_trance_pivot0 = { 0.0f,0.5f };
 	Vector2 Menu_trance_pivot1 = { 0.0f,0.5f };
