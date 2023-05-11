@@ -51,7 +51,7 @@ public:
 	
 	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };	//[0][0]‰E˜r,[0][1]Œ¨,[0][2]¶˜r,[1][0]‰E‘«,[1][2]¶‘«	
 	
-	 
+	bool m_cameraMove = false;	//ƒJƒƒ‰Ø‚è‘Ö‚¦’†‚©‚Ç‚¤‚©
 
 	float accelerator = 0;
 	float brake = 0;
