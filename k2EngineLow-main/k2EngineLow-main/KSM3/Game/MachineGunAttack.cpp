@@ -50,7 +50,17 @@ void MachineGunAttack::Setup()
 	//弾のモデルの初期化
 	m_bulletModel.Init("Assets/modelData/battleship_gun_bullet.tkm");
 	m_bulletModel.SetScale(2.0f);
-	m_bulletForward = m_player->playerFowrad;	//前方向はプレイヤーと一緒
+
+	//エネミーから見て正しい位置に弾を設定
+	originRotation.Multiply(m_bulletLocalPosition);	//掛け算
+
+	//最終的な弾の回転を決定
+	m_rot = originRotation;
+	m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
+
+	//前方向はプレイヤーと一緒
+	m_bulletForward = m_player->playerFowrad;
+
 	//更新
 	m_bulletModel.SetRotation(m_rot);
 	m_bulletModel.SetPosition(m_position);

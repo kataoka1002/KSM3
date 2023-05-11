@@ -10,9 +10,20 @@ GameCamera::GameCamera()
 
 GameCamera::~GameCamera()
 {
+
 }
+
 bool GameCamera::Start()
 {
+
+	//ばねカメラの初期化。
+	m_springCamera.Init(
+		*g_camera3D,		//ばねカメラの処理を行うカメラを指定する。
+		1000.0f,			//カメラの移動速度の最大値。
+		true,				//カメラと地形とのあたり判定を取るかどうかのフラグ。trueだとあたり判定を行う。
+		5.0f				//カメラに設定される球体コリジョンの半径。第３引数がtrueの時に有効になる。
+	);
+
 	//注視点から視点までのベクトルを設定。
 	//カメラステートが0(ウェーブ戦)の時。
 	if (CameraState == 0)
@@ -144,9 +155,13 @@ void GameCamera::Update()
 	//視点を計算する。
 	Vector3 pos = target + m_toCameraPos;
 	//メインカメラに注視点と視点を設定する。
-	g_camera3D->SetTarget(target);
-	g_camera3D->SetPosition(pos);
+	//g_camera3D->SetTarget(target);
+	//g_camera3D->SetPosition(pos);
 
 	//カメラの更新。
-	g_camera3D->Update();
+	//g_camera3D->Update();
+
+	m_springCamera.SetTarget(target);
+	m_springCamera.SetPosition(pos);
+	m_springCamera.Update();
 }

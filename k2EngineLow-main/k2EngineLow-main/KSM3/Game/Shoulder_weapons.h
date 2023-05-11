@@ -15,21 +15,27 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 	void Move();
+	void Move2();	//マシンガン用
 	void S_w_set();
 
 	Player* s_w_player = nullptr;
 	Battle_ship_attack* battle_ship_attack = nullptr;
+	Battle_ship_attack* battle_ship_attack2 = nullptr;
 	Shoulder_UI* shoulder_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
+	MachineGunAttack* m_machineGunAttack2 = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
 
 
 	Quaternion Shoulder_Rotation;
-	Vector3 s_w_position;
-	Vector3 s_w_moveSpeed;
+	Quaternion Shoulder_Rotation2;
+	Vector3 s_w_position = Vector3::Zero;
+	Vector3 s_w_position2 = Vector3::Zero;
+	Vector3 s_w_moveSpeed = Vector3::Zero;
 	Vector3 s_w_Fowrad = { 0.0f,0.0f,1.0f };//肩装備の正面ベクトル
 	int game_state = 0;
 	ModelRender Shoulder_weapons_Render;
+	ModelRender Shoulder_weapons_Render2;	//マシンガンの2個目
 
 	Vector3 s_w_localPosition = { 0.0f,110.0f,0.0f };
 	Vector3 scale2 = { 2.0f,2.0f,2.0f };
