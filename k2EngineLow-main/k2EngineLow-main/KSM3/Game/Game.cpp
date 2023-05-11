@@ -178,10 +178,13 @@ void Game::Update()
 	//敵を10体以上殺したらボス戦
 	if (player->killEnemy >= 10 && boss == nullptr)
 	{
-		for (int i = 0; i < 1; i++)
-		{
-			boss = NewGO<Boss>(1, "boss");
-			boss->boss_position = { 0.0f,0.0f,15100.0f };
+		if (player->player_position.z >= 10000.0f) {
+			for (int i = 0; i < 1; i++)
+			{			
+				boss = NewGO<Boss>(1, "boss");
+				boss->boss_position = { -16500.0f,0.0f,2000.0f };
+				boss->boss_game_state = 1;
+			}
 		}
 	}
 	if (boss != nullptr) {

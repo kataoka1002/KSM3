@@ -69,6 +69,17 @@ void Boss::Update()
 	boss_modelRender.SetScale(15.0f);
 	Damage();
 
+	if (boss_game_state == 1) {
+
+		b_player->player_position.x = -16500.0f;
+		b_player->player_position.z = -1000.0f;
+			
+		b_player->player_modelRender.SetPosition(b_player->player_position);
+		b_player->characterController.SetPosition(b_player->player_position);
+
+		b_player->player_modelRender.Update(true);
+	}
+
 	if (b_player->game_state == 0) {
 		
 			//PlayerSearch();
