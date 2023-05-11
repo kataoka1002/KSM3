@@ -40,7 +40,7 @@ void Shoulder_weapons::S_w_set()
 		set_weapons = s_w_player->p_custom_point[0][1];
 		break;
 	case 4:
-		Shoulder_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
+		Shoulder_weapons_Render.Init("Assets/modelData/GIgaton_shoulder.tkm");
 		Shoulder_weapons_Render.SetScale(0.8f);
 		Shoulder_weapons_Render.Update();
 		set_weapons = s_w_player->p_custom_point[0][1];

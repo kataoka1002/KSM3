@@ -691,6 +691,7 @@ void Customize_UI_ver2::Custom_UI()
 		m_gameCamera->trance_Finish = false;
 		m_gameCamera->CameraState = 0;
 		m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+		m_player->m_cameraMove = false;		//普通のカメラ->ばねカメラ
 	}
 	fast_count++;
 
@@ -731,6 +732,7 @@ void Customize_UI_ver2::trance()
 		m_gameCamera->fast_count = 0;
 		m_gameCamera->target = { 10000.0f,20.0f,0.0f };
 		m_gameCamera->CameraState = 3;
+		m_player->m_cameraMove = true;	//ばねカメラ->普通のカメラ
 	}
 
 	//黒フェード消滅
@@ -850,20 +852,20 @@ void Customize_UI_ver2::Window()
 
 				//武器取り付けを承認してカスタム画面が終わる時
 				m_player->game_state = 0;
-				//   ӏ       
+				//
 				confirmatino_window_open = false;
-				// F X    l ɖ߂ 
+				//
 				selection_position = 0;
 				fast_count = 0;
 				window_count = 0;
 				window_open = false;
 				window_select = false;
 
-
-				// Q [   J      ɖ߂ 
+				//カスタム画面からゲーム画面へ移動
 				m_gameCamera->trance_Finish = false;
 				m_gameCamera->CameraState = 0;
 				m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+				m_player->m_cameraMove = false;		//普通のカメラ->ばねカメラ
 			}
 		}
 		//DECLINE時の処理
