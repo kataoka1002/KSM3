@@ -3,6 +3,8 @@ class Player;
 class Battle_ship_attack;
 class Right_leg_UI;
 class MachineGunAttack;
+class GigatonCannonAttack;
+
 
 class Right_leg_weapons:public IGameObject
 {
@@ -19,6 +21,7 @@ public:
 	Battle_ship_attack* battle_ship_attack = nullptr;
 	Right_leg_UI*right_leg_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
+	GigatonCannonAttack* m_gigatonAttack = nullptr;
 
 
 	Quaternion r_l_Rotation;

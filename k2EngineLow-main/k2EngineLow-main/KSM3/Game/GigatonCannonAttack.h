@@ -4,11 +4,11 @@ class Player;
 class Game;
 class Boss;
 
-class MachineGunAttack :public IGameObject
+class GigatonCannonAttack :public IGameObject
 {
 public:
-	MachineGunAttack();
-	~MachineGunAttack();
+	GigatonCannonAttack();
+	~GigatonCannonAttack();
 	bool Start();
 	void Setup();
 	void Update();
@@ -20,13 +20,16 @@ public:
 	Game* m_game = nullptr;
 	Boss* m_boss = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;
+	SoundSource* m_cannonSE = nullptr;					//ギガトンキャノンSE
 
 
 	ModelRender m_bulletModel;
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_bulletForward = Vector3::Zero;
 	Vector3 m_moveSpeed = Vector3::Zero;
+	Vector3 m_bulletLocalPosition = Vector3::Zero;	//弾のローカルポジション
 	Quaternion m_rot;
+	Quaternion originRotation;
 
 	bool m_atackState = true;
 	bool Landing_state_BB = false;

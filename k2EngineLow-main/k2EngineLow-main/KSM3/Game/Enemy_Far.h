@@ -46,7 +46,6 @@ public:
 	EffectEmitter* sunabokoriEffect = nullptr;			//砂ぼこり
 	EffectEmitter* enemyDeadEffect = nullptr;			//死んだときの爆破エフェクト
 	SoundSource* m_enemyDeadSE = nullptr;				//死んだときの爆破SE
-	SoundSource* m_battleshipGunSE = nullptr;			//マシンガンSE
 	SoundSource* m_asiotoSE = nullptr;					//足音
 	SoundSource* m_battleShipGunSE = nullptr;			//戦艦砲SE
 

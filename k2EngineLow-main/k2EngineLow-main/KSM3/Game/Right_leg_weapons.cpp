@@ -5,6 +5,8 @@
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
 #include "Right_leg_UI.h"
+#include "GigatonCannonAttack.h"
+
 
 Right_leg_weapons::Right_leg_weapons() {
 	r_l_w_player = FindGO<Player>("player");
@@ -69,9 +71,10 @@ void Right_leg_weapons::Update() {
 			else if (r_l_w_player->p_custom_point[1][0] == 4 && firing_cound % 180 == 0)
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
-				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->m_rot = r_l_Rotation;
-				m_machineGunAttack->m_position = r_l_w_position;
+				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
+				m_gigatonAttack->originRotation = r_l_Rotation;
+				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 0.0f,0.0f,100.0f };
+				m_gigatonAttack->m_position = r_l_w_position;
 				atack_state = true;
 			}
 			else if (r_l_w_player->p_custom_point[1][0] == 6 && firing_cound % 180 == 0) 

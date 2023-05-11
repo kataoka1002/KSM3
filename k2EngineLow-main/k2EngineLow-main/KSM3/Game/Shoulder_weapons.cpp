@@ -5,6 +5,8 @@
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
 #include "Shoulder_UI.h"
+#include "GigatonCannonAttack.h"
+
 
 Shoulder_weapons::Shoulder_weapons() {
 	s_w_player = FindGO<Player>("player");
@@ -68,9 +70,10 @@ void Shoulder_weapons::Update() {
 			else if (s_w_player->p_custom_point[0][1] == 4 && firing_cound % 180 == 0)
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
-				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->m_rot = Shoulder_Rotation;
-				m_machineGunAttack->m_position = s_w_position;
+				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
+				m_gigatonAttack->originRotation = Shoulder_Rotation;
+				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 0.0f,0.0f,100.0f };
+				m_gigatonAttack->m_position = s_w_position;
 				atack_state = true;
 			}
 			else if (s_w_player->p_custom_point[0][1] == 6 && firing_cound % 180 == 0) 

@@ -22,12 +22,13 @@ public:
 	Core_weapons* C_W_A_core_weapons = nullptr;
 	Enemy* c_w_a_enemy = nullptr;
 	Game* m_game = nullptr;
-	
+	EffectEmitter* m_tyakudanEffect = nullptr;
+
 
 	ModelRender C_W_Bullet;
 	Quaternion C_W_aiming;
-	Vector3 firing_position;
-	Vector3 C_W_Bullet_Fowrad;
+	Vector3 firing_position = Vector3::Zero;
+	Vector3 C_W_Bullet_Fowrad = Vector3::Zero;
 
 	bool Landing_state_cw = false;
 	float move_speed = 30.0f;

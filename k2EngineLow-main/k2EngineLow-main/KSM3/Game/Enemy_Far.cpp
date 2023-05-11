@@ -405,7 +405,7 @@ void Enemy_Far::Fire(int m_weaponNum)
 		m_enemyBullet3->m_bulletLocalPosition = { 0.0f,140.0f,290.0f };		//ローカルポジション設定
 		m_enemyBullet3->originRotation = m_enemyRotation;					//回転はエネミーと同じ
 
-		//爆発音の設定と再生
+		//発射音の設定と再生
 		m_battleShipGunSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_battleShipGunSE->Init(enButtleShipGun);	//初期化
 		m_battleShipGunSE->SetVolume(1.0f * m_game->SEvol);			//音量調整

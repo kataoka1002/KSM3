@@ -39,8 +39,16 @@ void Core_weapons_attack::Setup() {
 	}
 }
 
-Core_weapons_attack::~Core_weapons_attack() {
+Core_weapons_attack::~Core_weapons_attack()
+{
 	C_W_A_core_weapons->atack_state = false;
+
+	//着弾したらエフェクト再生
+	m_tyakudanEffect = NewGO<EffectEmitter>(0);
+	m_tyakudanEffect->Init(enMasinganKemuri);
+	m_tyakudanEffect->SetScale({ 10.0f,10.0f,10.0f });
+	m_tyakudanEffect->SetPosition({ firing_position.x,firing_position.y,firing_position.z });
+	m_tyakudanEffect->Play();
 }
 
 void Core_weapons_attack::Update() {
@@ -93,7 +101,7 @@ void Core_weapons_attack::Damage()
 	if (m_game->boss != nullptr)
 	{
 		Vector3 diff = firing_position - m_game->boss->boss_position;
-		if (diff.Length() <= 1000.0f)
+		if (diff.Length() <= 200.0f)
 		{
 			m_game->boss->boss_HP -= 50.0f;
 			DeleteGO(this);	//弾は消える
@@ -106,7 +114,7 @@ void Core_weapons_attack::Damage()
 		if (m_game->boss->b_boss_drill != nullptr)
 		{
 			Vector3 diff = firing_position - m_game->boss->b_boss_drill->b_w_position;
-			if (diff.Length() <= 500.0f)
+			if (diff.Length() <= 200.0f)
 			{
 				m_game->boss->b_boss_drill->drill_HP -= 50.0f;
 				DeleteGO(this);	//弾は消える
