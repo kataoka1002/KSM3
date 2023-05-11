@@ -24,15 +24,18 @@ public:
 	Boss* m_boss = nullptr;
 	EffectEmitter* m_kemuriEffect = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;
-	SoundSource* m_battleShipGunTyakudanSE = nullptr;			//íŠÍ–CSE
+	SoundSource* m_battleShipGunTyakudanSE = nullptr;	//íŠÍ–CSE
 	SoundSource* m_battleShipGunSE = nullptr;			//íŠÍ–CSE
 
 
 	ModelRender m_bulletModel;
 	Quaternion B_S_aiming;
+	Quaternion originRotation;
 	Vector3 firing_position = Vector3::Zero;
 	Vector3 m_bulletForward = Vector3::Zero;
 	Vector3 m_kemuriEfePos = Vector3::Zero;
+	Vector3 m_bulletLocalPosition = Vector3::Zero;	//’e‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
+
 
 	bool Landing_state_BB = false;
 	float move_speed = 30.0f;

@@ -3,21 +3,23 @@
 class Left_arm_weapons;
 class Customize_UI_ver2;
 class Result;
+class Game;
 
 class Player:public IGameObject
 {
 public:
 	Player();
 	~Player();
+	bool Start();
 	void Update();									//更新処理
 	void Render(RenderContext& rc);					//描画処理
 	void Move();									//移動処理
 	void ManageState();								//ステート管理
 	void pause();									//ポーズ画面
 	void MakeEfe();									//エフェクト再生
-	
+	void MachineGunSE();
 
-
+	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
 	ModelRender player_modelRender;					//モデルレンダー
 	Vector3 player_position;						//座標
 	CharacterController characterController;		//キャラクターコントローラー
@@ -33,7 +35,7 @@ public:
 	Result* m_result = nullptr;
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
 	Customize_UI_ver2* p_customize_ui_ver2 = nullptr;
-	
+	Game* m_game = nullptr;
 	
 	SpriteRender pouse_spriteRender;				//pause画面用のスプライトレンダー
 

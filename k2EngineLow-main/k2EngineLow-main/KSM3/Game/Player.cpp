@@ -18,14 +18,28 @@ Player::Player()
 
 Player::~Player()
 {
-	//DeleteGO(p_left_arm_weapons);
+	DeleteGO(m_machineGunSE);
+}
+
+bool Player::Start()
+{
+	m_game = FindGO<Game>("game");
+
+	//効果音の作成(流し続ける音源なのでインスタンスを保持させる)
+	m_machineGunSE = NewGO<SoundSource>(0);
+	//効果音の設定
+	m_machineGunSE->Init(enMachineGun);	//初期化
+	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
+
+	return true;
 }
 
 void Player::Update() 
 {
 	if (game_state == 0) //メインゲーム
 	{
-		Move();	//移動処理
+		Move();			//移動処理
+		MachineGunSE();	//マシンガンの効果音再生
 
 		//スタートボタンを押すとポーズ画面に移動
 		if (g_pad[0]->IsTrigger(enButtonStart)) 
@@ -163,6 +177,18 @@ void Player::pause()
 	else if (g_pad[0]->IsTrigger(enButtonA)) 
 	{
 		game_end_state = 1;	//ゲーム終了
+	}
+}
+
+void Player::MachineGunSE()
+{
+	if (g_pad[0]->IsPress(enButtonRB1) && m_machineGunSE->IsPlaying() != true)
+	{
+		m_machineGunSE->Play(true);	//続けて再生
+	}
+	else if(g_pad[0]->IsPress(enButtonRB1) == false)
+	{
+		m_machineGunSE->Stop();		//攻撃じゃないなら停止
 	}
 }
 

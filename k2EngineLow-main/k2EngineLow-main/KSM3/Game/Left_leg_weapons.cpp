@@ -31,12 +31,12 @@ void Left_leg_weapons::L_l_w_set() {
 		break;
 	case 4:
 		Left_leg_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
-		Left_leg_weapons_Render.SetScale(1.0f);
+		Left_leg_weapons_Render.SetScale(0.8f);
 		Left_leg_weapons_Render.Update();
 		set_weapons = l_l_w_player->p_custom_point[1][2];
 		break;
 	case 6:
-		Left_leg_weapons_Render.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
+		Left_leg_weapons_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
 		Left_leg_weapons_Render.SetScale(scale2);
 		Left_leg_weapons_Render.Update();
 		set_weapons = l_l_w_player->p_custom_point[1][2];
@@ -62,7 +62,8 @@ void Left_leg_weapons::Update() {
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->m_rot = l_l_Rotation;
+				m_machineGunAttack->originRotation = l_l_Rotation;
+				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
 				m_machineGunAttack->m_position = l_l_w_position;
 				atack_state = true;
 			}
@@ -78,7 +79,8 @@ void Left_leg_weapons::Update() {
 			else if (l_l_w_player->p_custom_point[1][2] == 6 && firing_cound % 180 == 0) 
 			{
 				battle_ship_attack = NewGO<Battle_ship_attack>(1, "battle_ship_attack");
-				battle_ship_attack->B_S_aiming = l_l_Rotation;
+				battle_ship_attack->originRotation = l_l_Rotation;
+				battle_ship_attack->m_bulletLocalPosition = Vector3{ 0.0f,-37.0f,70.0f };
 				battle_ship_attack->firing_position = l_l_w_position;
 				atack_state = true;
 			}
@@ -107,10 +109,10 @@ void Left_leg_weapons::Move() {
 		lp = { -90.0f,30.0f,0.0f };
 		break;
 	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
-		lp = { -90.0f,30.0f,0.0f };
+		lp = { -55.0f,40.0f,27.0f };
 		break;
 	case 6:	//íŠÍ–C
-		lp = { -90.0f,30.0f,55.0f };
+		lp = { -60.0f,40.0f,40.0f };
 		break;
 	default:
 		break;

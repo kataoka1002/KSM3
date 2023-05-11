@@ -180,5 +180,6 @@ void GigatonCannonAttack::Damage()
 
 void GigatonCannonAttack::Render(RenderContext& rc)
 {
-	m_bulletModel.Draw(rc);
+	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“‚Ì’e‚ÍŒ©‚¹‚È‚¢
+	//m_bulletModel.Draw(rc);
 }
