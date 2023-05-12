@@ -14,12 +14,14 @@ public:
 	void Update();									//更新処理
 	void Render(RenderContext& rc);					//描画処理
 	void Move();									//移動処理
-	void ManageState();								//ステート管理
+	void RunSE();								//ステート管理
 	void pause();									//ポーズ画面
 	void MakeEfe();									//エフェクト再生
 	void MachineGunSE();
 
 	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
+	SoundSource* m_runSE = nullptr;					//足音SE
+	SoundSource* m_walkSE = nullptr;				//足音SE
 	ModelRender player_modelRender;					//モデルレンダー
 	Vector3 player_position;						//座標
 	CharacterController characterController;		//キャラクターコントローラー

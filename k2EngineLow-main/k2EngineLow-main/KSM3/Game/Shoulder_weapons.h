@@ -25,6 +25,7 @@ public:
 	MachineGunAttack* m_machineGunAttack = nullptr;
 	MachineGunAttack* m_machineGunAttack2 = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
+	GigatonCannonAttack* m_gigatonAttack2 = nullptr;
 
 
 	Quaternion Shoulder_Rotation;
