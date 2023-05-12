@@ -32,7 +32,6 @@ MachineGunAttack::~MachineGunAttack()
 	m_tyakudanEffect->SetScale({ 10.0f,10.0f,10.0f });
 	m_tyakudanEffect->SetPosition({ m_position.x,m_position.y,m_position.z });
 	m_tyakudanEffect->Play();
-
 }
 
 bool MachineGunAttack::Start()

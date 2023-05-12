@@ -33,6 +33,8 @@ public:
 	void Window();
 	void trance_setup();
 	void trance();
+	void tranceOut();
+	void tranceOutInit();
 
 
 	GameCamera* m_gameCamera = nullptr;
