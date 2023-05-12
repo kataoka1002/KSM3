@@ -17,6 +17,7 @@
 #include "Boss_Riser.h"
 #include "Game_UI.h"
 #include "Enemy_HP_UI.h"
+#include "SoundManage.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -33,7 +34,8 @@ Game::Game()
 	//プレイヤーの作成
 	player = NewGO<Player>(1, "player");
 
-
+	//サウンドの作成
+	m_soundManage = NewGO<SoundManage>(1, "soundmanage");
 	
 	//エネミーを複数体生成
 	for (int i = 0; i < 0; i++)
@@ -43,7 +45,7 @@ Game::Game()
 		
 		m_enemyObject.push_back(enemy);
 	}
-	for (int i = 0; i < 0; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
 		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
@@ -108,8 +110,8 @@ Game::~Game()
 	DeleteGO(boss);
 	
 	
-
 	DeleteGO(player);
+	DeleteGO(m_soundManage);
 
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
@@ -144,7 +146,6 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enGigatonAttack, u"Assets/effect/enemy/gigatonAttack.efk");
 
 
-
 	//サウンドの設定
 	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
 	g_soundEngine->ResistWaveFileBank(enDash, "Assets/audio/enemy/enemyDash.wav");
@@ -154,6 +155,10 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enEnemyDeadSE, "Assets/audio/enemy/enemyDead.wav");
 	g_soundEngine->ResistWaveFileBank(enButtleShipTyakudan, "Assets/audio/enemy/buttleShipTyakudan.wav");
 	g_soundEngine->ResistWaveFileBank(enPlayerRun, "Assets/audio/player/playerRun.wav");
+	g_soundEngine->ResistWaveFileBank(enGameBGM, "Assets/audio/BGM/game_bgm.wav");
+	g_soundEngine->ResistWaveFileBank(enBossBGM, "Assets/audio/BGM/last_boss_bgm.wav");
+	g_soundEngine->ResistWaveFileBank(enCustomizeBGM, "Assets/audio/BGM/Customize_bgm.wav");
+
 
 
 	//m_fade = FindGO<Fade>("fade");

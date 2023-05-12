@@ -12,7 +12,6 @@
 Core_weapons_attack::Core_weapons_attack() {
 	C_W_A_player = FindGO<Player>("player");
 	C_W_A_core_weapons = FindGO<Core_weapons>("core_weapons");
-	//c_w_a_enemy = FindGO<Enemy>("enemy");
 	m_game = FindGO<Game>("game");
 	Setup();
 }
@@ -129,6 +128,15 @@ void Core_weapons_attack::Move() {
 	move_speed -= 0.05f;
 	fall_speed += 0.1f;
 	C_W_Bullet.SetPosition(firing_position);
+
+	//’e‚ÆƒvƒŒƒCƒ„[(e)‚Ì‹——£‚ðŒvŽZ‚µ‚Äˆê’è‹——£ˆÈã‚È‚ç’e‚ðÁ‚·
+	Vector3 m_toPlayer = C_W_A_player->player_position - firing_position;
+	float m_dirToPlayer = m_toPlayer.Length();
+	if (m_dirToPlayer >= 2000.0f)
+	{
+		DeleteGO(this);
+	}
+
 }
 
 void Core_weapons_attack::Render(RenderContext& rc) {
