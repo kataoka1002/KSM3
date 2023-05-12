@@ -44,7 +44,8 @@ enum SoundName {
 	enGigatonCannon,	//ギガトンキャノン
 	enButtleShipGun,	//戦艦砲
 	enEnemyDeadSE,		//敵死亡時のSE
-	enButtleShipTyakudan//戦艦砲の着弾SE
+	enButtleShipTyakudan,//戦艦砲の着弾SE
+	enPlayerRun			//プレイヤーの足音(速い方)
 };
 
 class Game :public IGameObject

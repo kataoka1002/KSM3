@@ -153,7 +153,7 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enButtleShipGun, "Assets/audio/enemy/buttleShipAttack.wav");
 	g_soundEngine->ResistWaveFileBank(enEnemyDeadSE, "Assets/audio/enemy/enemyDead.wav");
 	g_soundEngine->ResistWaveFileBank(enButtleShipTyakudan, "Assets/audio/enemy/buttleShipTyakudan.wav");
-
+	g_soundEngine->ResistWaveFileBank(enPlayerRun, "Assets/audio/player/playerRun.wav");
 
 
 	//m_fade = FindGO<Fade>("fade");

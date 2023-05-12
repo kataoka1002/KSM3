@@ -91,8 +91,15 @@ void Shoulder_weapons::Update()
 				//弾にポジションと回転を教えて生成する
 				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
 				m_gigatonAttack->originRotation = Shoulder_Rotation;
-				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 0.0f,0.0f,100.0f };
+				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 40.0f,0.0f,100.0f };
 				m_gigatonAttack->m_position = s_w_position;
+
+				//弾にポジションと回転を教えて生成する
+				m_gigatonAttack2 = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
+				m_gigatonAttack2->originRotation = Shoulder_Rotation;
+				m_gigatonAttack2->m_bulletLocalPosition = Vector3{ -40.0f,0.0f,100.0f };
+				m_gigatonAttack2->m_position = s_w_position;
+
 				atack_state = true;
 			}
 			else if (s_w_player->p_custom_point[0][1] == 6 && firing_cound % 180 == 0) 
