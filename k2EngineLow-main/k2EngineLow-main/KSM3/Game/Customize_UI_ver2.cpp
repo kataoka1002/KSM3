@@ -47,12 +47,12 @@ bool Customize_UI_ver2::Start()
 {
 	//まとめてFindGOする
 	m_player = FindGO<Player>("player");
-	m_coreWeapon = FindGO<Core_weapons>("core_weapons");
-	m_rightArmWeapon = FindGO<Right_arm_weapons>("right_arm_weapons");
-	m_leftArmWeapon = FindGO<Left_arm_weapons>("left_arm_weapons");
-	m_shoulderWeapon = FindGO<Shoulder_weapons>("shoulder_weapons");
-	m_rightLegWeapon = FindGO<Right_leg_weapons>("right_leg_weapons");
-	m_leftLegWeapon = FindGO<Left_leg_weapons>("left_leg_weapons");
+	m_coreWeapon = FindGO<Core_weapons>("core_weapons");	//コア武器はGame.cppでNewGOしている
+	//m_rightArmWeapon = FindGO<Right_arm_weapons>("right_arm_weapons");
+	//m_leftArmWeapon = FindGO<Left_arm_weapons>("left_arm_weapons");
+	//m_shoulderWeapon = FindGO<Shoulder_weapons>("shoulder_weapons");
+	//m_rightLegWeapon = FindGO<Right_leg_weapons>("right_leg_weapons");
+	//m_leftLegWeapon = FindGO<Left_leg_weapons>("left_leg_weapons");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_dropItem = FindGO<Drop_item>("drop_item");
 
@@ -912,26 +912,49 @@ void Customize_UI_ver2::Window()
 					
 					break;
 				case 1:
-					m_shoulderWeapon = NewGO<Shoulder_weapons>(2, "shoulder_weapons");
+					if (m_shoulderWeapon == nullptr) 
+					{
+						m_shoulderWeapon = NewGO<Shoulder_weapons>(2, "shoulder_weapons");
+						//武器取り付けを承認してカスタム画面が終わる時
+						tranceOutInit();
+					}
 					break;
 				case 2:
-					m_rightArmWeapon = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
+					if (m_rightArmWeapon == nullptr)
+					{
+						m_rightArmWeapon = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
+						//武器取り付けを承認してカスタム画面が終わる時
+						tranceOutInit();
+					}
 					break;
 				case 3:
-					m_leftArmWeapon = NewGO<Left_arm_weapons>(2, "left_arm_weapons");
+					if (m_leftArmWeapon == nullptr)
+					{
+						m_leftArmWeapon = NewGO<Left_arm_weapons>(2, "left_arm_weapons");
+						//武器取り付けを承認してカスタム画面が終わる時
+						tranceOutInit();
+					}
 					break;
 				case 4:
-					m_rightLegWeapon = NewGO<Right_leg_weapons>(2, "right_leg_weapons");
+					if (m_rightLegWeapon == nullptr)
+					{
+						m_rightLegWeapon = NewGO<Right_leg_weapons>(2, "right_leg_weapons");
+						//武器取り付けを承認してカスタム画面が終わる時
+						tranceOutInit();
+					}
 					break;
 				case 5:
-					m_leftLegWeapon = NewGO<Left_leg_weapons>(2, "left_leg_weapons");
+					if (m_leftLegWeapon == nullptr)
+					{
+						m_leftLegWeapon = NewGO<Left_leg_weapons>(2, "left_leg_weapons");
+						//武器取り付けを承認してカスタム画面が終わる時
+						tranceOutInit();
+					}
 				default:
 					break;
 
 				}
-
-				//武器取り付けを承認してカスタム画面が終わる時
-				tranceOutInit();
+				//ここにrtanceOutInit()を置くとなぜか2回呼ばれるのでここには置いてない
 			}
 		}
 		//DECLINE時の処理
@@ -996,7 +1019,7 @@ void Customize_UI_ver2::Custom_model_Core()
 
 void Customize_UI_ver2::Custom_model_Right_arm()
 {
-	right_arm_weapon_set = true;
+	Right_arm_weapon_set = true;
 
 	//付けている武器によってカスタム画面のモデルを変更する
 	switch (m_rightArmWeapon->set_weapons)
@@ -1229,7 +1252,7 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 		custom_model_Core.Draw(rc);				//コア武器はずっと存在するので分岐なし
 		custom_model_body.Draw(rc);				//胴体はずっと存在するので分岐なし
 
-		if (right_arm_weapon_set == true)
+		if (Right_arm_weapon_set == true)
 		{
 			custom_model_Right_arm.Draw(rc);	//右腕
 		}

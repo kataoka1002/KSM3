@@ -6,28 +6,25 @@
 #include "MachineGunAttack.h"
 #include "Right_arm_UI.h"
 #include "GigatonCannonAttack.h"
+#include "Customize_UI_ver2.h"
 
 
 Right_arm_weapons::Right_arm_weapons() 
 {
 	right_arm_ui = NewGO<Right_arm_UI>(1, "right_arm_ui");
+	
 }
 
 Right_arm_weapons::~Right_arm_weapons() 
 {
-	/*if (atack_state == true) 
-	{
-		if (battle_ship_attack->Landing_state_BB == false) 
-		{
-			DeleteGO(battle_ship_attack);
-		}
-	}*/
+	
 }
 
 bool Right_arm_weapons::Start()
 {
 	r_a_w_player = FindGO<Player>("player");
 	right_arm_ui = FindGO<Right_arm_UI>("right_arm_ui");
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 
 	R_a_w_set();
 
@@ -36,11 +33,6 @@ bool Right_arm_weapons::Start()
 
 void Right_arm_weapons::R_a_w_set() 
 {
-	if (r_a_w_player->p_custom_point[0][0] == 1) 
-	{
-		
-	}
-
 	//付いている武器によってモデルを変更する
 	switch (r_a_w_player->p_custom_point[0][0])
 	{
@@ -72,6 +64,17 @@ void Right_arm_weapons::Update()
 	if (r_a_w_player->game_state == 0) 
 	{
 		Move();
+
+		//HPが0以下になると消える
+		if (m_rightArmHP <= 0)
+		{
+			//プレイヤーの設定武器を空にする
+			r_a_w_player->p_custom_point[0][0] = 0;
+			m_customizeUI->Right_arm_weapon_set = false;
+			m_customizeUI->m_rightArmWeapon = nullptr;
+			DeleteGO(this);
+		}
+
 		//攻撃
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
@@ -112,7 +115,14 @@ void Right_arm_weapons::Update()
 			firing_count = 0;
 		}
 
+		//プレイヤーが死亡したら武器も消える
 		if (r_a_w_player->game_end_state == 1) 
+		{
+			DeleteGO(this);
+		}
+
+		//HPが0になると破壊される
+		if (m_rightArmHP <= 0)
 		{
 			DeleteGO(this);
 		}

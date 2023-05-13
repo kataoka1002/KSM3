@@ -4,6 +4,7 @@ class Battle_ship_attack;
 class Shoulder_UI;
 class MachineGunAttack;
 class GigatonCannonAttack;
+class Customize_UI_ver2;
 
 
 class Shoulder_weapons:public IGameObject
@@ -26,6 +27,8 @@ public:
 	MachineGunAttack* m_machineGunAttack2 = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
 	GigatonCannonAttack* m_gigatonAttack2 = nullptr;
+	Customize_UI_ver2* m_customizeUI = nullptr;
+
 
 
 	Quaternion Shoulder_Rotation;
@@ -47,6 +50,6 @@ public:
 	int firing_cound = 0;
 	int fast = 0;
 
-	float S_w_HP = 0.0f;
+	float S_w_HP = 1.0f;
 };
 

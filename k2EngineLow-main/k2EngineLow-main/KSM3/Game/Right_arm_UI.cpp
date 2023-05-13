@@ -37,7 +37,7 @@ void Right_arm_UI::Render(RenderContext& rc)
 			switch (player->p_custom_point[0][0])
 		case 1:
 			{
-				if (right_arm_weapons->R_a_w_HP == 0.0f)
+				if (right_arm_weapons->m_rightArmHP == 0.0f)
 				{
 					r_a_w_hp_render[0].Draw(rc);
 				}

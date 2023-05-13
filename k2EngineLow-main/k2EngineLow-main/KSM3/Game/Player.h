@@ -14,7 +14,7 @@ public:
 	void Update();									//更新処理
 	void Render(RenderContext& rc);					//描画処理
 	void Move();									//移動処理
-	void RunSE();								//ステート管理
+	void RunSE();									//ステート管理
 	void pause();									//ポーズ画面
 	void MakeEfe();									//エフェクト再生
 	void MachineGunSE();
@@ -38,20 +38,24 @@ public:
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
 	Customize_UI_ver2* p_customize_ui_ver2 = nullptr;
 	Game* m_game = nullptr;
-	
-	SpriteRender pouse_spriteRender;				//pause画面用のスプライトレンダー
+
 
 	int game_end_state = 0;							//ゲームの終了判定
+
+	SpriteRender pouse_spriteRender;	//pause画面用のスプライトレンダー
 
 	//エフェクト関係
 	EffectEmitter* sunabokoriEffect = nullptr;
 	int effectCount = 0;
 
 	int killEnemy = 0;	//敵を殺した数(10になるとウェーブが進む)
-
-							
+						
 	
-	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };	//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足	
+						
+						
+	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };		//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足
+					
+	
 	
 	bool m_cameraMove = false;	//カメラ切り替え中かどうか
 

@@ -6,22 +6,23 @@
 #include "MachineGunAttack.h"
 #include "Right_leg_UI.h"
 #include "GigatonCannonAttack.h"
+#include "Customize_UI_ver2.h"
 
 
-Right_leg_weapons::Right_leg_weapons() {
+Right_leg_weapons::Right_leg_weapons() 
+{
 	r_l_w_player = FindGO<Player>("player");
 	right_leg_ui = FindGO<Right_leg_UI>("right_leg_UI");
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 }
 
-Right_leg_weapons::~Right_leg_weapons() {
-	/*if (atack_state == true) {
-		if (battle_ship_attack->Landing_state_BB == false) {
-			DeleteGO(battle_ship_attack);
-		}
-	}*/
+Right_leg_weapons::~Right_leg_weapons() 
+{
+	
 }
 
-void Right_leg_weapons::R_l_w_set() {
+void Right_leg_weapons::R_l_w_set() 
+{
 	switch (r_l_w_player->p_custom_point[1][0])
 	{
 	case 2:
@@ -48,14 +49,31 @@ void Right_leg_weapons::R_l_w_set() {
 	}
 }
 
-void Right_leg_weapons::Update() {
-	if (fast == 0) {
+void Right_leg_weapons::Update() 
+{
+	if (fast == 0) 
+	{
 		R_l_w_set();
 		right_leg_ui= NewGO<Right_leg_UI>(1, "right_leg_UI");
 	}
+
 	fast++;
-	if (r_l_w_player->game_state == 0) {
+
+	if (r_l_w_player->game_state == 0) 
+	{
 		Move();
+
+		//HPÇ™0à»â∫Ç…Ç»ÇÈÇ∆è¡Ç¶ÇÈ
+		if (R_l_w_HP <= 0)
+		{
+			//ÉvÉåÉCÉÑÅ[ÇÃê›íËïêäÌÇãÛÇ…Ç∑ÇÈ
+			r_l_w_player->p_custom_point[1][0] = 0;
+			m_customizeUI->Right_leg_weapon_set = false;
+			m_customizeUI->m_rightLegWeapon = nullptr;
+			DeleteGO(this);
+		}
+
+
 		//çUåÇ
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
@@ -88,18 +106,23 @@ void Right_leg_weapons::Update() {
 			}
 			firing_cound++;
 		}
-		else {
+		else 
+		{
 			firing_cound = 0;
 		}
-		if (r_l_w_player->game_end_state == 1) {
+
+		if (r_l_w_player->game_end_state == 1) 
+		{
 			DeleteGO(this);
 		}
+
 		r_l_w_player->attack_state_rl = atack_state;
 		Right_leg_weapons_Render.Update();
 	}
 }
 
-void Right_leg_weapons::Move() {
+void Right_leg_weapons::Move() 
+{
 	Quaternion originRotation = r_l_w_player->player_rotation;
 	r_l_w_position = r_l_w_player->player_position;
 
@@ -126,6 +149,7 @@ void Right_leg_weapons::Move() {
 	Right_leg_weapons_Render.SetRotation(r_l_Rotation);
 }
 
-void Right_leg_weapons::Render(RenderContext& rc) {
+void Right_leg_weapons::Render(RenderContext& rc) 
+{
 	Right_leg_weapons_Render.Draw(rc);
 }

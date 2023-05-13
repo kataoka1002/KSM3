@@ -6,24 +6,22 @@
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
 #include "GigatonCannonAttack.h"
+#include "Customize_UI_ver2.h"
 
-Left_arm_weapons::Left_arm_weapons() {
+Left_arm_weapons::Left_arm_weapons() 
+{
 	l_a_w_player = FindGO<Player>("player");
 	left_arm_ui = FindGO<Left_arm_UI>("left_arm_ui");
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 }
 
-Left_arm_weapons::~Left_arm_weapons() {
-	/*if (atack_state == true) {
-		if (battle_ship_attack->Landing_state_BB == false) {
-			DeleteGO(battle_ship_attack);
-		}
-	}*/
+Left_arm_weapons::~Left_arm_weapons() 
+{
+	
 }
 
-void Left_arm_weapons::L_a_w_set() {
-	if (l_a_w_player->p_custom_point[0][2] == 1) {
-		
-	}
+void Left_arm_weapons::L_a_w_set() 
+{
 	switch (l_a_w_player->p_custom_point[0][2])
 	{
 	case 2:
@@ -55,14 +53,27 @@ void Left_arm_weapons::L_a_w_set() {
 
 void Left_arm_weapons::Update() 
 {
-	if (fast == 0) {
+	if (fast == 0) 
+	{
 		L_a_w_set();
 		left_arm_ui= NewGO<Left_arm_UI>(0, "left_arm_ui");
 	}
+
 	fast++;
+
 	if (l_a_w_player->game_state == 0) 
 	{
 		Move();
+
+		//HPÇ™0à»â∫Ç…Ç»ÇÈÇ∆è¡Ç¶ÇÈ
+		if (L_a_w_HP <= 0)
+		{
+			//ÉvÉåÉCÉÑÅ[ÇÃê›íËïêäÌÇãÛÇ…Ç∑ÇÈ
+			l_a_w_player->p_custom_point[0][2] = 0;
+			m_customizeUI->Left_arm_weapon_set = false;
+			m_customizeUI->m_leftArmWeapon = nullptr;
+			DeleteGO(this);
+		}
 
 		//íeÇÃê∂ê¨
 		if (g_pad[0]->IsPress(enButtonRB1)) 
@@ -94,18 +105,23 @@ void Left_arm_weapons::Update()
 			}
 			firing_cound++;
 		}
-		else {
+		else 
+		{
 			firing_cound = 0;
 		}
-		if (l_a_w_player->game_end_state == 1) {
+
+		if (l_a_w_player->game_end_state == 1) 
+		{
 			DeleteGO(this);
 		}
+
 		l_a_w_player->attack_state_la = atack_state;
 		Left_arm_weapons_Render.Update();
 	}
 }
 
-void Left_arm_weapons::Move() {
+void Left_arm_weapons::Move() 
+{
 	Quaternion originRotation = l_a_w_player->player_rotation;
 	l_a_w_position = l_a_w_player->player_position;
 
@@ -134,6 +150,7 @@ void Left_arm_weapons::Move() {
 	Left_arm_weapons_Render.SetRotation(l_a_Rotation);
 }
 
-void Left_arm_weapons::Render(RenderContext& rc) {
+void Left_arm_weapons::Render(RenderContext& rc)
+{
 	Left_arm_weapons_Render.Draw(rc);
 }
