@@ -29,10 +29,23 @@ bool SoundManage::Start()
 void SoundManage::Update()
 {
 	//ゲーム中のBGM再生
-	if (m_player->game_state == 0 && m_gameBGM->IsPlaying()!=true)
+	if (m_gameBGM->IsPlaying() != true)
 	{
-		m_gameBGM->Play(true);
+		if (m_player->game_state == 0 || m_player->game_state == 1)
+		{
+			m_gameBGM->Play(true);
+			m_customizeBGM->Stop();	//カスタムBGMは止める
+		}
 	}
+
+	//カスタマイズ画面のBGM再生
+	if (m_player->game_state == 3 && m_customizeBGM->IsPlaying() != true)
+	{
+		m_customizeBGM->Play(true);
+		m_gameBGM->Stop();	//ゲームBGMは止める
+	}
+
+	//ボス戦のBGM再生
 }
 
 void SoundManage::SetUp()

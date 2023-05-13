@@ -841,14 +841,14 @@ void Customize_UI_ver2::tranceOut()
 	trance_sheet[0].SetPosition(trance_sheet01_position);
 	trance_sheet[2].SetPosition(trance_sheet03_position);
 
-	//黒フェード終了したらカメラ移動(ステートはカスタム画面のまま)
+	//黒フェード終了したらカメラ移動(プレイヤーのステートはカスタム画面のまま)
 	if (trance_sheet_count == 50)
 	{
 		//カメラの初期化
 		m_gameCamera->trance_Finish = false;
 		m_gameCamera->CameraState = 0;
 		m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
-		m_gameCamera->m_springCamera.Refresh();
+		m_gameCamera->m_springCamera.Refresh();	//ばねカメラを瞬時に移動させる
 	}
 
 	//黒フェード消滅
