@@ -28,7 +28,6 @@ Result::Result()
 				p_custom_point[i][j] = player->p_custom_point[i][j];
 			}
 		}
-	boss=FindGO<Boss>("boss");
 	gamecamera=FindGO<GameCamera>("gamecamera");
 }
 
