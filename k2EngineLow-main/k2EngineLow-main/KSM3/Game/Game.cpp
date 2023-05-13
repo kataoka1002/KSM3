@@ -112,7 +112,6 @@ Game::~Game()
 	DeleteGO(boss);
 	
 	
-	DeleteGO(player);
 	DeleteGO(m_soundManage);
 
 	//プッシュしたアイテムを削除していく

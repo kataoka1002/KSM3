@@ -90,7 +90,7 @@ void GameCamera::Update()
 		
 
 	}
-	if (m_player->game_state == 3)
+	if (CameraState == 3)
 	{
 		//m_toCameraPos.Set(0.0f, -50.0f, -300.0f);
 		////‹ß•½–Ê,‰“•½–Ê’²®’†cB
