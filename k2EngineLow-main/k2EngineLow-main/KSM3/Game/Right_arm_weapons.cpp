@@ -121,11 +121,6 @@ void Right_arm_weapons::Update()
 			DeleteGO(this);
 		}
 
-		//HPが0になると破壊される
-		if (m_rightArmHP <= 0)
-		{
-			DeleteGO(this);
-		}
 
 		r_a_w_player->attack_state_ra = atack_state;
 		Right_arm_weapons_Render.Update();
