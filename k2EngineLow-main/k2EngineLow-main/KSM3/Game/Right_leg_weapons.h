@@ -4,7 +4,7 @@ class Battle_ship_attack;
 class Right_leg_UI;
 class MachineGunAttack;
 class GigatonCannonAttack;
-
+class Customize_UI_ver2;
 
 class Right_leg_weapons:public IGameObject
 {
@@ -22,6 +22,7 @@ public:
 	Right_leg_UI*right_leg_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
+	Customize_UI_ver2* m_customizeUI = nullptr;
 
 
 	Quaternion r_l_Rotation;
@@ -40,6 +41,6 @@ public:
 	int firing_cound = 0;
 	int fast = 0;
 
-	float R_l_w_HP = 0.0f;
+	float R_l_w_HP = 1.0f;
 };
 

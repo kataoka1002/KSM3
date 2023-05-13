@@ -5,6 +5,7 @@ class Battle_ship_attack;
 class Left_arm_UI;
 class MachineGunAttack;
 class GigatonCannonAttack;
+class Customize_UI_ver2;
 
 class Left_arm_weapons :public IGameObject
 {
@@ -21,6 +22,7 @@ public:
 	Left_arm_UI* left_arm_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
+	Customize_UI_ver2* m_customizeUI = nullptr;
 
 
 	Quaternion l_a_Rotation;
@@ -39,6 +41,6 @@ public:
 	int firing_cound = 0;
 	int fast = 0;
 
-	float L_a_w_HP = 0.0f;
+	float L_a_w_HP = 1.0f;
 };
 

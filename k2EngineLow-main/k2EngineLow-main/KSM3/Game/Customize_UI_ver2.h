@@ -82,7 +82,7 @@ public:
 	Vector3 rlw_lp;//右足装備のローカルポジション
 	Vector3 llw_lp;//左足装備のローカルポジション
 
-	bool right_arm_weapon_set = false;//右手の装備がセットされているか
+	bool Right_arm_weapon_set = false;//右手の装備がセットされているか
 	bool Left_arm_weapon_set = false;//左手の装備がセットされているか
 	bool Shoulder_weapon_set = false;//肩の装備がセットされているか
 	bool Right_leg_weapon_set = false;//右足の装備がセットされているか

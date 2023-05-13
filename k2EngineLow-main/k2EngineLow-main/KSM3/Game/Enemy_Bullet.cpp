@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Customize_UI_ver2.h"
 #include "Enemy_Bullet.h"
 #include "Core_weapons.h"
 #include "Enemy.h"
@@ -7,6 +8,11 @@
 #include "Player.h"
 #include "Game.h"
 #include "sound/SoundEngine.h"
+#include "Left_arm_weapons.h"
+#include "Left_leg_weapons.h"
+#include "Right_arm_weapons.h"
+#include "Right_leg_weapons.h"
+#include "Shoulder_weapons.h"
 
 Enemy_Bullet::Enemy_Bullet() 
 {
@@ -33,27 +39,68 @@ Enemy_Bullet::~Enemy_Bullet()
 	}
 	else if (m_enemyFarMama != nullptr)
 	{
-		//エフェクトの初期化と再生
-		m_weaponEffect = NewGO<EffectEmitter>(0);
-		m_weaponEffect->Init(enTyakudan);
-		m_weaponEffect->SetScale({ 5.7f,5.7f,5.7f });
-		m_weaponEffect->SetPosition(m_position);
-		m_weaponEffect->Play();
+		if (m_enemyFarMama->m_setWeapon == 6)	//戦艦砲の煙エフェクト
+		{
+			//戦艦砲エフェクトの初期化と再生
+			m_weaponEffect = NewGO<EffectEmitter>(0);
+			m_weaponEffect->Init(enTyakudan);
+			m_weaponEffect->SetScale({ 5.7f,5.7f,5.7f });
+			m_weaponEffect->SetPosition(m_position);
+			m_weaponEffect->Play();
 
-		//着弾したら効果音発生
-		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
-		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
-		m_battleShipGunTyakutiSE->Play(false);
+			//着弾したら効果音発生
+			m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+			m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
+			m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+			m_battleShipGunTyakutiSE->Play(false);
+		}
 	}
 }
 
 bool Enemy_Bullet::Start()
 {
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 	m_player = FindGO<Player>("player");
 	m_coreWeapons = FindGO<Core_weapons>("core_weapons");
 	m_game = FindGO<Game>("game");
 
+	FindWeapon();	//プレイヤーの武器を検索する
+	Setup();		//武器やエフェクトの設定
+		
+	return true;
+}
+
+void Enemy_Bullet::FindWeapon()
+{
+	//左腕
+	if (m_customizeUI->m_leftArmWeapon != nullptr)
+	{
+		m_leftArm = m_customizeUI->m_leftArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//左足
+	if (m_customizeUI->m_leftLegWeapon != nullptr)
+	{
+		m_leftLeg = m_customizeUI->m_leftLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//右腕
+	if (m_customizeUI->m_rightArmWeapon != nullptr)
+	{
+		m_rightArm = m_customizeUI->m_rightArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//右足
+	if (m_customizeUI->m_rightLegWeapon != nullptr)
+	{
+		m_rightLeg = m_customizeUI->m_rightLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//肩
+	if (m_customizeUI->m_shoulderWeapon != nullptr)
+	{
+		m_shoulder = m_customizeUI->m_shoulderWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+}
+
+void Enemy_Bullet::Setup() 
+{
 	//親によって初期情報を変える
 	if (m_enemyMama != nullptr)
 	{
@@ -100,7 +147,7 @@ bool Enemy_Bullet::Start()
 
 			//モデルの初期化
 			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale({ 15.0f ,15.0f,10.0f});
+			m_bulletModel.SetScale({ 15.0f ,15.0f,10.0f });
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 			//最終的な弾の回転を決定
@@ -156,14 +203,6 @@ bool Enemy_Bullet::Start()
 			break;
 		}
 	}
-		
-
-	return true;
-}
-
-void Enemy_Bullet::Setup() 
-{
-
 }
 
 void Enemy_Bullet::Update() 
@@ -313,42 +352,227 @@ void Enemy_Bullet::Effect(int num)
 
 void Enemy_Bullet::Damage(int weaponNum)
 {
-	//武器によってダメージを変える
-	if (weaponNum == 2)			//マシンガン
+	//---------------------------------------------------------------------------------------------------
+	if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 	{
-		//弾とプレイヤーの距離を測り一定以下なら体力減少
-		Vector3 diff = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
-		if (diff.Length() <= 100.0f) //ダメージが入る範囲
-		{
-			m_player->m_playerHP -= 0.5f;
-			DeleteGO(this);	//弾は消える
-		}
-	}
-	else if(weaponNum == 4)		//ギガトンキャノン
-	{
-		//弾とプレイヤーの距離を測り一定以下なら体力減少
-		Vector3 diff = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
-		if (diff.Length() <= 100.0f) //ダメージが入る範囲
-		{
-			m_player->m_playerHP -= 0.5f;
-			DeleteGO(this);	//弾は消える
-		}
-	}
-	else if (weaponNum == 6)	//戦艦砲
-	{
-		//弾とプレイヤーの距離を測り一定以下なら体力減少
-		Vector3 diff = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
-		if (diff.Length() <= 100.0f) //ダメージが入る範囲
-		{
-			m_player->m_playerHP -= 0.5f;
-			DeleteGO(this);	//弾は消える
-		}
-	}
-}
+		//弾とプレイヤーの距離を測る
+		Vector3 diffPlayer = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
 
-void Enemy_Bullet::EffectDelete(int num)
-{
-	
+		//武器によってダメージを変える
+		if (weaponNum == 2)			//マシンガン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_player->m_playerHP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 4)		//ギガトンキャノン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_player->m_playerHP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 6)	//戦艦砲
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_player->m_playerHP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------------
+
+	//---------------------------------------------------------------------------------------------------
+	if (m_leftArm != nullptr)	//左腕に情報が入っているなら
+	{
+		//弾と左腕の距離を測る
+		Vector3 diffLeftArm = m_position - Vector3{ m_leftArm->l_a_w_position.x, m_leftArm->l_a_w_position.y, m_leftArm->l_a_w_position.z };
+		
+		//武器によってダメージを変える
+		if (weaponNum == 2)			//マシンガン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffLeftArm.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_leftArm->L_a_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 4)		//ギガトンキャノン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffLeftArm.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_leftArm->L_a_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 6)	//戦艦砲
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffLeftArm.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_leftArm->L_a_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------------
+
+	//---------------------------------------------------------------------------------------------------
+	if (m_leftLeg != nullptr)	//左足に情報が入っているなら
+	{
+		//弾と左腕の距離を測る
+		Vector3 diffLeftLeg = m_position - Vector3{ m_leftLeg->l_l_w_position.x, m_leftLeg->l_l_w_position.y, m_leftLeg->l_l_w_position.z };
+
+		//武器によってダメージを変える
+		if (weaponNum == 2)			//マシンガン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffLeftLeg.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_leftLeg->L_l_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 4)		//ギガトンキャノン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffLeftLeg.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_leftLeg->L_l_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 6)	//戦艦砲
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffLeftLeg.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_leftLeg->L_l_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------------
+
+	//---------------------------------------------------------------------------------------------------
+	if (m_rightArm != nullptr)	//右手に情報が入っているなら
+	{
+		//弾と左腕の距離を測る
+		Vector3 diffRightArm = m_position - Vector3{ m_rightArm->r_a_w_position.x, m_rightArm->r_a_w_position.y, m_rightArm->r_a_w_position.z };
+
+		//武器によってダメージを変える
+		if (weaponNum == 2)			//マシンガン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffRightArm.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_rightArm->m_rightArmHP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 4)		//ギガトンキャノン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffRightArm.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_rightArm->m_rightArmHP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 6)	//戦艦砲
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffRightArm.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_rightArm->m_rightArmHP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------------
+
+	//---------------------------------------------------------------------------------------------------
+	if (m_rightLeg != nullptr)	//右足に情報が入っているなら
+	{
+		//弾と左腕の距離を測る
+		Vector3 diffRightLeg = m_position - Vector3{ m_rightLeg->r_l_w_position.x, m_rightLeg->r_l_w_position.y, m_rightLeg->r_l_w_position.z };
+
+		//武器によってダメージを変える
+		if (weaponNum == 2)			//マシンガン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffRightLeg.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_rightLeg->R_l_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 4)		//ギガトンキャノン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffRightLeg.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_rightLeg->R_l_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 6)	//戦艦砲
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffRightLeg.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_rightLeg->R_l_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------------
+
+	//---------------------------------------------------------------------------------------------------
+	if (m_shoulder != nullptr)	//肩に情報が入っているなら
+	{
+		//弾と左腕の距離を測る
+		Vector3 diffShoulder = m_position - Vector3{ m_shoulder->s_w_position.x, m_shoulder->s_w_position.y, m_shoulder->s_w_position.z };
+
+		//武器によってダメージを変える
+		if (weaponNum == 2)			//マシンガン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffShoulder.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_shoulder->S_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 4)		//ギガトンキャノン
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffShoulder.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_shoulder->S_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+		else if (weaponNum == 6)	//戦艦砲
+		{
+			//距離を測り一定以下なら体力減少
+			if (diffShoulder.Length() <= 100.0f) //ダメージが入る範囲
+			{
+				m_shoulder->S_w_HP -= 0.5f;
+				DeleteGO(this);	//弾は消える
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------------
 }
 
 void Enemy_Bullet::Render(RenderContext& rc)

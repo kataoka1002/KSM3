@@ -1,12 +1,19 @@
 #pragma once
 #include "sound/SoundSource.h"
 
+class Customize_UI_ver2;
 class Core_weapons;
 class Enemy;
 class Enemy_Near;
 class Enemy_Far;
 class Player;
 class Game;
+class Left_arm_weapons;
+class Left_leg_weapons;
+class Right_arm_weapons;
+class Right_leg_weapons;
+class Shoulder_weapons;
+
 
 class Enemy_Bullet:public IGameObject
 {
@@ -22,28 +29,34 @@ public:
 	bool Start();
 	void Effect(int num);
 	void Render(RenderContext& rc);
-	void EffectDelete(int num);
+	void FindWeapon();
 	void Damage(int weaponNum);
 
+	Customize_UI_ver2* m_customizeUI = nullptr;
 	Core_weapons* m_coreWeapons = nullptr;
-	Player* m_player = nullptr; 
-	Game* m_game = nullptr;
-	SoundSource* m_battleShipGunTyakutiSE = nullptr;			//戦艦砲SE
 	Enemy* m_enemyMama = nullptr;
 	Enemy_Near* m_enemyNearMama = nullptr;
 	Enemy_Far* m_enemyFarMama = nullptr;
+	Player* m_player = nullptr; 
+	Game* m_game = nullptr;
+	Left_arm_weapons* m_leftArm = nullptr;
+	Left_leg_weapons* m_leftLeg = nullptr;
+	Right_arm_weapons* m_rightArm = nullptr;
+	Right_leg_weapons* m_rightLeg = nullptr;
+	Shoulder_weapons* m_shoulder = nullptr;
 	EffectEmitter* m_weaponEffect = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;
+	SoundSource* m_battleShipGunTyakutiSE = nullptr;			//戦艦砲SE
 
 	ModelRender m_bulletModel;	//マシンガンの弾のモデル
 	Quaternion m_aim;
 	Quaternion m_rot;
 	Quaternion originRotation;
-	Vector3 m_position;
-	Vector3 m_bulletFowrad;
-	Vector3 m_toCoreWeapons;
-	Vector3 m_bulletSpeed;
-	Vector3 m_bulletLocalPosition;	//弾のローカルポジション
+	Vector3 m_position = Vector3::Zero;
+	Vector3 m_bulletFowrad = Vector3::Zero;
+	Vector3 m_toCoreWeapons = Vector3::Zero;
+	Vector3 m_bulletSpeed = Vector3::Zero;
+	Vector3 m_bulletLocalPosition = Vector3::Zero;	//弾のローカルポジション
 
 	float m_fallSpeed = 0.0f;
 	bool m_attuckState = true;

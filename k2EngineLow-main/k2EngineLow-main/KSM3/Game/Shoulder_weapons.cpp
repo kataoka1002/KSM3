@@ -6,12 +6,14 @@
 #include "MachineGunAttack.h"
 #include "Shoulder_UI.h"
 #include "GigatonCannonAttack.h"
+#include "Customize_UI_ver2.h"
 
 
 Shoulder_weapons::Shoulder_weapons() 
 {
 	s_w_player = FindGO<Player>("player");
 	shoulder_ui= FindGO<Shoulder_UI>("shoulder_ui");
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 }
 
 Shoulder_weapons::~Shoulder_weapons() 
@@ -69,6 +71,17 @@ void Shoulder_weapons::Update()
 	{
 		Move();
 		Move2();
+
+		//HP��0�ȉ��ɂȂ�Ə����
+		if (S_w_HP <= 0)
+		{
+			//�v���C���[�̐ݒ蕐����ɂ���
+			s_w_player->p_custom_point[0][1] = 0;
+			m_customizeUI->Shoulder_weapon_set = false;
+			m_customizeUI->m_shoulderWeapon = nullptr;
+			DeleteGO(this);
+		}
+
 		//�U��
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{

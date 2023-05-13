@@ -6,23 +6,24 @@
 #include "MachineGunAttack.h"
 #include "Right_leg_UI.h"
 #include "GigatonCannonAttack.h"
+#include "Customize_UI_ver2.h"
 
 
-Right_leg_weapons::Right_leg_weapons() {
+Right_leg_weapons::Right_leg_weapons() 
+{
 	r_l_w_player = FindGO<Player>("player");
 	right_leg_ui = FindGO<Right_leg_UI>("right_leg_UI");
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 }
 
-Right_leg_weapons::~Right_leg_weapons() {
-	/*if (atack_state == true) {
-		if (battle_ship_attack->Landing_state_BB == false) {
-			DeleteGO(battle_ship_attack);
-		}
-	}*/
+
+Right_leg_weapons::~Right_leg_weapons() 
+{
 	DeleteGO(right_leg_ui);
 }
 
-void Right_leg_weapons::R_l_w_set() {
+void Right_leg_weapons::R_l_w_set() 
+{
 	switch (r_l_w_player->p_custom_point[1][0])
 	{
 	case 2:
@@ -49,21 +50,38 @@ void Right_leg_weapons::R_l_w_set() {
 	}
 }
 
-void Right_leg_weapons::Update() {
-	if (fast == 0) {
+void Right_leg_weapons::Update() 
+{
+	if (fast == 0) 
+	{
 		R_l_w_set();
 		right_leg_ui= NewGO<Right_leg_UI>(1, "right_leg_UI");
 	}
+
 	fast++;
-	if (r_l_w_player->game_state == 0) {
+
+	if (r_l_w_player->game_state == 0) 
+	{
 		Move();
-		//UŒ‚
+
+		//HPãŒ0ä»¥ä¸‹ã«ãªã‚‹ã¨æ¶ˆãˆã‚‹
+		if (R_l_w_HP <= 0)
+		{
+			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¨­å®šæ­¦å™¨ã‚’ç©ºã«ã™ã‚‹
+			r_l_w_player->p_custom_point[1][0] = 0;
+			m_customizeUI->Right_leg_weapon_set = false;
+			m_customizeUI->m_rightLegWeapon = nullptr;
+			DeleteGO(this);
+		}
+
+
+		//æ”»æ’ƒ
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
-			//•Ší‚ªƒ}ƒVƒ“ƒKƒ“‚Ìê‡
+			//æ­¦å™¨ãŒãƒã‚·ãƒ³ã‚¬ãƒ³ã®å ´åˆ
 			if (r_l_w_player->p_custom_point[1][0] == 2 && firing_cound % 5 == 0)
 			{
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//å¼¾ã«ãƒã‚¸ã‚·ãƒ§ãƒ³ã¨å›è»¢ã‚’æ•™ãˆã¦ç”Ÿæˆã™ã‚‹
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
 				m_machineGunAttack->originRotation = r_l_Rotation;
 				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
@@ -72,7 +90,7 @@ void Right_leg_weapons::Update() {
 			}
 			else if (r_l_w_player->p_custom_point[1][0] == 4 && firing_cound % 180 == 0)
 			{
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//å¼¾ã«ãƒã‚¸ã‚·ãƒ§ãƒ³ã¨å›è»¢ã‚’æ•™ãˆã¦ç”Ÿæˆã™ã‚‹
 				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
 				m_gigatonAttack->originRotation = r_l_Rotation;
 				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 0.0f,0.0f,100.0f };
@@ -89,32 +107,37 @@ void Right_leg_weapons::Update() {
 			}
 			firing_cound++;
 		}
-		else {
+		else 
+		{
 			firing_cound = 0;
 		}
-		if (r_l_w_player->game_end_state == 1) {
+
+		if (r_l_w_player->game_end_state == 1) 
+		{
 			DeleteGO(this);
 		}
+
 		r_l_w_player->attack_state_rl = atack_state;
 		Right_leg_weapons_Render.Update();
 	}
 }
 
-void Right_leg_weapons::Move() {
+void Right_leg_weapons::Move() 
+{
 	Quaternion originRotation = r_l_w_player->player_rotation;
 	r_l_w_position = r_l_w_player->player_position;
 
-	//•Ší‚É‚æ‚Á‚Äæ‚è•t‚¯‚éƒ|ƒWƒVƒ‡ƒ“‚Ì•ÏX
+	//æ­¦å™¨ã«ã‚ˆã£ã¦å–ã‚Šä»˜ã‘ã‚‹ãƒã‚¸ã‚·ãƒ§ãƒ³ã®å¤‰æ›´
 	Vector3 lp;
 	switch (r_l_w_player->p_custom_point[1][0])
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
+	case 2:	//ãƒã‚·ãƒ³ã‚¬ãƒ³
 		lp = { 90.0f,30.0f,0.0f };
 		break;
-	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
+	case 4:	//ã‚®ã‚¬ãƒˆãƒ³ã‚­ãƒ£ãƒãƒ³
 		lp = { 55.0f,40.0f,27.0f };
 		break;
-	case 6:	//íŠÍ–C
+	case 6:	//æˆ¦è‰¦ç ²
 		lp = { 60.0f,40.0f,40.0f };
 		break;
 	default:
@@ -127,6 +150,7 @@ void Right_leg_weapons::Move() {
 	Right_leg_weapons_Render.SetRotation(r_l_Rotation);
 }
 
-void Right_leg_weapons::Render(RenderContext& rc) {
+void Right_leg_weapons::Render(RenderContext& rc) 
+{
 	Right_leg_weapons_Render.Draw(rc);
 }
