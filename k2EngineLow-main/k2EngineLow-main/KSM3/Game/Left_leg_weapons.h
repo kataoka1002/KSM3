@@ -11,7 +11,7 @@ class Left_leg_weapons:public IGameObject
 public:
 	Left_leg_weapons();
 	~Left_leg_weapons();
-
+	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 	void Move();

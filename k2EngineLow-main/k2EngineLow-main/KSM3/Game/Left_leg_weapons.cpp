@@ -21,6 +21,11 @@ Left_leg_weapons::~Left_leg_weapons()
 	DeleteGO(left_leg_ui);
 }
 
+bool Left_leg_weapons::Start()
+{
+	return true;
+}
+
 void Left_leg_weapons::L_l_w_set() 
 {
 	switch (l_l_w_player->p_custom_point[1][2])
