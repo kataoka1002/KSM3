@@ -61,6 +61,7 @@ public:
 	ModelRender custom_model_body;
 	ModelRender custom_model_Core;
 	ModelRender custom_model_shoulder;
+	ModelRender custom_model_shoulder2;	//肩のマシンガン用のモデル
 	ModelRender custom_model_Right_arm;
 	ModelRender custom_model_Right_leg;
 	ModelRender custom_model_Left_arm;
@@ -79,6 +80,7 @@ public:
 	Vector3 raw_lp;//右腕装備のローカルポジション
 	Vector3 law_lp;//左腕装備のローカルポジション
 	Vector3 sw_lp;//肩装備のローカルポジション
+	Vector3 sw2_lp;//マシンガンのローカルポジション
 	Vector3 rlw_lp;//右足装備のローカルポジション
 	Vector3 llw_lp;//左足装備のローカルポジション
 
@@ -94,7 +96,7 @@ public:
 	bool window_select = false;//ウィンドウの選択肢のどっちが選択されているか
 	int column = 0, line=0;
 
-	int trance_state = 1;//遷移のステート0:遷移終了 1:遷移中
+	int trance_state = 1;//遷移のステート 0 :遷移終了 1:遷移中 2: 3:カスタムからゲームの遷移中
 
 	SpriteRender trance_sheet[4];//遷移時の黒隠し 1,2:下 3,4:上
 
