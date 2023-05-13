@@ -65,6 +65,8 @@ bool Customize_UI_ver2::Start()
 void Customize_UI_ver2::trance_setup()
 {
 	//変数の初期化
+	selection_position = 0;
+	window_count = 0;
 	window_select = false;
 	confirmatino_window_open = false;
 	window_open = false;
@@ -378,6 +380,11 @@ void Customize_UI_ver2::Update()
 			trance();
 		}
 
+		//黒フェードアウト中
+		if (trance_state == 3) {
+			tranceOut();
+		}
+			
 		//遷移終了
 		if (trance_state == 0) {
 			custom_model_body_rotation.AddRotationDegY(2.0f);
@@ -687,10 +694,7 @@ void Customize_UI_ver2::Custom_UI()
 	//Bボタンを押してカスタム画面終了
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
-		m_player->game_state = 0;
-		m_gameCamera->trance_Finish = false;
-		m_gameCamera->CameraState = 0;
-		m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+		tranceOutInit();
 	}
 	fast_count++;
 
@@ -731,6 +735,7 @@ void Customize_UI_ver2::trance()
 		m_gameCamera->fast_count = 0;
 		m_gameCamera->target = { 10000.0f,20.0f,0.0f };
 		m_gameCamera->CameraState = 3;
+		m_gameCamera->m_springCamera.Refresh();
 	}
 
 	//黒フェード消滅
@@ -785,6 +790,83 @@ void Customize_UI_ver2::trance()
 	custom_model_body.Update();
 	m_parameterSheet.Update();
 	m_selectSheet.Update();
+	trance_sheet[0].Update();
+	trance_sheet[1].Update();
+	trance_sheet[2].Update();
+	trance_sheet[3].Update();
+	trance_sheet_count++;
+}
+
+void Customize_UI_ver2::tranceOutInit()
+{
+	//黒フェードの初期化を行う
+	trance_sheet_count = 0;
+	trance_state = 3;
+	trance_sheet_color = { 0.0f,0.0f,0.0f,1.0f };
+
+	trance_sheet01_position = { 2880.0f,-530.0f,0.0f };
+	trance_sheet02_position = { 2880.0f,-530.0f,0.0f };
+	trance_sheet03_position = { -2880.0f,530.0f,0.0f };
+	trance_sheet04_position = { -2880.0f,530.0f,0.0f };
+
+	trance_sheet[0].SetPosition(trance_sheet01_position);
+	trance_sheet[1].SetPosition(trance_sheet02_position);
+	trance_sheet[2].SetPosition(trance_sheet03_position);
+	trance_sheet[3].SetPosition(trance_sheet04_position);
+
+	for (int i = 0; i < 4; i++) 
+	{
+		trance_sheet[i].SetMulColor(trance_sheet_color);
+		trance_sheet[i].Update();
+	}
+}
+
+void Customize_UI_ver2::tranceOut()
+{
+	//黒フェード1回目
+	if (trance_sheet_count >= 0 && trance_sheet_count <= 24)
+	{
+		trance_sheet01_position.x -= 160.0f;
+		trance_sheet03_position.x += 160.0f;
+	}
+	//黒フェード2回目
+	if (trance_sheet_count >= 20 && trance_sheet_count <= 44)
+	{
+		trance_sheet02_position.x -= 160.0f;
+		trance_sheet04_position.x += 160.0f;
+	}
+
+	trance_sheet[1].SetPosition(trance_sheet02_position);
+	trance_sheet[3].SetPosition(trance_sheet04_position);
+	trance_sheet[0].SetPosition(trance_sheet01_position);
+	trance_sheet[2].SetPosition(trance_sheet03_position);
+
+	//黒フェード終了したらカメラ移動(プレイヤーのステートはカスタム画面のまま)
+	if (trance_sheet_count == 50)
+	{
+		//カメラの初期化
+		m_gameCamera->trance_Finish = false;
+		m_gameCamera->CameraState = 0;
+		m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+		m_gameCamera->m_springCamera.Refresh();	//ばねカメラを瞬時に移動させる
+	}
+
+	//黒フェード消滅
+	if (trance_sheet_count >= 44 && trance_sheet_count <= 64)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			trance_sheet[i].SetMulColor(trance_sheet_color);
+		}
+		trance_sheet_color.w -= 0.05f;
+	}
+
+	//ゲーム画面に戻る
+	if (trance_sheet_count >= 64)
+	{
+		m_player->game_state = 0;
+	}
+
 	trance_sheet[0].Update();
 	trance_sheet[1].Update();
 	trance_sheet[2].Update();
@@ -849,21 +931,7 @@ void Customize_UI_ver2::Window()
 				}
 
 				//武器取り付けを承認してカスタム画面が終わる時
-				m_player->game_state = 0;
-				//   ӏ       
-				confirmatino_window_open = false;
-				// F X    l ɖ߂ 
-				selection_position = 0;
-				fast_count = 0;
-				window_count = 0;
-				window_open = false;
-				window_select = false;
-
-
-				// Q [   J      ɖ߂ 
-				m_gameCamera->trance_Finish = false;
-				m_gameCamera->CameraState = 0;
-				m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+				tranceOutInit();
 			}
 		}
 		//DECLINE時の処理
@@ -1157,19 +1225,10 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 	//カスタマイズ画面の時のみDrawする
 	if (m_player->game_state == 3)
 	{
-		m_selectSheet.Draw(rc);
-		m_parameterSheet.Draw(rc);
-
-		//黒フェード
-		trance_sheet[0].Draw(rc);
-		trance_sheet[1].Draw(rc);
-		trance_sheet[2].Draw(rc);
-		trance_sheet[3].Draw(rc);
-
-
 		//各部位に装備されているならDrawする
 		custom_model_Core.Draw(rc);				//コア武器はずっと存在するので分岐なし
 		custom_model_body.Draw(rc);				//胴体はずっと存在するので分岐なし
+
 		if (right_arm_weapon_set == true)
 		{
 			custom_model_Right_arm.Draw(rc);	//右腕
@@ -1192,12 +1251,25 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 		}
 
 
-		if (window_open == true)
+		//カメラがカスタム画面ステートの時のみ表示
+		if (m_gameCamera->CameraState == 3)
 		{
-			if (confirmatino_window_open == true)
+			m_selectSheet.Draw(rc);
+			m_parameterSheet.Draw(rc);
+
+			if (window_open == true)
 			{
-				m_confirmationWindow.Draw(rc);
+				if (confirmatino_window_open == true)
+				{
+					m_confirmationWindow.Draw(rc);
+				}
 			}
 		}
+
+		//黒フェード
+		trance_sheet[0].Draw(rc);
+		trance_sheet[1].Draw(rc);
+		trance_sheet[2].Draw(rc);
+		trance_sheet[3].Draw(rc);
 	}
 }

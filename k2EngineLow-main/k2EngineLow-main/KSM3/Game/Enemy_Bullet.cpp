@@ -15,8 +15,6 @@ Enemy_Bullet::Enemy_Bullet()
 
 Enemy_Bullet::~Enemy_Bullet() 
 {
-	DeleteGO(m_soundSource);
-
 	//親によってエフェクトを変える
 	if (m_enemyMama != nullptr)
 	{
@@ -47,7 +45,6 @@ Enemy_Bullet::~Enemy_Bullet()
 		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
 		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
 		m_battleShipGunTyakutiSE->Play(false);
-
 	}
 }
 
@@ -133,7 +130,6 @@ bool Enemy_Bullet::Start()
 		case 5:	//ミサイル
 
 			//効果音の初期化
-			m_soundSource->Init(m_enemyFarMama->m_setWeapon);
 			break;
 
 		case 6:	//戦艦砲

@@ -18,7 +18,7 @@ class Boss;
 class Boss_Riser;
 class Game_UI;
 class Enemy_HP_UI;
-
+class SoundManage;
 //class Fade;
 
 class Customize_UI_ver2;
@@ -38,13 +38,17 @@ enum EffectName {
 
 //サウンドの列挙
 enum SoundName {
-	enRunning,			//移動中の音
-	enDash,				//ダッシュ中の音
-	enMachineGun,		//マシンガン
-	enGigatonCannon,	//ギガトンキャノン
-	enButtleShipGun,	//戦艦砲
-	enEnemyDeadSE,		//敵死亡時のSE
-	enButtleShipTyakudan//戦艦砲の着弾SE
+	enRunning,				//移動中の音(プレイヤーもエネミーも)
+	enDash,					//ダッシュ中の音(エネミーのみ)
+	enMachineGun,			//マシンガン
+	enGigatonCannon,		//ギガトンキャノン
+	enButtleShipGun,		//戦艦砲
+	enEnemyDeadSE,			//敵死亡時のSE
+	enButtleShipTyakudan,	//戦艦砲の着弾SE
+	enPlayerRun,			//プレイヤーの足音(速い方)
+	enGameBGM,				//ゲーム中のBGM
+	enBossBGM,				//ボス戦BGM
+	enCustomizeBGM			//カスタマイズ画面BGM
 };
 
 class Game :public IGameObject
@@ -66,11 +70,11 @@ public:
 
 	bool					m_isWaitFadeout = false;
 
-	Player* player;//プレイヤー
-	Title* title;//タイトル
-	Result* result;//リザルト
-	Lighting* lighting;//ライティング
-	
+	Player* player;			//プレイヤー
+	Title* title;			//タイトル
+	Result* result;			//リザルト
+	Lighting* lighting;		//ライティング
+	SoundManage* m_soundManage;
 	Left_arm_weapons* s_left_arm_weapons;
 	Drop_item* drop_item;
 	BackGround* background;

@@ -10,28 +10,48 @@
 Player::Player() 
 {
 	
-	//ƒvƒŒƒCƒ„[‚Ìƒ‚ƒfƒ‹‚Æƒ|[ƒY‰æ–Ê‚ÌƒXƒvƒ‰ƒCƒg‚Ì‰Šú‰»
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìƒï¿½ï¿½fï¿½ï¿½ï¿½Æƒ|ï¿½[ï¿½Yï¿½ï¿½Ê‚ÌƒXï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
-	//ƒLƒƒƒ‰ƒRƒ“‚Ìİ’è
+	//ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½Ìİ’ï¿½
 	characterController.Init(70.0f, 150.0f, player_position);
 }
 
 Player::~Player()
 {
+	DeleteGO(m_machineGunSE);
+}
 
-	
-	
-	//DeleteGO(p_left_arm_weapons);
+bool Player::Start()
+{
+	m_game = FindGO<Game>("game");
+
+	//ï¿½ï¿½ï¿½Ê‰ï¿½ï¿½Ìì¬(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‰¹ï¿½ï¿½ï¿½È‚Ì‚ÅƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½Ûï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+	m_machineGunSE = NewGO<SoundSource>(0);
+	m_runSE = NewGO<SoundSource>(0);
+	m_walkSE = NewGO<SoundSource>(0);
+
+	//ï¿½ï¿½ï¿½Ê‰ï¿½ï¿½Ìİ’ï¿½
+	m_machineGunSE->Init(enMachineGun);	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//ï¿½ï¿½ï¿½Ê’ï¿½ï¿½ï¿½
+	m_runSE->Init(enPlayerRun);	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	m_runSE->SetVolume(0.5f * m_game->SEvol);	//ï¿½ï¿½ï¿½Ê’ï¿½ï¿½ï¿½
+	m_walkSE->Init(enRunning);	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	m_walkSE->SetVolume(0.5f * m_game->SEvol);	//ï¿½ï¿½ï¿½Ê’ï¿½ï¿½ï¿½
+
+
+	return true;
 }
 
 void Player::Update() 
 {
-	if (game_state == 0) //ƒƒCƒ“ƒQ[ƒ€
+	if (game_state == 0) //ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½
 	{
-		Move();	//ˆÚ“®ˆ—
+		Move();			//ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½
+		MachineGunSE();	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½ÌŒï¿½ï¿½Ê‰ï¿½ï¿½Äï¿½
+		RunSE();		//ï¿½ï¿½ï¿½ï¿½ï¿½ÌÄï¿½
 
-		//ƒXƒ^[ƒgƒ{ƒ^ƒ“‚ğ‰Ÿ‚·‚Æƒ|[ƒY‰æ–Ê‚ÉˆÚ“®
+		//ï¿½Xï¿½^ï¿½[ï¿½gï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æƒ|ï¿½[ï¿½Yï¿½ï¿½Ê‚ÉˆÚ“ï¿½
 		if (g_pad[0]->IsTrigger(enButtonStart)) 
 		{
 			game_state = 1;
@@ -41,48 +61,48 @@ void Player::Update()
 			p_customize_ui_ver2 = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 		}
 
-		//ƒ‚ƒfƒ‹‚ÌXV
+		//ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ÌXï¿½V
 		player_modelRender.Update(true);
 	}
-	else if (game_state == 1) //ƒ|[ƒY‰æ–Ê
+	else if (game_state == 1) //ï¿½|ï¿½[ï¿½Yï¿½ï¿½ï¿½
 	{
 		pause();
 	}
 
-	//HP‚ª0ˆÈ‰º‚É‚È‚é‚È‚é‚Æ€–S
+	//HPï¿½ï¿½0ï¿½È‰ï¿½ï¿½É‚È‚ï¿½È‚ï¿½Æï¿½ï¿½S
 	if (m_playerHP <= 0)
 	{
-		//€–S‚Ì‰‰o
+		//ï¿½ï¿½ï¿½Sï¿½Ì‰ï¿½ï¿½o
 
-		//ƒŠƒUƒ‹ƒg‚Ö
+		//ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½ï¿½
 		m_result = NewGO<Result>(1, "result");
 	}
 }
 
 void Player::Move()
 {
-	player_moveSpeed = { 0.0f,0.0f,0.0f };//ˆÚ“®‘¬“x‚Ì‰Šú‰»
+	player_moveSpeed = { 0.0f,0.0f,0.0f };//ï¿½Ú“ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
 
 	Vector3 stickL;
 	throttle = 0;
 	stickL.x = g_pad[0]->GetLStickXF();
-	//ƒXƒeƒBƒbƒN‚ğ“|‚µ‚½—Ê‚Ìæ“¾
+	//ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½ï¿½|ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚Ìæ“¾
 	throttle = g_pad[0]->GetRTrigger();
 
 	Vector3 right = g_camera3D->GetRight();
 	right.y = 0.0f;
 	right *= stickL.x * 120.0f;
 
-	//ƒXƒs[ƒh‚ª0‚¶‚á‚È‚¢‚È‚çƒGƒtƒFƒNƒg‚ğo‚·
+	//ï¿½Xï¿½sï¿½[ï¿½hï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½È‚ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½oï¿½ï¿½
 	if (throttle != 0)
 	{
-		MakeEfe();
+		MakeEfe();	
 	}
-
+		
 	playerFowrad.Normalize();
 
-	//x‚©z‚ÌˆÚ“®‘¬“x‚ª‚ ‚Á‚½‚ç(ƒXƒeƒBƒbƒN‚Ì“ü—Í‚ª‚ ‚Á‚½‚ç)B
-	//‰ñ“]ˆ—
+	//xï¿½ï¿½zï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½B
+	//ï¿½ï¿½]ï¿½ï¿½ï¿½ï¿½
 	if (stickL.x!=0.0f)
 	{
 		playerFowrad.x = playerFowrad.x * cos(stickL.x * -0.05) - playerFowrad.z * sin(stickL.x * -0.05);
@@ -90,23 +110,23 @@ void Player::Move()
 
 		player_rotation.SetRotationY(atan2(playerFowrad.x, playerFowrad.z));
 	}
-	//‰ñ“]‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚ÌˆÚ“®
+	//ï¿½ï¿½]ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½ï¿½ÌˆÚ“ï¿½
 	if (throttle != 0.0f) 
 	{
-		//‚¾‚ñ‚¾‚ñ‘¬‚­‚·‚é
+		//ï¿½ï¿½ï¿½ñ‚¾‚ñ‘¬‚ï¿½ï¿½ï¿½ï¿½ï¿½
 		accelerator += 0.05;
 		if (accelerator >= 2) 
 		{
-			accelerator = 2;	//Å‘å’l‚Í2
+			accelerator = 2;	//ï¿½Å‘ï¿½lï¿½ï¿½2
 		}
 	}
 	else 
 	{
-		//‚¾‚ñ‚¾‚ñ’x‚­‚·‚é
+		//ï¿½ï¿½ï¿½ñ‚¾‚ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		accelerator -= 0.05;
 		if (accelerator <= 0) 
 		{
-			accelerator = 0;	//Å¬’l‚Í0
+			accelerator = 0;	//ï¿½Åï¿½ï¿½lï¿½ï¿½0
 		}
 	}
 
@@ -115,20 +135,20 @@ void Player::Move()
 
 	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
 
-	//À•W‚ğ‹³‚¦‚éB
+	//ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
 	player_modelRender.SetPosition(player_position);
 	player_modelRender.SetRotation(player_rotation);
 }
 
 void Player::MakeEfe()
 {
-	//ƒvƒŒƒCƒ„[‚Ìƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚é—Ê‚É‚æ‚Á‚Ä»‚Ú‚±‚è‚Ì—Ê‚ğ•Ï‚¦‚é
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìƒ{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ê‚É‚ï¿½ï¿½ï¿½Äï¿½ï¿½Ú‚ï¿½ï¿½ï¿½Ì—Ê‚ï¿½Ï‚ï¿½ï¿½ï¿½
 	if (throttle < 126.0f)
 	{
-		//“®‚¢‚Ä‚¢‚éŠÔ7ƒtƒŒ[ƒ€‚²‚Æ‚É»‚Ú‚±‚è‚ğ”­¶‚³‚¹‚é
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½7ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚Éï¿½ï¿½Ú‚ï¿½ï¿½ï¿½ğ”­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (effectCount > 20)
 		{
-			//»‚Ú‚±‚èƒGƒtƒFƒNƒg‚Ì‰Šú‰»‚ÆÄ¶
+			//ï¿½ï¿½ï¿½Ú‚ï¿½ï¿½ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆÄï¿½
 			sunabokoriEffect = NewGO<EffectEmitter>(0);
 			sunabokoriEffect->Init(enSunabokori);
 			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
@@ -136,15 +156,15 @@ void Player::MakeEfe()
 			sunabokoriEffect->SetPosition(player_position);
 			sunabokoriEffect->Play();
 
-			effectCount = 0;	//ƒJƒEƒ“ƒgƒŠƒZƒbƒg
+			effectCount = 0;	//ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Zï¿½bï¿½g
 		}
 	}
 	else if (throttle > 127.0f)
 	{
-		//“®‚¢‚Ä‚¢‚éŠÔ3ƒtƒŒ[ƒ€‚²‚Æ‚É»‚Ú‚±‚è‚ğ”­¶‚³‚¹‚é
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½3ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚Éï¿½ï¿½Ú‚ï¿½ï¿½ï¿½ğ”­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (effectCount > 3)
 		{
-			//»‚Ú‚±‚èƒGƒtƒFƒNƒg‚Ì‰Šú‰»‚ÆÄ¶
+			//ï¿½ï¿½ï¿½Ú‚ï¿½ï¿½ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆÄï¿½
 			sunabokoriEffect = NewGO<EffectEmitter>(0);
 			sunabokoriEffect->Init(enSunabokori);
 			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
@@ -152,7 +172,7 @@ void Player::MakeEfe()
 			sunabokoriEffect->SetPosition(player_position);
 			sunabokoriEffect->Play();
 
-			effectCount = 0;	//ƒJƒEƒ“ƒgƒŠƒZƒbƒg
+			effectCount = 0;	//ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Zï¿½bï¿½g
 		}
 	}
 	effectCount++;
@@ -162,11 +182,58 @@ void Player::pause()
 {
 	if (g_pad[0]->IsTrigger(enButtonB)) 
 	{
-		game_state = 0;	//ƒƒCƒ“ƒQ[ƒ€‚É–ß‚é
+		game_state = 0;	//ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½É–ß‚ï¿½
 	}
 	else if (g_pad[0]->IsTrigger(enButtonA)) 
 	{
-		game_end_state = 1;	//ƒQ[ƒ€I—¹
+		game_end_state = 1;	//ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½ï¿½
+	}
+}
+
+void Player::RunSE()
+{
+	if (throttle <= 0)	//ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚È‚ï¿½ï¿½ï¿½
+	{
+		//ï¿½ï¿½ï¿½Ê‰ï¿½ï¿½ï¿½~
+		m_walkSE->Stop();
+		m_runSE->Stop();
+
+		return;
+	}
+
+	if (throttle > 0 && throttle <= 127 && m_runSE->IsPlaying() != true)	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è“®ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é
+	{
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½
+		m_walkSE->Play(true);
+	}
+	else if (throttle > 127 && m_walkSE->IsPlaying() != true)	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é
+	{
+		//ï¿½ï¿½ï¿½é‰¹ï¿½Äï¿½
+		m_runSE->Play(true);
+	}
+
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½Ì‰ï¿½ï¿½Í~ï¿½ß‚ï¿½
+	if (throttle > 127)
+	{
+		m_walkSE->Stop();
+	}
+	//ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½Ì‰ï¿½ï¿½Í~ï¿½ß‚ï¿½
+	if (throttle > 0 && throttle <= 127)
+	{
+		m_runSE->Stop();
+	}
+}
+
+void Player::MachineGunSE()
+{
+	if (g_pad[0]->IsPress(enButtonRB1) && m_machineGunSE->IsPlaying() != true)
+	{
+		m_machineGunSE->Play(true);	//ï¿½ï¿½ï¿½ï¿½ï¿½ÄÄï¿½
+	}
+	else if(g_pad[0]->IsPress(enButtonRB1) == false)
+	{
+		m_machineGunSE->Stop();		//ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½È‚ï¿½ï¿½~
 	}
 }
 
@@ -174,7 +241,7 @@ void Player::Render(RenderContext& rc)
 {
 	player_modelRender.Draw(rc);
 
-	//ƒ|[ƒY’†‚È‚çƒ|[ƒY‰æ–Ê‚ğ•\¦
+	//ï¿½|ï¿½[ï¿½Yï¿½ï¿½ï¿½È‚ï¿½|ï¿½[ï¿½Yï¿½ï¿½Ê‚ï¿½\ï¿½ï¿½
 	if (game_state == 1)
 	{
 		pouse_spriteRender.Draw(rc);

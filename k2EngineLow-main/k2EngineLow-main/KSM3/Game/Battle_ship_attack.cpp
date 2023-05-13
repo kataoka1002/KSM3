@@ -65,13 +65,19 @@ void Battle_ship_attack::Setup()
 	m_bulletModel.Init("Assets/modelData/battleship_gun_bullet.tkm");
 	m_bulletModel.SetScale(5.0f);
 
+	//エネミーから見て正しい位置に弾を設定
+	originRotation.Multiply(m_bulletLocalPosition);	//掛け算
+
+	//最終的な弾の回転を決定
+	B_S_aiming = originRotation;
+	firing_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
+
+	//前方向はプレイヤーと一緒
 	m_bulletForward = m_player->playerFowrad;
-	firing_position.y += 10.0f;
+	
 	//更新
 	m_bulletModel.SetRotation(B_S_aiming);
 	m_bulletModel.SetPosition(firing_position);
-
-	m_kemuriEfePos = firing_position;
 }
 
 void Battle_ship_attack::Update()

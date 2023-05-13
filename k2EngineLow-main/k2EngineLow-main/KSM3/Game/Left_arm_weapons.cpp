@@ -35,8 +35,8 @@ void Left_arm_weapons::L_a_w_set() {
 		atack_state = true;
 		break;
 	case 4:
-		Left_arm_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
-		Left_arm_weapons_Render.SetScale(1.0f);
+		Left_arm_weapons_Render.Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
+		Left_arm_weapons_Render.SetScale(0.8f);
 		Left_arm_weapons_Render.Update();
 		set_weapons = l_a_w_player->p_custom_point[0][2];
 		atack_state = true;
@@ -61,15 +61,19 @@ void Left_arm_weapons::Update()
 		left_arm_ui= NewGO<Left_arm_UI>(0, "left_arm_ui");
 	}
 	fast++;
-	if (l_a_w_player->game_state == 0) {
+	if (l_a_w_player->game_state == 0) 
+	{
 		Move();
+
+		//’e‚Ì¶¬
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
 			if (l_a_w_player->p_custom_point[0][2] == 2 && firing_cound % 5 == 0)
 			{
 				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->m_rot = l_a_Rotation;
+				m_machineGunAttack->originRotation = l_a_Rotation; 
+				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
 				m_machineGunAttack->m_position = l_a_w_position;
 				atack_state = true;
 			}
@@ -84,7 +88,8 @@ void Left_arm_weapons::Update()
 			else if (l_a_w_player->p_custom_point[0][2] == 6 && firing_cound % 180 == 0) 
 			{
 				battle_ship_attack = NewGO< Battle_ship_attack>(1, "battle_ship_attack");
-				battle_ship_attack->B_S_aiming = l_a_Rotation;
+				battle_ship_attack->originRotation = l_a_Rotation;
+				battle_ship_attack->m_bulletLocalPosition = Vector3{ 0.0f,-30.0f,70.0f };
 				battle_ship_attack->firing_position = l_a_w_position;
 				atack_state = true;
 			}
@@ -110,17 +115,18 @@ void Left_arm_weapons::Move() {
 	switch (l_a_w_player->p_custom_point[0][2])
 	{
 	case 2:	//ƒ}ƒVƒ“ƒKƒ“
-		lp = { -60.0f,100.0f,-10.0f };
+		lp = { -60.0f,100.0f,0.0f };
 		break;
 	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
-		lp = { -60.0f,100.0f,-10.0f };
+		lp = { -50.0f,100.0f,30.0f };
 		break;
 	case 6:	//íŠÍ–C
-		lp = { -60.0f,70.0f,-10.0f };
+		lp = { -60.0f,80.0f,-10.0f };
 		break;
 	default:
 		break;
 	}
+	
 
 	originRotation.Multiply(lp);
 	l_a_w_position += lp;

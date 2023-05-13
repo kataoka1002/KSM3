@@ -18,6 +18,7 @@ public:
 	Vector3 m_toCameraPos;	//注視点から視点に向かうベクトル。
 	int CameraState = 0;
 	Vector3 target;
+	SpringCamera m_springCamera;	//ばねカメラ。
 
 	int fast_count=0;
 	bool trance_Finish =false;

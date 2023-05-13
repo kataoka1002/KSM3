@@ -28,16 +28,12 @@ public:
 	Core_weapons* m_coreWeapons = nullptr;
 	Player* m_player = nullptr; 
 	Game* m_game = nullptr;
-	SoundSource* m_soundSource = nullptr;
 	SoundSource* m_battleShipGunTyakutiSE = nullptr;			//戦艦砲SE
-
-
 	Enemy* m_enemyMama = nullptr;
 	Enemy_Near* m_enemyNearMama = nullptr;
 	Enemy_Far* m_enemyFarMama = nullptr;
 	EffectEmitter* m_weaponEffect = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;
-
 
 	ModelRender m_bulletModel;	//マシンガンの弾のモデル
 	Quaternion m_aim;
@@ -48,6 +44,7 @@ public:
 	Vector3 m_toCoreWeapons;
 	Vector3 m_bulletSpeed;
 	Vector3 m_bulletLocalPosition;	//弾のローカルポジション
+
 	float m_fallSpeed = 0.0f;
 	bool m_attuckState = true;
 	bool Landing_state = false;

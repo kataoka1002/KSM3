@@ -26,7 +26,9 @@ public:
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_bulletForward = Vector3::Zero;
 	Vector3 m_moveSpeed = Vector3::Zero;
+	Vector3 m_bulletLocalPosition = Vector3::Zero;	//弾のローカルポジション
 	Quaternion m_rot;
+	Quaternion originRotation;
 
 	bool m_atackState = true;
 	bool Landing_state_BB = false;
