@@ -29,6 +29,10 @@ Boss::Boss()
 
 Boss::~Boss() 
 {
+	Game* boss_game = FindGO<Game>("game");
+	result->minute = (int)boss_game->boss_time / 60;
+	result->sec = (int)boss_game->boss_time % 60;
+	DeleteGO(boss_game);
 	DeleteGO(b_boss_riser);//ライザーの武器削除。
 	DeleteGO(b_boss_shovel);//ショベルの武器削除。
 	DeleteGO(b_boss_drill);//ドリルの武器削除。
@@ -71,13 +75,13 @@ void Boss::Update()
 
 	if (boss_game_state == 1) {
 
-		b_player->player_position.x = -16500.0f;
-		b_player->player_position.z = -1000.0f;
+		/*b_player->player_position.x = -16500.0f;
+		b_player->player_position.z = -1000.0f;*/
 			
-		b_player->player_modelRender.SetPosition(b_player->player_position);
+		/*b_player->player_modelRender.SetPosition(b_player->player_position);
 		b_player->characterController.SetPosition(b_player->player_position);
 
-		b_player->player_modelRender.Update(true);
+		b_player->player_modelRender.Update(true)*/;
 	}
 
 	if (b_player->game_state == 0) {

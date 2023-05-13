@@ -23,6 +23,7 @@ Shoulder_weapons::~Shoulder_weapons()
 			DeleteGO(battle_ship_attack);
 		}
 	}*/
+	DeleteGO(shoulder_ui);
 }
 
 void Shoulder_weapons::S_w_set() 
@@ -30,7 +31,7 @@ void Shoulder_weapons::S_w_set()
 	switch (s_w_player->p_custom_point[0][1])
 	{
 	case 2:
-		//ƒ}ƒVƒ“ƒKƒ“‚Ìƒ‚ƒfƒ‹‚ğ2‚Âì‚é
+		//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½Ìƒï¿½ï¿½fï¿½ï¿½ï¿½ï¿½2ï¿½Âï¿½ï¿½
 		Shoulder_weapons_Render.Init("Assets/modelData/machine_gun_drop.tkm");
 		Shoulder_weapons_Render.SetScale(scale2);
 		Shoulder_weapons_Render.Update();
@@ -71,22 +72,22 @@ void Shoulder_weapons::Update()
 		Move();
 		Move2();
 
-		//HP‚ª0ˆÈ‰º‚É‚È‚é‚ÆÁ‚¦‚é
+		//HPï¿½ï¿½0ï¿½È‰ï¿½ï¿½É‚È‚ï¿½Æï¿½ï¿½ï¿½ï¿½
 		if (S_w_HP <= 0)
 		{
-			//ƒvƒŒƒCƒ„[‚Ìİ’è•Ší‚ğ‹ó‚É‚·‚é
+			//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìİ’è•ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
 			s_w_player->p_custom_point[0][1] = 0;
 			m_customizeUI->Shoulder_weapon_set = false;
 			m_customizeUI->m_shoulderWeapon = nullptr;
 			DeleteGO(this);
 		}
 
-		//UŒ‚
+		//ï¿½Uï¿½ï¿½
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
 			if (s_w_player->p_custom_point[0][1] == 2 && firing_cound % 5 == 0)
 			{
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//ï¿½eï¿½Éƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Æ‰ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
 				m_machineGunAttack->originRotation = Shoulder_Rotation;
 				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
@@ -101,13 +102,13 @@ void Shoulder_weapons::Update()
 			}
 			else if (s_w_player->p_custom_point[0][1] == 4 && firing_cound % 180 == 0)
 			{
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//ï¿½eï¿½Éƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Æ‰ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
 				m_gigatonAttack->originRotation = Shoulder_Rotation;
 				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 40.0f,0.0f,100.0f };
 				m_gigatonAttack->m_position = s_w_position;
 
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//ï¿½eï¿½Éƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Æ‰ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				m_gigatonAttack2 = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
 				m_gigatonAttack2->originRotation = Shoulder_Rotation;
 				m_gigatonAttack2->m_bulletLocalPosition = Vector3{ -40.0f,0.0f,100.0f };
@@ -139,9 +140,9 @@ void Shoulder_weapons::Update()
 		}
 		s_w_player->attack_state_s = atack_state;
 
-		//•t‚¯‚Ä‚¢‚é•Ší‚ÌXV
+		//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½ÌXï¿½V
 		Shoulder_weapons_Render.Update();
-		//•t‚¯‚Ä‚¢‚é•Ší‚ªƒ}ƒVƒ“ƒKƒ“‚È‚ç
+		//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½í‚ªï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½È‚ï¿½
 		if (s_w_player->p_custom_point[0][1] == 2)
 		{
 			Shoulder_weapons_Render2.Update();
@@ -154,17 +155,17 @@ void Shoulder_weapons::Move()
 	Quaternion originRotation = s_w_player->player_rotation;
 	s_w_position = s_w_player->player_position;
 
-	//•Ší‚É‚æ‚Á‚Äæ‚è•t‚¯‚éƒ|ƒWƒVƒ‡ƒ“‚Ì•ÏX
+	//ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½Äï¿½ï¿½tï¿½ï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ì•ÏX
 	Vector3 lp;
 	switch (s_w_player->p_custom_point[0][1])
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
+	case 2:	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½
 		lp = { 35.0f,120.0f,0.0f };
 		break;
-	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
+	case 4:	//ï¿½Mï¿½Kï¿½gï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½mï¿½ï¿½
 		lp = { 0.0f,120.0f,0.0f };
 		break;
-	case 6:	//íŠÍ–C
+	case 6:	//ï¿½ï¿½Í–C
 		lp = { 0.0f,119.0f,0.0f };
 		break;
 	default:
@@ -184,11 +185,11 @@ void Shoulder_weapons::Move2()
 		Quaternion originRotation = s_w_player->player_rotation;
 		s_w_position2 = s_w_player->player_position;
 
-		//•Ší‚É‚æ‚Á‚Äæ‚è•t‚¯‚éƒ|ƒWƒVƒ‡ƒ“‚Ì•ÏX
+		//ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½Äï¿½ï¿½tï¿½ï¿½ï¿½ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ì•ÏX
 		Vector3 lp;
 		switch (s_w_player->p_custom_point[0][1])
 		{
-		case 2:	//ƒ}ƒVƒ“ƒKƒ“
+		case 2:	//ï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½
 			lp = { -35.0f,120.0f,0.0f };
 			break;
 		default:
@@ -205,7 +206,7 @@ void Shoulder_weapons::Move2()
 void Shoulder_weapons::Render(RenderContext& rc) 
 {
 	Shoulder_weapons_Render.Draw(rc);
-	//•t‚¯‚Ä‚¢‚é•Ší‚ªƒ}ƒVƒ“ƒKƒ“‚È‚ç
+	//ï¿½tï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é•ï¿½í‚ªï¿½}ï¿½Vï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½È‚ï¿½
 	if (s_w_player->p_custom_point[0][1] == 2)
 	{
 		Shoulder_weapons_Render2.Draw(rc);

@@ -15,9 +15,10 @@ Left_leg_weapons::Left_leg_weapons()
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 }
 
+
 Left_leg_weapons::~Left_leg_weapons() 
 {
-	
+	DeleteGO(left_leg_ui);
 }
 
 void Left_leg_weapons::L_l_w_set() 
@@ -63,22 +64,22 @@ void Left_leg_weapons::Update()
 	{
 		Move();
 
-		//HP‚ª0ˆÈ‰º‚É‚È‚é‚ÆÁ‚¦‚é
+		//HPãŒ0ä»¥ä¸‹ã«ãªã‚‹ã¨æ¶ˆãˆã‚‹
 		if (L_l_w_HP <= 0)
 		{
-			//ƒvƒŒƒCƒ„[‚Ìİ’è•Ší‚ğ‹ó‚É‚·‚é
+			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¨­å®šæ­¦å™¨ã‚’ç©ºã«ã™ã‚‹
 			l_l_w_player->p_custom_point[1][2] = 0;
 			m_customizeUI->Left_leg_weapon_set = false;
 			m_customizeUI->m_leftLegWeapon = nullptr;
 			DeleteGO(this);
 		}
 
-		//UŒ‚
+		//æ”»æ’ƒ
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
 			if (l_l_w_player->p_custom_point[1][2] == 2 && firing_cound % 5 == 0)
 			{
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//å¼¾ã«ãƒã‚¸ã‚·ãƒ§ãƒ³ã¨å›è»¢ã‚’æ•™ãˆã¦ç”Ÿæˆã™ã‚‹
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
 				m_machineGunAttack->originRotation = l_l_Rotation;
 				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
@@ -87,7 +88,7 @@ void Left_leg_weapons::Update()
 			}
 			else if (l_l_w_player->p_custom_point[1][2] == 4 && firing_cound % 180 == 0)
 			{
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//å¼¾ã«ãƒã‚¸ã‚·ãƒ§ãƒ³ã¨å›è»¢ã‚’æ•™ãˆã¦ç”Ÿæˆã™ã‚‹
 				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
 				m_gigatonAttack->originRotation = l_l_Rotation;
 				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 0.0f,0.0f,100.0f };
@@ -124,17 +125,17 @@ void Left_leg_weapons::Move()
 	Quaternion originRotation = l_l_w_player->player_rotation;
 	l_l_w_position = l_l_w_player->player_position;
 
-	//•Ší‚É‚æ‚Á‚Äæ‚è•t‚¯‚éƒ|ƒWƒVƒ‡ƒ“‚Ì•ÏX
+	//æ­¦å™¨ã«ã‚ˆã£ã¦å–ã‚Šä»˜ã‘ã‚‹ãƒã‚¸ã‚·ãƒ§ãƒ³ã®å¤‰æ›´
 	Vector3 lp;
 	switch (l_l_w_player->p_custom_point[1][2])
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
+	case 2:	//ãƒã‚·ãƒ³ã‚¬ãƒ³
 		lp = { -90.0f,30.0f,0.0f };
 		break;
-	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
+	case 4:	//ã‚®ã‚¬ãƒˆãƒ³ã‚­ãƒ£ãƒãƒ³
 		lp = { -55.0f,40.0f,27.0f };
 		break;
-	case 6:	//íŠÍ–C
+	case 6:	//æˆ¦è‰¦ç ²
 		lp = { -60.0f,40.0f,40.0f };
 		break;
 	default:

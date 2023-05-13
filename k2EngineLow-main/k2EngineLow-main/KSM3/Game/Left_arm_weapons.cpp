@@ -15,9 +15,10 @@ Left_arm_weapons::Left_arm_weapons()
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 }
 
+
 Left_arm_weapons::~Left_arm_weapons() 
 {
-	
+	DeleteGO(left_arm_ui);
 }
 
 void Left_arm_weapons::L_a_w_set() 
@@ -65,22 +66,22 @@ void Left_arm_weapons::Update()
 	{
 		Move();
 
-		//HP‚ª0ˆÈ‰º‚É‚È‚é‚ÆÁ‚¦‚é
+		//HPãŒ0ä»¥ä¸‹ã«ãªã‚‹ã¨æ¶ˆãˆã‚‹
 		if (L_a_w_HP <= 0)
 		{
-			//ƒvƒŒƒCƒ„[‚Ìİ’è•Ší‚ğ‹ó‚É‚·‚é
+			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¨­å®šæ­¦å™¨ã‚’ç©ºã«ã™ã‚‹
 			l_a_w_player->p_custom_point[0][2] = 0;
 			m_customizeUI->Left_arm_weapon_set = false;
 			m_customizeUI->m_leftArmWeapon = nullptr;
 			DeleteGO(this);
 		}
 
-		//’e‚Ì¶¬
+		//å¼¾ã®ç”Ÿæˆ
 		if (g_pad[0]->IsPress(enButtonRB1)) 
 		{
 			if (l_a_w_player->p_custom_point[0][2] == 2 && firing_cound % 5 == 0)
 			{
-				//’e‚Éƒ|ƒWƒVƒ‡ƒ“‚Æ‰ñ“]‚ğ‹³‚¦‚Ä¶¬‚·‚é
+				//å¼¾ã«ãƒã‚¸ã‚·ãƒ§ãƒ³ã¨å›è»¢ã‚’æ•™ãˆã¦ç”Ÿæˆã™ã‚‹
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
 				m_machineGunAttack->originRotation = l_a_Rotation; 
 				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
@@ -125,17 +126,17 @@ void Left_arm_weapons::Move()
 	Quaternion originRotation = l_a_w_player->player_rotation;
 	l_a_w_position = l_a_w_player->player_position;
 
-	//•Ší‚É‚æ‚Á‚Äæ‚è•t‚¯‚éƒ|ƒWƒVƒ‡ƒ“‚Ì•ÏX
+	//æ­¦å™¨ã«ã‚ˆã£ã¦å–ã‚Šä»˜ã‘ã‚‹ãƒã‚¸ã‚·ãƒ§ãƒ³ã®å¤‰æ›´
 	Vector3 lp;
 	switch (l_a_w_player->p_custom_point[0][2])
 	{
-	case 2:	//ƒ}ƒVƒ“ƒKƒ“
+	case 2:	//ãƒã‚·ãƒ³ã‚¬ãƒ³
 		lp = { -60.0f,100.0f,0.0f };
 		break;
-	case 4:	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“
+	case 4:	//ã‚®ã‚¬ãƒˆãƒ³ã‚­ãƒ£ãƒãƒ³
 		lp = { -50.0f,100.0f,30.0f };
 		break;
-	case 6:	//íŠÍ–C
+	case 6:	//æˆ¦è‰¦ç ²
 		lp = { -60.0f,80.0f,-10.0f };
 		break;
 	default:
