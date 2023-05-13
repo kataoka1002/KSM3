@@ -36,14 +36,14 @@ Game::Game()
 
 	
 	//エネミーを複数体生成
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
 		enemy->m_enemyPosition = { 0.0f,0.0f,3000.0f };
 		
 		m_enemyObject.push_back(enemy);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
 		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
@@ -85,6 +85,8 @@ Game::Game()
 
 Game::~Game()
 {
+	DeleteGO(core_weapons);
+	DeleteGO(drop_item);
 	//プッシュしたボックスを削除していく
 	for (auto box : m_boxmoves)
 	{
@@ -109,7 +111,7 @@ Game::~Game()
 	
 	
 
-	DeleteGO(player);
+	
 
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
@@ -117,7 +119,7 @@ Game::~Game()
 		DeleteGO(dropItem);
 	}
 
-	DeleteGO(player);
+	
 	DeleteGO(m_customizeUI);
 
 
@@ -126,7 +128,7 @@ Game::~Game()
 	}*/
 	DeleteGO(background);
 
-	DeleteGO(gamecamera);
+	
 	DeleteGO(game_ui);
 	DeleteGO(e_h_ui);
 }
@@ -181,16 +183,21 @@ void Game::Update()
 	}
 
 	//敵を10体以上殺したらボス戦
-	if (player->killEnemy >= 10 && boss == nullptr)
-	{
-		if (player->player_position.z >= 10000.0f) {
+	
+		if (player->player_position.z >= 10600.0f) {
 			for (int i = 0; i < 1; i++)
 			{			
 				boss = NewGO<Boss>(1, "boss");
 				boss->boss_position = { -16500.0f,0.0f,2000.0f };
 				boss->boss_game_state = 1;
+				player->player_position = { -16500.0f,0.0f,-1000.0f };
+
+				player->player_modelRender.SetPosition(player->player_position);
+				player->characterController.SetPosition(player->player_position);
+
+				player->player_modelRender.Update(true);
 			}
-		}
+		
 	}
 	if (boss != nullptr) {
 		if (player->boss_survival == true) {

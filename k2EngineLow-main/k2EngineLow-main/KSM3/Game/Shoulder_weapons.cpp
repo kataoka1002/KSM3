@@ -19,13 +19,14 @@ Shoulder_weapons::~Shoulder_weapons() {
 			DeleteGO(battle_ship_attack);
 		}
 	}*/
+	DeleteGO(shoulder_ui);
 }
 
 void Shoulder_weapons::S_w_set() {
 	switch (s_w_player->p_custom_point[0][1])
 	{
 	case 2:
-		Shoulder_weapons_Render.Init("Assets/modelData/machine_gun_drop.tkm");
+		Shoulder_weapons_Render.Init("Assets/modelData/machine_gun_shoulder.tkm");
 		Shoulder_weapons_Render.SetScale(scale2);
 		Shoulder_weapons_Render.Update();
 		set_weapons = s_w_player->p_custom_point[0][1];

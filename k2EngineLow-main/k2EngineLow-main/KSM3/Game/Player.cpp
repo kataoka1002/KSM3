@@ -9,6 +9,7 @@
 
 Player::Player() 
 {
+	
 	//プレイヤーのモデルとポーズ画面のスプライトの初期化
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
@@ -18,6 +19,9 @@ Player::Player()
 
 Player::~Player()
 {
+
+	
+	
 	//DeleteGO(p_left_arm_weapons);
 }
 
