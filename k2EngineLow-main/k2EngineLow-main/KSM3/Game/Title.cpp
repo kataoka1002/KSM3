@@ -43,6 +43,8 @@ void Title::SetUp()
 	Title_Render.Init("Assets/sprite/title.DDS", 1632.0f, 918.0f);
 	Press_Render.Init("Assets/sprite/Press_any_button.DDS", 1632.0f, 918.0f);
 	Whiteout.Init("Assets/sprite/whiteout.DDS", 1632.0f, 918.0f);
+	Whiteout.SetMulColor(Vector4{ 1.0f,1.0f,1.0f,0.0f });
+	Whiteout.Update();
 	Side_line_Render.Init("Assets/sprite/side_line.DDS", 1632.0f, 918.0f);
 	OK_BACK_Render.Init("Assets/sprite/OK_BACK.DDS", 1632.0f, 918.0f);
 	Main_menu_foundation_Render.Init("Assets/sprite/brack_back.DDS", 1632.0f, 918.0f);
@@ -243,7 +245,7 @@ void Title::Menu() {
 	//‘JˆÚ
 	if (title_state == 2) {
 		whiteout_color.w -= 0.1;
-		if (whiteout_count == 18) {
+		if (whiteout_count == 19) {
 			title_state = 3;
 			select_point = 0;
 			fast_count = 0;

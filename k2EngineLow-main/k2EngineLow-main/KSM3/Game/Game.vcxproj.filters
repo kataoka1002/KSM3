@@ -112,6 +112,7 @@
     <ClInclude Include="Fade.h" />
     <ClInclude Include="MachineGunAttack.h" />
     <ClInclude Include="GigatonCannonAttack.h" />
-    <ClInclude Include="SoundManage.h" />
+	<ClInclude Include="SoundManage.h" />
+    <ClInclude Include="Result_Macro.h" />
   </ItemGroup>
 </Project>

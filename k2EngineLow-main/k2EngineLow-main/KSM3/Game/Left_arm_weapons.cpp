@@ -18,6 +18,7 @@ Left_arm_weapons::~Left_arm_weapons() {
 			DeleteGO(battle_ship_attack);
 		}
 	}*/
+	DeleteGO(left_arm_ui);
 }
 
 void Left_arm_weapons::L_a_w_set() {

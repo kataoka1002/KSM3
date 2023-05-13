@@ -23,15 +23,17 @@ Boss_Shovel::~Boss_Shovel()
 
 bool Boss_Shovel::Start()
 {
-	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_shovel_idol01.tka");
+	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_shovel_idol02.tka");
+	//m_animationClip[enAnimationClip_Idle].Load("Assets/animData/jump.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
 	//‰Šú‰»
-	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm");//, 0, 0, m_animationClip, enAnimationClip_Num, enModelUpAxisY);
+	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm", false, true , m_animationClip, enAnimationClip_Num, enModelUpAxisY);
+	//boss_Shovel_Render.Init("Assets/modelData/unityChan.tkm", true,true,m_animationClip, enAnimationClip_Num, enModelUpAxisY);
 	if (defeatState == true)
 	{
 		drop_item->drop_kinds = set_weapons;
 	}
-
+	
 	return true;
 }
 
@@ -57,9 +59,12 @@ void Boss_Shovel::Setup()
 
 void Boss_Shovel::Update()
 {
+	
+	boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle);
 	if (fast == 0)
 	{
 		Setup();
+		
 	}
 	fast++;
 	if (b_w_player->game_state == 0 && fast != 0)
@@ -82,12 +87,11 @@ void Boss_Shovel::Update()
 	{
 		DeleteGO(this);
 	}
-	boss_Shovel_Render.Update();
 
 	switch (shovelState)
 	{
 	case 0:
-		boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle);
+		
 		break;
 	}
 

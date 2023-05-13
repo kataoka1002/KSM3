@@ -22,6 +22,7 @@ Right_arm_weapons::~Right_arm_weapons()
 			DeleteGO(battle_ship_attack);
 		}
 	}*/
+	DeleteGO(right_arm_ui);
 }
 
 bool Right_arm_weapons::Start()

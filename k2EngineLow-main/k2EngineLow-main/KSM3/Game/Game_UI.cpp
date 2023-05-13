@@ -41,12 +41,12 @@ bool Game_UI::Start()
 		Time_render[t].SetPosition({ -610.0f,430.0f,0.0f });
 	}
 	//“G‚ğ“|‚µ‚½”
-	for (int E = 0; E < 11; E++) {
+	/*for (int E = 0; E < 11; E++) {
 		Enemy_count_render[0].Init("Assets/sprite/enemy_count.dds", 700.0f, 500.0f);
 		Enemy_count_render[1].Init("Assets/sprite/0.dds", 700.0f, 500.0f);
 		Enemy_count_render[2].Init("Assets/sprite/1.dds", 700.0f, 500.0f);
 		Enemy_count_render[E].SetPosition({635.0f,400.0f,0.0f});
-	}
+	}*/
 	//ƒRƒA
 	for (int Pc = 0; Pc < 5; Pc++) {
 		player_core_render[0].Init("Assets/sprite/core2.dds", 700.0f, 600.0f);
@@ -127,24 +127,24 @@ void Game_UI::Render(RenderContext& rc)
 				Time_render[1].Draw(rc);
 			}
 		}
-		Time_render[t].Update();
+		/*Time_render[t].Update();*/
 	}
 
-	for (int E = 0; E < 11; E++) {
-		if (u_player->game_state == 0) {
-			Game* game = FindGO<Game>("game");
-			Enemy_count_render[0].Draw(rc);
-			switch (game->m_numDefeatedEnemy) {
-			case 0:
-				Enemy_count_render[1].Draw(rc);
-				break;
-			case 1:
-				Enemy_count_render[2].Draw(rc);
-				break;
-			}
-		}
-		Enemy_count_render[E].Update();
-	}
+	//for (int E = 0; E < 11; E++) {
+	//	if (u_player->game_state == 0) {
+	//		Game* game = FindGO<Game>("game");
+	//		/*Enemy_count_render[0].Draw(rc);*/
+	//		/*switch (game->m_numDefeatedEnemy) {
+	//		case 0:
+	//			Enemy_count_render[1].Draw(rc);
+	//			break;
+	//		case 1:
+	//			Enemy_count_render[2].Draw(rc);
+	//			break;
+	//		}*/
+	//	}
+	//	Enemy_count_render[E].Update();
+	//}
 
 	for (int Pc = 0; Pc < 5; Pc++) {
 		if (u_player->game_state == 0) {

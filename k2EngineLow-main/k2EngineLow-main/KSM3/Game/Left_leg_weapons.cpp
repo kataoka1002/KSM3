@@ -18,6 +18,7 @@ Left_leg_weapons::~Left_leg_weapons() {
 			DeleteGO(battle_ship_attack);
 		}
 	}*/
+	DeleteGO(left_leg_ui);
 }
 
 void Left_leg_weapons::L_l_w_set() {
