@@ -30,10 +30,11 @@ public:
 	Vector3 firing_position = Vector3::Zero;
 	Vector3 C_W_Bullet_Fowrad = Vector3::Zero;
 
+	bool stack_state = true;
 	bool Landing_state_cw = false;
 	float move_speed = 30.0f;
 	float fall_speed = 0.0f;
-	bool stack_state = true;
+	float m_bulletDamage = 5.0f;
 
 	float damage_volume = 0.0f;
 };

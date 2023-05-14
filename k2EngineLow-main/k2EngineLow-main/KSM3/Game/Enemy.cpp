@@ -8,6 +8,7 @@
 #include "Drop_item.h"
 #include "Game.h"
 #include "Enemy_Bullet.h"
+#include "Enemy_HP_UI.h"
 
 
 Enemy::Enemy() 
@@ -34,6 +35,7 @@ Enemy::~Enemy()
 
 	DeleteGO(m_machineGunSE);
 	DeleteGO(m_asiotoSE);
+	DeleteGO(m_HPUI);
 }
 
 
@@ -41,6 +43,10 @@ bool Enemy::Start()
 {
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
+
+	//HPのUI作成
+	m_HPUI = NewGO<Enemy_HP_UI>(1, "enemy_hp_ui");
+	m_HPUI->m_enemy = (this);	//作成したUIクラスに自分のポインタを教える
 	
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");

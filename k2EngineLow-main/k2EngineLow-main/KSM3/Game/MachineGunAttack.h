@@ -33,5 +33,7 @@ public:
 	bool m_atackState = true;
 	bool Landing_state_BB = false;
 	float m_fallSpeed = 0.0f;
+	float m_bulletDamage = 5.0f;
+
 };
 

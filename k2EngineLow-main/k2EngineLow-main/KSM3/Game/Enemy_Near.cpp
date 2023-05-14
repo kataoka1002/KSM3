@@ -7,6 +7,7 @@
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
 #include "Enemy_Bullet.h"
+#include "Enemy_HP_UI.h"
 
 
 Enemy_Near::Enemy_Near()
@@ -31,12 +32,17 @@ Enemy_Near::~Enemy_Near()
 
 	DeleteGO(m_asiotoSE);
 	DeleteGO(m_dashSE);
+	DeleteGO(m_HPUI);
 }
 
 bool Enemy_Near::Start()
 {
 	m_player = FindGO<Player>("player");
 	m_game = FindGO<Game>("game");
+
+	//HPのUI作成
+	m_HPUI = NewGO<Enemy_HP_UI>(1, "enemy_hp_ui");
+	m_HPUI->m_enemyNear = (this);	//作成したUIクラスに自分のポインタを教える
 
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");

@@ -7,6 +7,7 @@
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
 #include "Enemy_Bullet.h"
+#include "Enemy_HP_UI.h"
 
 
 Enemy_Far::Enemy_Far()
@@ -29,6 +30,7 @@ Enemy_Far::~Enemy_Far()
 	m_player->killEnemy++;	//殺した数を増やす
 
 	DeleteGO(m_asiotoSE);
+	DeleteGO(m_HPUI);
 }
 
 bool Enemy_Far::Start()
@@ -36,6 +38,9 @@ bool Enemy_Far::Start()
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 
+	//HPのUI作成
+	m_HPUI = NewGO<Enemy_HP_UI>(1, "enemy_hp_ui");
+	m_HPUI->m_enemyFar = (this);	//作成したUIクラスに自分のポインタを教える
 
 	//エネミーの設定
 	m_enemyModel.Init("Assets/modelData/Enemy_model_type2.tkm");
