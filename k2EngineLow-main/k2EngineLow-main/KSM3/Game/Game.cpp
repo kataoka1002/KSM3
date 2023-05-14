@@ -39,7 +39,7 @@ Game::Game()
 	
 	//エネミーを複数体生成
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
 		enemy->m_enemyPosition = { 0.0f,0.0f,3000.0f };
@@ -47,14 +47,14 @@ Game::Game()
 		m_enemyObject.push_back(enemy);
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
 		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
 
 		m_enemyFarObject.push_back(enemyFar);
 	}
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
 		enemyNear->m_enemyPosition = { 0.0f,0.0f,2000.0f };
@@ -82,9 +82,6 @@ Game::Game()
 
 	//カスタム画面の作成
 	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
-
-
-	//e_h_ui = NewGO<Enemy_HP_UI>(1 , "enemy_hp_ui");
 }
 
 Game::~Game()
@@ -124,16 +121,10 @@ Game::~Game()
 
 	
 	DeleteGO(m_customizeUI);
-
-
-	/*if (drop_item->GetState == false) {
-		DeleteGO(drop_item);
-	}*/
 	DeleteGO(background);
 
 	
 	DeleteGO(game_ui);
-	DeleteGO(e_h_ui);
 }
 
 bool Game::Start()

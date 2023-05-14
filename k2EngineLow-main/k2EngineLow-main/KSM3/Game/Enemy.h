@@ -6,6 +6,7 @@ class Player;
 class BattleShipBullet;
 class Drop_item;
 class Game;
+class Enemy_HP_UI;
 
 class Enemy:public IGameObject
 {
@@ -49,7 +50,7 @@ public:
 	SoundSource* m_enemyDeadSE = nullptr;				//死んだときの爆破SE
 	SoundSource* m_machineGunSE = nullptr;				//マシンガンSE
 	SoundSource* m_asiotoSE = nullptr;					//足音
-
+	Enemy_HP_UI* m_HPUI = nullptr;
 
 	ModelRender m_enemyModel;						//エネミーモデル
 	ModelRender m_enemyWeaponModel;					//武器モデル
@@ -78,5 +79,7 @@ public:
 	int m_sunaHassei = 0;							//砂ぼこりが発生する間隔
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
+	float m_enemyHPMax = HP;						//エネミーの体力の最大値
+
 };
 

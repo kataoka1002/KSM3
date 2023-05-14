@@ -40,6 +40,7 @@ public:
 	bool Landing_state_BB = false;
 	float move_speed = 30.0f;
 	float fall_speed = 0.0f;
+	float m_bulletDamage = 50.0f;
 	bool atack_state = true;
 	int m_kemuriCount = 0;
 	

@@ -127,7 +127,7 @@ void GigatonCannonAttack::Damage()
 		Vector3 diff = m_position - enemy->m_enemyPosition;
 		if (diff.Length() <= 300.0f)
 		{
-			enemy->m_enemyHP -= 50.0f;
+			enemy->m_enemyHP -= m_bulletDamage;
 			DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
 		}
 	}
@@ -138,7 +138,7 @@ void GigatonCannonAttack::Damage()
 		Vector3 diff = m_position - enemyFar->m_enemyPosition;
 		if (diff.Length() <= 300.0f)
 		{
-			enemyFar->m_enemyHP -= 50.0f;
+			enemyFar->m_enemyHP -= m_bulletDamage;
 			DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
 		}
 	}
@@ -149,7 +149,7 @@ void GigatonCannonAttack::Damage()
 		Vector3 diff = m_position - enemyNear->m_enemyPosition;
 		if (diff.Length() <= 300.0f)
 		{
-			enemyNear->m_enemyHP -= 50.0f;
+			enemyNear->m_enemyHP -= m_bulletDamage;
 			DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
 		}
 	}
@@ -159,7 +159,7 @@ void GigatonCannonAttack::Damage()
 		Vector3 diff = m_position - m_game->boss->boss_position;
 		if (diff.Length() <= 300.0f)
 		{
-			m_game->boss->boss_HP -= 50.0f;
+			m_game->boss->boss_HP -= m_bulletDamage;
 			DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
 		}
 	}
@@ -171,7 +171,7 @@ void GigatonCannonAttack::Damage()
 			Vector3 diff = m_position - m_game->boss->b_boss_drill->b_w_position;
 			if (diff.Length() <= 300.0f)
 			{
-				m_game->boss->b_boss_drill->drill_HP -= 50.0f;
+				m_game->boss->b_boss_drill->drill_HP -= m_bulletDamage;
 				DeleteGO(this);	//íeÇÕè¡Ç¶ÇÈ
 			}
 		}

@@ -1,9 +1,9 @@
 #pragma once
+class Enemy_Near;
 class Enemy;
+class Enemy_Far;
 class Player;
-class Battle_ship_attack;
 class Game;
-class GameCamera;
 
 class Enemy_HP_UI:public IGameObject
 {
@@ -12,18 +12,20 @@ public:
 	~Enemy_HP_UI();
 	bool Start();
 	void Update();
-	void Enemy_HP_Position();
+	void SetPosition();
+	void Damage();
 	void Render(RenderContext& rc);
 
+	Enemy_Near* m_enemyNear = nullptr;
+	Enemy* m_enemy = nullptr;
+	Enemy_Far* m_enemyFar = nullptr;
+	Player* m_player = nullptr;
+	Game* m_game = nullptr;
 
-	SpriteRender hp_render;
-	Vector3 hp_position;
-	Vector3 hp_scale;
-	Vector3 hp_movespeed;
-	Enemy* enemy;
-	Player* player;
-	Battle_ship_attack* b_s_attack;
-	Game* game;
-	GameCamera* game_camera;
+	SpriteRender m_HPSprite;
+	Vector2 m_position = Vector2::Zero;
+	Vector3 m_scale = Vector3::Zero;
+
+	float m_sizeX = 0.0f;
 };
 
