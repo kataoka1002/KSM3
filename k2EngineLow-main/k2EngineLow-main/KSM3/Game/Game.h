@@ -48,7 +48,11 @@ enum SoundName {
 	enPlayerRun,			//プレイヤーの足音(速い方)
 	enGameBGM,				//ゲーム中のBGM
 	enBossBGM,				//ボス戦BGM
-	enCustomizeBGM			//カスタマイズ画面BGM
+	enCustomizeBGM,			//カスタマイズ画面BGM
+	enKetteiSE,				//決定音
+	enCancelSE,				//キャンセル音
+	enSentakuIdouSE,		//カーソル移動音
+	enSoutyakuSE			//装着音
 };
 
 class Game :public IGameObject

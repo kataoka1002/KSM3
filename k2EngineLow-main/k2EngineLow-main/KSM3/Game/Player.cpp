@@ -9,10 +9,10 @@
 
 Player::Player() 
 {
-	//�v���C���[�̃��f���ƃ|�[�Y��ʂ̃X�v���C�g�̏�����
+	//プレイヤーのモデルとポーズ画面のスプライトの初期化
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
-	//�L�����R���̐ݒ�
+	//キャラコンの設定
 	characterController.Init(70.0f, 150.0f, player_position);
 }
 
@@ -27,18 +27,18 @@ bool Player::Start()
 {
 	m_game = FindGO<Game>("game");
 
-	//���ʉ��̍쐬(���������鉹���Ȃ̂ŃC���X�^���X��ێ�������)
+	//効果音の作成(流し続ける音源なのでインスタンスを保持させる)
 	m_machineGunSE = NewGO<SoundSource>(0);
 	m_runSE = NewGO<SoundSource>(0);
 	m_walkSE = NewGO<SoundSource>(0);
 
-	//���ʉ��̐ݒ�
-	m_machineGunSE->Init(enMachineGun);	//������
-	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//���ʒ���
-	m_runSE->Init(enPlayerRun);	//������
-	m_runSE->SetVolume(0.5f * m_game->SEvol);	//���ʒ���
-	m_walkSE->Init(enRunning);	//������
-	m_walkSE->SetVolume(0.5f * m_game->SEvol);	//���ʒ���
+	//効果音の設定
+	m_machineGunSE->Init(enMachineGun);	//初期化
+	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
+	m_runSE->Init(enPlayerRun);	//初期化
+	m_runSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
+	m_walkSE->Init(enRunning);	//初期化
+	m_walkSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
 
 
 
@@ -47,55 +47,61 @@ bool Player::Start()
 
 void Player::Update() 
 {
-	if (game_state == 0) //���C���Q�[��
+	if (game_state == 0) //メインゲーム
 	{
-		Move();			//�ړ�����
-		MachineGunSE();	//�}�V���K���̌��ʉ��Đ�
-		RunSE();		//�����̍Đ�
+		Move();			//移動処理
+		MachineGunSE();	//マシンガンの効果音再生
+		RunSE();		//足音の再生
 
-		//�X�^�[�g�{�^��������ƃ|�[�Y��ʂɈړ�
+		//スタートボタンを押すとポーズ画面に移動
 		if (g_pad[0]->IsTrigger(enButtonStart)) 
 		{
 			game_state = 1;
+
+			//メニュー画面移動SE
+			m_kettei = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+			m_kettei->Init(enKetteiSE);							//初期化
+			m_kettei->SetVolume(2.0f * m_game->SEvol);			//音量調整
+			m_kettei->Play(false);
 		}
 		if (g_pad[0]->IsTrigger(enButtonA)) 
 		{
 			p_customize_ui_ver2 = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 		}
 
-		//���f���̍X�V
+		//モデルの更新
 		player_modelRender.Update(true);
 	}
-	else if (game_state == 1) //�|�[�Y���
+	else if (game_state == 1) //ポーズ画面
 	{
 		pause();
 	}
 
-	//HP��0�ȉ��ɂȂ�Ȃ�Ǝ��S
+	//HPが0以下になるなると死亡
 	if (m_playerHP <= 0)
 	{
-		//���S�̉��o
+		//死亡の演出
 
-		//���U���g��
+		//リザルトへ
 		m_result = NewGO<Result>(1, "result");
 	}
 }
 
 void Player::Move()
 {
-	player_moveSpeed = { 0.0f,0.0f,0.0f };//�ړ����x�̏�����
+	player_moveSpeed = { 0.0f,0.0f,0.0f };//移動速度の初期化
 
 	Vector3 stickL;
 	throttle = 0;
 	stickL.x = g_pad[0]->GetLStickXF();
-	//�X�e�B�b�N��|�����ʂ̎擾
+	//スティックを倒した量の取得
 	throttle = g_pad[0]->GetRTrigger();
 
 	Vector3 right = g_camera3D->GetRight();
 	right.y = 0.0f;
 	right *= stickL.x * 120.0f;
 
-	//�X�s�[�h��0����Ȃ��Ȃ�G�t�F�N�g��o��
+	//スピードが0じゃないならエフェクトを出す
 	if (throttle != 0)
 	{
 		MakeEfe();	
@@ -103,8 +109,8 @@ void Player::Move()
 		
 	playerFowrad.Normalize();
 
-	//x��z�̈ړ����x����������(�X�e�B�b�N�̓��͂���������)�B
-	//��]����
+	//xかzの移動速度があったら(スティックの入力があったら)。
+	//回転処理
 	if (stickL.x!=0.0f)
 	{
 		playerFowrad.x = playerFowrad.x * cos(stickL.x * -0.05) - playerFowrad.z * sin(stickL.x * -0.05);
@@ -112,23 +118,23 @@ void Player::Move()
 
 		player_rotation.SetRotationY(atan2(playerFowrad.x, playerFowrad.z));
 	}
-	//��]���Ă��Ȃ��Ƃ��̈ړ�
+	//回転していないときの移動
 	if (throttle != 0.0f) 
 	{
-		//���񂾂񑬂�����
+		//だんだん速くする
 		accelerator += 0.05;
 		if (accelerator >= 2) 
 		{
-			accelerator = 2;	//�ő�l��2
+			accelerator = 2;	//最大値は2
 		}
 	}
 	else 
 	{
-		//���񂾂�x������
+		//だんだん遅くする
 		accelerator -= 0.05;
 		if (accelerator <= 0) 
 		{
-			accelerator = 0;	//�ŏ��l��0
+			accelerator = 0;	//最小値は0
 		}
 	}
 
@@ -137,20 +143,20 @@ void Player::Move()
 
 	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
 
-	//���W�������B
+	//座標を教える。
 	player_modelRender.SetPosition(player_position);
 	player_modelRender.SetRotation(player_rotation);
 }
 
 void Player::MakeEfe()
 {
-	//�v���C���[�̃{�^��������Ă���ʂɂ���č��ڂ���̗ʂ�ς���
+	//プレイヤーのボタンを押している量によって砂ぼこりの量を変える
 	if (throttle < 126.0f)
 	{
-		//�����Ă����7�t���[�����Ƃɍ��ڂ���𔭐�������
+		//動いている間7フレームごとに砂ぼこりを発生させる
 		if (effectCount > 20)
 		{
-			//���ڂ���G�t�F�N�g�̏������ƍĐ�
+			//砂ぼこりエフェクトの初期化と再生
 			sunabokoriEffect = NewGO<EffectEmitter>(0);
 			sunabokoriEffect->Init(enSunabokori);
 			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
@@ -158,15 +164,15 @@ void Player::MakeEfe()
 			sunabokoriEffect->SetPosition(player_position);
 			sunabokoriEffect->Play();
 
-			effectCount = 0;	//�J�E���g���Z�b�g
+			effectCount = 0;	//カウントリセット
 		}
 	}
 	else if (throttle > 127.0f)
 	{
-		//�����Ă����3�t���[�����Ƃɍ��ڂ���𔭐�������
+		//動いている間3フレームごとに砂ぼこりを発生させる
 		if (effectCount > 3)
 		{
-			//���ڂ���G�t�F�N�g�̏������ƍĐ�
+			//砂ぼこりエフェクトの初期化と再生
 			sunabokoriEffect = NewGO<EffectEmitter>(0);
 			sunabokoriEffect->Init(enSunabokori);
 			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
@@ -174,7 +180,7 @@ void Player::MakeEfe()
 			sunabokoriEffect->SetPosition(player_position);
 			sunabokoriEffect->Play();
 
-			effectCount = 0;	//�J�E���g���Z�b�g
+			effectCount = 0;	//カウントリセット
 		}
 	}
 	effectCount++;
@@ -184,43 +190,50 @@ void Player::pause()
 {
 	if (g_pad[0]->IsTrigger(enButtonB)) 
 	{
-		game_state = 0;	//���C���Q�[���ɖ߂�
+		game_state = 0;	//メインゲームに戻る
+
+		//メニュー画面移動SE
+		m_kettei = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_kettei->Init(enCancelSE);							//初期化
+		m_kettei->SetVolume(2.0f * m_game->SEvol);			//音量調整
+		m_kettei->Play(false);
+
 	}
 	else if (g_pad[0]->IsTrigger(enButtonA)) 
 	{
-		game_end_state = 1;	//�Q�[���I��
+		game_end_state = 1;	//ゲーム終了
 	}
 }
 
 void Player::RunSE()
 {
-	if (throttle <= 0)	//�����ĂȂ���
+	if (throttle <= 0)	//動いてない時
 	{
-		//���ʉ���~
+		//効果音停止
 		m_walkSE->Stop();
 		m_runSE->Stop();
 
 		return;
 	}
 
-	if (throttle > 0 && throttle <= 127 && m_runSE->IsPlaying() != true)	//������蓮���Ă��鎞
+	if (throttle > 0 && throttle <= 127 && m_runSE->IsPlaying() != true)	//ゆっくり動いている時
 	{
-		//������Đ�
+		//歩く音再生
 		m_walkSE->Play(true);
 	}
-	else if (throttle > 127 && m_walkSE->IsPlaying() != true)	//���������Ă��鎞
+	else if (throttle > 127 && m_walkSE->IsPlaying() != true)	//速く動いている時
 	{
-		//���鉹�Đ�
+		//走る音再生
 		m_runSE->Play(true);
 	}
 
 
-	//�����Ă���Ƃ�����̉��͎~�߂�
+	//走っているとき歩きの音は止める
 	if (throttle > 127)
 	{
 		m_walkSE->Stop();
 	}
-	//����Ă���Ƃ�����̉��͎~�߂�
+	//歩いているとき走りの音は止める
 	if (throttle > 0 && throttle <= 127)
 	{
 		m_runSE->Stop();
@@ -231,11 +244,11 @@ void Player::MachineGunSE()
 {
 	if (g_pad[0]->IsPress(enButtonRB1) && m_machineGunSE->IsPlaying() != true)
 	{
-		m_machineGunSE->Play(true);	//�����čĐ�
+		m_machineGunSE->Play(true);	//続けて再生
 	}
 	else if(g_pad[0]->IsPress(enButtonRB1) == false)
 	{
-		m_machineGunSE->Stop();		//�U������Ȃ��Ȃ��~
+		m_machineGunSE->Stop();		//攻撃じゃないなら停止
 	}
 }
 
@@ -243,7 +256,7 @@ void Player::Render(RenderContext& rc)
 {
 	player_modelRender.Draw(rc);
 
-	//�|�[�Y���Ȃ�|�[�Y��ʂ�\��
+	//ポーズ中ならポーズ画面を表示
 	if (game_state == 1)
 	{
 		pouse_spriteRender.Draw(rc);

@@ -79,7 +79,7 @@ Game::Game()
 
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 	core_weapons = NewGO<Core_weapons>(2, "core_weapons");
-	game_ui = NewGO<Game_UI>(0, "game_ui");
+	game_ui = NewGO<Game_UI>(1, "game_ui");
 
 	//カスタム画面の作成
 	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
@@ -153,6 +153,11 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enGameBGM, "Assets/audio/BGM/game_bgm.wav");
 	g_soundEngine->ResistWaveFileBank(enBossBGM, "Assets/audio/BGM/last_boss_bgm.wav");
 	g_soundEngine->ResistWaveFileBank(enCustomizeBGM, "Assets/audio/BGM/Customize_bgm.wav");
+	g_soundEngine->ResistWaveFileBank(enKetteiSE, "Assets/audio/ketteion.wav");
+	g_soundEngine->ResistWaveFileBank(enCancelSE, "Assets/audio/cancelon.wav");
+	g_soundEngine->ResistWaveFileBank(enSentakuIdouSE, "Assets/audio/sentakuidouon.wav");
+	g_soundEngine->ResistWaveFileBank(enSoutyakuSE, "Assets/audio/soutyakuon.wav");
+
 
 
 

@@ -22,6 +22,7 @@ public:
 	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
 	SoundSource* m_runSE = nullptr;					//足音SE
 	SoundSource* m_walkSE = nullptr;				//足音SE
+	SoundSource* m_kettei = nullptr;
 	ModelRender player_modelRender;					//モデルレンダー
 	Vector3 player_position;						//座標
 	CharacterController characterController;		//キャラクターコントローラー
