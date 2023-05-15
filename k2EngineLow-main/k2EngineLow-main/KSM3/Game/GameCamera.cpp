@@ -53,56 +53,37 @@ bool GameCamera::Start()
 	//プレイヤーのインスタンスを探す。
 	m_player = FindGO<Player>("player");
 
-	
-
 	return true;
 }
 void GameCamera::Update()
 {
 	Vector3 toCameraPosOld = m_toCameraPos;
-	//カメラを更新。
-	if (CameraState == 3) 
-	{
-		m_toCameraPos.Set(0.0f, 10.0f, -300.0f);
-		target.y = 100.0f;
-		/*if (fast_count >= 2) {
-			camera_customize_ui_ver2 = FindGO<Customize_UI_ver2>("customize_ui_ver2");
-			target = camera_customize_ui_ver2->custom_model_body_position;
-		}
-		fast_count++;*/
-	}
-	else 
-	{
-		//注視点を計算する。
-		target = m_player->player_position;
-	}
 	
 	if (CameraState==0)
 	{
-		
-		target.y += 80.0f;
+		//注視点を計算する。
+		target = m_player->player_position;
+		target.y += 80.0f;		//プレイヤの足元からちょっと上を注視点とする。
+	}
+	else if (CameraState==1)
+	{
+		//注視点を計算する。
+		target = m_player->player_position;
+		target.y += 200.0f;		//プレイヤの足元からちょっと上を注視点とする。
+	}
+	else if (CameraState == 3)
+	{
+		m_toCameraPos.Set(0.0f, 10.0f, -300.0f);
+		target.y = 100.0f;
 	}
 
-	if (CameraState==1)
+	//カスタマイズ画面以外ならパッドの入力を使ってカメラを回す。
+	if (CameraState != 3)
 	{
-		//プレイヤの足元からちょっと上を注視点とする。
-		target.y += 200.0f;
-		
-
-	}
-	if (CameraState == 3)
-	{
-		//m_toCameraPos.Set(0.0f, -50.0f, -300.0f);
-		////近平面,遠平面調整中…。
-		//g_camera3D->SetNear(1.0f);
-		//g_camera3D->SetFar(10000.0f);
-		//target.y -= 90.0f;
-	}
-	else {
-		//カスタマイズ画面以外ならパッドの入力を使ってカメラを回す。
 		x = g_pad[0]->GetRStickXF();
 		y = g_pad[0]->GetRStickYF();
 	}
+		
 	//Y軸周りの回転
 	Quaternion qRot;
 	qRot.SetRotationDeg(Vector3::AxisY, 1.3f * x);
@@ -154,12 +135,6 @@ void GameCamera::Update()
 
 	//視点を計算する。
 	Vector3 pos = target + m_toCameraPos;
-	//メインカメラに注視点と視点を設定する。
-	//g_camera3D->SetTarget(target);
-	//g_camera3D->SetPosition(pos);
-
-	//カメラの更新。
-	//g_camera3D->Update();
 
 	//ばねカメラの設定
 	m_springCamera.SetTarget(target);

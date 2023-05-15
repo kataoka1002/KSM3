@@ -5,6 +5,7 @@
 #include "Customize_UI.h"
 #include "Customize_UI_ver2.h"
 #include "GameCamera.h"
+#include "Game.h"
 #include <vector>       // ヘッダファイルインクルード
 using namespace std;
 
@@ -23,6 +24,7 @@ bool Drop_item::Start()
 	drop_player = FindGO<Player>("player");
 	customize_UI_ver2 = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
+	m_game = FindGO<Game>("game");
 
 	Set_Drop_item();
 
@@ -64,6 +66,11 @@ void Drop_item::Update()
 		
 		if (diff.Length() < 100.0f) 
 		{
+			SoundSource* m_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+			m_SE->Init(enByuSE);								//初期化
+			m_SE->SetVolume(1.0f * m_game->SEvol);				//音量調整
+			m_SE->Play(false);
+
 			GetState = true;
 			
 			//アイテムを拾ったらカスタマイズ画面に飛ぶ
