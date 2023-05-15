@@ -52,7 +52,8 @@ enum SoundName {
 	enKetteiSE,				//決定音
 	enCancelSE,				//キャンセル音
 	enSentakuIdouSE,		//カーソル移動音
-	enSoutyakuSE			//装着音
+	enSoutyakuSE,			//装着音
+	enByuSE					//ドロップアイテム取得時の音
 };
 
 class Game :public IGameObject

@@ -922,8 +922,7 @@ void Customize_UI_ver2::Window()
 			{
 				//プレイヤーの部位に落ちていた武器の種類を教えてやる
 				m_player->p_custom_point[column][line] = custom_kinds;
-				//決定音再生
-				PlaySE(enSoutyakuSE, 2.0f);
+				
 
 				//カーソルを合わせている位置によって作り出す武器を変える
 				switch (selection_position)
@@ -940,6 +939,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 2:
@@ -951,6 +952,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 3:
@@ -962,6 +965,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 4:
@@ -973,6 +978,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 5:
@@ -984,6 +991,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 				default:
 					break;

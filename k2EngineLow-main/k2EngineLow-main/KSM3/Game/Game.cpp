@@ -157,6 +157,7 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enCancelSE, "Assets/audio/cancelon.wav");
 	g_soundEngine->ResistWaveFileBank(enSentakuIdouSE, "Assets/audio/sentakuidouon.wav");
 	g_soundEngine->ResistWaveFileBank(enSoutyakuSE, "Assets/audio/soutyakuon.wav");
+	g_soundEngine->ResistWaveFileBank(enByuSE, "Assets/audio/byu.wav");
 
 
 
