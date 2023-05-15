@@ -1,4 +1,5 @@
 #pragma once
+#include"Game.h"
 
 class Player;
 class Drop_item;
@@ -11,7 +12,6 @@ class Drop_item;
 class Shoulder_weapons;
 class Right_leg_weapons;
 class Left_leg_weapons;
-
 
 class Customize_UI_ver2 :public IGameObject
 {
@@ -35,8 +35,9 @@ public:
 	void trance();
 	void tranceOut();
 	void tranceOutInit();
+	void PlaySE(SoundName name,float vol);
 
-
+	Game* m_game = nullptr;
 	GameCamera* m_gameCamera = nullptr;
 	Core_weapons* m_coreWeapon = nullptr;
 	Drop_item* m_dropItem = nullptr;
@@ -45,6 +46,7 @@ public:
 	Shoulder_weapons* m_shoulderWeapon = nullptr;
 	Right_leg_weapons* m_rightLegWeapon = nullptr;
 	Left_leg_weapons* m_leftLegWeapon = nullptr;
+	//SoundSource* m_sentakuIdouSE = nullptr;			//戦艦砲SE
 
 
 	SpriteRender m_selectSheet;
