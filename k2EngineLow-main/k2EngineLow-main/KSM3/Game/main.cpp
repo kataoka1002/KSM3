@@ -27,7 +27,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	title = NewGO<Title>(0, "title");
 	//NewGO<Fade>(2, "fade");
 
-
 	// ここからゲームループ。
 	while (DispatchWindowMessage())
 	{
