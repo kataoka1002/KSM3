@@ -27,7 +27,7 @@ bool Boss_Shovel::Start()
 	//m_animationClip[enAnimationClip_Idle].Load("Assets/animData/jump.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
 	//èâä˙âª
-	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm", false, true , m_animationClip, enAnimationClip_Num, enModelUpAxisY);
+	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel4.tkm", true, true , m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
 	//boss_Shovel_Render.Init("Assets/modelData/unityChan.tkm", true,true,m_animationClip, enAnimationClip_Num, enModelUpAxisY);
 	if (defeatState == true)
 	{
