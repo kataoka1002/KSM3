@@ -218,7 +218,7 @@ public:
 	    m_size++;
 	}
 
-	//!Simply increase the m_size, doesn't call the new element constructor
+	//!Simply increase the m_scale, doesn't call the new element constructor
 	inline void push_back_mem()
 	{
 	    this->growingCheck();
@@ -238,7 +238,7 @@ public:
         m_data[m_size].~T();
 	}
 
-	//!Simply decrease the m_size, doesn't call the deleted element destructor
+	//!Simply decrease the m_scale, doesn't call the deleted element destructor
 	inline void pop_back_mem()
 	{
 	    m_size--;

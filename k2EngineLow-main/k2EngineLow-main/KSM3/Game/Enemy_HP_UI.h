@@ -14,6 +14,7 @@ public:
 	void Update();
 	void SetPosition();
 	void Damage();
+	Vector3 HPBerSend(Vector3 size, Vector3 scale);	//画像の移動量を求める
 	void Render(RenderContext& rc);
 
 	Enemy_Near* m_enemyNear = nullptr;
@@ -24,8 +25,7 @@ public:
 
 	SpriteRender m_HPSprite;
 	Vector2 m_position = Vector2::Zero;
-	Vector3 m_scale = Vector3::Zero;
-
-	float m_sizeX = 0.0f;
+	Vector3 HP_BER_SIZE = { 160.0f,80.0f,1.0f };	//スプライトのサイズ
+	Vector3 m_scale = {1.0f,1.0f,1.0f};
 };
 

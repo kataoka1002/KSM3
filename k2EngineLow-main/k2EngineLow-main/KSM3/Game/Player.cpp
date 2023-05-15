@@ -9,7 +9,6 @@
 
 Player::Player() 
 {
-	
 	//�v���C���[�̃��f���ƃ|�[�Y��ʂ̃X�v���C�g�̏�����
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
@@ -20,6 +19,8 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGO(m_machineGunSE);
+	DeleteGO(m_runSE);
+	DeleteGO(m_walkSE);
 }
 
 bool Player::Start()
@@ -38,6 +39,7 @@ bool Player::Start()
 	m_runSE->SetVolume(0.5f * m_game->SEvol);	//���ʒ���
 	m_walkSE->Init(enRunning);	//������
 	m_walkSE->SetVolume(0.5f * m_game->SEvol);	//���ʒ���
+
 
 
 	return true;

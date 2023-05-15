@@ -20,7 +20,7 @@
 #include "SoundManage.h"
 #include <time.h>
 #include <stdlib.h>
-
+#include "PlayerUI.h"
 //#include "Fade.h"
 
 #include "Customize_UI_ver2.h"
@@ -31,8 +31,9 @@ Game::Game()
 	//ライトの作成
 	lighting = NewGO<Lighting>(1, "lighting");
 
-	//プレイヤーの作成
+	//プレイヤーとUIの作成
 	player = NewGO<Player>(1, "player");
+	m_playerUI = NewGO<PlayerUI>(1,"playerui");
 
 	//サウンドの作成
 	m_soundManage = NewGO<SoundManage>(1, "soundmanage");
