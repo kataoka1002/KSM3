@@ -59,6 +59,7 @@
     <ClCompile Include="MachineGunAttack.cpp" />
     <ClCompile Include="GigatonCannonAttack.cpp" />
     <ClCompile Include="SoundManage.cpp" />
+    <ClCompile Include="PlayerUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -112,7 +113,8 @@
     <ClInclude Include="Fade.h" />
     <ClInclude Include="MachineGunAttack.h" />
     <ClInclude Include="GigatonCannonAttack.h" />
-	<ClInclude Include="SoundManage.h" />
+    <ClInclude Include="SoundManage.h" />
     <ClInclude Include="Result_Macro.h" />
+    <ClInclude Include="PlayerUI.h" />
   </ItemGroup>
 </Project>

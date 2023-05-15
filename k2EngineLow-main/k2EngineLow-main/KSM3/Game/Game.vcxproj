@@ -261,6 +261,7 @@
     <ClCompile Include="MachineGunAttack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerUI.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Right_arm_UI.cpp" />
     <ClCompile Include="Right_arm_weapons.cpp" />
@@ -317,6 +318,7 @@
     <ClInclude Include="Lighting.h" />
     <ClInclude Include="MachineGunAttack.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerUI.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Result_Macro.h" />
     <ClInclude Include="Right_arm_UI.h" />

@@ -20,7 +20,7 @@ class Game_UI;
 class Enemy_HP_UI;
 class SoundManage;
 //class Fade;
-
+class PlayerUI;
 class Customize_UI_ver2;
 
 
@@ -83,6 +83,7 @@ public:
 	Game_UI* game_ui;
 	Enemy_HP_UI* e_h_ui;
 	Boss* boss = nullptr;
+	PlayerUI* m_playerUI = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 
