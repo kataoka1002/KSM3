@@ -86,6 +86,12 @@ void Drop_item::Update()
 			
 			DeleteGO(this);
 		}
+
+		if (m_deleteCount <= 0)
+		{
+			DeleteGO(this);
+		}
+		m_deleteCount--;
 	}
 }
 

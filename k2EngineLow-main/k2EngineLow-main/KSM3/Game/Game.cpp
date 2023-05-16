@@ -161,24 +161,24 @@ void Game::SetUp()
 void Game::MakeEnemy()
 {
 	//エネミーを複数体生成
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
-		enemy->m_enemyPosition = { 0.0f,0.0f,3000.0f };
+		enemy->m_enemyPosition = RandomPosition();
 
 		m_enemyObject.push_back(enemy);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
-		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
+		enemyFar->m_enemyPosition = RandomPosition();
 
 		m_enemyFarObject.push_back(enemyFar);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
-		enemyNear->m_enemyPosition = { 0.0f,0.0f,2000.0f };
+		enemyNear->m_enemyPosition = RandomPosition();
 
 		m_enemyNearObject.push_back(enemyNear);
 	}
@@ -267,6 +267,18 @@ void Game::GameNow()
 		result = NewGO<Result>(1, "result");
 		DeleteGO(this);
 	}
+}
+
+Vector3 Game::RandomPosition()
+{
+	Vector3 m_pos;
+
+	//ランダムにポジションを当てはめる
+	m_pos.x = rand() % 2000 - 1000;
+	m_pos.y = 0.0f;
+	m_pos.z = rand() % 10000;
+
+	return m_pos;
 }
 
 void Game::Render(RenderContext& rc)
