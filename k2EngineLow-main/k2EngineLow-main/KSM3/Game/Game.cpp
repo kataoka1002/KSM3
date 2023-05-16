@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include "PlayerUI.h"
 //#include "Fade.h"
-
+#include "Wave.h"
 #include "Customize_UI_ver2.h"
 
 
@@ -146,6 +146,20 @@ void Game::SetUp()
 	//BGMの作成
 	m_soundManage = NewGO<SoundManage>(1, "soundmanage");
 
+	//エネミーの生成
+	MakeEnemy();
+
+	game_ui = NewGO<Game_UI>(1, "game_ui");
+
+	//カスタム画面の作成
+	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
+
+	//ウェーブ管理のクラス作成
+	m_wave = NewGO<Wave>(1, "wave");
+}
+
+void Game::MakeEnemy()
+{
 	//エネミーを複数体生成
 	for (int i = 0; i < 1; i++)
 	{
@@ -168,12 +182,6 @@ void Game::SetUp()
 
 		m_enemyNearObject.push_back(enemyNear);
 	}
-
-
-	game_ui = NewGO<Game_UI>(1, "game_ui");
-
-	//カスタム画面の作成
-	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 }
 
 void Game::TitleToGame()
@@ -200,8 +208,8 @@ void Game::GameNow()
 		}
 	}
 
-	//敵を10体以上殺したらボス戦
-	if (player->player_position.z >= 10600.0f)
+	//3ウェーブ突破したらボス戦
+	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 3)
 	{
 		boss = NewGO<Boss>(1, "boss");
 		boss->boss_position = { -16500.0f,0.0f,2000.0f };
