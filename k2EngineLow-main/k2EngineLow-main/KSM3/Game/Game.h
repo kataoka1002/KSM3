@@ -1,6 +1,6 @@
 #pragma once
 #include "LevelRender.h"
-class BoxMove;
+//class BoxMove;
 class Player;		//プレイヤー
 class Title;		//タイトル
 class Result;		//リザルト
@@ -13,7 +13,7 @@ class Drop_item;
 class BackGround;
 class Core_weapons;
 class GameCamera;
-class Test;
+//class Test;
 class Boss;
 class Boss_Riser;
 class Game_UI;
@@ -113,16 +113,16 @@ public:
 	float SEvol = 1.0f;
 
 private:
-	ModelRender m_modelRender;		//キャラ
-	ModelRender m_modelRender2;		//床
-	ModelRender m_modelRender3;		//ライト
-	SpriteRender m_spriteRender;
-	LevelRender m_levelRender;
-	std::vector<BoxMove*> m_boxmoves;				//moveボックス
-	FontRender m_fontRender;
+	//ModelRender m_modelRender;		//キャラ
+	//ModelRender m_modelRender2;		//床
+	//ModelRender m_modelRender3;		//ライト
+	//SpriteRender m_spriteRender;
+	//LevelRender m_levelRender;
+	//std::vector<BoxMove*> m_boxmoves;				//moveボックス
+	//FontRender m_fontRender;
 	float m_timer = 0.0f;
 
-	Test* test;
+	//Test* test;
 
 	int m_gameStartState = 0;	//ロード画面からゲームへの遷移
 };

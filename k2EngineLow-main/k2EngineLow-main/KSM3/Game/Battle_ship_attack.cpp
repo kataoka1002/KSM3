@@ -100,6 +100,10 @@ void Battle_ship_attack::Update()
 			DeleteGO(this);
 		}
 	}
+	else if (m_player->game_state == 2)
+	{
+		DeleteGO(this);	//リザルト画面に行くと消す
+	}
 }
 
 void Battle_ship_attack::Move() 

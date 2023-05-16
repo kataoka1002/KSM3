@@ -59,6 +59,10 @@ void Core_weapons_attack::Update() {
 			DeleteGO(this);
 		}
 	}
+	else if (C_W_A_player->game_state == 2)
+	{
+		DeleteGO(this);	//ƒŠƒUƒ‹ƒg‰æ–Ê‚És‚­‚ÆÁ‚·
+	}
 }
 
 void Core_weapons_attack::Damage()

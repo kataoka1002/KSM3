@@ -505,6 +505,7 @@ void Result::Back_set() { //モデルの読み込み
 	gamecamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
 	gamecamera->fast_count = 0;
 	gamecamera->target = { 10000.0f,20.0f,0.0f };
+	gamecamera->m_springCamera.Refresh();
 	gamecamera->CameraState = 3;
 
 	//コアウェポンの設定

@@ -232,6 +232,10 @@ void Enemy_Bullet::Update()
 			Damage(m_enemyFarMama->m_setWeapon);
 		}
 	}
+	else if (m_player->game_state == 2)
+	{
+		DeleteGO(this);	//ƒŠƒUƒ‹ƒg‰æ–Ê‚És‚­‚ÆÁ‚·
+	}
 }
 
 void Enemy_Bullet::Move()

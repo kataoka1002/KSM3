@@ -57,12 +57,13 @@ Game::Game()
 Game::~Game()
 {
 	DeleteGO(core_weapons);
-	DeleteGO(drop_item);
+	DeleteGO(m_playerUI);
+	//DeleteGO(drop_item);
 	//プッシュしたボックスを削除していく
-	for (auto box : m_boxmoves)
+	/*for (auto box : m_boxmoves)
 	{
 		DeleteGO(box);
-	}
+	}*/
 	//プッシュしたエネミーを削除していく
 	for (auto enemy : m_enemyObject)
 	{
@@ -76,7 +77,7 @@ Game::~Game()
 	{
 		DeleteGO(enemyNear);
 	}
-	DeleteGO(boss);
+	//DeleteGO(boss);
 	DeleteGO(m_soundManage);
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
@@ -209,7 +210,7 @@ void Game::GameNow()
 
 		player->player_modelRender.SetPosition(player->player_position);
 		player->characterController.SetPosition(player->player_position);
-
+		gamecamera->m_springCamera.Refresh();
 		player->player_modelRender.Update(true);
 	}
 
@@ -251,7 +252,7 @@ void Game::GameNow()
 	//		return;
 	//	}
 
-	m_spriteRender.Update();
+	//m_spriteRender.Update();
 
 	//リザルトへの遷移
 	if (g_pad[0]->IsTrigger(enButtonSelect)) {
