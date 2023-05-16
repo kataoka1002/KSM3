@@ -12,8 +12,8 @@ Player::Player()
 	//プレイヤーのモデルとポーズ画面のスプライトの初期化
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
-	//キャラコンの設定
-	characterController.Init(70.0f, 150.0f, player_position);
+	//キャラコンは登場が終わってから設定する
+	//characterController.Init(70.0f, 150.0f, player_position);
 }
 
 Player::~Player()
@@ -40,13 +40,20 @@ bool Player::Start()
 	m_walkSE->Init(enRunning);	//初期化
 	m_walkSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
 
-
-
 	return true;
 }
 
 void Player::Update() 
 {
+	//登場シーンの間の処理
+	if (game_state == 4)
+	{
+		//モデルのポジション更新
+		player_modelRender.SetPosition(player_position);
+		player_modelRender.Update(true);
+		return;
+	}
+
 	if (game_state == 0) //メインゲーム
 	{
 		Move();			//移動処理
@@ -75,6 +82,11 @@ void Player::Update()
 	else if (game_state == 1) //ポーズ画面
 	{
 		pause();
+	}
+	else if (game_state == 3)
+	{
+		//カスタマイズ中は攻撃音も出さない
+		m_machineGunSE->Stop();
 	}
 
 	//HPが0以下になるなると死亡
@@ -153,7 +165,7 @@ void Player::MakeEfe()
 	//プレイヤーのボタンを押している量によって砂ぼこりの量を変える
 	if (throttle < 126.0f)
 	{
-		//動いている間7フレームごとに砂ぼこりを発生させる
+		//動いている間20フレームごとに砂ぼこりを発生させる
 		if (effectCount > 20)
 		{
 			//砂ぼこりエフェクトの初期化と再生

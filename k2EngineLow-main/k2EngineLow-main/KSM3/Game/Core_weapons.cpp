@@ -32,7 +32,14 @@ void Core_weapons::Update() {
 	if (fast == 0) {
 		CW_set();
 	}
+
 	fast++;
+
+	if (cw_player->game_state == 4)
+	{
+		Move();
+	}
+
 	if(fast!=0) {
 		if (cw_player->game_state == 0) {
 			Move();
@@ -68,6 +75,7 @@ void Core_weapons::Move() {
 	cw_Rotation = originRotation;
 	Core_Weapons_Render.SetPosition(cw_position);
 	Core_Weapons_Render.SetRotation(cw_Rotation);
+	Core_Weapons_Render.Update();
 }
 
 void Core_weapons::Render(RenderContext& rc) {

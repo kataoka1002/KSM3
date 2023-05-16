@@ -63,6 +63,9 @@ public:
 	~Game();
 	bool Start();
 	void Update();
+	void GameNow();
+	void TitleToGame();
+	void SetUp();
 	void Render(RenderContext& rc);
 
 
@@ -75,18 +78,18 @@ public:
 
 	bool					m_isWaitFadeout = false;
 
-	Player* player;			//プレイヤー
-	Title* title;			//タイトル
-	Result* result;			//リザルト
-	Lighting* lighting;		//ライティング
-	SoundManage* m_soundManage;
-	Left_arm_weapons* s_left_arm_weapons;
-	Drop_item* drop_item;
-	BackGround* background;
-	Core_weapons* core_weapons;
-	GameCamera* gamecamera;
-	Game_UI* game_ui;
-	Enemy_HP_UI* e_h_ui;
+	Player* player = nullptr;			//プレイヤー
+	Title* title = nullptr;			//タイトル
+	Result* result = nullptr;			//リザルト
+	Lighting* lighting = nullptr;		//ライティング
+	SoundManage* m_soundManage = nullptr;
+	Left_arm_weapons* s_left_arm_weapons = nullptr;
+	Drop_item* drop_item = nullptr;
+	BackGround* background = nullptr;
+	Core_weapons* core_weapons = nullptr;
+	GameCamera* gamecamera = nullptr;
+	Game_UI* game_ui = nullptr;
+	Enemy_HP_UI* e_h_ui = nullptr;
 	Boss* boss = nullptr;
 	PlayerUI* m_playerUI = nullptr;
 
@@ -121,5 +124,6 @@ private:
 
 	Test* test;
 
+	int m_gameStartState = 0;	//ロード画面からゲームへの遷移
 };
 
