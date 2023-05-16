@@ -92,6 +92,10 @@ void GigatonCannonAttack::Update()
 			DeleteGO(this);
 		}
 	}
+	else if (m_player->game_state == 2)
+	{
+		DeleteGO(this);	//ƒŠƒUƒ‹ƒg‰æ–Ê‚És‚­‚ÆÁ‚·
+	}
 }
 
 void GigatonCannonAttack::Move()

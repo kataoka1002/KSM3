@@ -1,5 +1,5 @@
 #pragma once
-
+class Lighting;
 //class Fade;
 
 class Title:public IGameObject
@@ -14,6 +14,8 @@ public:
 	void Title_Move();
 	void Menu();
 	void Render(RenderContext& rc);
+
+	Lighting* lighting = nullptr;
 
 	SpriteRender title_Render;
 	SpriteRender gameStart_Render;	//スタートボタン。

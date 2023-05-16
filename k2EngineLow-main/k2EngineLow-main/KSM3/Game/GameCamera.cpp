@@ -35,7 +35,7 @@ bool GameCamera::Start()
 
 
 	//注視点から視点までのベクトルを設定。
-	//カメラステートが0(ウェーブ戦)の時。
+	//カメラステートが4(最初のムービー)の時。
 	if (CameraState == 4)
 	{
 		m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
@@ -45,20 +45,20 @@ bool GameCamera::Start()
 
 	}
 	//カメラステートが1(ボス)の時。
-	else if (CameraState == 1)
-	{
-		m_toCameraPos.Set(0.0f, 125.0f, -400.0f);
-		//近平面,遠平面調整中…。
-		g_camera3D->SetNear(1.0f);
-		g_camera3D->SetFar(10000.0f);
-	}
-	//カメラステートが2(タイトルにします)の時。
-	else if (CameraState == 2)
-	{
-		m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
-		g_camera3D->SetNear(1.0f);
-		g_camera3D->SetFar(1000.0f);
-	}
+	//else if (CameraState == 1)
+	//{
+	//	m_toCameraPos.Set(0.0f, 125.0f, -400.0f);
+	//	//近平面,遠平面調整中…。
+	//	g_camera3D->SetNear(1.0f);
+	//	g_camera3D->SetFar(10000.0f);
+	//}
+	////カメラステートが2(タイトルにします)の時。
+	//else if (CameraState == 2)
+	//{
+	//	m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
+	//	g_camera3D->SetNear(1.0f);
+	//	g_camera3D->SetFar(1000.0f);
+	//}
 
 
 	return true;
@@ -194,8 +194,8 @@ void GameCamera::Move()
 			5.0f				//カメラに設定される球体コリジョンの半径。第３引数がtrueの時に有効になる。
 		);
 
-		//キャラコンをプレイヤーが今いる位置で初期化
-		m_player->characterController.Init(70.0f, 150.0f, m_player->player_position);
+		//キャラコンをプレイヤーが今いる位置で設定
+		m_player->characterController.SetPosition(m_player->player_position);
 		m_game->SetUp();
 		m_player->game_state = 0;
 		CameraState = 0;

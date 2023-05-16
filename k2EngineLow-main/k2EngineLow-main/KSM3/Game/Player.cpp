@@ -12,8 +12,8 @@ Player::Player()
 	//プレイヤーのモデルとポーズ画面のスプライトの初期化
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
-	//キャラコンは登場が終わってから設定する
-	//characterController.Init(70.0f, 150.0f, player_position);
+	//キャラコンの初期化
+	characterController.Init(70.0f, 150.0f, player_position);
 }
 
 Player::~Player()
@@ -82,6 +82,11 @@ void Player::Update()
 	else if (game_state == 1) //ポーズ画面
 	{
 		pause();
+	}
+	else if (game_state == 2)
+	{
+		//リザルト中は攻撃音も出さない
+		m_machineGunSE->Stop();
 	}
 	else if (game_state == 3)
 	{

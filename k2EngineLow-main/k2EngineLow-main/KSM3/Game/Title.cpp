@@ -12,13 +12,13 @@ Title::Title()
 	////nannka_Render.Init("Assets/sprite/title/nannka.dds", /*1920.0f, 1080.0f*/);
 	//yajirusi_Render.Init("Assets/sprite/title/yajirusi/dds", /*1920.0f, 1080.0f*/);
 	SetUp();
-	Lighting* lighting = NewGO<Lighting>(1, "lighting");
+	lighting = NewGO<Lighting>(1, "lighting");
 	title_Render.SetScale(title_scale);
 }
 
 Title::~Title()
 {
-
+	DeleteGO(lighting);
 }
 
 bool Title::Start() {
@@ -299,7 +299,7 @@ void Title::Menu() {
 			Menu_trance[i].SetScale(Trance_sheet_scale);
 		}
 		Menu_trance[0].Update();
-		Menu_trance[9].Update();
+		Menu_trance[8].Update();
 		for (int i = 1; i < 4; i++) {
 			Menu_trance[i].Update();
 		}
@@ -353,7 +353,7 @@ void Title::Menu() {
 			Menu_trance[i].SetScale(Trance_sheet_scale);
 		}
 		Menu_trance[0].Update();
-		Menu_trance[9].Update();
+		Menu_trance[8].Update();
 		for (int i = 1; i < 3; i++) {
 			Menu_trance[i].Update();
 		}
@@ -450,7 +450,7 @@ void Title::Menu() {
 			Menu_trance[i].SetScale(Trance_sheet_scale);
 		}
 		Menu_trance[0].Update();
-		Menu_trance[9].Update();
+		Menu_trance[8].Update();
 		for (int i = 1; i < 3; i++) {
 			Menu_trance[i].Update();
 		}
@@ -481,7 +481,7 @@ void Title::Menu() {
 		}
 		fast_count++;
 		Menu_trance[0].Update();
-		Menu_trance[9].Update();
+		Menu_trance[8].Update();
 		for (int i = 1; i < 9; i++) {
 			Menu_trance[i].Update();
 		}
