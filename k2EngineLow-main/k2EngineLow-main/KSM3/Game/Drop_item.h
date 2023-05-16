@@ -35,6 +35,7 @@ public:
 	float float_level = 0.25;
 	int touch_flag = 0;
 	int dropCount = 0;
+	int m_deleteCount = 1800;	//ƒAƒCƒeƒ€‚ªÁ‚¦‚é‚Ü‚Å‚ÌŠÔ
 	float modelSize = 0.01f;
 
 	int drop_weapons[12] = {  0,	//non

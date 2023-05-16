@@ -68,6 +68,7 @@ public:
 	void TitleToGame();
 	void SetUp();
 	void MakeEnemy();
+	Vector3 RandomPosition();
 	void Render(RenderContext& rc);
 
 
