@@ -22,6 +22,7 @@ class SoundManage;
 //class Fade;
 class PlayerUI;
 class Customize_UI_ver2;
+class Wave;
 
 
 //エフェクトの列挙
@@ -66,6 +67,7 @@ public:
 	void GameNow();
 	void TitleToGame();
 	void SetUp();
+	void MakeEnemy();
 	void Render(RenderContext& rc);
 
 
@@ -92,6 +94,7 @@ public:
 	Enemy_HP_UI* e_h_ui = nullptr;
 	Boss* boss = nullptr;
 	PlayerUI* m_playerUI = nullptr;
+	Wave* m_wave = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 

@@ -110,6 +110,33 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0) 
 	{
-		m_HPSprite.Draw(rc);
+		//ˆê’è‹——£ˆÈ“à‚Å‘Ì—Í•\Ž¦
+		if (m_enemyNear != nullptr)
+		{
+			Vector3 diff = m_enemyNear->m_enemyPosition - m_player->player_position;
+
+			if (diff.Length() <= 2000.0f)
+			{
+				m_HPSprite.Draw(rc);
+			}
+		}
+		if (m_enemy != nullptr)
+		{
+			Vector3 diff = m_enemy->m_enemyPosition - m_player->player_position;
+
+			if (diff.Length() <= 2000.0f)
+			{
+				m_HPSprite.Draw(rc);
+			}
+		}
+		if (m_enemyFar != nullptr)
+		{
+			Vector3 diff = m_enemyFar->m_enemyPosition - m_player->player_position;
+			
+			if (diff.Length() <= 2000.0f)
+			{
+				m_HPSprite.Draw(rc);
+			}
+		}
 	}
 }

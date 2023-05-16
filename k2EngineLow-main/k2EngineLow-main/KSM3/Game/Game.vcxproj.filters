@@ -60,6 +60,7 @@
     <ClCompile Include="GigatonCannonAttack.cpp" />
     <ClCompile Include="SoundManage.cpp" />
     <ClCompile Include="PlayerUI.cpp" />
+    <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -116,5 +117,6 @@
     <ClInclude Include="SoundManage.h" />
     <ClInclude Include="Result_Macro.h" />
     <ClInclude Include="PlayerUI.h" />
+    <ClInclude Include="Wave.h" />
   </ItemGroup>
 </Project>
