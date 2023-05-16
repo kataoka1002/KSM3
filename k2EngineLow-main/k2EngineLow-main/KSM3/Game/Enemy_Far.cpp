@@ -144,6 +144,8 @@ void Enemy_Far::Update()
 			if (m_enemySize <= 0.0f)
 			{
 				DeleteGO(this);
+				//ƒŠƒXƒg‚©‚çÁ‚·
+				m_game->RemoveEnemyFarFromList(this);
 			}
 			m_enemyModel.SetScale(m_enemySize);
 			m_enemyModel.Update();

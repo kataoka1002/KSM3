@@ -71,11 +71,47 @@ public:
 	Vector3 RandomPosition();
 	void Render(RenderContext& rc);
 
+	void RemoveEnemyFromList(Enemy* enemy)
+	{
+		std::vector<Enemy*>::iterator it = std::find(
+			m_enemyObject.begin()	//エネミーのリストの最初
+			, m_enemyObject.end()	//エネミーのリストの最後
+			,enemy);				//探しているエネミー
+
+		if (it != m_enemyObject.end()) {
+			m_enemyObject.erase(it);
+		}
+	}
+
+	void RemoveEnemyNearFromList(Enemy_Near* enemyNear)
+	{
+		std::vector<Enemy_Near*>::iterator it = std::find(
+			m_enemyNearObject.begin()
+			, m_enemyNearObject.end()
+			, enemyNear);
+
+		if (it != m_enemyNearObject.end()) {
+			m_enemyNearObject.erase(it);
+		}
+	}
+
+	void RemoveEnemyFarFromList(Enemy_Far* enemyFar)
+	{
+		std::vector<Enemy_Far*>::iterator it = std::find(
+			m_enemyFarObject.begin()
+			, m_enemyFarObject.end()
+			, enemyFar);
+
+		if (it != m_enemyFarObject.end()) {
+			m_enemyFarObject.erase(it);
+		}
+	}
 
 	void AddDefeatedEnemyNumber()
 	{
 		m_numDefeatedEnemy++;
 	}
+
 	int						m_numEnemy = 0;					//エネミーの数。
 	int						m_numDefeatedEnemy = 0;			//倒されたエネミーの数。
 
