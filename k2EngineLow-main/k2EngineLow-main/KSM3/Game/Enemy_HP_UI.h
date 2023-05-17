@@ -24,8 +24,10 @@ public:
 	Game* m_game = nullptr;
 
 	SpriteRender m_HPSprite;
+	SpriteRender m_HPFrameSprite;
 	Vector2 m_position = Vector2::Zero;
-	Vector3 HP_BER_SIZE = { 160.0f,80.0f,1.0f };	//スプライトのサイズ
-	Vector3 m_scale = {1.0f,1.0f,1.0f};
+	Vector3 HP_BER_SIZE = { 186.0f,13.0f,1.0f };	//スプライトのサイズ
+	Vector3 HP_FRAME_SIZE = { 195.0f,22.0f,1.0f };	//スプライトのサイズ
+	Vector3 m_scale = {1.0f,1.0f,0.0f};
 };
 
