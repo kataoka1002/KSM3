@@ -18,6 +18,7 @@ namespace nsK2EngineLow {
 		void InitZPrepassRenderTarget();
 		void InitFinalSprite();
 		void InitToonMap();
+		void Init2DSprite();
 		void Execute(RenderContext& rc);
 		void ZPrepass(RenderContext& rc);
 		void ShadowDraw(RenderContext& rc);
@@ -136,6 +137,9 @@ namespace nsK2EngineLow {
 
 		RenderTarget m_mainRenderingTarget;
 		RenderTarget m_zprepassRenderTarget;
+		RenderTarget m_2DRenderTarget;
+		Sprite		 m_mainSprite;
+		Sprite		 m_2DSprite;
 		SpriteInitData m_spiteInitData;
 		Sprite m_copyToframeBufferSprite;
 
