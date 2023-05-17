@@ -46,7 +46,7 @@ void Enemy_HP_UI::SetPosition()
 	{
 		pos = m_enemyNear->m_enemyPosition;
 		//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
-		pos.y += 130.0f;
+		pos.y += 160.0f;
 	}
 	else if (m_enemy != nullptr)
 	{
