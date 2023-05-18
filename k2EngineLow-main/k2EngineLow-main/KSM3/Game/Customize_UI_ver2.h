@@ -35,7 +35,11 @@ public:
 	void trance();
 	void tranceOut();
 	void tranceOutInit();
+
+	void init_parameter(int Drop,int line,int row);
+
 	void PlaySE(SoundName name,float vol);
+
 
 	Game* m_game = nullptr;
 	GameCamera* m_gameCamera = nullptr;

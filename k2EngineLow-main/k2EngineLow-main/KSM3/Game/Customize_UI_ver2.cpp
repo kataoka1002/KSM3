@@ -76,33 +76,8 @@ void Customize_UI_ver2::trance_setup()
 	m_selectSheet.Init("Assets/sprite/select_sheet_01.DDS", 1166.0f, 175.0f);
 	m_selectSheet.SetPosition(m_selectSheetPosition);
 	m_selectSheet.Update();
-
-	switch (custom_kinds)
-	{
-	case 0:	//装備なし
-		m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-		m_parameterSheet.SetPosition(m_parameterSheetPosition);
-		m_parameterSheet.Update();
-		break;
-	case 2:	//マシンガン
-		m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-		m_parameterSheet.SetPosition(m_parameterSheetPosition);
-		m_parameterSheet.Update();
-		break;
-	case 4:	//ギガトンキャノン
-		m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-		m_parameterSheet.SetPosition(m_parameterSheetPosition);
-		m_parameterSheet.Update();
-		break;
-	case 6:	//戦艦砲
-		m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-		m_parameterSheet.SetPosition(m_parameterSheetPosition);
-		m_parameterSheet.Update();
-		break;
-
-	default:
-		break;
-	}
+	init_parameter(1,0,0);
+	
 
 	fast_count = 0;
 	trance_sheet_color = { 0.0f,0.0f,0.0f,1.0f };
@@ -435,36 +410,12 @@ void Customize_UI_ver2::Custom_UI()
 			m_selectSheet.Update();
 
 			//取り付けている武器によってパラメーターシートを変える
-			switch (custom_kinds)
-			{
-			case 0:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 2:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 4:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 6:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-
-			default:
-				break;
-			}
+			init_parameter(1, 0, 0);
+			
 		}
 		
 		break;
-	case 1:	//コア
+	case 1:	//肩
 		if (fast_count == 0)
 		{
 			//どこを選択しているかのスプライト設定
@@ -473,32 +424,8 @@ void Customize_UI_ver2::Custom_UI()
 			m_selectSheet.Update();
 
 			//取り付けている武器によってパラメーターシートを変える
-			switch (m_player->p_custom_point[0][1])
-			{
-			case 0:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 2:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 4:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 6:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-
-			default:
-				break;
-			}
+			init_parameter(0, 0, 1);
+			
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][1] == 0 && window_count == 0)
 		{
@@ -521,32 +448,7 @@ void Customize_UI_ver2::Custom_UI()
 			m_selectSheet.Update();
 
 			//取り付けている武器によってパラメーターシートを変える
-			switch (m_player->p_custom_point[0][0])
-			{
-			case 0:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 2:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 4:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 6:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-
-			default:
-				break;
-
-			}
+			init_parameter(0, 0, 0);
 		}
 
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][0] == 0 && window_count == 0)
@@ -570,32 +472,7 @@ void Customize_UI_ver2::Custom_UI()
 			m_selectSheet.Update();
 
 			//取り付けている武器によってパラメーターシートを変える
-			switch (m_player->p_custom_point[0][2])
-			{
-			case 0:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 2:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 4:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 6:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-
-			default:
-				break;
-			}
+			init_parameter(0, 0, 2);
 		}
 
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][2] == 0 && window_count == 0)
@@ -619,33 +496,7 @@ void Customize_UI_ver2::Custom_UI()
 			m_selectSheet.Update();
 
 			//取り付けている武器によってパラメーターシートを変える
-			switch (m_player->p_custom_point[1][0])
-			{
-			case 0:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 2:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 4:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 6:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-
-			default:
-				break;
-
-			}
+			init_parameter(0, 1, 0);
 		}
 
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][0] == 0 && window_count == 0)
@@ -668,32 +519,7 @@ void Customize_UI_ver2::Custom_UI()
 			m_selectSheet.Update();
 
 			//取り付けている武器によってパラメーターシートを変える
-			switch (m_player->p_custom_point[1][2])
-			{
-			case 0:
-				m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 2:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 4:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-			case 6:
-				m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
-				m_parameterSheet.SetPosition(m_parameterSheetPosition);
-				m_parameterSheet.Update();
-				break;
-
-			default:
-				break;
-			}
+			init_parameter(0, 1, 2);
 		}
 
 		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][2] == 0 && window_count == 0)
@@ -724,8 +550,66 @@ void Customize_UI_ver2::Custom_UI()
 	custom_model_body.Update();
 }
 
+void Customize_UI_ver2::init_parameter(int Drop, int line, int row) {//パラメータシート
+	if (Drop == 1) {
+		switch (custom_kinds)
+		{
+		case 0:	//装備なし
+			m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
+		case 2:	//マシンガン
+			m_parameterSheet.Init("Assets/sprite/machine_gun_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
+		case 4:	//ギガトンキャノン
+			m_parameterSheet.Init("Assets/sprite/GigaTon_cannon_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
+		case 6:	//戦艦砲
+			m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
 
-void Customize_UI_ver2::trance()
+		default:
+			break;
+		}
+	}
+	else {
+		switch (m_player->p_custom_point[line][row])
+		{
+		case 0:	//装備なし
+			m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
+		case 2:	//マシンガン
+			m_parameterSheet.Init("Assets/sprite/machine_gun_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
+		case 4:	//ギガトンキャノン
+			m_parameterSheet.Init("Assets/sprite/GigaTon_cannon_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
+		case 6:	//戦艦砲
+			m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
+			m_parameterSheet.SetPosition(m_parameterSheetPosition);
+			m_parameterSheet.Update();
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+
+void Customize_UI_ver2::trance()//遷移
 {
 	//黒フェード1回目
 	if (trance_sheet_count >= 0 && trance_sheet_count <= 24)
