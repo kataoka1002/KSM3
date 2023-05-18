@@ -5,6 +5,7 @@
 #include "Enemy_Far.h"
 #include "Player.h"
 #include "Game.h"
+#include "GameCamera.h"
 
 
 Enemy_HP_UI::Enemy_HP_UI()
@@ -21,6 +22,7 @@ bool Enemy_HP_UI::Start()
 {
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
+	m_camera = FindGO<GameCamera>("gamecamera");
 
 	m_HPSprite.Init("Assets/sprite/enemy/enemyHP.dds", HP_BER_SIZE.x, HP_BER_SIZE.y);
 	m_HPSprite.SetScale(m_scale);
@@ -121,35 +123,65 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0) 
 	{
-		//一定距離以内で体力表示
+		//一定距離以内&カメラの視野に入っているなら体力表示
 		if (m_enemyNear != nullptr)
 		{
-			Vector3 diff = m_enemyNear->m_enemyPosition - m_player->player_position;
+			//カメラからエネミーの位置へのベクトルを求める
+			Vector3 toEnemy = m_enemyNear->m_enemyPosition - m_camera->pos;
+			toEnemy.Normalize();
+			//カメラの前向きとカメラからエネミーへのベクトルの内積を求める
+			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			angle = acos(angle);	//内積の結果から角度を求める
 
-			if (diff.Length() <= 2000.0f)
-			{
-				m_HPFrameSprite.Draw(rc);
-				m_HPSprite.Draw(rc);
+			//カメラから見てエネミーが一定角度以内のとき
+			if (fabsf(angle) <= Math::DegToRad(50.0f))
+			{			
+				//プレイヤーとエネミーの距離を求める
+				Vector3 diff = m_enemyNear->m_enemyPosition - m_player->player_position;
+				if (diff.Length() <= 2000.0f)
+				{
+					m_HPFrameSprite.Draw(rc);
+					m_HPSprite.Draw(rc);
+				}
 			}
 		}
 		if (m_enemy != nullptr)
 		{
-			Vector3 diff = m_enemy->m_enemyPosition - m_player->player_position;
+			//計算の方法は上と一緒
+			Vector3 toEnemy = m_enemy->m_enemyPosition - m_camera->pos;
+			toEnemy.Normalize();
 
-			if (diff.Length() <= 2000.0f)
+			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			angle = acos(angle);
+
+			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{
-				m_HPFrameSprite.Draw(rc);
-				m_HPSprite.Draw(rc);
+				Vector3 diff = m_enemy->m_enemyPosition - m_player->player_position;
+
+				if (diff.Length() <= 2000.0f)
+				{
+					m_HPFrameSprite.Draw(rc);
+					m_HPSprite.Draw(rc);
+				}
 			}
 		}
 		if (m_enemyFar != nullptr)
 		{
-			Vector3 diff = m_enemyFar->m_enemyPosition - m_player->player_position;
-			
-			if (diff.Length() <= 2000.0f)
+			//計算の方法は上と一緒
+			Vector3 toEnemy = m_enemyFar->m_enemyPosition - m_camera->pos;
+			toEnemy.Normalize();
+
+			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			angle = acos(angle);
+
+			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{
-				m_HPFrameSprite.Draw(rc);
-				m_HPSprite.Draw(rc);
+				Vector3 diff = m_enemyFar->m_enemyPosition - m_player->player_position;
+				if (diff.Length() <= 2000.0f)
+				{
+					m_HPFrameSprite.Draw(rc);
+					m_HPSprite.Draw(rc);
+				}
 			}
 		}
 	}

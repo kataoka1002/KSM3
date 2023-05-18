@@ -144,12 +144,16 @@ void GameCamera::Update()
 	}
 
 	//視点を計算する。
-	Vector3 pos = target + m_toCameraPos;
+	pos = target + m_toCameraPos;
 
 	//ばねカメラの設定
 	m_springCamera.SetTarget(target);
 	m_springCamera.SetPosition(pos);
 	m_springCamera.Update();
+
+	//カメラの前方向の設定
+	m_cameraForward.z = target.z - pos.z;
+	m_cameraForward.Normalize();
 }
 
 void GameCamera::Move()
