@@ -70,8 +70,8 @@ public:
 	bool attack_state_s = false;
 	float move_s;
 
-	float m_playerHP = 5000.0f;		//プレイヤーのHP
-	float m_playerHPMax = 5000.0f;		//プレイヤーのHPの最大値
+	float m_playerHP = 500.0f;		//プレイヤーのHP
+	float m_playerHPMax = 500.0f;		//プレイヤーのHPの最大値
 
 	bool enemy_survival = true;
 	bool boss_survival = true;

@@ -149,7 +149,7 @@ void Game::SetUp()
 	//エネミーの生成
 	MakeEnemy();
 
-	game_ui = NewGO<Game_UI>(1, "game_ui");
+	//game_ui = NewGO<Game_UI>(1, "game_ui");
 
 	//カスタム画面の作成
 	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
