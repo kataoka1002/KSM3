@@ -1,10 +1,10 @@
 #pragma once
 class Player;
 class Battle_ship_attack;
-class Shoulder_UI;
 class MachineGunAttack;
 class GigatonCannonAttack;
 class Customize_UI_ver2;
+class PlayerUI;
 
 
 class Shoulder_weapons:public IGameObject
@@ -22,12 +22,12 @@ public:
 	Player* s_w_player = nullptr;
 	Battle_ship_attack* battle_ship_attack = nullptr;
 	Battle_ship_attack* battle_ship_attack2 = nullptr;
-	Shoulder_UI* shoulder_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
 	MachineGunAttack* m_machineGunAttack2 = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
 	GigatonCannonAttack* m_gigatonAttack2 = nullptr;
 	Customize_UI_ver2* m_customizeUI = nullptr;
+	PlayerUI* m_playerUI = nullptr;
 
 
 
@@ -50,6 +50,7 @@ public:
 	int firing_cound = 0;
 	int fast = 0;
 
-	float S_w_HP = 1.0f;
+	float S_w_HP = 100.0f;
+	float S_w_HPMax = 100.0f;
 };
 

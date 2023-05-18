@@ -4,21 +4,25 @@
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
-#include "Shoulder_UI.h"
 #include "GigatonCannonAttack.h"
 #include "Customize_UI_ver2.h"
+#include "PlayerUI.h"
 
 
 Shoulder_weapons::Shoulder_weapons() 
 {
 	s_w_player = FindGO<Player>("player");
-	shoulder_ui= FindGO<Shoulder_UI>("shoulder_ui");
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+
+	m_playerUI = FindGO<PlayerUI>("playerui");
+	m_playerUI->WeaponUISetUp(5);		//UIの初期化
+	m_playerUI->m_shoulder = (this);	//自分のポインタを教える
+
 }
 
 Shoulder_weapons::~Shoulder_weapons() 
 {
-	DeleteGO(shoulder_ui);
+	m_playerUI->m_shoulder = nullptr;
 }
 
 void Shoulder_weapons::S_w_set() 
@@ -59,7 +63,6 @@ void Shoulder_weapons::Update()
 	if (fast == 0) 
 	{
 		S_w_set();
-		shoulder_ui = NewGO<Shoulder_UI>(1, "shoulder_ui");
 	}
 
 	fast++;

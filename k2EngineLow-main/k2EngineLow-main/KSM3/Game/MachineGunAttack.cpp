@@ -58,7 +58,7 @@ void MachineGunAttack::Setup()
 	m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
 
 	//前方向はプレイヤーと一緒
-	m_bulletForward = m_player->playerFowrad;
+	m_bulletForward = m_player->playerForward;
 
 	//更新
 	m_bulletModel.SetRotation(m_rot);
@@ -84,6 +84,10 @@ void MachineGunAttack::Update()
 
 			DeleteGO(this);
 		}
+	}
+	else if (m_player->game_state == 2)
+	{
+		DeleteGO(this);	//リザルト画面に行くと消す
 	}
 }
 

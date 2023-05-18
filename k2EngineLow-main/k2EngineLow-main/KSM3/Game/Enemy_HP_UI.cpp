@@ -5,6 +5,7 @@
 #include "Enemy_Far.h"
 #include "Player.h"
 #include "Game.h"
+#include "GameCamera.h"
 
 
 Enemy_HP_UI::Enemy_HP_UI()
@@ -21,9 +22,13 @@ bool Enemy_HP_UI::Start()
 {
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
+	m_camera = FindGO<GameCamera>("gamecamera");
 
-	m_HPSprite.Init("Assets/sprite/fade.dds", HP_BER_SIZE.x, HP_BER_SIZE.y);
+	m_HPSprite.Init("Assets/sprite/enemy/enemyHP.dds", HP_BER_SIZE.x, HP_BER_SIZE.y);
 	m_HPSprite.SetScale(m_scale);
+	m_HPFrameSprite.Init("Assets/sprite/enemy/enemyHPFrame.dds", HP_FRAME_SIZE.x, HP_FRAME_SIZE.y);
+	m_HPFrameSprite.SetScale(m_scale);
+
 
 	return true;
 }
@@ -42,21 +47,29 @@ void Enemy_HP_UI::SetPosition()
 	if (m_enemyNear != nullptr)
 	{
 		pos = m_enemyNear->m_enemyPosition;
+		//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
+		pos.y += 160.0f;
 	}
 	else if (m_enemy != nullptr)
 	{
 		pos = m_enemy->m_enemyPosition;
+		//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
+		pos.y += 130.0f;
 	}
 	else if (m_enemyFar != nullptr)
 	{
 		pos = m_enemyFar->m_enemyPosition;
+		//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
+		pos.y += 250.0f;
 	}
 
-	//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
-	pos.y += 130.0f;
+	
 	//ワールド座標からスクリーン座標を計算。
 	//計算結果がm_positionに代入される。
 	g_camera3D->CalcScreenPositionFromWorldPosition(m_position, pos);
+
+	m_HPFrameSprite.SetPosition(Vector3(m_position.x, m_position.y, 0.0f));
+	m_HPFrameSprite.Update();
 
 	//画像を左に寄せる
 	Vector3 BerSizeSubtraction = HPBerSend(HP_BER_SIZE, m_scale);
@@ -110,6 +123,66 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0) 
 	{
-		m_HPSprite.Draw(rc);
+		//一定距離以内&カメラの視野に入っているなら体力表示
+		if (m_enemyNear != nullptr)
+		{
+			//カメラからエネミーの位置へのベクトルを求める
+			Vector3 toEnemy = m_enemyNear->m_enemyPosition - m_camera->pos;
+			toEnemy.Normalize();
+			//カメラの前向きとカメラからエネミーへのベクトルの内積を求める
+			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			angle = acos(angle);	//内積の結果から角度を求める
+
+			//カメラから見てエネミーが一定角度以内のとき
+			if (fabsf(angle) <= Math::DegToRad(50.0f))
+			{			
+				//プレイヤーとエネミーの距離を求める
+				Vector3 diff = m_enemyNear->m_enemyPosition - m_player->player_position;
+				if (diff.Length() <= 2000.0f)
+				{
+					m_HPFrameSprite.Draw(rc);
+					m_HPSprite.Draw(rc);
+				}
+			}
+		}
+		if (m_enemy != nullptr)
+		{
+			//計算の方法は上と一緒
+			Vector3 toEnemy = m_enemy->m_enemyPosition - m_camera->pos;
+			toEnemy.Normalize();
+
+			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			angle = acos(angle);
+
+			if (fabsf(angle) <= Math::DegToRad(50.0f))
+			{
+				Vector3 diff = m_enemy->m_enemyPosition - m_player->player_position;
+
+				if (diff.Length() <= 2000.0f)
+				{
+					m_HPFrameSprite.Draw(rc);
+					m_HPSprite.Draw(rc);
+				}
+			}
+		}
+		if (m_enemyFar != nullptr)
+		{
+			//計算の方法は上と一緒
+			Vector3 toEnemy = m_enemyFar->m_enemyPosition - m_camera->pos;
+			toEnemy.Normalize();
+
+			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			angle = acos(angle);
+
+			if (fabsf(angle) <= Math::DegToRad(50.0f))
+			{
+				Vector3 diff = m_enemyFar->m_enemyPosition - m_player->player_position;
+				if (diff.Length() <= 2000.0f)
+				{
+					m_HPFrameSprite.Draw(rc);
+					m_HPSprite.Draw(rc);
+				}
+			}
+		}
 	}
 }

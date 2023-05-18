@@ -22,17 +22,18 @@ public:
 	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
 	SoundSource* m_runSE = nullptr;					//足音SE
 	SoundSource* m_walkSE = nullptr;				//足音SE
+	SoundSource* m_kettei = nullptr;
 	ModelRender player_modelRender;					//モデルレンダー
-	Vector3 player_position;						//座標
+	Vector3 player_position = {0.0f,0.0f,-1000.0f};						//座標
 	CharacterController characterController;		//キャラクターコントローラー
 	Quaternion player_rotation;						//クォータニオン
 	Vector3 player_moveSpeed;						//移動速度
 
 	float fsin[360], fcos[360];
-	Vector3 playerFowrad = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
+	Vector3 playerForward = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
 
 
-	int game_state=0;								//ゲームがどの状態化の管理(0メインゲーム,1ポーズ画面,2空欄,3カスタマイズ)
+	int game_state = 4;								//ゲームがどの状態かの管理(0メインゲーム,1ポーズ画面,2リザルト,3カスタマイズ,4最初のシーン)
 
 	Result* m_result = nullptr;
 	Left_arm_weapons* p_left_arm_weapons = nullptr;

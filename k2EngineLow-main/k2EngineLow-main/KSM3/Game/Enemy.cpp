@@ -439,7 +439,10 @@ void Enemy::ItemDrop()
 		m_game->AddDefeatedEnemyNumber();
 
 		m_defeatState = true;
+
 		DeleteGO(this);
+		//リストから消す
+		m_game->RemoveEnemyFromList(this);
 	}
 }
 

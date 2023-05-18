@@ -4,6 +4,7 @@ class Customize_UI;
 class Customize_UI_ver2;
 class Left_arm_weapons;
 class GameCamera;
+class Game;
 
 class Drop_item:public IGameObject
 {
@@ -25,6 +26,7 @@ public:
 	Customize_UI* customize_UI = nullptr;
 	Customize_UI_ver2* customize_UI_ver2 = nullptr;
 	GameCamera* m_gameCamera;
+	Game* m_game = nullptr;
 
 	Vector3 Drop_position;//Drop位置
 
@@ -33,6 +35,7 @@ public:
 	float float_level = 0.25;
 	int touch_flag = 0;
 	int dropCount = 0;
+	int m_deleteCount = 1800;	//アイテムが消えるまでの時間
 	float modelSize = 0.01f;
 
 	int drop_weapons[12] = {  0,	//non

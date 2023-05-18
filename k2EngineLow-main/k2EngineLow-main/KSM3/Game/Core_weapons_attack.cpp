@@ -28,7 +28,7 @@ void Core_weapons_attack::Setup() {
 		firing_position= C_W_A_core_weapons->cw_position;
 		firing_position.y += 12.0f;
 		move_speed = 200.0f;
-		C_W_Bullet_Fowrad = C_W_A_player->playerFowrad;
+		C_W_Bullet_Fowrad = C_W_A_player->playerForward;
 		C_W_Bullet.SetPosition(firing_position);
 		C_W_Bullet.SetRotation(C_W_aiming);
 		damage_volume=10.0f;
@@ -58,6 +58,10 @@ void Core_weapons_attack::Update() {
 		if (firing_position.y <= 0.0f) {
 			DeleteGO(this);
 		}
+	}
+	else if (C_W_A_player->game_state == 2)
+	{
+		DeleteGO(this);	//ƒŠƒUƒ‹ƒg‰æ–Ê‚És‚­‚ÆÁ‚·
 	}
 }
 

@@ -443,6 +443,8 @@ void Enemy_Near::ItemDrop()
 
 		m_defeatState = true;
 		DeleteGO(this);
+		//ƒŠƒXƒg‚©‚çÁ‚·
+		m_game->RemoveEnemyNearFromList(this);
 	}
 }
 

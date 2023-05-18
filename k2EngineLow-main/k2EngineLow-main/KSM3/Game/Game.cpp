@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include "PlayerUI.h"
 //#include "Fade.h"
-
+#include "Wave.h"
 #include "Customize_UI_ver2.h"
 
 
@@ -31,37 +31,17 @@ Game::Game()
 	//ライトの作成
 	lighting = NewGO<Lighting>(1, "lighting");
 
-	//プレイヤーとUIの作成
+	//プレイヤーとコア武器とUIの作成
 	player = NewGO<Player>(1, "player");
+	core_weapons = NewGO<Core_weapons>(1, "core_weapons");
 	m_playerUI = NewGO<PlayerUI>(1,"playerui");
 
-	//サウンドの作成
-	m_soundManage = NewGO<SoundManage>(1, "soundmanage");
+	//ステージの作成
+	background = NewGO< BackGround>(1, "background");
+
+	//ゲームカメラの作成
+	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 	
-	//エネミーを複数体生成
-
-	for (int i = 0; i < 1; i++)
-	{
-		Enemy* enemy = NewGO<Enemy>(1, "enemy");
-		enemy->m_enemyPosition = { 0.0f,0.0f,3000.0f };
-		
-		m_enemyObject.push_back(enemy);
-	}
-
-	for (int i = 0; i < 1; i++)
-	{
-		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
-		enemyFar->m_enemyPosition = { 0.0f,0.0f,4000.0f };
-
-		m_enemyFarObject.push_back(enemyFar);
-	}
-	for (int i = 0; i < 1; i++)
-	{
-		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
-		enemyNear->m_enemyPosition = { 0.0f,0.0f,2000.0f };
-
-		m_enemyNearObject.push_back(enemyNear);
-	}
 
 	/*for (int i = 0; i < 1; i++)
 	{
@@ -72,28 +52,18 @@ Game::Game()
 
 	//boss = NewGO<Boss>(1, "boss");//15100
 	//boss->boss_position = { 0.0f,0.0f,15100.0f };
-
-
-	//drop_item = NewGO< Drop_item>(1, "drop_item");
-	background = NewGO< BackGround>(1, "background");
-
-	gamecamera = NewGO<GameCamera>(1, "gamecamera");
-	core_weapons = NewGO<Core_weapons>(2, "core_weapons");
-	game_ui = NewGO<Game_UI>(0, "game_ui");
-
-	//カスタム画面の作成
-	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 }
 
 Game::~Game()
 {
 	DeleteGO(core_weapons);
-	DeleteGO(drop_item);
+	DeleteGO(m_playerUI);
+	//DeleteGO(drop_item);
 	//プッシュしたボックスを削除していく
-	for (auto box : m_boxmoves)
+	/*for (auto box : m_boxmoves)
 	{
 		DeleteGO(box);
-	}
+	}*/
 	//プッシュしたエネミーを削除していく
 	for (auto enemy : m_enemyObject)
 	{
@@ -107,24 +77,15 @@ Game::~Game()
 	{
 		DeleteGO(enemyNear);
 	}
-
-	
-	DeleteGO(boss);
-	
-	
+	//DeleteGO(boss);
 	DeleteGO(m_soundManage);
-
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
 	{
 		DeleteGO(dropItem);
 	}
-
-	
 	DeleteGO(m_customizeUI);
 	DeleteGO(background);
-
-	
 	DeleteGO(game_ui);
 }
 
@@ -153,8 +114,11 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enGameBGM, "Assets/audio/BGM/game_bgm.wav");
 	g_soundEngine->ResistWaveFileBank(enBossBGM, "Assets/audio/BGM/last_boss_bgm.wav");
 	g_soundEngine->ResistWaveFileBank(enCustomizeBGM, "Assets/audio/BGM/Customize_bgm.wav");
-
-
+	g_soundEngine->ResistWaveFileBank(enKetteiSE, "Assets/audio/ketteion.wav");
+	g_soundEngine->ResistWaveFileBank(enCancelSE, "Assets/audio/cancelon.wav");
+	g_soundEngine->ResistWaveFileBank(enSentakuIdouSE, "Assets/audio/sentakuidouon.wav");
+	g_soundEngine->ResistWaveFileBank(enSoutyakuSE, "Assets/audio/soutyakuon.wav");
+	g_soundEngine->ResistWaveFileBank(enByuSE, "Assets/audio/byu.wav");
 
 	//m_fade = FindGO<Fade>("fade");
 	//m_fade->StartFadeIn();
@@ -164,8 +128,72 @@ bool Game::Start()
 
 void Game::Update()
 {
+	//最初のシーン中
+	if (player->game_state == 4)
+	{
+		TitleToGame();
+	}
+
+	//最初のシーンじゃなかったら
+	if (player->game_state != 4)
+	{
+		GameNow();
+	}
+}
+
+void Game::SetUp()
+{
+	//BGMの作成
+	m_soundManage = NewGO<SoundManage>(1, "soundmanage");
+
+	//エネミーの生成
+	MakeEnemy();
+
+	//game_ui = NewGO<Game_UI>(1, "game_ui");
+
+	//カスタム画面の作成
+	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
+
+	//ウェーブ管理のクラス作成
+	m_wave = NewGO<Wave>(1, "wave");
+}
+
+void Game::MakeEnemy()
+{
+	//エネミーを複数体生成
+	for (int i = 0; i < 4; i++)
+	{
+		Enemy* enemy = NewGO<Enemy>(1, "enemy");
+		enemy->m_enemyPosition = RandomPosition();
+
+		m_enemyObject.push_back(enemy);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
+		enemyFar->m_enemyPosition = RandomPosition();
+
+		m_enemyFarObject.push_back(enemyFar);
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
+		enemyNear->m_enemyPosition = RandomPosition();
+
+		m_enemyNearObject.push_back(enemyNear);
+	}
+}
+
+void Game::TitleToGame()
+{
+
+}
+
+void Game::GameNow()
+{
 	//敵の全滅コマンド
-	if (g_pad[0]->IsTrigger(enButtonX)) {
+	if (g_pad[0]->IsTrigger(enButtonX))
+	{
 		for (auto enemy : m_enemyObject)
 		{
 			DeleteGO(enemy);
@@ -180,88 +208,77 @@ void Game::Update()
 		}
 	}
 
-	//敵を10体以上殺したらボス戦
-	
-		if (player->player_position.z >= 10600.0f) {
-			for (int i = 0; i < 1; i++)
-			{			
-				boss = NewGO<Boss>(1, "boss");
-				boss->boss_position = { -16500.0f,0.0f,2000.0f };
-				boss->boss_game_state = 1;
-				player->player_position = { -16500.0f,0.0f,-1000.0f };
+	//3ウェーブ突破したらボス戦
+	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 3)
+	{
+		boss = NewGO<Boss>(1, "boss");
+		boss->boss_position = { -16500.0f,0.0f,2000.0f };
+		boss->boss_game_state = 1;
+		player->player_position = { -16500.0f,0.0f,-1000.0f };
 
-				player->player_modelRender.SetPosition(player->player_position);
-				player->characterController.SetPosition(player->player_position);
-
-				player->player_modelRender.Update(true);
-			}
-		
+		player->player_modelRender.SetPosition(player->player_position);
+		player->characterController.SetPosition(player->player_position);
+		gamecamera->m_springCamera.Refresh();
+		player->player_modelRender.Update(true);
 	}
-	if (boss != nullptr) {
-		if (player->boss_survival == true) {
+
+	if (boss != nullptr)
+	{
+		if (player->boss_survival == true)
+		{
 			boss_time += g_gameTime->GetFrameDeltaTime();
 			boss_time_score += g_gameTime->GetFrameDeltaTime();
-			if (boss_time_score >= 1.0f) {
+			if (boss_time_score >= 1.0f)
+			{
 				time_score -= 150;
 				boss_time_score = 0.0f;
 			}
 		}
 	}
 
-	//wchar_t wcsbuf[256];
-	//swprintf_s(wcsbuf, 256, L"%d秒経過!!", int(m_timer));
-	//表示するテキストを設定。
-	m_fontRender.SetText(L"あいうえお\n");
-	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-	//フォントの大きさを設定。
-	m_fontRender.SetScale(2.0f);
-	//フォントの色を設定。
-	m_fontRender.SetColor({ 1.0f,0.0f,0.0f,1.0f });
-	m_timer += g_gameTime->GetFrameDeltaTime();
-
-	//m_modelRender.PlayAnimation(enAnimClip_Idle);
-
 	//if (m_gameState == enGameState_GameClear_Idle)
 //	{
 		//if (m_isWaitFadeout)
+	{
+		//if (!m_fade->IsFade())
 		{
-			//if (!m_fade->IsFade())
+			if (player->game_end_state == 1)
 			{
-				if (player->game_end_state == 1) 
-				{
-					title = NewGO<Title>(1, "title");
-					DeleteGO(this);
-				}
+				title = NewGO<Title>(1, "title");
+				DeleteGO(this);
 			}
 		}
-//		else
-//		{
-//			if (g_pad[0]->IsTrigger(enButtonA))
-//			{
-//				m_isWaitFadeout = true;
-//				m_fade->StartFadeOut();
-//			}
-//		}
-//		return;
-//	}
+	}
+	//		else
+	//		{
+	//			if (g_pad[0]->IsTrigger(enButtonA))
+	//			{
+	//				m_isWaitFadeout = true;
+	//				m_fade->StartFadeOut();
+	//			}
+	//		}
+	//		return;
+	//	}
 
-	m_spriteRender.Update();
-
-	//enemy->enemy_game_state = player->game_state;
-	//enemy->enemy_position = player->player_position;
-
-	//pause画面からタイトルへの遷移
-	/*if (player->game_end_state == 1) {
-		title = NewGO<Title>(1, "title");
-		DeleteGO(this);
-	}*/
+	//m_spriteRender.Update();
 
 	//リザルトへの遷移
 	if (g_pad[0]->IsTrigger(enButtonSelect)) {
 		result = NewGO<Result>(1, "result");
 		DeleteGO(this);
 	}
+}
+
+Vector3 Game::RandomPosition()
+{
+	Vector3 m_pos;
+
+	//ランダムにポジションを当てはめる
+	m_pos.x = rand() % 2000 - 1000;
+	m_pos.y = 0.0f;
+	m_pos.z = rand() % 10000;
+
+	return m_pos;
 }
 
 void Game::Render(RenderContext& rc)

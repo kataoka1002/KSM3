@@ -1,6 +1,6 @@
 #pragma once
 #include "LevelRender.h"
-class BoxMove;
+//class BoxMove;
 class Player;		//プレイヤー
 class Title;		//タイトル
 class Result;		//リザルト
@@ -13,7 +13,7 @@ class Drop_item;
 class BackGround;
 class Core_weapons;
 class GameCamera;
-class Test;
+//class Test;
 class Boss;
 class Boss_Riser;
 class Game_UI;
@@ -22,6 +22,7 @@ class SoundManage;
 //class Fade;
 class PlayerUI;
 class Customize_UI_ver2;
+class Wave;
 
 
 //エフェクトの列挙
@@ -48,7 +49,12 @@ enum SoundName {
 	enPlayerRun,			//プレイヤーの足音(速い方)
 	enGameBGM,				//ゲーム中のBGM
 	enBossBGM,				//ボス戦BGM
-	enCustomizeBGM			//カスタマイズ画面BGM
+	enCustomizeBGM,			//カスタマイズ画面BGM
+	enKetteiSE,				//決定音
+	enCancelSE,				//キャンセル音
+	enSentakuIdouSE,		//カーソル移動音
+	enSoutyakuSE,			//装着音
+	enByuSE					//ドロップアイテム取得時の音
 };
 
 class Game :public IGameObject
@@ -58,32 +64,74 @@ public:
 	~Game();
 	bool Start();
 	void Update();
+	void GameNow();
+	void TitleToGame();
+	void SetUp();
+	void MakeEnemy();
+	Vector3 RandomPosition();
 	void Render(RenderContext& rc);
 
+	void RemoveEnemyFromList(Enemy* enemy)
+	{
+		std::vector<Enemy*>::iterator it = std::find(
+			m_enemyObject.begin()	//エネミーのリストの最初
+			, m_enemyObject.end()	//エネミーのリストの最後
+			,enemy);				//探しているエネミー
+
+		if (it != m_enemyObject.end()) {
+			m_enemyObject.erase(it);
+		}
+	}
+
+	void RemoveEnemyNearFromList(Enemy_Near* enemyNear)
+	{
+		std::vector<Enemy_Near*>::iterator it = std::find(
+			m_enemyNearObject.begin()
+			, m_enemyNearObject.end()
+			, enemyNear);
+
+		if (it != m_enemyNearObject.end()) {
+			m_enemyNearObject.erase(it);
+		}
+	}
+
+	void RemoveEnemyFarFromList(Enemy_Far* enemyFar)
+	{
+		std::vector<Enemy_Far*>::iterator it = std::find(
+			m_enemyFarObject.begin()
+			, m_enemyFarObject.end()
+			, enemyFar);
+
+		if (it != m_enemyFarObject.end()) {
+			m_enemyFarObject.erase(it);
+		}
+	}
 
 	void AddDefeatedEnemyNumber()
 	{
 		m_numDefeatedEnemy++;
 	}
+
 	int						m_numEnemy = 0;					//エネミーの数。
 	int						m_numDefeatedEnemy = 0;			//倒されたエネミーの数。
 
 	bool					m_isWaitFadeout = false;
 
-	Player* player;			//プレイヤー
-	Title* title;			//タイトル
-	Result* result;			//リザルト
-	Lighting* lighting;		//ライティング
-	SoundManage* m_soundManage;
-	Left_arm_weapons* s_left_arm_weapons;
-	Drop_item* drop_item;
-	BackGround* background;
-	Core_weapons* core_weapons;
-	GameCamera* gamecamera;
-	Game_UI* game_ui;
-	Enemy_HP_UI* e_h_ui;
+	Player* player = nullptr;			//プレイヤー
+	Title* title = nullptr;			//タイトル
+	Result* result = nullptr;			//リザルト
+	Lighting* lighting = nullptr;		//ライティング
+	SoundManage* m_soundManage = nullptr;
+	Left_arm_weapons* s_left_arm_weapons = nullptr;
+	Drop_item* drop_item = nullptr;
+	BackGround* background = nullptr;
+	Core_weapons* core_weapons = nullptr;
+	GameCamera* gamecamera = nullptr;
+	Game_UI* game_ui = nullptr;
+	Enemy_HP_UI* e_h_ui = nullptr;
 	Boss* boss = nullptr;
 	PlayerUI* m_playerUI = nullptr;
+	Wave* m_wave = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 
@@ -105,16 +153,17 @@ public:
 	float SEvol = 1.0f;
 
 private:
-	ModelRender m_modelRender;		//キャラ
-	ModelRender m_modelRender2;		//床
-	ModelRender m_modelRender3;		//ライト
-	SpriteRender m_spriteRender;
-	LevelRender m_levelRender;
-	std::vector<BoxMove*> m_boxmoves;				//moveボックス
-	FontRender m_fontRender;
+	//ModelRender m_modelRender;		//キャラ
+	//ModelRender m_modelRender2;		//床
+	//ModelRender m_modelRender3;		//ライト
+	//SpriteRender m_spriteRender;
+	//LevelRender m_levelRender;
+	//std::vector<BoxMove*> m_boxmoves;				//moveボックス
+	//FontRender m_fontRender;
 	float m_timer = 0.0f;
 
-	Test* test;
+	//Test* test;
 
+	int m_gameStartState = 0;	//ロード画面からゲームへの遷移
 };
 

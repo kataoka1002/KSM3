@@ -10,6 +10,7 @@
 #include "Drop_item.h"
 #include "Customize_area.h"
 #include "GameCamera.h"
+#include "Game.h"
 
 
 Customize_UI_ver2::Customize_UI_ver2()
@@ -50,6 +51,7 @@ bool Customize_UI_ver2::Start()
 	m_coreWeapon = FindGO<Core_weapons>("core_weapons");	//コア武器はGame.cppでNewGOしている
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
 	m_dropItem = FindGO<Drop_item>("drop_item");
+	m_game = FindGO<Game>("game");
 
 	//マシンガンモデルの初期化
 	custom_model_shoulder2.Init("Assets/modelData/machine_gun_drop.tkm");
@@ -378,16 +380,22 @@ void Customize_UI_ver2::Update()
 void Customize_UI_ver2::Custom_UI()
 {
 	//Rボタンを押すと右に移動
-	if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5)
+	if (g_pad[0]->IsTrigger(enButtonRB1) && selection_position < 5 && confirmatino_window_open == false)
 	{
 		selection_position++;
 		fast_count = 0;
+
+		//効果音再生
+		PlaySE(enSentakuIdouSE, 2.0f);
 	}
 	//Lボタンを押すと左に移動
-	else if (g_pad[0]->IsTrigger(enButtonLB1) && selection_position >= 1)
+	else if (g_pad[0]->IsTrigger(enButtonLB1) && selection_position >= 1 && confirmatino_window_open == false)
 	{
 		selection_position--;
 		fast_count = 0;
+
+		//効果音再生
+		PlaySE(enSentakuIdouSE, 2.0f);
 	}
 
 	//カーソルを合わせている場所によって変える
@@ -426,6 +434,9 @@ void Customize_UI_ver2::Custom_UI()
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 0, line = 1;
+
+			//決定音再生
+			PlaySE(enKetteiSE, 2.0f);
 		}
 		break;
 	case 2:	//右腕
@@ -447,6 +458,9 @@ void Customize_UI_ver2::Custom_UI()
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 0, line = 0;
+
+			//決定音再生
+			PlaySE(enKetteiSE, 2.0f);
 		}
 		break;
 	case 3:	//左腕
@@ -468,6 +482,9 @@ void Customize_UI_ver2::Custom_UI()
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 0, line = 2;
+
+			//決定音再生
+			PlaySE(enKetteiSE, 2.0f);
 		}
 		break;
 	case 4:	//右足 
@@ -489,6 +506,8 @@ void Customize_UI_ver2::Custom_UI()
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 1, line = 0;
+			//決定音再生
+			PlaySE(enKetteiSE, 2.0f);
 		}
 		break;
 	case 5:	//左足    
@@ -510,11 +529,14 @@ void Customize_UI_ver2::Custom_UI()
 			confirmatino_window_open = true;
 			window_select = true;
 			column = 1, line = 2;
+
+			//決定音再生
+			PlaySE(enKetteiSE, 2.0f);
 		}
 	}
 
-	//Bボタンを押してカスタム画面終了
-	if (g_pad[0]->IsTrigger(enButtonB))
+	//Bボタンを押してカスタム画面終了(注意書きが表示されているときは無効)
+	if (g_pad[0]->IsTrigger(enButtonB) && confirmatino_window_open == false)
 	{
 		tranceOutInit();
 	}
@@ -784,6 +806,7 @@ void Customize_UI_ver2::Window()
 			{
 				//プレイヤーの部位に落ちていた武器の種類を教えてやる
 				m_player->p_custom_point[column][line] = custom_kinds;
+				
 
 				//カーソルを合わせている位置によって作り出す武器を変える
 				switch (selection_position)
@@ -800,6 +823,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 2:
@@ -811,6 +836,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 3:
@@ -822,6 +849,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 4:
@@ -833,6 +862,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 					break;
 				case 5:
@@ -844,6 +875,8 @@ void Customize_UI_ver2::Window()
 						Setup();	//モデル更新
 						//武器取り付けを承認してカスタム画面が終わる時
 						tranceOutInit();
+						//決定音再生
+						PlaySE(enSoutyakuSE, 2.0f);
 					}
 				default:
 					break;
@@ -869,12 +902,15 @@ void Customize_UI_ver2::Window()
 				window_count = 0;
 			}
 
-			//AまたはBボタンで注意書き表示を切る
-			if (g_pad[0]->IsTrigger(enButtonA) || g_pad[0]->IsTrigger(enButtonB) && window_count != 1)
+			//Aボタンで注意書き表示を切る
+			if (g_pad[0]->IsTrigger(enButtonA) && window_count != 1)
 			{
 				window_open = false;
 				confirmatino_window_open = false;
 				window_count = 0;
+
+				//キャンセル音の再生
+				PlaySE(enCancelSE, 2.0f);
 			}
 		}
 
@@ -1152,6 +1188,14 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 	custom_model_Left_leg.SetRotation(llw_Rotation);
 	custom_model_Left_leg.SetPosition(llw_position);
 	custom_model_Left_leg.Update();
+}
+
+void Customize_UI_ver2::PlaySE(SoundName name, float vol)
+{
+	SoundSource* m_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_SE->Init(name);									//初期化
+	m_SE->SetVolume(vol * m_game->SEvol);				//音量調整
+	m_SE->Play(false);
 }
 
 void Customize_UI_ver2::Render(RenderContext& rc)
