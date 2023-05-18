@@ -1,24 +1,28 @@
 #include "stdafx.h"
 #include "Left_arm_weapons.h"
-#include "Left_arm_UI.h"
 #include "Player.h"
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
 #include "GigatonCannonAttack.h"
 #include "Customize_UI_ver2.h"
+#include "PlayerUI.h"
 
 Left_arm_weapons::Left_arm_weapons() 
 {
 	l_a_w_player = FindGO<Player>("player");
-	left_arm_ui = FindGO<Left_arm_UI>("left_arm_ui");
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+
+	m_playerUI = FindGO<PlayerUI>("playerui");
+	m_playerUI->WeaponUISetUp(3);		//UIの初期化
+	m_playerUI->m_leftArm = (this);		//自分のポインタを教える
 }
 
 
 Left_arm_weapons::~Left_arm_weapons() 
 {
-	DeleteGO(left_arm_ui);
+	//ポインタを空にする
+	m_playerUI->m_leftArm = nullptr;
 }
 
 void Left_arm_weapons::L_a_w_set() 
@@ -57,7 +61,6 @@ void Left_arm_weapons::Update()
 	if (fast == 0) 
 	{
 		L_a_w_set();
-		left_arm_ui= NewGO<Left_arm_UI>(0, "left_arm_ui");
 	}
 
 	fast++;

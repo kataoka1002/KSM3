@@ -1,10 +1,11 @@
 #pragma once
 class Player;
 class Battle_ship_attack;
-class Left_leg_UI;
 class MachineGunAttack;
 class GigatonCannonAttack;
 class Customize_UI_ver2;
+class PlayerUI;
+
 
 class Left_leg_weapons:public IGameObject
 {
@@ -19,10 +20,10 @@ public:
 
 	Player* l_l_w_player = nullptr;
 	Battle_ship_attack* battle_ship_attack = nullptr;
-	Left_leg_UI* left_leg_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
 	Customize_UI_ver2* m_customizeUI = nullptr;
+	PlayerUI* m_playerUI = nullptr;
 
 
 	Quaternion l_l_Rotation;
@@ -41,6 +42,7 @@ public:
 	int firing_cound = 0;
 	int fast = 0;
 
-	float L_l_w_HP = 1.0f;
+	float L_l_w_HP = 100.0f;
+	float L_l_w_HPMax = 100.0f;
 };
 

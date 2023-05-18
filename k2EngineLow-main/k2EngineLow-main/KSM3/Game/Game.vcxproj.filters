@@ -46,11 +46,6 @@
     <ClCompile Include="Boss_Drill_attack.cpp" />
     <ClCompile Include="Enemy_HP_UI.cpp" />
     <ClCompile Include="Game_UI.cpp" />
-    <ClCompile Include="Left_arm_UI.cpp" />
-    <ClCompile Include="Right_arm_UI.cpp" />
-    <ClCompile Include="Left_leg_UI.cpp" />
-    <ClCompile Include="Right_leg_UI.cpp" />
-    <ClCompile Include="Shoulder_UI.cpp" />
     <ClCompile Include="Boss_Cannon.cpp" />
     <ClCompile Include="Boss_Cannon_attack.cpp" />
     <ClCompile Include="Boss_Turbo.cpp" />
@@ -102,11 +97,6 @@
     <ClInclude Include="Boss_Drill_attack.h" />
     <ClInclude Include="Enemy_HP_UI.h" />
     <ClInclude Include="Game_UI.h" />
-    <ClInclude Include="Left_arm_UI.h" />
-    <ClInclude Include="Right_arm_UI.h" />
-    <ClInclude Include="Left_leg_UI.h" />
-    <ClInclude Include="Right_leg_UI.h" />
-    <ClInclude Include="Shoulder_UI.h" />
     <ClInclude Include="Boss_Cannon.h" />
     <ClInclude Include="Boss_Cannon_attack.h" />
     <ClInclude Include="Boss_Turbo.h" />
