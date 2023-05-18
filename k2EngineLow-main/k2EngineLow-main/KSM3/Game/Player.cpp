@@ -124,16 +124,16 @@ void Player::Move()
 		MakeEfe();	
 	}
 		
-	playerFowrad.Normalize();
+	playerForward.Normalize();
 
 	//xかzの移動速度があったら(スティックの入力があったら)。
 	//回転処理
 	if (stickL.x!=0.0f)
 	{
-		playerFowrad.x = playerFowrad.x * cos(stickL.x * -0.05) - playerFowrad.z * sin(stickL.x * -0.05);
-		playerFowrad.z = playerFowrad.x * sin(stickL.x * -0.05) + playerFowrad.z * cos(stickL.x * -0.05);
+		playerForward.x = playerForward.x * cos(stickL.x * -0.05) - playerForward.z * sin(stickL.x * -0.05);
+		playerForward.z = playerForward.x * sin(stickL.x * -0.05) + playerForward.z * cos(stickL.x * -0.05);
 
-		player_rotation.SetRotationY(atan2(playerFowrad.x, playerFowrad.z));
+		player_rotation.SetRotationY(atan2(playerForward.x, playerForward.z));
 	}
 	//回転していないときの移動
 	if (throttle != 0.0f) 
@@ -156,7 +156,7 @@ void Player::Move()
 	}
 
 	move_s = 4.0f * accelerator;
-	player_moveSpeed += playerFowrad  * move_s * (throttle / 2.0f);
+	player_moveSpeed += playerForward  * move_s * (throttle / 2.0f);
 
 	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
 

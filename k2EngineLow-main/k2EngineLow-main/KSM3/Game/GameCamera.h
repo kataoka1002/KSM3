@@ -20,6 +20,8 @@ public:
 	SoundSource* m_walkSE = nullptr;				//足音SE
 	EffectEmitter* sunabokoriEffect = nullptr;		//砂ぼこりエフェクト
 
+	Vector3 pos = Vector3::Zero;
+	Vector3 m_cameraForward = { 0.0f,0.0f,1.0f };
 	Vector3 m_toCameraPos;	//注視点から視点に向かうベクトル。
 	int CameraState = 4;	//1バトル中,2空白,3カスタマイズ,4登場シーン
 	Vector3 target;

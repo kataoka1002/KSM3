@@ -30,7 +30,7 @@ public:
 	Vector3 player_moveSpeed;						//移動速度
 
 	float fsin[360], fcos[360];
-	Vector3 playerFowrad = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
+	Vector3 playerForward = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
 
 
 	int game_state = 4;								//ゲームがどの状態かの管理(0メインゲーム,1ポーズ画面,2リザルト,3カスタマイズ,4最初のシーン)

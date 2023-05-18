@@ -4,6 +4,7 @@ class Enemy;
 class Enemy_Far;
 class Player;
 class Game;
+class GameCamera;
 
 class Enemy_HP_UI:public IGameObject
 {
@@ -22,6 +23,7 @@ public:
 	Enemy_Far* m_enemyFar = nullptr;
 	Player* m_player = nullptr;
 	Game* m_game = nullptr;
+	GameCamera* m_camera = nullptr;
 
 	SpriteRender m_HPSprite;
 	SpriteRender m_HPFrameSprite;
