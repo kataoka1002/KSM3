@@ -35,6 +35,7 @@ public:
 	void trance();
 	void tranceOut();
 	void tranceOutInit();
+	void init_parameter(int Drop,int line,int row);
 
 
 	GameCamera* m_gameCamera = nullptr;
