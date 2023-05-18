@@ -4,22 +4,25 @@
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
-#include "Right_leg_UI.h"
 #include "GigatonCannonAttack.h"
 #include "Customize_UI_ver2.h"
+#include "PlayerUI.h"
 
 
 Right_leg_weapons::Right_leg_weapons() 
 {
 	r_l_w_player = FindGO<Player>("player");
-	right_leg_ui = FindGO<Right_leg_UI>("right_leg_UI");
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
-}
 
+	m_playerUI = FindGO<PlayerUI>("playerui");
+	m_playerUI->WeaponUISetUp(2);		//UIの初期化
+	m_playerUI->m_rightLeg = (this);	//自分のポインタを教える
+}
 
 Right_leg_weapons::~Right_leg_weapons() 
 {
-	DeleteGO(right_leg_ui);
+	//UIの中身を空にする
+	m_playerUI->m_rightLeg = nullptr;
 }
 
 void Right_leg_weapons::R_l_w_set() 
@@ -55,7 +58,6 @@ void Right_leg_weapons::Update()
 	if (fast == 0) 
 	{
 		R_l_w_set();
-		right_leg_ui= NewGO<Right_leg_UI>(1, "right_leg_UI");
 	}
 
 	fast++;

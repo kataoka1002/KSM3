@@ -1,8 +1,8 @@
 #pragma once
 
 class Player;
+class PlayerUI;
 class Battle_ship_attack;
-class Right_arm_UI;
 class MachineGunAttack;
 class GigatonCannonAttack;
 class Customize_UI_ver2;
@@ -21,11 +21,10 @@ public:
 
 	Player* r_a_w_player = nullptr;
 	Battle_ship_attack* battle_ship_attack = nullptr;
-	Right_arm_UI* right_arm_ui = nullptr;
 	MachineGunAttack* m_machineGunAttack = nullptr;
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
 	Customize_UI_ver2* m_customizeUI = nullptr;
-
+	PlayerUI* m_playerUI = nullptr;
 
 	Quaternion r_a_Rotation;
 	Vector3 r_a_w_position;
@@ -40,6 +39,7 @@ public:
 	int set_weapons = 0;
 	int game_state = 0;
 	int firing_count=0;
-	float m_rightArmHP = 1.0f;
+	float m_rightArmHP = 100.0f;
+	float m_rightArmHPMax = 100.0f;
 };
 

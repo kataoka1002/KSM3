@@ -253,9 +253,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GigatonCannonAttack.cpp" />
-    <ClCompile Include="Left_arm_UI.cpp" />
     <ClCompile Include="Left_arm_weapons.cpp" />
-    <ClCompile Include="Left_leg_UI.cpp" />
     <ClCompile Include="Left_leg_weapons.cpp" />
     <ClCompile Include="Lighting.cpp" />
     <ClCompile Include="MachineGunAttack.cpp" />
@@ -263,11 +261,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerUI.cpp" />
     <ClCompile Include="Result.cpp" />
-    <ClCompile Include="Right_arm_UI.cpp" />
     <ClCompile Include="Right_arm_weapons.cpp" />
-    <ClCompile Include="Right_leg_UI.cpp" />
     <ClCompile Include="Right_leg_weapons.cpp" />
-    <ClCompile Include="Shoulder_UI.cpp" />
     <ClCompile Include="Shoulder_weapons.cpp" />
     <ClCompile Include="SoundManage.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -312,9 +307,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GigatonCannonAttack.h" />
-    <ClInclude Include="Left_arm_UI.h" />
     <ClInclude Include="Left_arm_weapons.h" />
-    <ClInclude Include="Left_leg_UI.h" />
     <ClInclude Include="Left_leg_weapons.h" />
     <ClInclude Include="Lighting.h" />
     <ClInclude Include="MachineGunAttack.h" />
@@ -322,11 +315,8 @@
     <ClInclude Include="PlayerUI.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Result_Macro.h" />
-    <ClInclude Include="Right_arm_UI.h" />
     <ClInclude Include="Right_arm_weapons.h" />
-    <ClInclude Include="Right_leg_UI.h" />
     <ClInclude Include="Right_leg_weapons.h" />
-    <ClInclude Include="Shoulder_UI.h" />
     <ClInclude Include="Shoulder_weapons.h" />
     <ClInclude Include="SoundManage.h" />
     <ClInclude Include="stdafx.h" />

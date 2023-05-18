@@ -4,27 +4,30 @@
 #include "Enumeration.h"
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
-#include "Right_arm_UI.h"
 #include "GigatonCannonAttack.h"
 #include "Customize_UI_ver2.h"
+#include "PlayerUI.h"
 
 
 Right_arm_weapons::Right_arm_weapons() 
 {
-	right_arm_ui = NewGO<Right_arm_UI>(1, "right_arm_ui");
 	
 }
 
 Right_arm_weapons::~Right_arm_weapons() 
 {
-	DeleteGO(right_arm_ui);
+	//UIの中身を空にする
+	m_playerUI->m_rightArm = nullptr;
 }
 
 bool Right_arm_weapons::Start()
 {
 	r_a_w_player = FindGO<Player>("player");
-	right_arm_ui = FindGO<Right_arm_UI>("right_arm_ui");
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+
+	m_playerUI = FindGO<PlayerUI>("playerui");
+	m_playerUI ->WeaponUISetUp(1);		//UIの初期化
+	m_playerUI->m_rightArm = (this);	//自分のポインタを教える
 
 	R_a_w_set();
 
