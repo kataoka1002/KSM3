@@ -10,10 +10,15 @@ Wave::Wave()
 	m_waveStartSprite.SetPosition(SPRITE_POSITION);
 	m_waveStartSprite.Update();
 
-	m_waveGage.Init("Assets/sprite/HP.dds", 400.0f, 20.0f);
-	m_waveGage.SetPosition({ -300.0f,300.0f,0.0f });
-	m_waveGage.SetPivot({ 0.0f,0.5f });
-	m_waveGage.Update();
+	m_waveGageNakami.Init("Assets/sprite/wave/waveGageNakami3.dds", 380.0f, 18.0f);
+	m_waveGageNakami.SetPosition({ -750.0f,420.0f,0.0f });
+	m_waveGageNakami.SetPivot({ 0.0f,0.5f });
+	m_waveGageNakami.Update();
+
+	m_waveGageWaku.Init("Assets/sprite/wave/waveGageWaku.dds", 400.0f, 25.0f);
+	m_waveGageWaku.SetPosition({ -755.0f,420.0f,0.0f });
+	m_waveGageWaku.SetPivot({ 0.0f,0.5f });
+	m_waveGageWaku.Update();
 }
 
 Wave::~Wave()
@@ -101,11 +106,11 @@ void Wave::TimeCount()
 	wchar_t text[256];
 	int minute = (int)m_timer / 60;
 	int sec = (int)m_timer % 60;
-	swprintf_s(text, 256, L"ウェーブ%d　%02d:%02d",m_waveNum, minute, sec);
+	swprintf_s(text, 256, L"ウェーブ%d/3          　        %02d:%02d",m_waveNum, minute, sec);
 	m_timerFont.SetText(text);
-	m_timerFont.SetPosition(Vector3(-800.0f, 490.0f, 0.0f));
+	m_timerFont.SetPosition(Vector3(-905.0f, 480.0f, 0.0f));
 	m_timerFont.SetShadowParam(true, 1.0f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-	m_timerFont.SetScale(0.5f);
+	m_timerFont.SetScale(0.6f);
 	m_timerFont.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
@@ -163,8 +168,8 @@ void Wave::GageSetScale()
 
 	max(0, m_scaleX);	//スケールは0以下にならない
 
-	m_waveGage.SetScale({ m_scaleX,1.0f,1.0f });
-	m_waveGage.Update();
+	m_waveGageNakami.SetScale({ m_scaleX,1.0f,1.0f });
+	m_waveGageNakami.Update();
 }
 
 void Wave::Render(RenderContext& rc)
@@ -176,7 +181,8 @@ void Wave::Render(RenderContext& rc)
 		{
 			m_waveStartSprite.Draw(rc);
 		}
-		m_waveGage.Draw(rc);
+		m_waveGageWaku.Draw(rc);
+		m_waveGageNakami.Draw(rc);
 		m_timerFont.Draw(rc);
 	}
 }

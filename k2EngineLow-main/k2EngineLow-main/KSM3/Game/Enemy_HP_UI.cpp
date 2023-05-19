@@ -24,7 +24,7 @@ bool Enemy_HP_UI::Start()
 	m_player = FindGO<Player>("player");
 	m_camera = FindGO<GameCamera>("gamecamera");
 
-	m_HPSprite.Init("Assets/sprite/enemy/enemyHP.dds", HP_BER_SIZE.x, HP_BER_SIZE.y);
+	m_HPSprite.Init("Assets/sprite/enemy/enemyHP3.dds", HP_BER_SIZE.x, HP_BER_SIZE.y);
 	m_HPSprite.SetScale(m_scale);
 	m_HPFrameSprite.Init("Assets/sprite/enemy/enemyHPFrame.dds", HP_FRAME_SIZE.x, HP_FRAME_SIZE.y);
 	m_HPFrameSprite.SetScale(m_scale);

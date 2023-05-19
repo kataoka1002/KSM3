@@ -17,7 +17,9 @@ public:
 	Player* m_player = nullptr;
 
 	SpriteRender	m_waveStartSprite;							//ウェーブが変わった時に流れるスプライト
-	SpriteRender	m_waveGage;									//ウェーブのゲージ
+	SpriteRender	m_waveGageNakami;							//ウェーブのゲージ中身
+	SpriteRender	m_waveGageWaku;								//ウェーブのゲージ枠
+
 
 	int				m_waveNum = 0;								//ウェーブのナンバー(全部で3回のウェーブがある)
 	int				m_ensyutuCount = 0;
