@@ -209,10 +209,10 @@ void Game::GameNow()
 	}
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 3)
+	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 3&& boss == nullptr)
 	{
 		boss = NewGO<Boss>(1, "boss");
-		boss->boss_position = { -16500.0f,0.0f,2000.0f };
+		boss->boss_position = { -17000.0f,0.0f,7000.0f };
 		boss->boss_game_state = 1;
 		player->player_position = { -16500.0f,0.0f,-1000.0f };
 
