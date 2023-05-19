@@ -15,7 +15,7 @@ namespace nsK2EngineLow {
 			DXGI_FORMAT_D32_FLOAT						// デプスステンシルバッファのフォーマット
 		);
 
-		float clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
+		
 
 		//2D(フォントやスプライト)用の初期化
 		Init2DSprite();
@@ -44,13 +44,14 @@ namespace nsK2EngineLow {
 	void RenderingEngine::InitShadowMap()
 	{
 		//ライトカメラの上方向の設定
+		//lightCamera.SetUp(0, 1, 0);
 		lightCamera.SetUp(0, 1, 0);
 		SetLVP(lightCamera.GetViewProjectionMatrix());
 
 		//シャドウマップ用のターゲットの作成
 		shadowMapTarget.Create(
-			1024,	//解像度
-			1024,
+			13240,	//解像度
+			13240,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
@@ -61,6 +62,8 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Init2DSprite()
 	{
+		float clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
+
 		//2D用のターゲットの初期化
 		m_2DRenderTarget.Create(
 			m_mainRenderingTarget.GetWidth(),
@@ -174,7 +177,8 @@ namespace nsK2EngineLow {
 			//主人公ならライトカメラを更新
 			if (MobjData->GetSyuzinkou() == true) {
 				//ライトカメラの更新
-				lightCamera.SetPosition(MobjData->GetPositionX() + 600.0f, MobjData->GetPositionY() + 800.0f, MobjData->GetPositionZ());
+				//lightCamera.SetPosition(MobjData->GetPositionX() + 600.0f, MobjData->GetPositionY() + 800.0f, MobjData->GetPositionZ());
+				lightCamera.SetPosition(MobjData->GetPositionX()+2000.0f, MobjData->GetPositionY() + 2500.0f, MobjData->GetPositionZ());
 				lightCamera.SetTarget(MobjData->GetPositionX(), MobjData->GetPositionY(), MobjData->GetPositionZ());
 				lightCamera.Update();
 			}

@@ -34,18 +34,27 @@ void Right_leg_weapons::R_l_w_set()
 		Right_leg_weapons_Render.SetScale(scale2);
 		Right_leg_weapons_Render.Update();
 		set_weapons = r_l_w_player->p_custom_point[1][0];
+		//武器の体力の設定
+		R_l_w_HP = 700.0f;
+		R_l_w_HPMax = 700.0f;
 		break;
 	case 4:
 		Right_leg_weapons_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
 		Right_leg_weapons_Render.SetScale(0.8f);
 		Right_leg_weapons_Render.Update();
 		set_weapons = r_l_w_player->p_custom_point[1][0];
+		//武器の体力の設定
+		R_l_w_HP = 500.0f;
+		R_l_w_HPMax = 500.0f;
 		break;
 	case 6:
 		Right_leg_weapons_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
 		Right_leg_weapons_Render.SetScale(scale2);
 		Right_leg_weapons_Render.Update();
 		set_weapons = r_l_w_player->p_custom_point[1][0];
+		//武器の体力の設定
+		R_l_w_HP = 400.0f;
+		R_l_w_HPMax = 400.0f;
 		break;
 
 	default:

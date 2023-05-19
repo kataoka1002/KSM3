@@ -93,36 +93,36 @@ void PlayerUI::WeaponUISetUp(int num)
 	{
 	case 1:	//âEòr
 		m_rightArmHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_rightArmHPSprite.SetPosition({ 0.0f,0.0f,0.0f });
-		m_rightArmHPSprite.SetScale({ 0.4f,0.4f,0.4f });
+		m_rightArmHPSprite.SetPosition({ 700.0f,-250.0f,0.0f });
+		m_rightArmHPSprite.SetScale({ 0.1f,0.1f,0.1f });
 		m_rightArmHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_rightArmHPSprite.Update();
 		break;
 	case 2:	//âEë´
 		m_rightLegHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_rightLegHPSprite.SetPosition({ 200.0f,0.0f,0.0f });
-		m_rightLegHPSprite.SetScale({ 0.4f,0.4f,0.4f });
+		m_rightLegHPSprite.SetPosition({ 720.0f,-330.0f,0.0f });
+		m_rightLegHPSprite.SetScale({ 0.1f,0.1f,0.1f });
 		m_rightLegHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_rightLegHPSprite.Update();
 		break;
 	case 3:	//ç∂òr
 		m_leftArmHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_leftArmHPSprite.SetPosition({ 300.0f,0.0f,0.0f });
-		m_leftArmHPSprite.SetScale({ 0.4f,0.4f,0.4f });
+		m_leftArmHPSprite.SetPosition({ 500.0f,-250.0f,0.0f });
+		m_leftArmHPSprite.SetScale({ -0.1f,0.1f,0.1f });
 		m_leftArmHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_leftArmHPSprite.Update();
 		break;
 	case 4:	//ç∂ë´
 		m_leftLegHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_leftLegHPSprite.SetPosition({ 400.0f,0.0f,0.0f });
-		m_leftLegHPSprite.SetScale({ 0.4f,0.4f,0.4f });
+		m_leftLegHPSprite.SetPosition({ 480.0f,-330.0f,0.0f });
+		m_leftLegHPSprite.SetScale({ -0.1f,0.1f,0.1f });
 		m_leftLegHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_leftLegHPSprite.Update();
 		break;
 	case 5:	//å®
 		m_shoulderHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_shoulderHPSprite.SetPosition({ 500.0f,0.0f,0.0f });
-		m_shoulderHPSprite.SetScale({ 0.4f,0.4f,0.4f });
+		m_shoulderHPSprite.SetPosition({ 605.0f,-150.0f,0.0f });
+		m_shoulderHPSprite.SetScale({ 0.1f,0.1f,0.1f });
 		m_shoulderHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_shoulderHPSprite.Update();
 		break;
