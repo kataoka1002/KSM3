@@ -15,7 +15,7 @@ bool BackGround::Start()
 {
 	//モデルを読み込む。
 
-	modelRender.Init("Assets/modelData/stage4.tkm",false);
+	modelRender.Init("Assets/modelData/stage6.tkm",false);
 	modelRender.SetScale(0.8f);
 	//モデルを更新する。
 	modelRender.Update();
