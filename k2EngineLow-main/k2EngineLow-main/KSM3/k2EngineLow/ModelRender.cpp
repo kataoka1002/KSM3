@@ -157,6 +157,11 @@ namespace nsK2EngineLow {
 		m_skeleton.Init(skeletonFilePath.c_str());
 	}
 
+	void ModelRender::InitSkyCubeModel(ModelInitData& initData)
+	{
+		m_model.Init(initData);
+	}
+
 	void ModelRender::Draw(RenderContext& rc)
 	{
 		g_renderingEngine->AddModelRenderObject(this);

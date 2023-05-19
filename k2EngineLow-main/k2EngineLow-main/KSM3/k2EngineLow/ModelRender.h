@@ -15,7 +15,7 @@ namespace nsK2EngineLow {
 		ModelRender();
 		~ModelRender();
 		void InitCommon(const char* tkmFilePath, AnimationClip* animationClips);
-
+		void InitSkyCubeModel(ModelInitData& initData);
 
 		//‰Šú‰»
 		void Init(const char* filePath,

@@ -132,6 +132,7 @@ public:
 	Boss* boss = nullptr;
 	PlayerUI* m_playerUI = nullptr;
 	Wave* m_wave = nullptr;
+	SkyCube* m_skyCube = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 

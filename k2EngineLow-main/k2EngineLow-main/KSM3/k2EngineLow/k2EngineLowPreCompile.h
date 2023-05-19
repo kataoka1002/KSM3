@@ -119,3 +119,4 @@ static const int MAX_BONE = 512;	// ボーンの最大数。
 #include "FontRender.h"
 #include "SceneLight.h"
 #include "CollisionObject.h"
+#include "SkyCube.h"

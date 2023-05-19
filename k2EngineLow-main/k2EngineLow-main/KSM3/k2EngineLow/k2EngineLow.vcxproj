@@ -331,6 +331,7 @@
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingEngine.cpp" />
     <ClCompile Include="SceneLight.cpp" />
+    <ClCompile Include="SkyCube.cpp" />
     <ClCompile Include="SpringCamera.cpp" />
     <ClCompile Include="ToonMap.cpp" />
     <ClCompile Include="sound\SoundEngine.cpp" />
@@ -433,6 +434,7 @@
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="RenderingEngine.h" />
     <ClInclude Include="SceneLight.h" />
+    <ClInclude Include="SkyCube.h" />
     <ClInclude Include="SpringCamera.h" />
     <ClInclude Include="ToonMap.h" />
     <ClInclude Include="sound\SoundEngine.h" />
