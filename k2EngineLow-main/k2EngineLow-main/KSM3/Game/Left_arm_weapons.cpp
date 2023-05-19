@@ -35,6 +35,9 @@ void Left_arm_weapons::L_a_w_set()
 		Left_arm_weapons_Render.Update();
 		set_weapons = l_a_w_player->p_custom_point[0][2];
 		atack_state = true;
+		//武器の体力の設定
+		L_a_w_HP = 700.0f;
+		L_a_w_HP = 700.0f;
 		break;
 	case 4:
 		Left_arm_weapons_Render.Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
@@ -42,6 +45,9 @@ void Left_arm_weapons::L_a_w_set()
 		Left_arm_weapons_Render.Update();
 		set_weapons = l_a_w_player->p_custom_point[0][2];
 		atack_state = true;
+		//武器の体力の設定
+		L_a_w_HP = 500.0f;
+		L_a_w_HP = 500.0f;
 		break;
 	case 6:
 		Left_arm_weapons_Render.Init("Assets/modelData/battleship_gun_left_arm.tkm");
@@ -49,6 +55,9 @@ void Left_arm_weapons::L_a_w_set()
 		Left_arm_weapons_Render.Update();
 		set_weapons = l_a_w_player->p_custom_point[0][2];
 		atack_state = true;
+		//武器の体力の設定
+		L_a_w_HP = 400.0f;
+		L_a_w_HP = 400.0f;
 		break;
 
 	default:

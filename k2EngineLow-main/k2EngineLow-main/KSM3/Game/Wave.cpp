@@ -9,6 +9,11 @@ Wave::Wave()
 	m_waveStartSprite.Init("Assets/sprite/fade.DDS", 800.0f, 500.0f);
 	m_waveStartSprite.SetPosition(SPRITE_POSITION);
 	m_waveStartSprite.Update();
+
+	m_waveGage.Init("Assets/sprite/HP.dds", 400.0f, 20.0f);
+	m_waveGage.SetPosition({ -300.0f,300.0f,0.0f });
+	m_waveGage.SetPivot({ 0.0f,0.5f });
+	m_waveGage.Update();
 }
 
 Wave::~Wave()
@@ -61,6 +66,9 @@ void Wave::Update()
 
 		//残り時間の計測
 		TimeCount();
+
+		//サイズを小さくする
+		GageSetScale();
 	}
 	else if (m_player->game_state == 1)
 	{
@@ -149,6 +157,16 @@ void Wave::SpritePlay()
 	m_waveStartSprite.Update();
 }
 
+void Wave::GageSetScale()
+{
+	float m_scaleX = m_timer * (1.0f / TIME_LIMIT);	//時間が減るほどゲージが減っていく
+
+	max(0, m_scaleX);	//スケールは0以下にならない
+
+	m_waveGage.SetScale({ m_scaleX,1.0f,1.0f });
+	m_waveGage.Update();
+}
+
 void Wave::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0 || m_player->game_state == 1)
@@ -158,7 +176,7 @@ void Wave::Render(RenderContext& rc)
 		{
 			m_waveStartSprite.Draw(rc);
 		}
-
+		m_waveGage.Draw(rc);
 		m_timerFont.Draw(rc);
 	}
 }

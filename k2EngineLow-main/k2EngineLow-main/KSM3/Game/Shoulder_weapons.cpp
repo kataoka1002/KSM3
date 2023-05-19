@@ -40,18 +40,28 @@ void Shoulder_weapons::S_w_set()
 		Shoulder_weapons_Render2.Update();
 
 		set_weapons = s_w_player->p_custom_point[0][1];
+
+		//武器の体力の設定
+		S_w_HP = 700.0f;
+		S_w_HP = 700.0f;
 		break;
 	case 4:
 		Shoulder_weapons_Render.Init("Assets/modelData/GIgaton_shoulder.tkm");
 		Shoulder_weapons_Render.SetScale(0.8f);
 		Shoulder_weapons_Render.Update();
 		set_weapons = s_w_player->p_custom_point[0][1];
+		//武器の体力の設定
+		S_w_HP = 500.0f;
+		S_w_HP = 500.0f;
 		break;
 	case 6:
 		Shoulder_weapons_Render.Init("Assets/modelData/battleship_gun_shoulder.tkm");
 		Shoulder_weapons_Render.SetScale(scale2);
 		Shoulder_weapons_Render.Update();
 		set_weapons = s_w_player->p_custom_point[0][1];
+		//武器の体力の設定
+		S_w_HP = 400.0f;
+		S_w_HP = 400.0f;
 		break;
 	default:
 		break;
