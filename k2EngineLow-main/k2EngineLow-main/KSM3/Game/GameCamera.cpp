@@ -41,7 +41,7 @@ bool GameCamera::Start()
 		m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
 		//カメラのニアクリップとファークリップを設定する。
 		g_camera3D->SetNear(1.0f);
-		g_camera3D->SetFar(25000.0f);
+		g_camera3D->SetFar(80000.0f);
 
 	}
 
@@ -83,7 +83,7 @@ void GameCamera::Update()
 		target = m_player->player_position;
 		target.y += 80.0f;		//プレイヤの足元からちょっと上を注視点とする。
 
-		if (toPosDir.y < 0.3f)
+		if (toPosDir.y < 0.1f)
 		{
 			//カメラが上向きすぎ。
 			m_toCameraPos = toCameraPosOld;

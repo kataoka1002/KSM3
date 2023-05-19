@@ -24,6 +24,7 @@
 //#include "Fade.h"
 #include "Wave.h"
 #include "Customize_UI_ver2.h"
+#include "SkyCube.h"
 
 
 Game::Game()
@@ -42,28 +43,18 @@ Game::Game()
 	//ゲームカメラの作成
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
 	
-
-	/*for (int i = 0; i < 1; i++)
-	{
-		Boss_Riser* boss_riser = NewGO<Boss_Riser>(1, "boss_riser");
-		boss_riser->b_w_position = boss_riser->b_w_localposition;
-	}*/
-
-
-	//boss = NewGO<Boss>(1, "boss");//15100
-	//boss->boss_position = { 0.0f,0.0f,15100.0f };
+	//スカイキューブの作成
+	m_skyCube = NewGO<SkyCube>(0, "skycube");
+	m_skyCube->SetLuminance(1.0f);
+	m_skyCube->SetScale(4000.0f);
+	m_skyCube->SetPosition({ 0.0f,40.0f,0.0f });
+	m_skyCube->SetType((EnSkyCubeType)enSkyCubeType_DayToon_2);
 }
 
 Game::~Game()
 {
 	DeleteGO(core_weapons);
 	DeleteGO(m_playerUI);
-	//DeleteGO(drop_item);
-	//プッシュしたボックスを削除していく
-	/*for (auto box : m_boxmoves)
-	{
-		DeleteGO(box);
-	}*/
 	//プッシュしたエネミーを削除していく
 	for (auto enemy : m_enemyObject)
 	{
@@ -77,7 +68,6 @@ Game::~Game()
 	{
 		DeleteGO(enemyNear);
 	}
-	//DeleteGO(boss);
 	DeleteGO(m_soundManage);
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
@@ -87,6 +77,7 @@ Game::~Game()
 	DeleteGO(m_customizeUI);
 	DeleteGO(background);
 	DeleteGO(game_ui);
+	DeleteGO(m_skyCube);
 }
 
 bool Game::Start()
@@ -149,8 +140,6 @@ void Game::SetUp()
 	//エネミーの生成
 	MakeEnemy();
 
-	//game_ui = NewGO<Game_UI>(1, "game_ui");
-
 	//カスタム画面の作成
 	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 
@@ -209,8 +198,17 @@ void Game::GameNow()
 	}
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 3&& boss == nullptr)
+	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 1&& boss == nullptr)
 	{
+		//スカイキューブを作り直す
+		DeleteGO(m_skyCube);
+		m_skyCube = NewGO<SkyCube>(0, "skycube");
+		m_skyCube->SetLuminance(1.0f);
+		m_skyCube->SetScale(4000.0f);
+		m_skyCube->SetPosition({ 0.0f,40.0f,0.0f });
+		m_skyCube->SetType((EnSkyCubeType)enSkyCubeType_Wild_Night);
+
+
 		boss = NewGO<Boss>(1, "boss");
 		boss->boss_position = { -17000.0f,0.0f,7000.0f };
 		boss->boss_game_state = 1;
