@@ -44,21 +44,6 @@ bool GameCamera::Start()
 		g_camera3D->SetFar(25000.0f);
 
 	}
-	//カメラステートが1(ボス)の時。
-	//else if (CameraState == 1)
-	//{
-	//	m_toCameraPos.Set(0.0f, 125.0f, -400.0f);
-	//	//近平面,遠平面調整中…。
-	//	g_camera3D->SetNear(1.0f);
-	//	g_camera3D->SetFar(10000.0f);
-	//}
-	////カメラステートが2(タイトルにします)の時。
-	//else if (CameraState == 2)
-	//{
-	//	m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
-	//	g_camera3D->SetNear(1.0f);
-	//	g_camera3D->SetFar(1000.0f);
-	//}
 
 
 	return true;
@@ -151,7 +136,8 @@ void GameCamera::Update()
 	m_springCamera.SetPosition(pos);
 	m_springCamera.Update();
 
-	//カメラの前方向の設定
+	//カメラの前方向の設定(ｘとｚの情報だけで良い)
+	m_cameraForward.x = target.x - pos.x;
 	m_cameraForward.z = target.z - pos.z;
 	m_cameraForward.Normalize();
 }
