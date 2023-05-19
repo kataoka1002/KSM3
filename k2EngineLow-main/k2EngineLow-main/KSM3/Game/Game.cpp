@@ -198,7 +198,7 @@ void Game::GameNow()
 	}
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 1&& boss == nullptr)
+	if (player->player_position.z >= 9550.0f && m_wave->m_waveNum == 1&& boss == nullptr)
 	{
 		//スカイキューブを作り直す
 		DeleteGO(m_skyCube);
@@ -210,9 +210,9 @@ void Game::GameNow()
 
 
 		boss = NewGO<Boss>(1, "boss");
-		boss->boss_position = { -17000.0f,0.0f,7000.0f };
+		boss->boss_position = { -19800.0f,0.0f,7800.0f };
 		boss->boss_game_state = 1;
-		player->player_position = { -16500.0f,0.0f,-1000.0f };
+		player->player_position = { -19246.0f,0.0f,-130.0f };
 
 		player->player_modelRender.SetPosition(player->player_position);
 		player->characterController.SetPosition(player->player_position);
