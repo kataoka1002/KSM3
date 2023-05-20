@@ -198,7 +198,7 @@ void Game::GameNow()
 	}
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 10600.0f && m_wave->m_waveNum == 1&& boss == nullptr)
+	if (player->player_position.z >= 10600.0f && m_wave->m_goBoss == true && boss == nullptr)
 	{
 		//スカイキューブを作り直す
 		DeleteGO(m_skyCube);

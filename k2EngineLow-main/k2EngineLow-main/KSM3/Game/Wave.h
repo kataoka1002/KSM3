@@ -10,6 +10,7 @@ public:
 	void Update();
 	void TimeCount();
 	void SpritePlay();
+
 	void GageSetScale();
 	void Render(RenderContext& rc);
 
@@ -17,6 +18,7 @@ public:
 	Player* m_player = nullptr;
 
 	SpriteRender	m_waveStartSprite;							//ウェーブが変わった時に流れるスプライト
+	SpriteRender	m_waveStartWakuSprite;						//ウェーブが変わった時に流れるスプライトの枠
 	SpriteRender	m_waveGageNakami;							//ウェーブのゲージ中身
 	SpriteRender	m_waveGageWaku;								//ウェーブのゲージ枠
 
@@ -24,7 +26,9 @@ public:
 	int				m_waveNum = 0;								//ウェーブのナンバー(全部で3回のウェーブがある)
 	int				m_ensyutuCount = 0;
 	float			m_timer = 0.0f;								//タイマー
+	float			m_wakuA = 0.0f;								//枠のα値
 	bool			m_ensyutuNow = false;						//演出中かどうか
+	bool			m_goBoss = false;							//ボス戦へ行けるかどうか
 	FontRender		m_timerFont;								//タイマーを表示するフォント
 	Vector3			m_spritePos = Vector3::Zero;				//スプライトを動かすための変数
 	Vector3         m_moveSpeed = Vector3::Zero;
