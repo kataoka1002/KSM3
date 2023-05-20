@@ -151,7 +151,7 @@ void Enemy_Far::Update()
 			m_enemyModel.Update();
 		}
 	}
-	else if (m_player->game_state == 3)
+	else if (m_player->game_state == 1 || m_player->game_state == 3)
 	{
 		//‘«‰¹’âŽ~
 		m_asiotoSE->Stop();
