@@ -5,7 +5,8 @@
 #include "Customize_UI_ver2.h"
 #include "Game.h"
 #include "Result.h"
-
+#include "GameCamera.h"
+#include "Title.h"
 
 Player::Player() 
 {
@@ -26,6 +27,7 @@ Player::~Player()
 bool Player::Start()
 {
 	m_game = FindGO<Game>("game");
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
 
 	//効果音の作成(流し続ける音源なのでインスタンスを保持させる)
 	m_machineGunSE = NewGO<SoundSource>(0);
@@ -97,6 +99,9 @@ void Player::Update()
 
 		//リザルトへ
 		m_result = NewGO<Result>(1, "result");
+		game_state = 2;			//リザルトステートへ
+		m_game->DeleteEnemy();	//エネミーを全員消す
+		DeleteGO(m_game);
 		m_playerDead = true;
 	}
 }
@@ -216,6 +221,11 @@ void Player::pause()
 	else if (g_pad[0]->IsTrigger(enButtonA)) 
 	{
 		game_end_state = 1;	//ゲーム終了
+
+		DeleteGO(m_game);
+		Title* title = NewGO<Title>(0, "title");
+		DeleteGO(m_gameCamera);
+		DeleteGO(this);
 	}
 }
 

@@ -56,18 +56,7 @@ Game::~Game()
 	DeleteGO(core_weapons);
 	DeleteGO(m_playerUI);
 	//プッシュしたエネミーを削除していく
-	for (auto enemy : m_enemyObject)
-	{
-		DeleteGO(enemy);
-	}
-	for (auto enemyFar : m_enemyFarObject)
-	{
-		DeleteGO(enemyFar);
-	}
-	for (auto enemyNear : m_enemyNearObject)
-	{
-		DeleteGO(enemyNear);
-	}
+	DeleteEnemy();
 	DeleteGO(m_soundManage);
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
@@ -78,6 +67,7 @@ Game::~Game()
 	DeleteGO(background);
 	DeleteGO(game_ui);
 	DeleteGO(m_skyCube);
+	DeleteGO(m_wave);
 }
 
 bool Game::Start()
@@ -173,6 +163,22 @@ void Game::MakeEnemy()
 	}
 }
 
+void Game::DeleteEnemy()
+{
+	for (auto enemy : m_enemyObject)
+	{
+		DeleteGO(enemy);
+	}
+	for (auto enemyFar : m_enemyFarObject)
+	{
+		DeleteGO(enemyFar);
+	}
+	for (auto enemyNear : m_enemyNearObject)
+	{
+		DeleteGO(enemyNear);
+	}
+}
+
 void Game::TitleToGame()
 {
 
@@ -183,22 +189,10 @@ void Game::GameNow()
 	//敵の全滅コマンド
 	if (g_pad[0]->IsTrigger(enButtonX))
 	{
-		for (auto enemy : m_enemyObject)
-		{
-			DeleteGO(enemy);
-		}
-		for (auto enemyFar : m_enemyFarObject)
-		{
-			DeleteGO(enemyFar);
-		}
-		for (auto enemyNear : m_enemyNearObject)
-		{
-			DeleteGO(enemyNear);
-		}
+		
 	}
 
 	//3ウェーブ突破したらボス戦
-
 	if (player->player_position.z >= 9550.0f  && boss == nullptr || m_wave->m_goBoss == true)
 	{
 		//スカイキューブを作り直す
@@ -210,13 +204,19 @@ void Game::GameNow()
 		m_skyCube->SetType((EnSkyCubeType)enSkyCubeType_Wild_Night);
 
 		player->bossState = 1;
+
+		//ボスを発生させる
 		boss = NewGO<Boss>(1, "boss");
 		boss->boss_position = { -19800.0f,0.0f,7800.0f };	
+		//プレイヤーの場所をボスの場所へ移動させる
 		player->player_position = { -19246.0f,0.0f,-130.0f };
 		player->player_modelRender.SetPosition(player->player_position);
 		player->characterController.SetPosition(player->player_position);
 		gamecamera->m_springCamera.Refresh();
 		player->player_modelRender.Update(true);
+
+		//今いる雑魚敵を全部消す
+		DeleteEnemy();
 	}
 
 	if (boss != nullptr)

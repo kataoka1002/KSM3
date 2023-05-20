@@ -28,7 +28,7 @@ Enemy_Near::~Enemy_Near()
 	//エネミーが生きているかをプレーヤーに教える
 	//m_player->enemy_survival = false;	
 
-	m_player->killEnemy++;	//殺した数を増やす
+	
 
 	DeleteGO(m_asiotoSE);
 	DeleteGO(m_dashSE);
@@ -442,6 +442,8 @@ void Enemy_Near::ItemDrop()
 		m_game->AddDefeatedEnemyNumber();//倒した数を増やす
 
 		m_defeatState = true;
+
+		m_player->killEnemy++;	//殺した数を増やす
 		DeleteGO(this);
 		//リストから消す
 		m_game->RemoveEnemyNearFromList(this);

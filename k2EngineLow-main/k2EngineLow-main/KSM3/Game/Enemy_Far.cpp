@@ -27,7 +27,7 @@ Enemy_Far::~Enemy_Far()
 	//エネミーが生きているかをプレーヤーに教える
 	//m_player->enemy_survival = false;	
 
-	m_player->killEnemy++;	//殺した数を増やす
+	
 
 	DeleteGO(m_asiotoSE);
 	DeleteGO(m_HPUI);
@@ -440,6 +440,8 @@ void Enemy_Far::ItemDrop()
 		m_game->AddDefeatedEnemyNumber();
 
 		m_defeatState = false;
+
+		m_player->killEnemy++;	//殺した数を増やす
 	}
 }
 
