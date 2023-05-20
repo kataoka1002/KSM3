@@ -230,6 +230,7 @@
     <ClCompile Include="Boss_Cannon_attack.cpp" />
     <ClCompile Include="Boss_Drill.cpp" />
     <ClCompile Include="Boss_Drill_attack.cpp" />
+    <ClCompile Include="Boss_Movie.cpp" />
     <ClCompile Include="Boss_Riser.cpp" />
     <ClCompile Include="Boss_Riser_attack.cpp" />
     <ClCompile Include="Boss_Shovel.cpp" />
@@ -284,6 +285,7 @@
     <ClInclude Include="Boss_Cannon_attack.h" />
     <ClInclude Include="Boss_Drill.h" />
     <ClInclude Include="Boss_Drill_attack.h" />
+    <ClInclude Include="Boss_Movie.h" />
     <ClInclude Include="Boss_Riser.h" />
     <ClInclude Include="Boss_Riser_attack.h" />
     <ClInclude Include="Boss_Shovel.h" />
