@@ -28,6 +28,11 @@ bool PlayerUI::Start()
 	m_HPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 	m_HPSprite.Update();
 
+	m_HPBackSprite.Init("Assets/sprite/player/Player_UI_cushion.dds", 888.0f, 888.0f);
+	m_HPBackSprite.SetPosition({ 600.0f,-300.0f,0.0f });
+	m_HPBackSprite.SetScale({ 0.6f,0.6f,0.6f });
+	m_HPBackSprite.Update();
+
 	return true;
 }
 
@@ -135,6 +140,7 @@ void PlayerUI::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0)
 	{
+		m_HPBackSprite.Draw(rc);
 		m_HPSprite.Draw(rc);
 
 		//‚»‚ê‚¼‚ê‚ªƒkƒ‹‚¶‚á‚È‚¢‚È‚ç•`‰æ

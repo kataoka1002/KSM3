@@ -71,10 +71,6 @@ void Player::Update()
 			m_kettei->SetVolume(2.0f * m_game->SEvol);			//音量調整
 			m_kettei->Play(false);
 		}
-		if (g_pad[0]->IsTrigger(enButtonA)) 
-		{
-			p_customize_ui_ver2 = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
-		}
 
 		//モデルの更新
 		player_modelRender.Update(true);

@@ -199,7 +199,7 @@ void Game::GameNow()
 
 	//3ウェーブ突破したらボス戦
 
-	if (player->player_position.z >= 9550.0f  && boss == nullptr && m_wave->m_goBoss == true)
+	if (player->player_position.z >= 9550.0f  && boss == nullptr || m_wave->m_goBoss == true)
 	{
 		//スカイキューブを作り直す
 		DeleteGO(m_skyCube);
@@ -209,12 +209,10 @@ void Game::GameNow()
 		m_skyCube->SetPosition({ 0.0f,40.0f,0.0f });
 		m_skyCube->SetType((EnSkyCubeType)enSkyCubeType_Wild_Night);
 
-
+		player->bossState = 1;
 		boss = NewGO<Boss>(1, "boss");
-		boss->boss_position = { -19800.0f,0.0f,7800.0f };
-		boss->boss_game_state = 1;
+		boss->boss_position = { -19800.0f,0.0f,7800.0f };	
 		player->player_position = { -19246.0f,0.0f,-130.0f };
-
 		player->player_modelRender.SetPosition(player->player_position);
 		player->characterController.SetPosition(player->player_position);
 		gamecamera->m_springCamera.Refresh();
@@ -225,13 +223,7 @@ void Game::GameNow()
 	{
 		if (player->boss_survival == true)
 		{
-			boss_time += g_gameTime->GetFrameDeltaTime();
-			boss_time_score += g_gameTime->GetFrameDeltaTime();
-			if (boss_time_score >= 1.0f)
-			{
-				time_score -= 150;
-				boss_time_score = 0.0f;
-			}
+			
 		}
 	}
 

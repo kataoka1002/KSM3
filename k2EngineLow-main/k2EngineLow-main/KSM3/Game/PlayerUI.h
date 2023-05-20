@@ -26,6 +26,7 @@ public:
 
 
 	SpriteRender m_HPSprite;
+	SpriteRender m_HPBackSprite;
 	SpriteRender m_rightArmHPSprite;
 	SpriteRender m_rightLegHPSprite;
 	SpriteRender m_leftArmHPSprite;

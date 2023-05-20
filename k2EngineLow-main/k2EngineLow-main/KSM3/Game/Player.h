@@ -19,60 +19,42 @@ public:
 	void MakeEfe();									//エフェクト再生
 	void MachineGunSE();
 
-	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
-	SoundSource* m_runSE = nullptr;					//足音SE
-	SoundSource* m_walkSE = nullptr;				//足音SE
-	SoundSource* m_kettei = nullptr;
-	ModelRender player_modelRender;					//モデルレンダー
-	Vector3 player_position = {0.0f,0.0f,-1000.0f};						//座標
-	CharacterController characterController;		//キャラクターコントローラー
-	Quaternion player_rotation;						//クォータニオン
-	Vector3 player_moveSpeed;						//移動速度
-
-	float fsin[360], fcos[360];
-	Vector3 playerForward = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
-
-
-	int game_state = 4;								//ゲームがどの状態かの管理(0メインゲーム,1ポーズ画面,2リザルト,3カスタマイズ,4最初のシーン)
-
 	Result* m_result = nullptr;
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
 	Customize_UI_ver2* p_customize_ui_ver2 = nullptr;
 	Game* m_game = nullptr;
+	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
+	SoundSource* m_runSE = nullptr;					//足音SE
+	SoundSource* m_walkSE = nullptr;				//足音SE
+	SoundSource* m_kettei = nullptr;
 
-
-	int game_end_state = 0;							//ゲームの終了判定
-
-	SpriteRender pouse_spriteRender;	//pause画面用のスプライトレンダー
-
-	//エフェクト関係
+	ModelRender player_modelRender;					//モデルレンダー
+	SpriteRender pouse_spriteRender;				//pause画面用のスプライトレンダー
 	EffectEmitter* sunabokoriEffect = nullptr;
-	int effectCount = 0;
+	CharacterController characterController;		//キャラクターコントローラー
+	Vector3 player_position = {0.0f,0.0f,-1000.0f};						//座標
+	Vector3 player_moveSpeed;						//移動速度
+	Vector3 playerForward = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
+	Quaternion player_rotation;						//クォータニオン
 
-	int killEnemy = 0;	//敵を殺した数(10になるとウェーブが進む)
-						
-	
-						
-						
-	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };		//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足
-					
-	
-	
-	bool m_cameraMove = false;	//カメラ切り替え中かどうか
-
+	int game_state = 4;								//ゲームがどの状態かの管理(0メインゲーム,1ポーズ画面,2リザルト,3カスタマイズ,4最初のシーン,5ボス戦)
+	int game_end_state = 0;							//ゲームの終了判定
+	int bossState = 0;								//ボス戦かどうか
+	int effectCount = 0;							//エフェクト関係
+	int killEnemy = 0;								//敵を殺した数(10になるとウェーブが進む)
+	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };	//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足
 	float accelerator = 0;
 	float brake = 0;
 	float throttle = 0;
+	float move_s;
+	float m_playerHP = 500.0f;						//プレイヤーのHP
+	float m_playerHPMax = 500.0f;					//プレイヤーのHPの最大値
 	bool attack_state_la = false;
 	bool attack_state_ll = false;
 	bool attack_state_rl = false;
 	bool attack_state_ra = false;
 	bool attack_state_s = false;
-	float move_s;
-
-	float m_playerHP = 500.0f;		//プレイヤーのHP
-	float m_playerHPMax = 500.0f;		//プレイヤーのHPの最大値
-
+	bool m_cameraMove = false;						//カメラ切り替え中かどうか
 	bool enemy_survival = true;
 	bool boss_survival = true;
 };
