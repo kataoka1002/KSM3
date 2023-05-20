@@ -44,6 +44,11 @@ bool Wave::Start()
 
 void Wave::Update()
 {
+	if (m_player->game_state == 1)
+	{
+		return;
+	}
+
 	//スタート時
 	if (m_waveNum == 0)
 	{
@@ -201,15 +206,16 @@ void Wave::Render(RenderContext& rc)
 	{
 		if (m_player->bossState != 1)	//ボス戦じゃないなら表示
 		{
+			m_waveGageWaku.Draw(rc);
+			m_waveGageNakami.Draw(rc);
+			m_timerFont.Draw(rc);
+
 			//演出中のみ表示
 			if (m_ensyutuNow == true)
 			{
 				m_waveStartWakuSprite.Draw(rc);
 				m_waveStartSprite.Draw(rc);
 			}
-			m_waveGageWaku.Draw(rc);
-			m_waveGageNakami.Draw(rc);
-			m_timerFont.Draw(rc);
 		}
 	}
 }

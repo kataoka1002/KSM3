@@ -28,6 +28,13 @@ bool SoundManage::Start()
 
 void SoundManage::Update()
 {
+	if (m_player->game_state == 1)
+	{
+		m_gameBGM->Stop();
+		m_bossBGM->Stop();
+		return;
+	}
+
 	//ƒ{ƒXí‚ÌBGMÄ¶
 	if (m_player->bossState == 1 && m_bossBGM->IsPlaying() != true)
 	{

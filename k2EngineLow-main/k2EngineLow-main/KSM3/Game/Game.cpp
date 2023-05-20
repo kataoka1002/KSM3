@@ -57,12 +57,12 @@ Game::~Game()
 	DeleteGO(m_playerUI);
 	//プッシュしたエネミーを削除していく
 	DeleteEnemy();
-	DeleteGO(m_soundManage);
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
 	{
 		DeleteGO(dropItem);
 	}
+	DeleteGO(m_soundManage);
 	DeleteGO(m_customizeUI);
 	DeleteGO(background);
 	DeleteGO(game_ui);
