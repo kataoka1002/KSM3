@@ -32,7 +32,7 @@ Boss::~Boss()
 	Game* boss_game = FindGO<Game>("game");
 	result->minute = (int)boss_time / 60;
 	result->sec = (int)boss_time % 60;
-	//DeleteGO(boss_game);
+	DeleteGO(boss_game);
 	DeleteGO(b_boss_riser);//ライザーの武器削除。
 	DeleteGO(b_boss_shovel);//ショベルの武器削除。
 	DeleteGO(b_boss_drill);//ドリルの武器削除。
