@@ -22,6 +22,7 @@ public:
 	void Render(RenderContext& rc);//描画処理
 	void Move();//移動処理
 	void Damage();
+	void SetHPScale();
 	void PlayerSearch();//索敵
 
 	Player* b_player = nullptr;
@@ -37,6 +38,9 @@ public:
 	//std::vector<Boss_Riser*>m_riserObject;
 
 	ModelRender boss_modelRender;//モデルレンダー
+	SpriteRender m_bossHPSprite;
+	SpriteRender m_bossHPWakuSprite;
+	SpriteRender m_bossHPWakuSprite2;
 	Vector3 boss_position;//座標
 	CharacterController boss_characterController;//キャラクターコントローラー
 	Quaternion boss_rotation;//クォータニオン
@@ -44,12 +48,15 @@ public:
 	Vector3 boss_forward{ 0.0f,0.0f,-1.0f };//エネミーの正面ベクトル
 	Vector3 riser_pos;
 
-	bool defeat_state = false;
-
 	int boss_weapons = 1;
 	int boss_game_state = 0;   
 	int attack_state = 0;		//攻撃中かどいうか。0が攻撃中じゃ無い。
-
+	int time_score = 10000;
 	float boss_HP = HP;
+	float BOSS_HP_MAX = HP;
+	float boss_time = 0.0f;
+	float boss_time_score = 0.0f;
+	bool defeat_state = false;
+
 };
 

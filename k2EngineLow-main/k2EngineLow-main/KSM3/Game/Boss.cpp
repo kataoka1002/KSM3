@@ -30,8 +30,8 @@ Boss::Boss()
 Boss::~Boss() 
 {
 	Game* boss_game = FindGO<Game>("game");
-	result->minute = (int)boss_game->boss_time / 60;
-	result->sec = (int)boss_game->boss_time % 60;
+	result->minute = (int)boss_time / 60;
+	result->sec = (int)boss_time % 60;
 	DeleteGO(boss_game);
 	DeleteGO(b_boss_riser);//ライザーの武器削除。
 	DeleteGO(b_boss_shovel);//ショベルの武器削除。
@@ -53,7 +53,19 @@ Boss::~Boss()
 
 bool Boss::Start()
 {	
-	//boss_rotation.SetRotationY(Math::PI);
+	m_bossHPSprite.Init("Assets/sprite/boss/bossGageNakami.dds",565.0f,48.0f);
+	m_bossHPSprite.SetPosition({ -290.0f,360.0f,0.0f });
+	m_bossHPSprite.SetPivot({ 0.0f,0.5f });
+	m_bossHPSprite.Update();
+
+	m_bossHPWakuSprite.Init("Assets/sprite/boss/bossGageWaku1.dds", 800.0f, 400.0f);
+	m_bossHPWakuSprite.SetPosition({ -20.0f,360.0f,0.0f });
+	m_bossHPWakuSprite.Update();
+
+	m_bossHPWakuSprite2.Init("Assets/sprite/boss/bossGageWaku2.dds", 800.0f, 400.0f);
+	m_bossHPWakuSprite2.SetPosition({ -20.0f,360.0f,0.0f });
+	m_bossHPWakuSprite2.Update();
+
 
 	boss_modelRender.Init("Assets/modelData/Boss_core.tkm");
 	boss_rotation.SetRotationDegY(180.0f);
@@ -63,43 +75,25 @@ bool Boss::Start()
 	boss_characterController.Init(
 		750.0f,			//半径。
 		40.0f,			//高さ。
-		boss_position		//座標。
+		boss_position	//座標。
 	);
 	return true;
 }
 
 void Boss::Update()
 {
-	boss_modelRender.SetScale(15.0f);
 	Damage();
+	SetHPScale();
 
-	if (boss_game_state == 1) {
-
-		/*b_player->player_position.x = -16500.0f;
-		b_player->player_position.z = -1000.0f;*/
-			
-		/*b_player->player_modelRender.SetPosition(b_player->player_position);
-		b_player->characterController.SetPosition(b_player->player_position);
-
-		b_player->player_modelRender.Update(true)*/;
+	boss_time += g_gameTime->GetFrameDeltaTime();
+	boss_time_score += g_gameTime->GetFrameDeltaTime();
+	if (boss_time_score >= 1.0f)
+	{
+		time_score -= 150;
+		boss_time_score = 0.0f;
 	}
 
-	if (b_player->game_state == 0) {
-		
-			//PlayerSearch();
-		
-		boss_modelRender.Update();
-		/*if (b_player->attack_state_la == true) {
-			
-			if (boss_HP <= 0.0f) {
-				drop_item = NewGO<Drop_item>(1, "drop_item");
-				drop_item->Drop_position = boss_position;
-				drop_item->Drop_position.y += 50.0f;
-				defeat_state = true;
-				DeleteGO(this);
-			}
-		}*/
-	}
+	boss_modelRender.SetScale(15.0f);
 	boss_modelRender.Update();
 }
 
@@ -178,12 +172,25 @@ void Boss::Damage()
 		result = NewGO<Result>(1, "result");
 
 		DeleteGO(this);
-
 	}
+}
+
+void Boss::SetHPScale()
+{
+	float m_scaleX = boss_HP * (1.0f / BOSS_HP_MAX);	//時間が減るほどゲージが減っていく
+
+	max(0, m_scaleX);	//スケールは0以下にならない
+
+	m_bossHPSprite.SetScale({ m_scaleX,1.0f,1.0f });
+	m_bossHPSprite.Update();
 }
 
 void Boss::Render(RenderContext& rc)
 {
 	//モデルの描画。
 	boss_modelRender.Draw(rc);
+
+	m_bossHPSprite.Draw(rc);
+	m_bossHPWakuSprite.Draw(rc);
+	m_bossHPWakuSprite2.Draw(rc);
 }
