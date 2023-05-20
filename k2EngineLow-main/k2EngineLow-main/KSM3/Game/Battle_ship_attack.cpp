@@ -26,7 +26,10 @@ Battle_ship_attack::~Battle_ship_attack()
 		m_player->attack_state_ll = false;
 	if (m_player->p_custom_point[1][2] != 0)
 		m_player->attack_state_rl = false;
+}
 
+void Battle_ship_attack::DestroyWithImpactEffect()
+{
 	//着弾したらエフェクト発生
 	m_tyakudanEffect = NewGO<EffectEmitter>(0);
 	m_tyakudanEffect->Init(enTyakudan);
@@ -39,8 +42,8 @@ Battle_ship_attack::~Battle_ship_attack()
 	m_battleShipGunTyakudanSE->Init(enButtleShipTyakudan);		//初期化
 	m_battleShipGunTyakudanSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
 	m_battleShipGunTyakudanSE->Play(false);
+	DeleteGO(this);	//弾は消える
 }
-
 bool Battle_ship_attack::Start()
 {
 	m_player = FindGO<Player>("player");
@@ -97,7 +100,7 @@ void Battle_ship_attack::Update()
 			m_player->attack_state_ll = false;
 			m_player->attack_state_rl = false;
 
-			DeleteGO(this);
+			DestroyWithImpactEffect();
 		}
 	}
 	else if (m_player->game_state == 2)
@@ -125,7 +128,7 @@ void Battle_ship_attack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			enemy->m_enemyHP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 	//エネミーFarの数だけ繰り返す
@@ -136,7 +139,7 @@ void Battle_ship_attack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			enemyFar->m_enemyHP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 	//エネミーNearの数だけ繰り返す
@@ -147,7 +150,7 @@ void Battle_ship_attack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			enemyNear->m_enemyHP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 
@@ -158,7 +161,7 @@ void Battle_ship_attack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			m_game->boss->boss_HP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 
@@ -171,7 +174,7 @@ void Battle_ship_attack::Damage()
 			if (diff.Length() <= 300.0f)
 			{
 				m_game->boss->b_boss_drill->drill_HP -= m_bulletDamage;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}

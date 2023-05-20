@@ -21,6 +21,10 @@ Enemy_Bullet::Enemy_Bullet()
 
 Enemy_Bullet::~Enemy_Bullet() 
 {
+	
+}
+void Enemy_Bullet::DestroyWithImpactEffect()
+{
 	//親によってエフェクトを変える
 	if (m_enemyMama != nullptr)
 	{
@@ -35,7 +39,7 @@ Enemy_Bullet::~Enemy_Bullet()
 	}
 	else if (m_enemyNearMama != nullptr)
 	{
-		
+
 	}
 	else if (m_enemyFarMama != nullptr)
 	{
@@ -55,8 +59,9 @@ Enemy_Bullet::~Enemy_Bullet()
 			m_battleShipGunTyakutiSE->Play(false);
 		}
 	}
+	// 着弾したら死ぬ
+	DeleteGO(this);
 }
-
 bool Enemy_Bullet::Start()
 {
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
@@ -212,7 +217,7 @@ void Enemy_Bullet::Update()
 		//位置が0以下になると消える(全ての弾共通)
 		if (m_position.y <= 0.0f)
 		{
-			DeleteGO(this);
+			DestroyWithImpactEffect();
 		}
 
 		//親によって関数を変える
@@ -255,7 +260,7 @@ void Enemy_Bullet::Move()
 		float m_dirToEnemy = m_toEnemy.Length();
 		if (m_dirToEnemy >= 1800.0f)
 		{
-			DeleteGO(this);
+			DestroyWithImpactEffect();
 		}
 
 		//バレットの更新
@@ -282,7 +287,7 @@ void Enemy_Bullet::MoveNear()
 		float m_dirToEnemy = m_toEnemy.Length();
 		if (m_dirToEnemy >= 100.0f)
 		{
-			DeleteGO(this);
+			DestroyWithImpactEffect();
 		}
 
 		//バレットの更新
@@ -369,7 +374,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_player->m_playerHP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 4)		//ギガトンキャノン
@@ -378,7 +383,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_player->m_playerHP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 6)	//戦艦砲
@@ -387,7 +392,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_player->m_playerHP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}
@@ -406,7 +411,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffLeftArm.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_leftArm->L_a_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 4)		//ギガトンキャノン
@@ -415,7 +420,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffLeftArm.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_leftArm->L_a_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 6)	//戦艦砲
@@ -424,7 +429,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffLeftArm.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_leftArm->L_a_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}
@@ -443,7 +448,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffLeftLeg.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_leftLeg->L_l_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 4)		//ギガトンキャノン
@@ -452,7 +457,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffLeftLeg.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_leftLeg->L_l_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 6)	//戦艦砲
@@ -461,7 +466,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffLeftLeg.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_leftLeg->L_l_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}
@@ -480,7 +485,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffRightArm.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_rightArm->m_rightArmHP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 4)		//ギガトンキャノン
@@ -489,7 +494,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffRightArm.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_rightArm->m_rightArmHP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 6)	//戦艦砲
@@ -498,7 +503,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffRightArm.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_rightArm->m_rightArmHP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}
@@ -517,7 +522,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffRightLeg.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_rightLeg->R_l_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 4)		//ギガトンキャノン
@@ -526,7 +531,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffRightLeg.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_rightLeg->R_l_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 6)	//戦艦砲
@@ -535,7 +540,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffRightLeg.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_rightLeg->R_l_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}
@@ -554,7 +559,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffShoulder.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_shoulder->S_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 4)		//ギガトンキャノン
@@ -563,7 +568,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffShoulder.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_shoulder->S_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 		else if (weaponNum == 6)	//戦艦砲
@@ -572,7 +577,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			if (diffShoulder.Length() <= 100.0f) //ダメージが入る範囲
 			{
 				m_shoulder->S_w_HP -= 0.5f;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}

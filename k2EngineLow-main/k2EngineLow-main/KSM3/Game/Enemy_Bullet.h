@@ -31,6 +31,7 @@ public:
 	void Render(RenderContext& rc);
 	void FindWeapon();
 	void Damage(int weaponNum);
+	void DestroyWithImpactEffect();
 
 	Customize_UI_ver2* m_customizeUI = nullptr;
 	Core_weapons* m_coreWeapons = nullptr;

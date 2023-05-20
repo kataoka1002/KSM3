@@ -10,6 +10,8 @@ class Battle_ship_attack :public IGameObject
 public:
 	Battle_ship_attack();
 	~Battle_ship_attack();
+	// 着弾エフェクトをエミットする
+	void DestroyWithImpactEffect();
 	bool Start();
 	void Setup();
 	void Update();

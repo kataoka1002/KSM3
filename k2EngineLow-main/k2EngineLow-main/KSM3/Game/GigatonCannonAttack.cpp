@@ -26,6 +26,10 @@ GigatonCannonAttack::~GigatonCannonAttack()
 	if (m_player->p_custom_point[1][2] != 0)
 		m_player->attack_state_rl = false;
 
+}
+
+void GigatonCannonAttack::DestroyWithImpactEffect()
+{
 	//着弾したらエフェクト再生
 	m_tyakudanEffect = NewGO<EffectEmitter>(0);
 	m_tyakudanEffect->Init(enGigatonAttack);
@@ -39,6 +43,7 @@ GigatonCannonAttack::~GigatonCannonAttack()
 	m_cannonSE->SetVolume(2.0f * m_game->SEvol);		//音量調整
 	m_cannonSE->Play(false);
 
+	DeleteGO(this);
 }
 
 bool GigatonCannonAttack::Start()
@@ -89,7 +94,7 @@ void GigatonCannonAttack::Update()
 			m_player->attack_state_ll = false;
 			m_player->attack_state_rl = false;
 
-			DeleteGO(this);
+			DestroyWithImpactEffect();
 		}
 	}
 	else if (m_player->game_state == 2)
@@ -115,7 +120,7 @@ void GigatonCannonAttack::Move()
 		m_player->attack_state_ll = false;
 		m_player->attack_state_rl = false;
 
-		DeleteGO(this);
+		DestroyWithImpactEffect();
 	}
 
 	//バレットの更新
@@ -132,7 +137,7 @@ void GigatonCannonAttack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			enemy->m_enemyHP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 	//エネミーFarの数だけ繰り返す
@@ -143,7 +148,7 @@ void GigatonCannonAttack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			enemyFar->m_enemyHP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 	//エネミーNearの数だけ繰り返す
@@ -154,7 +159,7 @@ void GigatonCannonAttack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			enemyNear->m_enemyHP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 	//弾とボスの距離を測り一定以下なら体力減少
@@ -164,7 +169,7 @@ void GigatonCannonAttack::Damage()
 		if (diff.Length() <= 300.0f)
 		{
 			m_game->boss->boss_HP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
+			DestroyWithImpactEffect();
 		}
 	}
 	//弾とドリルの距離を測り一定以下なら体力減少
@@ -176,7 +181,7 @@ void GigatonCannonAttack::Damage()
 			if (diff.Length() <= 300.0f)
 			{
 				m_game->boss->b_boss_drill->drill_HP -= m_bulletDamage;
-				DeleteGO(this);	//弾は消える
+				DestroyWithImpactEffect();
 			}
 		}
 	}
