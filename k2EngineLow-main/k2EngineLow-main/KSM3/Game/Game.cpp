@@ -273,9 +273,9 @@ Vector3 Game::RandomPosition()
 	Vector3 m_pos;
 
 	//ランダムにポジションを当てはめる
-	m_pos.x = rand() % 2000 - 1000;
+	m_pos.x = rand() % 4800 - 2400;
 	m_pos.y = 0.0f;
-	m_pos.z = rand() % 10000;
+	m_pos.z = rand() % 9000;
 
 	return m_pos;
 }
