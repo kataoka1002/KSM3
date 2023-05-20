@@ -56,6 +56,7 @@
     <ClCompile Include="SoundManage.cpp" />
     <ClCompile Include="PlayerUI.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="Boss_Movie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -108,5 +109,6 @@
     <ClInclude Include="Result_Macro.h" />
     <ClInclude Include="PlayerUI.h" />
     <ClInclude Include="Wave.h" />
+    <ClInclude Include="Boss_Movie.h" />
   </ItemGroup>
 </Project>
