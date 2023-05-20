@@ -241,6 +241,11 @@ void Enemy_Bullet::Update()
 	{
 		DeleteGO(this);	//リザルト画面に行くと消す
 	}
+
+	if (m_player->game_end_state == 1)
+	{
+		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
+	}
 }
 
 void Enemy_Bullet::Move()

@@ -4,6 +4,7 @@ class Left_arm_weapons;
 class Customize_UI_ver2;
 class Result;
 class Game;
+class GameCamera;
 
 class Player:public IGameObject
 {
@@ -27,6 +28,7 @@ public:
 	SoundSource* m_runSE = nullptr;					//足音SE
 	SoundSource* m_walkSE = nullptr;				//足音SE
 	SoundSource* m_kettei = nullptr;
+	GameCamera* m_gameCamera = nullptr;
 
 	ModelRender player_modelRender;					//モデルレンダー
 	SpriteRender pouse_spriteRender;				//pause画面用のスプライトレンダー

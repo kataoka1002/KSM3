@@ -31,7 +31,7 @@ Enemy::~Enemy()
 	//エネミーが生きているかをプレーヤーに教える
 	//m_player->enemy_survival = false;	
 
-	m_player->killEnemy++;	//殺した数を増やす
+	
 
 	DeleteGO(m_machineGunSE);
 	DeleteGO(m_asiotoSE);
@@ -158,7 +158,7 @@ void Enemy::Update()
 		m_enemyWeaponModel.Update();
 
 	}
-	else if (m_player->game_state == 3)
+	else if (m_player->game_state == 1 || m_player->game_state == 3)
 	{
 		//足音停止
 		m_asiotoSE->Stop();
@@ -440,6 +440,7 @@ void Enemy::ItemDrop()
 
 		m_defeatState = true;
 
+		m_player->killEnemy++;	//殺した数を増やす
 		DeleteGO(this);
 		//リストから消す
 		m_game->RemoveEnemyFromList(this);
