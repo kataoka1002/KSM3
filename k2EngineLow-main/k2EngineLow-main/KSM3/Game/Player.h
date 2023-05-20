@@ -39,7 +39,7 @@ public:
 	Vector3 playerForward = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
 	Quaternion player_rotation;						//クォータニオン
 
-	int game_state = 4;								//ゲームがどの状態かの管理(0メインゲーム,1ポーズ画面,2リザルト,3カスタマイズ,4最初のシーン,5ボス戦)
+	int game_state = 4;								//ゲームがどの状態かの管理(0メインゲーム,1ポーズ画面,2リザルト,3カスタマイズ,4最初のシーン)
 	int game_end_state = 0;							//ゲームの終了判定
 	int bossState = 0;								//ボス戦かどうか
 	int effectCount = 0;							//エフェクト関係

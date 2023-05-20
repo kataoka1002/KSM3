@@ -28,8 +28,17 @@ bool SoundManage::Start()
 
 void SoundManage::Update()
 {
+	//ボス戦のBGM再生
+	if (m_player->bossState == 1 && m_bossBGM->IsPlaying() != true)
+	{
+		m_bossBGM->Play(true);
+		m_gameBGM->Stop();	//ゲームBGMは止める
+
+		return;
+	}
+
 	//ゲーム中のBGM再生
-	if (m_gameBGM->IsPlaying() != true)
+	if (m_gameBGM->IsPlaying() != true && m_player->bossState != 1) //ボス戦じゃないなら
 	{
 		if (m_player->game_state == 0 || m_player->game_state == 1)
 		{
@@ -44,8 +53,6 @@ void SoundManage::Update()
 		m_customizeBGM->Play(true);
 		m_gameBGM->Stop();	//ゲームBGMは止める
 	}
-
-	//ボス戦のBGM再生
 }
 
 void SoundManage::SetUp()
@@ -57,9 +64,9 @@ void SoundManage::SetUp()
 
 	//初期化
 	m_gameBGM->Init(enGameBGM);
-	m_gameBGM->SetVolume(0.5f * m_game->BGMvol);	//音量調整
+	m_gameBGM->SetVolume(0.5f * m_game->BGMvol);		//音量調整
 	m_customizeBGM->Init(enCustomizeBGM);
 	m_customizeBGM->SetVolume(0.5f * m_game->BGMvol);	//音量調整
 	m_bossBGM->Init(enBossBGM);
-	m_bossBGM->SetVolume(0.5f * m_game->BGMvol);	//音量調整
+	m_bossBGM->SetVolume(1.0f * m_game->BGMvol);		//音量調整
 }
