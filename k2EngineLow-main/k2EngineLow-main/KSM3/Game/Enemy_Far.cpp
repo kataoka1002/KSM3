@@ -15,11 +15,11 @@ Enemy_Far::Enemy_Far()
 	//足音の生成(流し続ける音源なのでインスタンスを保持させる)
 	m_asiotoSE = NewGO<SoundSource>(0);
 
-	m_pointList.push_back({ Vector3(0.0f,0.0f,0.0f),1 });		//一番目のポイント
-	m_pointList.push_back({ Vector3(0.0f,0.0f,100.0f),2 });		//二番目のポイント
-	m_pointList.push_back({ Vector3(100.0f,0.0f,200.0f),3 });	//三番目のポイント
-	m_pointList.push_back({ Vector3(-100.0f,0.0f,200.0f),4 });	//四番目のポイント
-	m_point = &m_pointList[0];									//一番目のポイントを入れる
+	m_pointList.push_back({ RandPos(),1 });		//一番目のポイント
+	m_pointList.push_back({ RandPos(),2 });		//二番目のポイント
+	m_pointList.push_back({ RandPos(),3 });		//三番目のポイント
+	m_pointList.push_back({ RandPos(),4 });		//四番目のポイント
+	m_point = &m_pointList[0];					//一番目のポイントを入れる
 }
 
 Enemy_Far::~Enemy_Far()
@@ -500,6 +500,17 @@ void Enemy_Far::SE()
 
 }
 
+Vector3 Enemy_Far::RandPos()
+{
+	Vector3 m_pos;
+
+	//ランダムにポジションを当てはめる
+	m_pos.x = rand() % 4800 - 2400;
+	m_pos.y = 0.0f;
+	m_pos.z = rand() % 9000;
+
+	return m_pos;
+}
 
 void Enemy_Far::Render(RenderContext& rc)
 {

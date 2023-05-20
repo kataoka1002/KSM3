@@ -35,7 +35,7 @@ public:
 	void Effect();					//エフェクト
 	void SE();						//効果音
 	void EnemyDead();
-
+	Vector3 RandPos();
 
 	//パス移動に必要な奴ら
 	std::vector<Point> m_pointList;
