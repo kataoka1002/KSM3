@@ -91,12 +91,13 @@ void Player::Update()
 	}
 
 	//HPが0以下になるなると死亡
-	if (m_playerHP <= 0)
+	if (m_playerHP <= 0 && m_playerDead == false)
 	{
 		//死亡の演出
 
 		//リザルトへ
 		m_result = NewGO<Result>(1, "result");
+		m_playerDead = true;
 	}
 }
 

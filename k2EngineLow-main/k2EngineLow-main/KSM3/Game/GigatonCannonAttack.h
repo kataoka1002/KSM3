@@ -14,6 +14,7 @@ public:
 	void Update();
 	void Move();
 	void Damage();
+	void DestroyWithImpactEffect();
 	void Render(RenderContext& rc);
 
 	Player* m_player = nullptr;

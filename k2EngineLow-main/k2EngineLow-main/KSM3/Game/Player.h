@@ -57,5 +57,6 @@ public:
 	bool m_cameraMove = false;						//カメラ切り替え中かどうか
 	bool enemy_survival = true;
 	bool boss_survival = true;
+	bool m_playerDead = false;						//プレイヤーが死んだかどうか
 };
 
