@@ -29,26 +29,12 @@ Boss::Boss()
 
 Boss::~Boss() 
 {
-	Game* boss_game = FindGO<Game>("game");
-	result->minute = (int)boss_time / 60;
-	result->sec = (int)boss_time % 60;
 	DeleteGO(boss_game);
 	DeleteGO(b_boss_riser);//ライザーの武器削除。
 	DeleteGO(b_boss_shovel);//ショベルの武器削除。
 	DeleteGO(b_boss_drill);//ドリルの武器削除。
 	DeleteGO(b_boss_cannon);//キャノンの武器削除。
 	DeleteGO(b_boss_turbo);//ターボの武器削除。
-	b_player->boss_survival = false;//ボスが生きているかをプレーヤーに教える
-	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
-	//ココもいらない?
-	if (defeat_state == true) 
-	{
-		drop_item->drop_kinds = b_boss_riser->set_weapons;
-		drop_item->drop_kinds = b_boss_shovel->set_weapons;
-		drop_item->drop_kinds = b_boss_drill->set_weapons;
-		drop_item->drop_kinds = b_boss_cannon->set_weapons;
-		drop_item->drop_kinds = b_boss_turbo->set_weapons;
-	}
 }
 
 bool Boss::Start()
@@ -170,6 +156,22 @@ void Boss::Damage()
 	{
 		b_player->game_state = 2;
 		result = NewGO<Result>(1, "result");
+
+		boss_game = FindGO<Game>("game");
+		result->minute = (int)boss_time / 60;
+		result->sec = (int)boss_time % 60;
+		b_player->boss_survival = false;	//ボスが生きているかをプレーヤーに教える
+		//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
+		//ココもいらない?
+		if (defeat_state == true)
+		{
+			drop_item->drop_kinds = b_boss_riser->set_weapons;
+			drop_item->drop_kinds = b_boss_shovel->set_weapons;
+			drop_item->drop_kinds = b_boss_drill->set_weapons;
+			drop_item->drop_kinds = b_boss_cannon->set_weapons;
+			drop_item->drop_kinds = b_boss_turbo->set_weapons;
+		}
+
 
 		DeleteGO(this);
 	}
