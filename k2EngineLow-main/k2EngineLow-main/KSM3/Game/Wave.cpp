@@ -2,6 +2,7 @@
 #include "Wave.h"
 #include "Game.h"
 #include "Player.h"
+#include "Boss.h"
 
 Wave::Wave()
 {
@@ -24,6 +25,11 @@ Wave::Wave()
 	m_waveGageWaku.SetPosition({ -755.0f,420.0f,0.0f });
 	m_waveGageWaku.SetPivot({ 0.0f,0.5f });
 	m_waveGageWaku.Update();
+
+	//Bossへの遷移のLoading画面の読み込み
+	Loading_Render.Init("Assets/sprite/NOW_LOADING.DDS", 1632.0f, 918.0f);
+	Loading_Render.SetMulColor(Loading_color);
+	Loading_Render.Update();
 }
 
 Wave::~Wave()
@@ -35,6 +41,7 @@ bool Wave::Start()
 {
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
+	
 
 	m_timer = TIME_LIMIT;			//タイムリミットを教えてやる
 	m_spritePos = SPRITE_POSITION;	//スプライトの場所の初期
@@ -56,6 +63,29 @@ void Wave::Update()
 		//演出を出す
 		SpritePlay();
 		return;
+	}
+
+	//ボス戦に入る瞬間
+	if (m_player->player_position.z >= 9550.0f && m_boss == nullptr /*&& m_wave->m_goBoss == true*/)
+	{
+		if (Loading_count >= 0 && Loading_count < 10) {
+			Loading_color.w += 0.1f;
+			Loading_Render.SetMulColor(Loading_color);
+			Loading_Render.Update();
+		}	
+		Loading_count++;
+	}
+	//ボス戦の最中
+	if (m_boss != nullptr)
+	{
+		if (Loading_count >= 11 && Loading_count < 21)
+		{
+			Loading_color.w -= 0.1f;
+			Loading_Render.SetMulColor(Loading_color);
+			Loading_Render.Update();
+		}
+
+		Loading_count++;
 	}
 
 	//ゲーム中のみ時間経過
@@ -218,4 +248,5 @@ void Wave::Render(RenderContext& rc)
 			}
 		}
 	}
+	Loading_Render.Draw(rc);
 }
