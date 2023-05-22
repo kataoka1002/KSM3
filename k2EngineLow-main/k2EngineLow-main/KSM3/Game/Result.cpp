@@ -18,6 +18,9 @@
 #include <map>
 #include <tuple>
 #include "Result_Macro.h"
+#include "Array"
+
+using namespace std;
 
 
 Result::Result() 
