@@ -53,8 +53,8 @@ void GameCamera::Update()
 {
 	Vector3 toCameraPosOld = m_toCameraPos;
 
-	//カスタマイズ画面以外ならパッドの入力を使ってカメラを回す。
-	if (CameraState != 3 && CameraState != 4)
+	//カスタマイズ画面以外でプレイヤーが死んでないならパッドの入力を使ってカメラを回す。
+	if (CameraState != 3 && CameraState != 4 && m_player->m_playerDead != true)
 	{
 		x = g_pad[0]->GetRStickXF();
 		y = g_pad[0]->GetRStickYF();

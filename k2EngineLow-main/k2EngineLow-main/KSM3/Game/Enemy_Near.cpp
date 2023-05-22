@@ -93,6 +93,10 @@ void Enemy_Near::Update()
 	//砂ぼこりの間隔カウント
 	m_sunaHassei++;
 
+	//プレイヤーが死亡したと起用
+	m_asiotoSE->SetVolume(0.8f * m_game->SEvol);	//音量調整
+	m_dashSE->SetVolume(0.8f * m_game->SEvol);		//音量調整
+
 	if (m_player->game_state == 0)
 	{
 		//エネミーからプレイヤーへのベクトル

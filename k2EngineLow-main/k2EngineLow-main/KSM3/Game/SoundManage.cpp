@@ -28,7 +28,7 @@ bool SoundManage::Start()
 
 void SoundManage::Update()
 {
-	if (m_player->game_state == 1)
+	if (m_player->game_state == 1 || m_player->m_playerDead == true)
 	{
 		m_gameBGM->Stop();
 		m_bossBGM->Stop();

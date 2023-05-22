@@ -19,6 +19,7 @@ public:
 	void pause();									//ポーズ画面
 	void MakeEfe();									//エフェクト再生
 	void MachineGunSE();
+	void PlayerDead();
 
 	Result* m_result = nullptr;
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
@@ -28,17 +29,21 @@ public:
 	SoundSource* m_runSE = nullptr;					//足音SE
 	SoundSource* m_walkSE = nullptr;				//足音SE
 	SoundSource* m_kettei = nullptr;
+	SoundSource* m_deadSE = nullptr;
 	GameCamera* m_gameCamera = nullptr;
+	EffectEmitter* sunabokoriEffect = nullptr;
+	EffectEmitter* m_deadEffect = nullptr;
 
 	ModelRender player_modelRender;					//モデルレンダー
 	SpriteRender pouse_spriteRender;				//pause画面用のスプライトレンダー
-	EffectEmitter* sunabokoriEffect = nullptr;
+	SpriteRender m_playerDeadSprite;				//プレイヤーが死んだときのスプライトレンダー
 	CharacterController characterController;		//キャラクターコントローラー
 	Vector3 player_position = {0.0f,0.0f,-1000.0f};						//座標
 	Vector3 player_moveSpeed;						//移動速度
 	Vector3 playerForward = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
 	Quaternion player_rotation;						//クォータニオン
 
+	int m_deadCount = 0;
 	int game_state = 4;								//ゲームがどの状態かの管理(0メインゲーム,1ポーズ画面,2リザルト,3カスタマイズ,4最初のシーン)
 	int game_end_state = 0;							//ゲームの終了判定
 	int bossState = 0;								//ボス戦かどうか
@@ -51,6 +56,7 @@ public:
 	float move_s;
 	float m_playerHP = 500.0f;						//プレイヤーのHP
 	float m_playerHPMax = 500.0f;					//プレイヤーのHPの最大値
+	float m_deadSpriteColw = 0.0f;					//プレイヤー死亡時のスプライトの透明度
 	bool attack_state_la = false;
 	bool attack_state_ll = false;
 	bool attack_state_rl = false;
@@ -60,5 +66,6 @@ public:
 	bool enemy_survival = true;
 	bool boss_survival = true;
 	bool m_playerDead = false;						//プレイヤーが死んだかどうか
+	bool m_playDeadSE = false;						//死亡音を鳴らしたかどうか
 };
 

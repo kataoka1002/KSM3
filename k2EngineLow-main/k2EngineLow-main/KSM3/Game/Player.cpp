@@ -13,6 +13,10 @@ Player::Player()
 	//プレイヤーのモデルとポーズ画面のスプライトの初期化
 	player_modelRender.Init("Assets/modelData/player.tkm");
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
+	m_playerDeadSprite.Init("Assets/sprite/player/YOU_LOSE.DDS", 1280.0f, 720.0f);
+	m_playerDeadSprite.SetScale({ 1.4f,1.4f,1.0f });
+	m_playerDeadSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_deadSpriteColw });
+	m_playerDeadSprite.Update();
 	//キャラコンの初期化
 	characterController.Init(70.0f, 150.0f, player_position);
 }
@@ -47,6 +51,42 @@ bool Player::Start()
 
 void Player::Update() 
 {
+	//プレイヤーが死んでいてリザルト中でないときの処理
+	if (m_playerDead == true && game_state != 2)
+	{
+		m_deadCount++;
+		if (m_deadCount <= 60)
+		{
+			//だんだん透明度を上げていく
+			m_deadSpriteColw += 1.0f / 60.0f;
+		}
+		else if (m_deadCount > 60 && m_deadCount<=65 && m_playDeadSE == false)
+		{
+			//死亡音再生
+			m_deadSE = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+			m_deadSE->Init(enPlayerDead);						//初期化
+			m_deadSE->SetVolume(2.0f * m_game->BGMvol);			//音量調整
+			m_deadSE->Play(false);
+			m_playDeadSE = true;
+		}
+		else if (m_deadCount >= 300)
+		{
+			//リザルトへ
+			m_result = NewGO<Result>(1, "result");
+			game_state = 2;			//リザルトステートへ
+			//色付きに戻す
+			g_renderingEngine->SetGrayScale(false);
+			//セーブしていた効果音の大きさに戻してやる(この後にGameクラスをDeleteするので必要ないかも)
+			//m_game->SEvol = m_game->SaveSEvol;
+			//YOU LOSEの透明度を0に戻す
+			m_deadSpriteColw = 0.0f;
+			DeleteGO(m_game);
+		}
+		m_playerDeadSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_deadSpriteColw });
+		m_playerDeadSprite.Update();
+		return;
+	}
+
 	//登場シーンの間の処理
 	if (game_state == 4)
 	{
@@ -96,13 +136,11 @@ void Player::Update()
 	if (m_playerHP <= 0 && m_playerDead == false)
 	{
 		//死亡の演出
-
-		//リザルトへ
-		m_result = NewGO<Result>(1, "result");
-		game_state = 2;			//リザルトステートへ
-		m_game->DeleteEnemy();	//エネミーを全員消す
-		DeleteGO(m_game);
+		g_renderingEngine->SetGrayScale(true);	//画面全体を灰色にする
 		m_playerDead = true;
+
+		//効果音を消す
+		m_game->SEvol = 0.0f;
 	}
 }
 
@@ -285,4 +323,5 @@ void Player::Render(RenderContext& rc)
 	{
 		pouse_spriteRender.Draw(rc);
 	}
+	m_playerDeadSprite.Draw(rc);
 }

@@ -63,6 +63,9 @@ cbuffer directionLightCb : register(b1)
 
     //ライトビュースクリーン用
     float4x4 mLVP;
+    
+    //グレースケール設定用
+    bool setGrayScale;
 }
 
 
@@ -262,6 +265,14 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     
 	//最終出力カラーに光を乗算する
     albedoColor.xyz *= lig;
+    
+     //グレースケールを設定する
+    if (setGrayScale == true)
+    {
+        float Y = 0.299f * albedoColor.r + 0.587f * albedoColor.g + 0.114f * albedoColor.b;
+        
+        return Y;
+    }
 
     return albedoColor;
 }

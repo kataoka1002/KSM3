@@ -45,11 +45,12 @@ namespace nsK2EngineLow {
 		float pad1;
 		Vector3 ambientLight;			//環境光
 		float pad2;
-		PointLight pointLight[10];			//ポイントライトの配列
-		SpotLight spotLight[10];			//スポットライトの配列
+		PointLight pointLight[10];		//ポイントライトの配列
+		SpotLight spotLight[10];		//スポットライトの配列
 		HemLight hemLight;				//半球ライトの配列
 		float pad3;
 		Matrix m_LVP;					//ライトビュースクリーン配列
+		bool setGryaScale;				//グレースケールをセットするかどうか
 	};
 
 
@@ -101,6 +102,11 @@ namespace nsK2EngineLow {
 		void SetLVP(Matrix mat)
 		{
 			m_light.m_LVP = mat;
+		}
+
+		void SetGryaScale(bool setGrayScale)
+		{
+			m_light.setGryaScale = setGrayScale;
 		}
 
 		Light& GetLight()

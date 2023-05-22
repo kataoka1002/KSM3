@@ -54,7 +54,8 @@ enum SoundName {
 	enCancelSE,				//キャンセル音
 	enSentakuIdouSE,		//カーソル移動音
 	enSoutyakuSE,			//装着音
-	enByuSE					//ドロップアイテム取得時の音
+	enByuSE,				//ドロップアイテム取得時の音
+	enPlayerDead			//プレイヤー死亡時の音
 };
 
 class Game :public IGameObject
@@ -150,6 +151,7 @@ public:
 
 	float BGMvol = 1.0f;	//こいつらを音量にかけてやることで調整する
 	float SEvol = 1.0f;
+	float SaveSEvol = 0.0f;
 
 private:
 	//ModelRender m_modelRender;		//キャラ
