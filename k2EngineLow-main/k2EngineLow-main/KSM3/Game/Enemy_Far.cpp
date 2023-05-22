@@ -87,6 +87,9 @@ void Enemy_Far::SetUp()
 
 void Enemy_Far::Update()
 {
+	//プレイヤーが死亡したと起用
+	m_asiotoSE->SetVolume(0.8f * m_game->SEvol);	//音量調整
+
 	if (m_player->game_state == 0)
 	{
 		if (m_defeatState == true)

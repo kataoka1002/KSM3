@@ -100,15 +100,24 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enSentakuIdouSE, "Assets/audio/sentakuidouon.wav");
 	g_soundEngine->ResistWaveFileBank(enSoutyakuSE, "Assets/audio/soutyakuon.wav");
 	g_soundEngine->ResistWaveFileBank(enByuSE, "Assets/audio/byu.wav");
+	g_soundEngine->ResistWaveFileBank(enPlayerDead, "Assets/audio/player/playerDead.wav");
 
 	//m_fade = FindGO<Fade>("fade");
 	//m_fade->StartFadeIn();
+
+	//効果音の大きさをセーブする
+	SaveSEvol = SEvol;
 		
 	return true;
 }
 
 void Game::Update()
 {
+	if (g_pad[0]->IsTrigger(enButtonY))
+	{
+		g_renderingEngine->SetGrayScale(true);
+	}
+
 	//最初のシーン中
 	if (player->game_state == 4)
 	{

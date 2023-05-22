@@ -100,6 +100,10 @@ void Enemy::SetUp()
 
 void Enemy::Update()
 {
+	//プレイヤーが死亡した時用
+	m_asiotoSE->SetVolume(0.8f * m_game->SEvol);	//音量調整
+	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
+
 	if (m_player->game_state == 0)
 	{
 		//Bボタンが押されたら。

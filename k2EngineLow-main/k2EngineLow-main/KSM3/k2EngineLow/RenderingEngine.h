@@ -81,6 +81,12 @@ namespace nsK2EngineLow {
 			m_sceneLight.SetLVP(mat);
 		}
 
+		//グレースケールの設定(trueでグレーになる)
+		void SetGrayScale(bool setGrayScale)
+		{
+			m_sceneLight.SetGryaScale(setGrayScale);
+		}
+
 		//ZPrepassで作成された深度テクスチャを取得
 		Texture& GetZPrepassDepthTexture()
 		{

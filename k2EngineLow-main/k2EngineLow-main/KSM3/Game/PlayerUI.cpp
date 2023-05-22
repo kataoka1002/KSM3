@@ -138,7 +138,7 @@ void PlayerUI::WeaponUISetUp(int num)
 
 void PlayerUI::Render(RenderContext& rc)
 {
-	if (m_player->game_state == 0)
+	if (m_player->game_state == 0 && m_player->m_playerDead == false)
 	{
 		m_HPBackSprite.Draw(rc);
 		m_HPSprite.Draw(rc);
