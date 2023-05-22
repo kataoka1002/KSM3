@@ -10,6 +10,7 @@ class Boss_Drill;
 class Boss_Cannon;
 class Boss_Turbo;
 class Result;
+class Game;
 
 class Boss :public IGameObject
 {
@@ -34,6 +35,7 @@ public:
 	Boss_Cannon* b_boss_cannon;
 	Boss_Turbo* b_boss_turbo;
 	Result* result;
+	Game* boss_game;
 
 	//std::vector<Boss_Riser*>m_riserObject;
 
