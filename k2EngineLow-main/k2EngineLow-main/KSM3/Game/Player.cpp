@@ -7,6 +7,7 @@
 #include "Result.h"
 #include "GameCamera.h"
 #include "Title.h"
+#include "Boss.h"
 
 Player::Player() 
 {
@@ -264,6 +265,13 @@ void Player::pause()
 		Title* title = NewGO<Title>(0, "title");
 		DeleteGO(m_gameCamera);
 		DeleteGO(this);
+
+		//もしボス戦ならボスを消す
+		if (bossState == 1)
+		{
+			Boss* m_boss = FindGO<Boss>("boss");
+			DeleteGO(m_boss);
+		}
 	}
 }
 
