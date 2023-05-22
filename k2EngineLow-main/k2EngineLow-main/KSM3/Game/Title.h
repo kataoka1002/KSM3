@@ -1,5 +1,6 @@
 #pragma once
 class Lighting;
+class SoundManage;
 //class Fade;
 
 class Title:public IGameObject
@@ -14,6 +15,7 @@ public:
 	void Title_Move();
 	void Menu();
 	void Render(RenderContext& rc);
+	void PlaySE(int track_number, float vol);
 
 	Lighting* lighting = nullptr;
 

@@ -55,7 +55,11 @@ enum SoundName {
 	enSentakuIdouSE,		//カーソル移動音
 	enSoutyakuSE,			//装着音
 	enByuSE,				//ドロップアイテム取得時の音
-	enPlayerDead			//プレイヤー死亡時の音
+	enPlayerDead,			//プレイヤー死亡時の音
+	enKetteiSE_Title,		//決定音(Title用のトラックのため使用しないで)
+	enCancelSE_Title,		//キャンセル音(Title用のトラックのため使用しないで)
+	enSentakuIdouSE_Title,	//カーソル移動音(Title用のトラックのため使用しないで)
+	enStartSE				//Titleのスタートの音(Title用のトラックのため使用しないで)
 };
 
 class Game :public IGameObject

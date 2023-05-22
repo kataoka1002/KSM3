@@ -3,6 +3,7 @@
 #include "Game.h"
 //#include "Fade.h"
 #include "Lighting.h"
+#include "SoundManage.h"
 
 Title::Title()
 {
@@ -14,13 +15,24 @@ Title::Title()
 	SetUp();
 	lighting = NewGO<Lighting>(1, "lighting");
 	title_Render.SetScale(title_scale);
+
+	g_soundEngine->ResistWaveFileBank(17, "Assets/audio/ketteion.wav");
+	g_soundEngine->ResistWaveFileBank(18, "Assets/audio/cancelon.wav");
+	g_soundEngine->ResistWaveFileBank(19, "Assets/audio/sentakuidouon.wav");
+	g_soundEngine->ResistWaveFileBank(20, "Assets/audio/Title_PRESS.wav");
 }
 
 Title::~Title()
 {
 	DeleteGO(lighting);
 }
-
+void Title::PlaySE(int track_number, float vol)
+{
+	SoundSource* m_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_SE->Init(track_number);									//初期化
+	m_SE->SetVolume(vol * BGM_volume);				//音量調整
+	m_SE->Play(false);
+}
 bool Title::Start() {
 	return true;
 }
@@ -223,7 +235,7 @@ void Title::Title_Move() {
 	Press_Render.SetMulColor(Press_Render_coler);
 
 	if (g_pad[0]->IsTrigger(enButtonA)) {
-		
+		PlaySE(20, 2.0f);
 		title_state = 1;
 	}
 	if (title_state == 1) {
@@ -272,21 +284,25 @@ void Title::Menu() {
 
 		if (select_point >= 0 &&select_point<=1&& g_pad[0]->IsTrigger(enButtonDown)) {
 			select_point++;
+			PlaySE(19, 2.0f);
 		}
 		if (select_point <= 2 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+			PlaySE(19, 2.0f);
 			select_point--;
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1&&select_point==0) {
 			title_state = 4;
+			PlaySE(17, 2.0f);
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point== 1) {
-			
+			PlaySE(17, 2.0f);
 			select_point = 0;
 			fast_count = 0;
 			title_state = 5;
 			
 		}
 		if (g_pad[0]->IsTrigger(enButtonB)) {
+			PlaySE(18, 2.0f);
 			title_state = 0;
 			whiteout_count = 0;
 			select_point = 0;
@@ -327,22 +343,27 @@ void Title::Menu() {
 		}
 
 		if (select_point >= 0 && select_point <= 0 && g_pad[0]->IsTrigger(enButtonDown)) {
+			PlaySE(19, 2.0f);
 			select_point++;
 		}
 		if (select_point <= 1 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+			PlaySE(19, 2.0f);
 			select_point--;
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1&& select_point==0) {
+			PlaySE(17, 2.0f);
 			title_state = 6;
 			select_point = 0;
 			fast_count = 0;
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 1) {
+			PlaySE(17, 2.0f);
 			title_state = 7;
 			select_point = 0;
 			fast_count = 0;
 		}
 		if (g_pad[0]->IsTrigger(enButtonB)) {
+			PlaySE(18, 2.0f);
 			title_state = 3;
 			select_point = 0;
 			fast_count = 0;
@@ -368,18 +389,22 @@ void Title::Menu() {
 		}
 
 		if (select_point >= 0 && select_point <= 0 && g_pad[0]->IsTrigger(enButtonDown) && sound_set_state == 0) {
+			PlaySE(19, 2.0f);
 			select_point++;
 		}
 		if (select_point <= 1 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp) && sound_set_state == 0) {
+			PlaySE(19, 2.0f);
 			select_point--;
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 0&&sound_set_state==0) {
+			PlaySE(17, 2.0f);
 			sound_set_state = 1;
 			SOUND_color.w = 0.5f;
 			Sound_Render2.SetMulColor(SOUND_color);
 			SE_Sound_ber.SetMulColor(SOUND_color);
 		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 1 && sound_set_state == 0) {
+			PlaySE(17, 2.0f);
 			sound_set_state = 2;
 			SOUND_color.w = 0.5f;
 			Sound_Render.SetMulColor(SOUND_color);
@@ -387,52 +412,63 @@ void Title::Menu() {
 		}
 
 		if (g_pad[0]->IsTrigger(enButtonB) && sound_set_state == 0) {
+			PlaySE(18, 2.0f);
 			title_state = 5;
 			select_point = 0;
 			fast_count = 0;
 		}
 
 		if (g_pad[0]->IsPress(enButtonRight) && sound_set_state == 1) {
+			
 			BGM_volume += 0.01;
 			BGM_ber_scale.x += 0.0085;
 			if (BGM_volume >= 1.0f) {
 				BGM_volume = 1.0f;
 				BGM_ber_scale.x = 0.85f;
 			}
+			PlaySE(19, 2.0f);
 		}
 		else if (g_pad[0]->IsPress(enButtonLeft) && sound_set_state == 1) {
+			
 			BGM_volume -= 0.01;
 			BGM_ber_scale.x -= 0.0085;
 			if (BGM_volume <= 0.0f) {
 				BGM_volume = 0.0f;
 				BGM_ber_scale.x = 0.0f;
 			}
+			PlaySE(19, 2.0f);
 		}
 
 		if (g_pad[0]->IsPress(enButtonRight) && sound_set_state == 2) {
+			
 			SE_volume += 0.01;
 			SE_ber_scale.x += 0.0085;
 			if (SE_volume >= 1.0f) {
 				SE_volume = 1.0f;
 				SE_ber_scale.x = 0.85f;
 			}
+			PlaySE(19, 2.0f);
 		}
 		else if (g_pad[0]->IsPress(enButtonLeft) && sound_set_state == 2) {
+			
 			SE_volume -= 0.01;
 			SE_ber_scale.x -= 0.0085;
 			if (SE_volume <= 0.0f) {
 				SE_volume = 0.0f;
 				SE_ber_scale.x = 0.0f;
 			}
+			PlaySE(19, 2.0f);
 		}
 
 		if (g_pad[0]->IsTrigger(enButtonB) && fast_count != 1 && select_point == 0 && sound_set_state == 1) {
+			PlaySE(18, 2.0f);
 			sound_set_state = 0;
 			SOUND_color.w = 1.0f;
 			Sound_Render2.SetMulColor(SOUND_color);
 			SE_Sound_ber.SetMulColor(SOUND_color);
 		}
 		if (g_pad[0]->IsTrigger(enButtonB) && fast_count != 1 && select_point == 1 && sound_set_state == 2) {
+			PlaySE(18, 2.0f);
 			sound_set_state = 0;
 			SOUND_color.w = 1.0f;
 			Sound_Render.SetMulColor(SOUND_color);
@@ -465,13 +501,16 @@ void Title::Menu() {
 		}
 
 		if (select_point >= 0 && select_point <= 6 && g_pad[0]->IsTrigger(enButtonDown)) {
+			PlaySE(19, 2.0f);
 			select_point++;
 		}
 		if (select_point <= 7 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+			PlaySE(19, 2.0f);
 			select_point--;
 		}
 		
 		if (g_pad[0]->IsTrigger(enButtonB)) {
+			PlaySE(18, 2.0f);
 			title_state = 5;
 			select_point = 0;
 			fast_count = 0;
