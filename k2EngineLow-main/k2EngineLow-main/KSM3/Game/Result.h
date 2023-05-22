@@ -78,13 +78,6 @@ public:
 
 
 	SpriteRender result_SpriteRender;		//リザルトのスプライトレンダー
-	SpriteRender Mozi_render[6];			//文字のスプライトレンダー
-	SpriteRender Weapon_set_render[6];		//武器をセットした数
-	SpriteRender Boss_time_render;			//ボスの倒した時間
-	SpriteRender Enemy_count_render[31];	//敵を倒した数
-	SpriteRender rank_render[5];			//ランク
-
-	FontRender font_render[5];				//フォント
 	FontRender Boss_time_font;				//ボス戦の経過時間
 	FontRender Score_font;					//トータルスコア
 	FontRender Time_font;					//時間
@@ -109,8 +102,8 @@ public:
 	Vector4 Time_color = { 1.0f,1.0f,1.0f,0.0f };
 	Vector3 Time_position = { -25.0f,0.0f,0.0f };
 
-
-	SpriteRender Time_Num[4][10];
+	//SpriteRender Time_Num[4][10];
+	array<array <SpriteRender, 10>, 4>Time_Num;
 	SpriteRender Time_colon;
 	Vector3 Time_0_position = { -162.0f,-335.0f,0.0f };//分10の位
 	Vector3 Time_1_position = { -75.0f,-335.0f,0.0f };//分1の位
@@ -120,13 +113,15 @@ public:
 
 	int minute = 0;
 	int sec = 0;
-	int time_set[4];
-	float a[4][2];
+	array<int, 4 >time_set;
+	array<array < float, 2>,4>a;
 
 	SpriteRender Score_Render;
 	Vector4 Score_color = { 1.0f,1.0f,1.0f,0.0f };
 	Vector3 Score_position = { -25.0f,0.0f,0.0f };
-	SpriteRender Score_Num[5][10];
+
+	//SpriteRender Score_Num[5][10];
+	array<array <SpriteRender, 10>, 5>Score_Num;
 	SpriteRender Score_comma;
 	Vector3 Score_0_position = { -200.0f,-335.0f,0.0f };//10000の位
 	Vector3 Score_1_position = { -105.0f,-335.0f,0.0f };//1000の位
@@ -137,13 +132,15 @@ public:
 	int SCORE=0;
 	int Total = 0;
 	int MAX_SCORE = 0;
-	int score_set[5];
-	float b[5][2];
+	array<int, 5 >score_set;
+	array<array < float, 2>, 5>b;
 
 	SpriteRender Rank_sheet;
 	Vector4 Rank_Sheet_color = { 1.0f,1.0f,1.0f,0.0f };
 	Vector3 Rank_position = { 25.0f,0.0f,0.0f };
-	SpriteRender Rank_Render[4];
+
+	//SpriteRender Rank_Render[4];
+	array <SpriteRender, 4>Rank_Render;
 	Vector4 Rank_color = { 1.0f,1.0f,1.0f,0.0f };
 	Vector3 Rank_Scale = { 2.0f,2.0f,2.0f };
 	int Rank_set = 0;
