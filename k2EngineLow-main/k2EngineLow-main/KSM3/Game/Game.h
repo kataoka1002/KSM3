@@ -153,10 +153,7 @@ public:
 	std::vector<Drop_item*> m_dropItemObject;
 	Vector3 dv;
 
-	SpriteRender Loading_Render;
-	Vector4 Loading_color = { 1.0f,1.0f,1.0f,0.0f };
-	int Loading_count = 0;
-
+	//int Loading_count = 0;
 	float BGMvol = 1.0f;	//こいつらを音量にかけてやることで調整する
 	float SEvol = 1.0f;
 	float SaveSEvol = 0.0f;

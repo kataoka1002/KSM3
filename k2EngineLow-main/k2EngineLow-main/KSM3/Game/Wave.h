@@ -1,6 +1,7 @@
 #pragma once
 class Game;
 class Player;
+class Boss;
 class Wave : public IGameObject
 {
 public:
@@ -16,6 +17,7 @@ public:
 
 	Game* m_game = nullptr;
 	Player* m_player = nullptr;
+	Boss* m_boss = nullptr;
 
 	SpriteRender	m_waveStartSprite;							//ウェーブが変わった時に流れるスプライト
 	SpriteRender	m_waveStartWakuSprite;						//ウェーブが変わった時に流れるスプライトの枠
@@ -32,6 +34,11 @@ public:
 	FontRender		m_timerFont;								//タイマーを表示するフォント
 	Vector3			m_spritePos = Vector3::Zero;				//スプライトを動かすための変数
 	Vector3         m_moveSpeed = Vector3::Zero;
+
+	SpriteRender Loading_Render;
+	Vector4 Loading_color = { 1.0f,1.0f,1.0f,0.0f };
+	int Loading_count = 0;
+
 
 	const float		TIME_LIMIT = 180.0f;						//１ウェーブのタイムリミット
 	const Vector3	SPRITE_POSITION = { 1000.0f,0.0f,0.0f };	//ウェーブ変更スプライトの初期場所

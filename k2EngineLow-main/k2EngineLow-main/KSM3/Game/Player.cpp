@@ -52,6 +52,9 @@ bool Player::Start()
 
 void Player::Update() 
 {
+	//プレイヤーのY座標は固定
+	player_position.y = 0.0f;
+
 	//プレイヤーが死んでいてリザルト中でないときの処理
 	if (m_playerDead == true && game_state != 2)
 	{

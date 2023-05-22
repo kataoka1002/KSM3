@@ -29,10 +29,7 @@
 
 Game::Game()
 {
-	//Bossへの遷移のLoading画面の読み込み
-	Loading_Render.Init("Assets/sprite/NOW_LOADING.DDS", 1632.0f, 918.0f);
-	Loading_Render.SetMulColor(Loading_color);
-	Loading_Render.Update();
+	
 
 	//ライトの作成
 	lighting = NewGO<Lighting>(1, "lighting");
@@ -209,12 +206,8 @@ void Game::GameNow()
 	//3ウェーブ突破したらボス戦
 	if (player->player_position.z >= 9550.0f  && boss == nullptr /*&& m_wave->m_goBoss == true*/)
 	{
-		if (Loading_count >= 0 && Loading_count < 10) {
-			Loading_color.w += 0.1f;
-			Loading_Render.SetMulColor(Loading_color);
-			Loading_Render.Update();
-		}
-		if (Loading_count == 10) {
+		//ローディング画面が表示されたらボスを作り出す
+		if (m_wave->Loading_count == 10) {
 			//スカイキューブを作り直す
 			DeleteGO(m_skyCube);
 			m_skyCube = NewGO<SkyCube>(0, "skycube");
@@ -228,6 +221,8 @@ void Game::GameNow()
 			//ボスを発生させる
 			boss = NewGO<Boss>(1, "boss");
 			boss->boss_position = { -19800.0f,0.0f,7800.0f };
+			//ウェーブクラスのボスポインタに教えてやる
+			m_wave->m_boss = (boss);
 			//プレイヤーの場所をボスの場所へ移動させる
 			player->player_position = { -19246.0f,0.0f,-130.0f };
 			player->player_modelRender.SetPosition(player->player_position);
@@ -238,18 +233,8 @@ void Game::GameNow()
 			//今いる雑魚敵を全部消す
 			DeleteEnemy();
 		}
-		Loading_count++;
 	}
-	if (boss != nullptr) {
-		if (Loading_count < 22) {
-			if (Loading_count >= 11 && Loading_count < 21) {
-				Loading_color.w -= 0.1f;
-				Loading_Render.SetMulColor(Loading_color);
-				Loading_Render.Update();
-			}
-			Loading_count++;
-		}
-	}
+	
 	if (boss != nullptr)
 	{
 		if (player->boss_survival == true)
@@ -305,5 +290,5 @@ Vector3 Game::RandomPosition()
 
 void Game::Render(RenderContext& rc)
 {
-	Loading_Render.Draw(rc);
+	//Loading_Render.Draw(rc);
 }
