@@ -401,37 +401,44 @@ void Result::Font_set() {
 
 
 	//SCOREの設定
-	time_set[0] = minute / 10;//分10の位
-	time_set[1] = minute % 10;//分1の位
-	time_set[2] = sec / 10;//秒10の位
-	time_set[3] = sec % 10;//秒1の位
-	SCORE = (10 - minute) * 1000 + (60 - sec) * 10;//SCOREの計算
-	MAX_SCORE = 10 * 1000 + 60 * 10;//マックスSCOREの計算
-	//SCOREの各桁がどれだけあるかの計算
-	while (SCORE >= 10000) {
-		score_set[0]++;
-		SCORE -= 10000;
-		Total += 10000;
+	if (player->m_playerDead == false) {
+		time_set[0] = minute / 10;//分10の位
+		time_set[1] = minute % 10;//分1の位
+		time_set[2] = sec / 10;//秒10の位
+		time_set[3] = sec % 10;//秒1の位
+		SCORE = (10 - minute) * 1000 + (60 - sec) * 10;//SCOREの計算
+		MAX_SCORE = 10 * 1000 + 60 * 10;//マックスSCOREの計算
+		//SCOREの各桁がどれだけあるかの計算
+		while (SCORE >= 10000) {
+			score_set[0]++;
+			SCORE -= 10000;
+			Total += 10000;
+		}
+		while (SCORE >= 1000) {
+			score_set[1]++;
+			SCORE -= 1000;
+			Total += 1000;
+		}
+		while (SCORE >= 100) {
+			score_set[2]++;
+			SCORE -= 100;
+			Total += 100;
+		}
+		while (SCORE >= 10) {
+			score_set[3]++;
+			SCORE -= 10;
+			Total += 10;
+		}
+		while (SCORE >= 1) {
+			score_set[4]++;
+			SCORE -= 1;
+			Total += 1;
+		}
 	}
-	while (SCORE >= 1000) {
-		score_set[1]++;
-		SCORE -= 1000;
-		Total += 1000;
-	}
-	while (SCORE >= 100) {
-		score_set[2]++;
-		SCORE -= 100;
-		Total += 100;
-	}
-	while (SCORE >= 10) {
-		score_set[3]++;
-		SCORE -= 10;
-		Total += 10;
-	}
-	while (SCORE >= 1) {
-		score_set[4]++;
-		SCORE -= 1;
-		Total += 1;
+	else {
+		for (int i = 0; i < 5; i++) {
+			score_set[i] = 0;
+		}
 	}
 
 	Score_Render.Init("Assets/sprite/score.DDS", 1632.0f, 918.0f);//SCOREの文字の読み込み
@@ -471,14 +478,25 @@ void Result::Font_set() {
 	Rank_sheet.SetMulColor(Rank_Sheet_color);
 	MAX_SCORE /= 4;//ランクが四段階のため
 	//今回何ランクだったかの計算
-	for (int i = 1; i <= 4; i++) {
-		Rank_Render[i - 1].Init(getRank(i-1), 1632.0f, 918.0f);
-		Rank_Render[i - 1].SetScale(Rank_Scale);
-		Rank_Render[i - 1].SetMulColor(Rank_color);
-		if (Total>MAX_SCORE * i) {
-			Rank_set++;
+	if (player->m_playerDead == false) {
+		for (int i = 1; i <= 4; i++) {
+			Rank_Render[i - 1].Init(getRank(i - 1), 1632.0f, 918.0f);
+			Rank_Render[i - 1].SetScale(Rank_Scale);
+			Rank_Render[i - 1].SetMulColor(Rank_color);
+			if (Total > MAX_SCORE * i) {
+				Rank_set++;
+			}
+			Rank_Render[i - 1].Update();
 		}
-		Rank_Render[i - 1].Update();
+	}
+	else {
+		for (int i = 1; i <= 4; i++) {
+			Rank_Render[i - 1].Init(getRank(i - 1), 1632.0f, 918.0f);
+			Rank_Render[i - 1].SetScale(Rank_Scale);
+			Rank_Render[i - 1].SetMulColor(Rank_color);
+			Rank_set = 0;
+			Rank_Render[i - 1].Update();
+		}
 	}
 
 	Rank_Score_Render.Update();
