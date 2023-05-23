@@ -8,6 +8,7 @@
 #include "Drop_item.h"
 #include "Enemy_Bullet.h"
 #include "Enemy_HP_UI.h"
+#include "GameCamera.h"
 
 
 Enemy_Near::Enemy_Near()
@@ -448,6 +449,11 @@ void Enemy_Near::ItemDrop()
 		m_defeatState = true;
 
 		m_player->killEnemy++;	//E‚µ‚½”‚ğ‘‚â‚·
+
+		//‰æ–Ê‚ğ—h‚ç‚·
+		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+		m_camera->VibFlag = true;
+
 		DeleteGO(this);
 		//ƒŠƒXƒg‚©‚çÁ‚·
 		m_game->RemoveEnemyNearFromList(this);

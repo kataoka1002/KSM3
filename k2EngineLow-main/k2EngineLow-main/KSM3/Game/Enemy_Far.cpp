@@ -8,6 +8,7 @@
 #include "Drop_item.h"
 #include "Enemy_Bullet.h"
 #include "Enemy_HP_UI.h"
+#include "GameCamera.h"
 
 
 Enemy_Far::Enemy_Far()
@@ -87,7 +88,7 @@ void Enemy_Far::SetUp()
 
 void Enemy_Far::Update()
 {
-	//プレイヤーが死亡したと起用
+	//プレイヤーが死亡したとき用
 	m_asiotoSE->SetVolume(0.8f * m_game->SEvol);	//音量調整
 
 	if (m_player->game_state == 0)
@@ -445,6 +446,13 @@ void Enemy_Far::ItemDrop()
 		m_defeatState = false;
 
 		m_player->killEnemy++;	//殺した数を増やす
+
+		//画面を揺らす
+		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+		m_camera->VibFlag = true;
+
+		//リストから消す
+		m_game->RemoveEnemyFarFromList(this);
 	}
 }
 
@@ -492,6 +500,13 @@ void Enemy_Far::EnemyDead()
 	enemyDeadEffect->SetRotation(m_enemyRotation);
 	enemyDeadEffect->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
 	enemyDeadEffect->Play();
+
+	//爆発エフェクトの初期化と再生
+	enemyDeadEffect2 = NewGO<EffectEmitter>(0);
+	enemyDeadEffect2->Init(enTyakudan);
+	enemyDeadEffect2->SetScale({ 15.7f,15.7f,15.7f });
+	enemyDeadEffect2->SetPosition(m_enemyPosition);
+	enemyDeadEffect2->Play();
 
 	//爆発音の設定と再生
 	m_enemyDeadSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする

@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "Enemy_Bullet.h"
 #include "Enemy_HP_UI.h"
+#include "GameCamera.h"
 
 
 Enemy::Enemy() 
@@ -445,6 +446,11 @@ void Enemy::ItemDrop()
 		m_defeatState = true;
 
 		m_player->killEnemy++;	//殺した数を増やす
+
+		//画面を揺らす
+		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+		m_camera->VibFlag = true;
+
 		DeleteGO(this);
 		//リストから消す
 		m_game->RemoveEnemyFromList(this);

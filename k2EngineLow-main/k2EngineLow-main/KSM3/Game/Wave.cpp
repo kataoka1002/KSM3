@@ -154,11 +154,11 @@ void Wave::TimeCount()
 	wchar_t text[256];
 	int minute = (int)m_timer / 60;
 	int sec = (int)m_timer % 60;
-	swprintf_s(text, 256, L"ウェーブ%d/3          　        %02d:%02d",m_waveNum, minute, sec);
+	swprintf_s(text, 256, L"ウェーブ%d /3              %02d  :%02d",m_waveNum, minute, sec);
 	m_timerFont.SetText(text);
 	m_timerFont.SetPosition(Vector3(-905.0f, 480.0f, 0.0f));
 	m_timerFont.SetShadowParam(true, 1.0f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-	m_timerFont.SetScale(0.6f);
+	m_timerFont.SetScale(0.5f);
 	m_timerFont.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 

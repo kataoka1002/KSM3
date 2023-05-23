@@ -220,9 +220,10 @@ void SpriteFont::Impl::ForEachGlyph(_In_z_ wchar_t const* text, TAction action) 
     for (; *text; text++)
     {
         wchar_t character = *text;
-
+        
         switch (character)
         {
+        
             case '\r':
                 // Skip carriage returns.
                 continue;
@@ -238,6 +239,11 @@ void SpriteFont::Impl::ForEachGlyph(_In_z_ wchar_t const* text, TAction action) 
                 auto glyph = FindGlyph(character);
 
                 x += glyph->XOffset;
+
+                if (character >= 0x30 && character <= 0x39)
+                {
+                    x += 30;
+                }
 
                 if (x < 0)
                     x = 0;
