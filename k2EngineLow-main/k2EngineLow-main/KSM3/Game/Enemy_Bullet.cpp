@@ -7,6 +7,7 @@
 #include "Enemy_Far.h"
 #include "Player.h"
 #include "Game.h"
+#include "GameCamera.h"
 #include "sound/SoundEngine.h"
 #include "Left_arm_weapons.h"
 #include "Left_leg_weapons.h"
@@ -39,7 +40,12 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 	}
 	else if (m_enemyNearMama != nullptr)
 	{
-
+		if (m_enemyNearMama->m_setWeapon == 4)//ギガトンキャノンの弾の煙エフェ
+		{
+			//画面を揺らす
+			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+			m_camera->VibFlag = true;
+		}
 	}
 	else if (m_enemyFarMama != nullptr)
 	{
@@ -57,6 +63,10 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 			m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
 			m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
 			m_battleShipGunTyakutiSE->Play(false);
+
+			//画面を揺らす
+			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+			m_camera->VibFlag = true;
 		}
 	}
 	// 着弾したら死ぬ
@@ -168,6 +178,8 @@ void Enemy_Bullet::Setup()
 
 			//エフェクトの再生
 			Effect(4);
+
+
 
 			break;
 

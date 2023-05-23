@@ -81,7 +81,7 @@ void GameCamera::Update()
 	{
 		//注視点を計算する。
 		target = m_player->player_position;
-		target.y += 80.0f;		//プレイヤの足元からちょっと上を注視点とする。
+		target.y += 180.0f;		//プレイヤの足元からちょっと上を注視点とする。
 
 		if (toPosDir.y < 0.1f)
 		{
@@ -92,6 +92,32 @@ void GameCamera::Update()
 		{
 			//カメラが下向きすぎ。
 			m_toCameraPos = toCameraPosOld;
+		}
+
+		//画面揺れの処理
+		//if (g_pad[0]->IsTrigger(enButtonY))VibFlag = true;
+
+		if (VibFlag == true) 
+		{
+			static int Vibration = VIBRATION_MAX * 16;
+			int vib = Vibration / 2;	//振幅
+			Vibration -= 10;
+
+			//揺れの大きさが0になったら
+			if (vib == 0)
+			{
+				//揺れの為に必要な変数を初期化
+				VibFlag = false;
+				BGX = 0; BGY = 0;
+				Vibration = VIBRATION_MAX * 16;
+			}
+			else 
+			{
+				//左右に揺れるために半分の値を引く
+				int vibHalf = vib / 2;
+				BGX = rand() % vib - vibHalf;
+				BGY = rand() % vib - vibHalf;
+			}
 		}
 	}
 	else if (CameraState == 1)//ボス戦の時のカメラ。
@@ -128,8 +154,13 @@ void GameCamera::Update()
 		Move();
 	}
 
+	//揺れの大きさを足す
+	target.x += BGX;
+	target.y += BGY;
+
 	//視点を計算する。
 	pos = target + m_toCameraPos;
+	
 
 	//ばねカメラの設定
 	m_springCamera.SetTarget(target);
@@ -146,7 +177,7 @@ void GameCamera::Move()
 {
 	//注視点を計算する。
 	target = m_player->player_position;
-	target.y += 80.0f;		//プレイヤの足元からちょっと上を注視点とする。
+	target.y += 180.0f;		//プレイヤの足元からちょっと上を注視点とする。
 
 	if (opCount >= 0 && opCount <= 200)
 	{

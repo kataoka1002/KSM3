@@ -115,11 +115,6 @@ bool Game::Start()
 
 void Game::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonY))
-	{
-		g_renderingEngine->SetGrayScale(true);
-	}
-
 	//最初のシーン中
 	if (player->game_state == 4)
 	{
