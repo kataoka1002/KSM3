@@ -35,7 +35,8 @@ enum EffectName {
 	enEnemyDead,		//敵死亡時のエフェ
 	enSenkanhouKemuri,	//戦艦砲の弾の煙
 	enMasinganKemuri,	//マシンガンの弾の煙
-	enGigatonAttack		//ギガトンキャノンの攻撃エフェ
+	enGigatonAttack,	//ギガトンキャノンの攻撃エフェ
+	enEnemyHassei
 };
 
 //サウンドの列挙

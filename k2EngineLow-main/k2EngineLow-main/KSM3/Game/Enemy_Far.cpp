@@ -61,6 +61,14 @@ bool Enemy_Far::Start()
 	m_asiotoSE->Play(true);							//再生
 	m_asiotoSE->Stop();
 
+	//エネミー生成エフェクトの設定と再生
+	EffectEmitter*enemyHassei = NewGO<EffectEmitter>(0);
+	enemyHassei->Init(enEnemyHassei);
+	enemyHassei->SetScale({ 15.0f,15.0f,15.0f });
+	enemyHassei->SetRotation(m_enemyRotation);
+	enemyHassei->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
+	enemyHassei->Play();
+
 
 	//武器生成
 	SetUp();	
@@ -130,7 +138,12 @@ void Enemy_Far::Update()
 
 			//SE();				//効果音の処理
 			WeaponMove();		//武器の移動回転	
-			ItemDrop();			//倒した時にアイテムを落とす処理
+			//体力が0になったら死亡フラグを立たせる
+			if (m_enemyHP <= 0.0f)
+			{
+				m_defeatState = false;
+				m_enemyModel.PlayFlash();	//モデルを白くさせる
+			}
 
 			//エネミーと武器の更新
 			m_enemyModel.SetPosition(m_enemyPosition);
@@ -143,6 +156,18 @@ void Enemy_Far::Update()
 		}
 		else if (m_defeatState == false)	//死んだら
 		{
+			if (m_flashFinishFlag == false)
+			{
+				if (m_flashTime < 0)
+				{
+					ItemDrop();
+					m_flashFinishFlag = true;
+				}
+
+				m_flashTime--;
+				return;
+			}
+
 			m_enemySize -= 0.15f;
 			
 			if (m_enemySize <= 0.0f)
@@ -426,34 +451,29 @@ void Enemy_Far::Fire(int m_weaponNum)
 
 void Enemy_Far::ItemDrop()
 {
-	//体力が0になったらアイテムを落とす
-	if (m_enemyHP <= 0.0f)
-	{
-		//死亡爆破エフェ
-		EnemyDead();
+	//死亡爆破エフェ
+	EnemyDead();
 
-		m_dropItem = NewGO<Drop_item>(1, "drop_item");
-		m_dropItem->Drop_position = m_enemyPosition;
-		m_dropItem->Drop_position.y += 50.0f;
-		//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
-		m_dropItem->drop_kinds = m_setWeapon;
+	m_dropItem = NewGO<Drop_item>(1, "drop_item");
+	m_dropItem->Drop_position = m_enemyPosition;
+	m_dropItem->Drop_position.y += 50.0f;
+	//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
+	m_dropItem->drop_kinds = m_setWeapon;
 
-	
-		//コンテナにくっつける
-		m_game->m_dropItemObject.push_back(m_dropItem);
-		m_game->AddDefeatedEnemyNumber();
 
-		m_defeatState = false;
+	//コンテナにくっつける
+	m_game->m_dropItemObject.push_back(m_dropItem);
+	m_game->AddDefeatedEnemyNumber();
 
-		m_player->killEnemy++;	//殺した数を増やす
 
-		//画面を揺らす
-		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-		m_camera->VibFlag = true;
+	m_player->killEnemy++;	//殺した数を増やす
 
-		//リストから消す
-		m_game->RemoveEnemyFarFromList(this);
-	}
+	//画面を揺らす
+	GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+	m_camera->VibFlag = true;
+
+	//リストから消す
+	m_game->RemoveEnemyFarFromList(this);
 }
 
 void Enemy_Far::WeaponMove()

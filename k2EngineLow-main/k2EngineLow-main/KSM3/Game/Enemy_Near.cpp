@@ -69,6 +69,13 @@ bool Enemy_Near::Start()
 	m_dashSE->Play(true);			//再生
 	m_dashSE->Stop();				//停止
 
+	//エネミー生成エフェクトの設定と再生
+	EffectEmitter* enemyHassei = NewGO<EffectEmitter>(0);
+	enemyHassei->Init(enEnemyHassei);
+	enemyHassei->SetScale({ 10.0f,10.0f,10.0f });
+	enemyHassei->SetRotation(m_enemyRotation);
+	enemyHassei->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
+	enemyHassei->Play();
 
 	SetUp();	//武器生成
 

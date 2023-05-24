@@ -238,7 +238,16 @@ namespace nsK2EngineLow {
 		cb.mWorld = mWorld;
 		cb.mView = mView;
 		cb.mProj = mProj;
-		cb.flashFlag = flashFlag;
+		/*cb.pad1 = 0.0f;
+		cb.pad2 = 0.0f;
+		cb.pad3 = 0.0f;*/
+		if (flashFlag) {
+			cb.flashFlag = 1.0f;
+		}
+		else {
+			cb.flashFlag = 0.0f;
+		}
+
 		m_commonConstantBuffer.CopyToVRAM(cb);
 
 		if (m_expandData) {
