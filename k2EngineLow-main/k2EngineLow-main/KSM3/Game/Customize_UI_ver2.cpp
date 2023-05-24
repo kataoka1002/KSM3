@@ -13,6 +13,7 @@
 #include "Game.h"
 
 
+
 Customize_UI_ver2::Customize_UI_ver2()
 {
 	//カスタマイズエリアの生成

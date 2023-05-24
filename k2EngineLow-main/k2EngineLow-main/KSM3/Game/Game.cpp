@@ -27,6 +27,8 @@
 #include "SkyCube.h"
 
 
+
+
 Game::Game()
 {
 	
@@ -34,10 +36,7 @@ Game::Game()
 	//ライトの作成
 	lighting = NewGO<Lighting>(1, "lighting");
 
-	//プレイヤーとコア武器とUIの作成
-	player = NewGO<Player>(1, "player");
-	core_weapons = NewGO<Core_weapons>(1, "core_weapons");
-	m_playerUI = NewGO<PlayerUI>(1,"playerui");
+	
 
 	//ステージの作成
 	background = NewGO< BackGround>(1, "background");
@@ -111,6 +110,14 @@ bool Game::Start()
 	SaveSEvol = SEvol;
 		
 	return true;
+}
+
+void Game::create_player(int player_color_date) {
+	//プレイヤーとコア武器とUIの作成
+	player = NewGO<Player>(1, "player");
+	title = FindGO<Title>("title");
+	core_weapons = NewGO<Core_weapons>(1, "core_weapons");
+	m_playerUI = NewGO<PlayerUI>(1, "playerui");
 }
 
 void Game::Update()

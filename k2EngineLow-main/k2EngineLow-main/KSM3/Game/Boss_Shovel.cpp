@@ -23,9 +23,10 @@ Boss_Shovel::~Boss_Shovel()
 
 bool Boss_Shovel::Start()
 {
-	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_shovel_idol02.tka");
-	//m_animationClip[enAnimationClip_Idle].Load("Assets/animData/jump.tka");
+	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_shovel_idol01.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
+	m_animationClip[enAnimationClip_Idle2].Load("Assets/animData/Boss_shovel_idol02.tka");
+	m_animationClip[enAnimationClip_Idle2].SetLoopFlag(true);
 	//èâä˙âª
 	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel4.tkm", true, true , m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
 	//boss_Shovel_Render.Init("Assets/modelData/unityChan.tkm", true,true,m_animationClip, enAnimationClip_Num, enModelUpAxisY);
@@ -60,7 +61,7 @@ void Boss_Shovel::Setup()
 void Boss_Shovel::Update()
 {
 	
-	boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle);
+	
 	if (fast == 0)
 	{
 		Setup();

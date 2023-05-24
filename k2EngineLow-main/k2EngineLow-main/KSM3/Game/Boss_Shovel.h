@@ -21,6 +21,7 @@ public:
 
 	enum EnAnimation {
 		enAnimationClip_Idle,
+		enAnimationClip_Idle2,
 		enAnimationClip_Num
 	};
 
@@ -51,4 +52,5 @@ public:
 	int fast = 0;
 
 	float shovel_HP = HP;
+
 };

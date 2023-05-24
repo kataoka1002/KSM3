@@ -23,6 +23,7 @@ class SoundManage;
 class PlayerUI;
 class Customize_UI_ver2;
 class Wave;
+class Title;
 
 
 //エフェクトの列挙
@@ -76,6 +77,7 @@ public:
 	void DeleteEnemy();
 	Vector3 RandomPosition();
 	void Render(RenderContext& rc);
+	void create_player(int player_color_date);
 
 	void RemoveEnemyFromList(Enemy* enemy)
 	{
@@ -158,6 +160,7 @@ public:
 	float SEvol = 1.0f;
 	float SaveSEvol = 0.0f;
 
+	int player_color_date = 0;//プレイヤーのカラーデータ
 private:
 	//ModelRender m_modelRender;		//キャラ
 	//ModelRender m_modelRender2;		//床
@@ -171,5 +174,7 @@ private:
 	//Test* test;
 
 	int m_gameStartState = 0;	//ロード画面からゲームへの遷移
+
+	
 };
 
