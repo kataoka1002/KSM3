@@ -108,9 +108,9 @@ namespace nsK2EngineLow {
 			m_animation.Play(animNo, interpolateTime);
 		}
 
-		void OnDraw(RenderContext& rc,bool flashFlag = false)
+		void OnDraw(RenderContext& rc)
 		{
-			m_model.Draw(rc, 1, flashFlag);
+			m_model.Draw(rc, 1, m_flashFlag);
 		}
 
 		void OnShadowDraw(RenderContext& rc)
@@ -118,6 +118,10 @@ namespace nsK2EngineLow {
 			m_shadowModel.Draw(rc, g_renderingEngine->GetLightCamera());
 		}
 
+		void PlayFlash()
+		{
+			m_flashFlag = true;
+		}
 
 	private:
 		//アニメーションの初期化
@@ -151,5 +155,6 @@ namespace nsK2EngineLow {
 		Vector3 m_scale = Vector3::One;
 
 		bool syuok = false;
+		bool m_flashFlag = false;
 	};
 }

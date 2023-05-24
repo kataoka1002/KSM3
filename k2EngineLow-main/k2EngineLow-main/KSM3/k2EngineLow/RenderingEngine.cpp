@@ -190,7 +190,7 @@ namespace nsK2EngineLow {
 		}
 	}
 
-	void RenderingEngine::ModelDraw(RenderContext& rc,bool flashFlag)
+	void RenderingEngine::ModelDraw(RenderContext& rc)
 	{
 		// メインのターゲットが使えるようになるまで待つ
 		rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderingTarget);
@@ -201,7 +201,7 @@ namespace nsK2EngineLow {
 
 		// まとめてモデルレンダーを描画
 		for (auto MobjData : ModelRenderObject) {
-			MobjData->OnDraw(rc ,flashFlag);
+			MobjData->OnDraw(rc);
 		}
 
 		// 描画されるまで待つ

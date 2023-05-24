@@ -72,14 +72,16 @@ public:
 	bool m_atackOK = false;							//攻撃フラグ
 	bool m_lockOn = false;
 	bool m_weponDraw = true;
+	bool m_flashFinishFlag = false;
 	int m_setWeapon = 0;							//武器の種類
 	int m_enemyDirState = 0;						//エネミーの向き
 	int m_enemyGameState = 0;
 	int m_attackCount = 0;							//攻撃の間隔
 	int m_sunaHassei = 0;							//砂ぼこりの発生間隔
+	int m_flashTime = 20;
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
 	float m_enemyHPMax = HP;						//エネミーの体力の最大値
-	float m_enemySize = 2.0f;						
+	float m_enemySize = 2.0f;
 };
 

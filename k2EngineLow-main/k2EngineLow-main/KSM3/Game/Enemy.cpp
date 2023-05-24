@@ -68,6 +68,15 @@ bool Enemy::Start()
 	m_asiotoSE->Play(true);			//再生
 	m_asiotoSE->Stop();
 
+	//エネミー生成エフェクトの設定と再生
+	EffectEmitter* enemyHassei = NewGO<EffectEmitter>(0);
+	enemyHassei->Init(enEnemyHassei);
+	enemyHassei->SetScale({ 10.0f,10.0f,10.0f });
+	enemyHassei->SetRotation(m_enemyRotation);
+	enemyHassei->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
+	enemyHassei->Play();
+
+
 	//武器生成
 	SetUp();	
 

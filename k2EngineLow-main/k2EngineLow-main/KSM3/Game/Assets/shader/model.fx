@@ -39,6 +39,10 @@ cbuffer ModelCb : register(b0){
 	float4x4 mWorld;
 	float4x4 mView;
 	float4x4 mProj;
+    //float pad1;
+    //float pad2;
+    //float pad3;
+    float flashFlag;
 };
 //ディレクションライト用の定数バッファ
 cbuffer DirectionLightCb : register(b1) {
@@ -286,6 +290,11 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
         float Y = 0.299f * albedoColor.r + 0.587f * albedoColor.g + 0.114f * albedoColor.b;
         
         return Y;
+    }
+    
+    if (flashFlag == 1.0f)
+    {
+        return float4(1.0f, 1.0f, 1.0f, 1.0f);
     }
     
     return albedoColor;
