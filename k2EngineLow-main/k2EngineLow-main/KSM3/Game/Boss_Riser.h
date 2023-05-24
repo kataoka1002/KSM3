@@ -18,6 +18,14 @@ public:
 	void PlayerSearch();
 	void Render(RenderContext& rc);
 
+	enum EnAnimation {
+		enAnimationClip_Idle,
+		enAnimationClip_attack,
+		enAnimationClip_Num
+	};
+
+	AnimationClip m_animationClip[enAnimationClip_Num];
+
 	Player* b_w_player;
 	Boss* b_w_boss;
 	Boss_Riser_attack* b_boss_weapons;
@@ -32,7 +40,7 @@ public:
 	ModelRender boss_Riser_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { 600.0f,450.0f,-100.0f };
+	Vector3 b_w_localposition = { 600.0f,300.0f,-100.0f };
 
 	bool attack_state = false;
 	bool attack_ok = false;
@@ -42,5 +50,6 @@ public:
 	int firing_cound = 0;
 	int fast = 0;
 
+	int attack_count = 0;
 	float riser_HP=HP;
 };

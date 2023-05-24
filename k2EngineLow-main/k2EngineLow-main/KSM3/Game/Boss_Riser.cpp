@@ -23,11 +23,17 @@ Boss_Riser::~Boss_Riser()
 
 void Boss_Riser::Setup()
 {
+	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/dozar_idol.tka");
+	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
+	m_animationClip[enAnimationClip_attack].Load("Assets/animData/dozar_attack.tka");
+	m_animationClip[enAnimationClip_attack].SetLoopFlag(false);
+
+
 	set_weapons = 1;
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Riser_Render.Init("Assets/modelData/Boss_do-ze-.tkm");
+		boss_Riser_Render.Init("Assets/modelData/Boss_do-ze-1.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
 		boss_Riser_Render.Update();
 	}
 	
@@ -48,8 +54,14 @@ void Boss_Riser::Update()
 		Setup();
 	}
 	fast++;
+	
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
+
+		if (attack_state == 0) {
+
+		}
+
 		Move();
 		if (attack_ok == true)
 		{
