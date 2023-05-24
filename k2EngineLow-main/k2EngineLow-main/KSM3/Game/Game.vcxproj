@@ -315,6 +315,7 @@
     <ClInclude Include="MachineGunAttack.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerUI.h" />
+    <ClInclude Include="Player_Macro.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Result_Macro.h" />
     <ClInclude Include="Right_arm_weapons.h" />

@@ -5,6 +5,7 @@
 #include "Lighting.h"
 #include "SoundManage.h"
 
+
 Title::Title()
 {
 	//title_Render.Init("Assets/sprite/title_test.dds", 1920.0f, 1080.0f);
@@ -76,6 +77,7 @@ void Title::SetUp()
 	SE_Sound_ber.SetPosition(SE_ber_position);
 
 	CONTROLES_Render.Init("Assets/sprite/CONTROLES.DDS", 1632.0f, 918.0f);
+	Player_Color_Render.Init("Assets/sprite/Player_color.DDS", 1632.0f, 918.0f);
 
 	Menu_trance[0].Init("Assets/sprite/MENU_TITLE_TRANCE.DDS", 430.0f, 100.0f);
 	for (int i = 1; i < 9; i++) {
@@ -294,6 +296,12 @@ void Title::Menu() {
 			title_state = 4;
 			PlaySE(17, 2.0f);
 		}
+		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 2) {
+			title_state = 8;
+			PlaySE(17, 2.0f);
+			select_point = 0;
+			fast_count = 0;
+		}
 		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point== 1) {
 			PlaySE(17, 2.0f);
 			select_point = 0;
@@ -328,6 +336,7 @@ void Title::Menu() {
 		{
 			//ゲームを始めると同時に音量のデータも送る
 			Game* game = NewGO<Game>(0, "game");
+			game->create_player(player_color_date);
 			game->SEvol = BGM_volume;
 			game->BGMvol = SE_volume;
 			DeleteGO(this);
@@ -526,6 +535,43 @@ void Title::Menu() {
 		}
 	}
 
+	if (title_state == 8) {
+		if (fast_count >= 1 && fast_count < 11) {
+			Trance_sheet_scale.x += 0.085f;
+		}
+		else if (fast_count >= 11 && fast_count < 21) {
+			Trance_sheet_scale.x -= 0.085f;
+		}
+
+		if (select_point >= 0 && select_point <= 6 && g_pad[0]->IsTrigger(enButtonDown)) {
+			PlaySE(19, 2.0f);
+			select_point++;
+		}
+		if (select_point <= 7 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+			PlaySE(19, 2.0f);
+			select_point--;
+		}
+
+		if (g_pad[0]->IsTrigger(enButtonB)) {
+			PlaySE(18, 2.0f);
+			title_state = 3;
+			select_point = 0;
+			fast_count = 0;
+		}
+		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1) {
+			PlaySE(17, 2.0f);
+			player_color_date = select_point;
+		}
+		for (int i = 0; i < 9; i++) {
+			Menu_trance[i].SetScale(Trance_sheet_scale);
+		}
+		fast_count++;
+		Menu_trance[0].Update();
+		Menu_trance[8].Update();
+		for (int i = 1; i < 9; i++) {
+			Menu_trance[i].Update();
+		}
+	}
 	//セレクトポイントの処理
 	if (title_state >= 3) {
 		switch (select_point)
@@ -668,7 +714,9 @@ void Title::Render(RenderContext& rc)
 	if (title_state == 7) {
 		CONTROLES_Render.Draw(rc);
 	}
-	
+	if (title_state == 8) {
+		Player_Color_Render.Draw(rc);
+	}
 	for(int i = 0; i < 9; i++) {
 		Menu_trance[i].Draw(rc);
 	}

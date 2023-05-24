@@ -127,5 +127,8 @@ public:
 	Vector2 Menu_trance_pivot8 = { 0.0f,0.5f };
 
 	Vector3 Trance_sheet_scale = { 0.0f,0.85f,1.0f };
+
+	SpriteRender Player_Color_Render;
+	int player_color_date = 0;
 };
 

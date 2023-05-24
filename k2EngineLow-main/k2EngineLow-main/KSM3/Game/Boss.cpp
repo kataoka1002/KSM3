@@ -14,6 +14,8 @@
 #include "Boss_Cannon.h"
 #include "Boss_Turbo.h"
 #include "Result.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 
 Boss::Boss() 
@@ -105,6 +107,26 @@ void Boss::PlayerSearch()
 		boss_modelRender.SetRotation(boss_rotation);
 		boss_modelRender.Update();
 	}*/
+	if (g_pad[0]->IsTrigger(enButtonA)) {
+		Boss_attack = true;
+	}
+
+
+	if (Boss_attack == true) {
+
+		if (Boss_Rotation_count < 10) {
+			boss_rotation.AddRotationDegY((angle * M_PI / 180.0)/10);
+		}
+		if (Boss_Rotation_count >= 10 && Boss_Rotation_count < 15) {
+			movespeed += toPlayerDir *100.0f;
+
+			boss_position = boss_characterController.Execute(movespeed, 1.0f / 60.0f);
+		}
+		if (Boss_Rotation_count == 15) {
+			Boss_attack = false;
+		}
+		Boss_Rotation_count++;
+	}
 
 	if (fabsf(angle) < Math::DegToRad(45.0f)) {
 		b_boss_riser->attack_ok = true;

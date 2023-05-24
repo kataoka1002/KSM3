@@ -8,11 +8,25 @@
 #include "GameCamera.h"
 #include "Title.h"
 #include "Boss.h"
+#include <map>
+#include "Player_Macro.h"
+#include "Title.h"
+#include <random>
 
 Player::Player() 
 {
+	title = FindGO<Title>("title");
+	if (title->player_color_date == 6) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> dis(0, 7);
+		player_color_random = dis(gen);
+		player_modelRender.Init(getPlayer_color(player_color_random));
+	}
 	//プレイヤーのモデルとポーズ画面のスプライトの初期化
-	player_modelRender.Init("Assets/modelData/player.tkm");
+	else {
+		player_modelRender.Init(getPlayer_color(title->player_color_date));
+	}
 	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
 	m_playerDeadSprite.Init("Assets/sprite/player/YOU_LOSE.DDS", 1280.0f, 720.0f);
 	m_playerDeadSprite.SetScale({ 1.4f,1.4f,1.0f });

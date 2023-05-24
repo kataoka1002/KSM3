@@ -60,5 +60,9 @@ public:
 	float boss_time_score = 0.0f;
 	bool defeat_state = false;
 
+	bool Boss_attack = false;
+	int Boss_Rotation_count = 0;
+
+	Vector3 movespeed = { 0.0f,0.0f,0.0f };
 };
 

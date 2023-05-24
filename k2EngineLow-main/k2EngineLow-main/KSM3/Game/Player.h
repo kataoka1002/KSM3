@@ -5,6 +5,7 @@ class Customize_UI_ver2;
 class Result;
 class Game;
 class GameCamera;
+class Title;
 
 class Player:public IGameObject
 {
@@ -21,6 +22,7 @@ public:
 	void MachineGunSE();
 	void PlayerDead();
 
+	Title* title;
 	Result* m_result = nullptr;
 	Left_arm_weapons* p_left_arm_weapons = nullptr;
 	Customize_UI_ver2* p_customize_ui_ver2 = nullptr;
@@ -67,5 +69,8 @@ public:
 	bool boss_survival = true;
 	bool m_playerDead = false;						//ƒvƒŒƒCƒ„[‚ª€‚ñ‚¾‚©‚Ç‚¤‚©
 	bool m_playDeadSE = false;						//€–S‰¹‚ğ–Â‚ç‚µ‚½‚©‚Ç‚¤‚©
+
+	int player_color_date = 0;
+	int player_color_random = 0;
 };
 
