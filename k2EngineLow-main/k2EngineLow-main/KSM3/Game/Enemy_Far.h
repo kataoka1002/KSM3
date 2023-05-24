@@ -71,6 +71,7 @@ public:
 	bool m_enemyEscape = false;						//後退中かどうかフラグ
 	bool m_atackOK = false;							//攻撃フラグ
 	bool m_lockOn = false;
+	bool m_weponDraw = true;
 	int m_setWeapon = 0;							//武器の種類
 	int m_enemyDirState = 0;						//エネミーの向き
 	int m_enemyGameState = 0;

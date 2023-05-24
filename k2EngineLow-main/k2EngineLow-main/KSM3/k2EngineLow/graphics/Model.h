@@ -98,7 +98,8 @@ namespace nsK2EngineLow {
 		/// <param name="numInstance">インスタンスの数</param>
 		void Draw(
 			RenderContext& renderContext,
-			int numInstance = 1
+			int numInstance = 1,
+			bool flashFlag = false
 		);
 		/// <summary>
 		/// 描画(カメラ指定版)
