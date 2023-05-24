@@ -97,7 +97,7 @@ public:
 	Left_leg_weapons* left_leg_weapons;
 	Drop_item* drop_item;
 	GameCamera* gamecamera;
-	SoundSource* m_SE = nullptr;
+	SoundSource* m_BGM = nullptr;
 
 	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };	//[0][0]‰E˜r,[0][1]Œ¨,[0][2]¶˜r,[1][0]‰E‘«,[1][2]¶‘«	
 

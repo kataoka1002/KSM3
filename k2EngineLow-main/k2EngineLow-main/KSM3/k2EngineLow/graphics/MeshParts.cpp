@@ -225,7 +225,8 @@ namespace nsK2EngineLow {
 		const Matrix& mWorld,
 		const Matrix& mView,
 		const Matrix& mProj,
-		int numInstance
+		int numInstance,
+		bool flashFlag
 	)
 	{
 		//メッシュごとにドロー
@@ -237,6 +238,7 @@ namespace nsK2EngineLow {
 		cb.mWorld = mWorld;
 		cb.mView = mView;
 		cb.mProj = mProj;
+		cb.flashFlag = flashFlag;
 		m_commonConstantBuffer.CopyToVRAM(cb);
 
 		if (m_expandData) {

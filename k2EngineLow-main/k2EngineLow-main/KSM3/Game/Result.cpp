@@ -45,7 +45,7 @@ Result::~Result()
 	DeleteGO(game);
 	DeleteGO(core_weapons);
 	DeleteGO(drop_item);*/
-	DeleteGO(m_SE);
+	DeleteGO(m_BGM);
 }
 
 bool Result::Start()
@@ -53,10 +53,10 @@ bool Result::Start()
 	Font_set();
 	Back_set();
 
-	m_SE = NewGO<SoundSource>(0);		
-	m_SE->Init(21);									//初期化
-	m_SE->SetVolume(1.0f * BGM_volume);				//音量調整
-	m_SE->Play(true);
+	m_BGM = NewGO<SoundSource>(0);		
+	m_BGM->Init(21);									//初期化
+	m_BGM->SetVolume(1.0f * BGM_volume);				//音量調整
+	m_BGM->Play(true);
 
 	return true;
 }

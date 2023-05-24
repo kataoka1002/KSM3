@@ -16,8 +16,7 @@ Right_arm_weapons::Right_arm_weapons()
 
 Right_arm_weapons::~Right_arm_weapons() 
 {
-	//UIの中身を空にする
-	m_playerUI->m_rightArm = nullptr;
+	
 }
 
 bool Right_arm_weapons::Start()
@@ -84,6 +83,8 @@ void Right_arm_weapons::Update()
 			r_a_w_player->p_custom_point[0][0] = 0;
 			m_customizeUI->Right_arm_weapon_set = false;
 			m_customizeUI->m_rightArmWeapon = nullptr;
+			//UIの中身を空にする
+			m_playerUI->m_rightArm = nullptr;
 			DeleteGO(this);
 		}
 
@@ -130,6 +131,8 @@ void Right_arm_weapons::Update()
 		//プレイヤーが死亡したら武器も消える
 		if (r_a_w_player->game_end_state == 1) 
 		{
+			//UIの中身を空にする
+			m_playerUI->m_rightArm = nullptr;
 			DeleteGO(this);
 		}
 

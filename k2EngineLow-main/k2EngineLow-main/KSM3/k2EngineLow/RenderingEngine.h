@@ -22,7 +22,7 @@ namespace nsK2EngineLow {
 		void Execute(RenderContext& rc);
 		void ZPrepass(RenderContext& rc);
 		void ShadowDraw(RenderContext& rc);
-		void ModelDraw(RenderContext& rc);
+		void ModelDraw(RenderContext& rc, bool flashFlag = false);
 		void SpriteFontDraw(RenderContext& rc);
 		void CopyMainRenderTargetToFrameBuffer(RenderContext& rc);
 

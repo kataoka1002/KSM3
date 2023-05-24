@@ -108,9 +108,9 @@ namespace nsK2EngineLow {
 			m_animation.Play(animNo, interpolateTime);
 		}
 
-		void OnDraw(RenderContext& rc)
+		void OnDraw(RenderContext& rc,bool flashFlag = false)
 		{
-			m_model.Draw(rc);
+			m_model.Draw(rc, 1, flashFlag);
 		}
 
 		void OnShadowDraw(RenderContext& rc)

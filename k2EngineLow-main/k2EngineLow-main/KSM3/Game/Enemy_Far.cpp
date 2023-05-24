@@ -143,7 +143,7 @@ void Enemy_Far::Update()
 		}
 		else if (m_defeatState == false)	//Ž€‚ñ‚¾‚ç
 		{
-			m_enemySize -= 0.08f;
+			m_enemySize -= 0.15f;
 			
 			if (m_enemySize <= 0.0f)
 			{
