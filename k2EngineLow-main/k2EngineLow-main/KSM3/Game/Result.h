@@ -41,6 +41,8 @@ public:
 	int Neo_result_state = 0;   //リザルト画面の変化 0:タイムの表示 1:SCOREの表示 2:ランクの表示
 
 	float draw_time = 0.0f;	//リザルト画面に遷移して表示するまでの時間
+	float SE_volume = 0.0f;
+	float BGM_volume = 0.0f;
 	int fast_count = 1;
 
 	bool m_isWaitFadeout = false;
@@ -95,6 +97,7 @@ public:
 	Left_leg_weapons* left_leg_weapons;
 	Drop_item* drop_item;
 	GameCamera* gamecamera;
+	SoundSource* m_SE = nullptr;
 
 	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };	//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足	
 

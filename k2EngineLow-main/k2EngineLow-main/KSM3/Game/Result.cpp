@@ -32,6 +32,9 @@ Result::Result()
 			}
 		}
 	gamecamera=FindGO<GameCamera>("gamecamera");
+
+	g_soundEngine->ResistWaveFileBank(17, "Assets/audio/ketteion.wav");
+	g_soundEngine->ResistWaveFileBank(21, "Assets/audio/BGM/result.wav");
 }
 
 Result::~Result()
@@ -42,12 +45,18 @@ Result::~Result()
 	DeleteGO(game);
 	DeleteGO(core_weapons);
 	DeleteGO(drop_item);*/
+	DeleteGO(m_SE);
 }
 
 bool Result::Start()
 {
 	Font_set();
 	Back_set();
+
+	m_SE = NewGO<SoundSource>(0);		
+	m_SE->Init(21);									//初期化
+	m_SE->SetVolume(1.0f * BGM_volume);				//音量調整
+	m_SE->Play(true);
 
 	return true;
 }
@@ -72,6 +81,12 @@ void Result::Update()
 			Title* title = NewGO<Title>(0, "title");
 			DeleteGO(this);
 		}
+
+		SoundSource* m_SE = NewGO<SoundSource>(0);		//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_SE->Init(17);									//初期化
+		m_SE->SetVolume(1.0f * SE_volume);				//音量調整
+		m_SE->Play(false);
+
 		fast_count = 0;
 	}
 	if (Neo_result_state == 0) {

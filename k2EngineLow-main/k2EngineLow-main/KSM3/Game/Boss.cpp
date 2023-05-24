@@ -154,10 +154,13 @@ void Boss::Damage()
 	//やっつけたらリザルト画面へGO!!
 	if (boss_HP <= 0.0f)
 	{
+		boss_game = FindGO<Game>("game");
+
 		b_player->game_state = 2;
 		result = NewGO<Result>(1, "result");
-
-		boss_game = FindGO<Game>("game");
+		result->SE_volume = boss_game->SEvol;
+		result->BGM_volume = boss_game->BGMvol;
+		
 		result->minute = (int)boss_time / 60;
 		result->sec = (int)boss_time % 60;
 		b_player->boss_survival = false;	//ボスが生きているかをプレーヤーに教える

@@ -154,9 +154,14 @@ void GameCamera::Update()
 		Move();
 	}
 
-	//揺れの大きさを足す
-	target.x += BGX;
-	target.y += BGY;
+	//カスタム画面とリザルト以外の時
+	if (CameraState != 3 && m_player->game_state != 2)
+	{
+		//揺れの大きさを足す
+		target.x += BGX;
+		target.y += BGY;
+	}
+
 
 	//視点を計算する。
 	pos = target + m_toCameraPos;
@@ -184,7 +189,7 @@ void GameCamera::Move()
 		//プレイヤーを前へ進める
 		m_player->player_position.z += 5.0f;
 
-		m_toCameraPos.Set(50.0f, 50.0f, 500.0f);
+		m_toCameraPos.Set(50.0f, 40.0f, 500.0f);
 	}
 	else if (opCount > 200 && opCount <= 280)
 	{
