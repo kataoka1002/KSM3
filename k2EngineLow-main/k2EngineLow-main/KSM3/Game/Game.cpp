@@ -206,7 +206,7 @@ void Game::GameNow()
 	}
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 9550.0f  && boss == nullptr /*&& m_wave->m_goBoss == true*/)
+	if (player->player_position.z >= 9550.0f  && boss == nullptr && m_wave->m_goBoss == true)
 	{
 		//ローディング画面が表示されたらボスを作り出す
 		if (m_wave->Loading_count == 10) {

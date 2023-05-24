@@ -66,7 +66,7 @@ void Wave::Update()
 	}
 
 	//ƒ{ƒXí‚É“ü‚éuŠÔ
-	if (m_player->player_position.z >= 9550.0f && m_boss == nullptr /*&& m_wave->m_goBoss == true*/)
+	if (m_player->player_position.z >= 9550.0f && m_boss == nullptr&& m_goBoss == true)
 	{
 		if (Loading_count >= 0 && Loading_count < 10) {
 			Loading_color.w += 0.1f;
