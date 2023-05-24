@@ -111,5 +111,6 @@
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Boss_Movie.h" />
     <ClInclude Include="Player_Macro.h" />
+    <ClInclude Include="Player_custom_Macro.h" />
   </ItemGroup>
 </Project>

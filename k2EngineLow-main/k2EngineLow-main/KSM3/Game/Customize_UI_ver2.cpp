@@ -11,7 +11,8 @@
 #include "Customize_area.h"
 #include "GameCamera.h"
 #include "Game.h"
-
+#include <map>
+#include "Player_custom_Macro.h"
 
 
 Customize_UI_ver2::Customize_UI_ver2()
@@ -923,7 +924,7 @@ void Customize_UI_ver2::Window()
 void Customize_UI_ver2::Custom_model_body()
 {
 	//ボディのモデルの初期化
-	custom_model_body.Init("Assets/modelData/player.tkm");
+	custom_model_body.Init(getPlayer_custom_color(m_player->player_color_random));
 
 	//回転と座標を教えて更新
 	custom_model_body.SetPosition(custom_model_body_position);

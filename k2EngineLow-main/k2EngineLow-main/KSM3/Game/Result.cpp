@@ -526,7 +526,7 @@ void Result::Font_set() {
 
 void Result::Back_set() { //モデルの読み込み
 	//プレイヤー
-	Player_modelrender.Init("Assets/modelData/Player.tkm");
+	Player_modelrender.Init(getPlayer_result_color(player->player_color_random));
 	Player_modelrender.SetPosition(Player_position);
 	Player_rotation.SetRotationDegY(-135.0f);
 	Player_modelrender.SetRotation(Player_rotation);
