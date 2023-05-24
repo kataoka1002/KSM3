@@ -80,8 +80,10 @@ void Player::Update()
 			game_state = 2;			//リザルトステートへ
 			//色付きに戻す
 			g_renderingEngine->SetGrayScale(false);
-			//セーブしていた効果音の大きさに戻してやる(この後にGameクラスをDeleteするので必要ないかも)
-			//m_game->SEvol = m_game->SaveSEvol;
+			//セーブしていた効果音の大きさに戻してやり、リザルトにそのデータを送る
+			m_game->SEvol = m_game->SaveSEvol;
+			m_result->SE_volume = m_game->SEvol;
+			m_result->BGM_volume = m_game->BGMvol;
 			//YOU LOSEの透明度を0に戻す
 			m_deadSpriteColw = 0.0f;
 			DeleteGO(m_game);
