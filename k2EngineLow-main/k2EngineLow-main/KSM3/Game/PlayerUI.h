@@ -32,6 +32,9 @@ public:
 	SpriteRender m_leftArmHPSprite;
 	SpriteRender m_leftLegHPSprite;
 	SpriteRender m_shoulderHPSprite;
+	SpriteRender m_enemyKillSprite;
+
+	FontRender m_killEnemyAmount;
 
 	float m_sizeX = 1.0f;
 	float UI_START_COLLAR_G = 1.0f;

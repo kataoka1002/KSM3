@@ -16,15 +16,22 @@ Wave::Wave()
 	m_waveStartWakuSprite.SetMulColor({ 1.0f,1.0f,1.0f,0.0f });
 	m_waveStartWakuSprite.Update();
 
-	m_waveGageNakami.Init("Assets/sprite/wave/waveGageNakami3.dds", 380.0f, 18.0f);
-	m_waveGageNakami.SetPosition({ -750.0f,420.0f,0.0f });
+	m_waveGageNakami.Init("Assets/sprite/wave/waveGageNakami3.dds", 570.0f, 27.0f);
+	m_waveGageNakami.SetPosition({ -730.0f,395.0f,0.0f });
 	m_waveGageNakami.SetPivot({ 0.0f,0.5f });
 	m_waveGageNakami.Update();
 
-	m_waveGageWaku.Init("Assets/sprite/wave/waveGageWaku.dds", 400.0f, 25.0f);
-	m_waveGageWaku.SetPosition({ -755.0f,420.0f,0.0f });
+	m_waveGageWaku.Init("Assets/sprite/wave/waveGageWaku.dds", 600.0f, 42.0f);
+	m_waveGageWaku.SetPosition({ -735.0f,395.0f,0.0f });
 	m_waveGageWaku.SetPivot({ 0.0f,0.5f });
 	m_waveGageWaku.Update();
+
+	m_TimerSprite.Init("Assets/sprite/wave/Timer2.dds", 1920.0f, 1080.0f);
+	//m_TimerSprite.SetPosition({ -110.0f,395.0f,0.0f });
+	m_TimerSprite.SetPosition({ -760.0f,395.0f,0.0f });
+	m_TimerSprite.SetScale({ 0.05f,0.05f,0.05f });
+	m_TimerSprite.Update();
+	
 
 	//Bossへの遷移のLoading画面の読み込み
 	Loading_Render.Init("Assets/sprite/NOW_LOADING.DDS", 1632.0f, 918.0f);
@@ -120,6 +127,9 @@ void Wave::Update()
 		//残り時間の計測
 		TimeCount();
 
+		//タイマーの回転
+		TimerRotation();
+
 		//サイズを小さくする
 		GageSetScale();
 	}
@@ -154,11 +164,11 @@ void Wave::TimeCount()
 	wchar_t text[256];
 	int minute = (int)m_timer / 60;
 	int sec = (int)m_timer % 60;
-	swprintf_s(text, 256, L"ウェーブ%d /3              %02d  :%02d",m_waveNum, minute, sec);
+	swprintf_s(text, 256, L"ウェーブ%d /3                  %02d  :%02d",m_waveNum, minute, sec);
 	m_timerFont.SetText(text);
-	m_timerFont.SetPosition(Vector3(-905.0f, 480.0f, 0.0f));
+	m_timerFont.SetPosition(Vector3(-880.0f, 440.0f, 0.0f));
 	m_timerFont.SetShadowParam(true, 1.0f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-	m_timerFont.SetScale(0.5f);
+	m_timerFont.SetScale(0.7f);
 	m_timerFont.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
@@ -230,6 +240,49 @@ void Wave::GageSetScale()
 	m_waveGageNakami.Update();
 }
 
+void Wave::TimerRotation()
+{
+	static float ROT_SPEED = 2.0f;		//回転する速さ
+	static float m_rotAmount = 0.0f;	//回転量
+	static int	m_stopCount = 0;		//回転の静止時間
+	static bool	m_halfRot = false;		//半分回転したかどうか
+	static bool	m_rotStopFlag = false;	//回転が止まっているかどうか
+
+	float m_rotSpeed = ROT_SPEED;
+
+	if (m_rotStopFlag == false)
+	{
+		if (m_rotAmount >= 180.0f && m_halfRot == false)
+		{
+			m_rotStopFlag = true;	//回転を止める
+			m_halfRot = true;		//半分回転した
+		}
+		else if (m_rotAmount >= 360.0f)
+		{
+			m_rotStopFlag = true;	//回転を止める
+			m_halfRot = false;		//全回転した
+			m_rotAmount = 0.0f;		//回転量を初期値に戻す
+		}
+	}
+	else if (m_rotStopFlag == true)
+	{
+		m_rotSpeed = 0.0f;			//回転ストップ
+		m_stopCount++;				//カウントを始める
+		if (m_stopCount >= 30)
+		{
+			m_rotStopFlag = false;	//回転を始める
+			m_rotSpeed = ROT_SPEED;	//速さも元に戻す
+			m_stopCount = 0;
+		}
+	}
+
+	m_rotAmount += m_rotSpeed;
+
+	m_timerRot.SetRotationDegZ(m_rotAmount);
+	m_TimerSprite.SetRotation(m_timerRot);
+	m_TimerSprite.Update();
+}
+
 void Wave::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0 || m_player->game_state == 1)
@@ -239,6 +292,8 @@ void Wave::Render(RenderContext& rc)
 			m_waveGageWaku.Draw(rc);
 			m_waveGageNakami.Draw(rc);
 			m_timerFont.Draw(rc);
+
+			m_TimerSprite.Draw(rc);
 
 			//演出中のみ表示
 			if (m_ensyutuNow == true)
