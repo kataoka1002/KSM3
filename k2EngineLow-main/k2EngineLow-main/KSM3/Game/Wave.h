@@ -11,7 +11,7 @@ public:
 	void Update();
 	void TimeCount();
 	void SpritePlay();
-
+	void TimerRotation();
 	void GageSetScale();
 	void Render(RenderContext& rc);
 
@@ -23,6 +23,8 @@ public:
 	SpriteRender	m_waveStartWakuSprite;						//ウェーブが変わった時に流れるスプライトの枠
 	SpriteRender	m_waveGageNakami;							//ウェーブのゲージ中身
 	SpriteRender	m_waveGageWaku;								//ウェーブのゲージ枠
+	SpriteRender	m_TimerSprite;								//タイマー
+	SpriteRender	m_TimerSprite2;								//タイマー2
 
 
 	int				m_waveNum = 0;								//ウェーブのナンバー(全部で3回のウェーブがある)
@@ -34,8 +36,8 @@ public:
 	FontRender		m_timerFont;								//タイマーを表示するフォント
 	Vector3			m_spritePos = Vector3::Zero;				//スプライトを動かすための変数
 	Vector3         m_moveSpeed = Vector3::Zero;
-
 	SpriteRender Loading_Render;
+	Quaternion m_timerRot;
 	Vector4 Loading_color = { 1.0f,1.0f,1.0f,0.0f };
 	int Loading_count = 0;
 

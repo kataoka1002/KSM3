@@ -156,11 +156,11 @@ void Enemy_Far::Update()
 		}
 		else if (m_defeatState == false)	//Ž€‚ñ‚¾‚ç
 		{
-			if (m_flashFinishFlag == false)
+			if (m_flashFinishFlag == false)	//‚Ü‚¾ŒÅ‚Ü‚Á‚Ä‚¢‚é‚Æ‚«
 			{
 				if (m_flashTime < 0)
 				{
-					ItemDrop();
+					ItemDrop();			//Ž€–S‰‰o
 					m_flashFinishFlag = true;
 				}
 
