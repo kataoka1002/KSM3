@@ -70,8 +70,16 @@ void Boss_Shovel::Update()
 	fast++;
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
-		
+		if (fast >=270&&fast<630) {
 			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle2);
+		}
+		else if (fast == 630) {
+			fast = 0;
+		}
+		else {
+			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle);
+		}
+		
 		Move();
 		if (attack_ok == true)
 		{

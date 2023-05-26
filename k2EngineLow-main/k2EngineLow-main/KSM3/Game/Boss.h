@@ -43,6 +43,7 @@ public:
 	SpriteRender m_bossHPSprite;
 	SpriteRender m_bossHPWakuSprite;
 	SpriteRender m_bossHPWakuSprite2;
+	EffectEmitter* m_BossEffect = nullptr;
 	Vector3 boss_position;//座標
 	CharacterController boss_characterController;//キャラクターコントローラー
 	Quaternion boss_rotation;//クォータニオン
@@ -63,6 +64,7 @@ public:
 	bool Boss_attack = false;
 	int Boss_Rotation_count = 0;
 
+	int Boss_efecount = 0;
 	Vector3 movespeed = { 0.0f,0.0f,0.0f };
 };
 

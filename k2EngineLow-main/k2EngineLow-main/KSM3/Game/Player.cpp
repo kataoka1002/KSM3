@@ -157,12 +157,14 @@ void Player::Update()
 	//HPが0以下になるなると死亡
 	if (m_playerHP <= 0 && m_playerDead == false)
 	{
+		
 		//死亡の演出
 		g_renderingEngine->SetGrayScale(true);	//画面全体を灰色にする
 		m_playerDead = true;
 
 		//効果音を消す
 		m_game->SEvol = 0.0f;
+		
 	}
 }
 

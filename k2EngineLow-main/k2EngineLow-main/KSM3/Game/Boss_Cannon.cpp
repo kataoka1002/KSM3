@@ -6,31 +6,29 @@
 #include "Boss.h"
 #include "Boss_Cannon_attack.h"
 #include "Drop_item.h"
+#include "Game.h"
 
 Boss_Cannon::Boss_Cannon()
 {
+	m_game = FindGO<Game>("game");
 	b_w_player = FindGO<Player>("player");
 }
 
 Boss_Cannon::~Boss_Cannon()
 {
-	DeleteGO(b_boss_weapons);
-	if (defeatState == true)
-	{
-		drop_item->drop_kinds = set_weapons;
-	}
+
 }
 
 void Boss_Cannon::Setup()
 {
-	set_weapons = 1;
 	b_w_boss = FindGO<Boss>("boss");
-	if (set_weapons == 1)
-	{
-		boss_Cannon_Render.Init("Assets/modelData/Boss_cannon.tkm");
-		boss_Cannon_Render.Update();
-	}
-
+	boss_Cannon_Render.Init("Assets/modelData/Boss_cannon.tkm");
+	boss_Cannon_Render.Update();
+	m_enemyCharacterController.Init(
+		200.0f,			//半径。
+		70.0f,			//高さ。
+		b_w_position	//座標。
+	);
 	//キャラコン。
 	//boss_riser_characterContller.Init(
 	//	450.0f,			//半径。
@@ -43,6 +41,7 @@ void Boss_Cannon::Setup()
 
 void Boss_Cannon::Update()
 {
+
 	if (fast == 0)
 	{
 		Setup();
@@ -51,17 +50,29 @@ void Boss_Cannon::Update()
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
 		Move();
+		if (firing_cound == 600) {
+			m_weaponEffect = NewGO<EffectEmitter>(0);
+			m_weaponEffect->Init(enBoss_Cannon_Charge);
+			m_weaponEffect->SetScale({ 70.0f,70.0f,70.0f });
+			Vector3 efeLP= { 0.0f,680.0f,-200.0f };
+			efeLP += b_w_position;
+			m_weaponEffect->SetPosition(efeLP);
+			m_weaponEffect->Play();
+		}
+		if (firing_cound == 735)
+		{
+			b_boss_weapons = NewGO<Boss_Cannon_attack>(1, "boss_Connon_attack");
+			attack_state = true;
+			b_boss_weapons->firing_position = b_w_position;
+			b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
+			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
+			firing_cound = 0;
+		}
+		firing_cound++;//攻撃のタイミングの計算。
 		if (attack_ok == true)
 		{
-			firing_cound++;//攻撃のタイミングの計算。
-			if (firing_cound % 108 == 0)
-			{
-				b_boss_weapons = NewGO<Boss_Cannon_attack>(1, "boss_Connon_attack");
-				attack_state = true;
-				b_boss_weapons->firing_position = b_w_position;
-				b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
-				b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
-			}
+			
+			
 		}
 	}
 	if (b_w_player->game_end_state == 1)

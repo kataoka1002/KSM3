@@ -20,6 +20,7 @@
 
 Boss::Boss() 
 {
+	boss_game = FindGO<Game>("game");
 	b_player = FindGO<Player>("player");
 	//b_boss_riser = FindGO<Boss_Riser>("boss_riser");
 	b_boss_riser = NewGO<Boss_Riser>(2, "boss_riser");
@@ -72,6 +73,16 @@ void Boss::Update()
 {
 	Damage();
 	SetHPScale();
+	if (Boss_efecount % 1000 == 0) {
+		m_BossEffect = NewGO<EffectEmitter>(0);
+		m_BossEffect->Init(enBoss_Magic_Circle);
+		m_BossEffect->SetScale({ 70.0f,70.0f,70.0f });
+		Vector3 efeLP = { 0.0f,680.0f,2000.0f };
+		efeLP += boss_position;
+		m_BossEffect->SetPosition(efeLP);
+		m_BossEffect->Play();
+	}
+	Boss_efecount++;
 
 	boss_time += g_gameTime->GetFrameDeltaTime();
 	boss_time_score += g_gameTime->GetFrameDeltaTime();
@@ -100,13 +111,13 @@ void Boss::PlayerSearch()
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
 
-	/*if (fabsf(angle) > Math::DegToRad(45.0f))
+	if (fabsf(angle) > Math::DegToRad(45.0f))
 	{
 		boss_rotation.SetRotationY(atan2(boss_forward.x, boss_forward.z));
 		boss_modelRender.SetPosition(boss_position);
 		boss_modelRender.SetRotation(boss_rotation);
 		boss_modelRender.Update();
-	}*/
+	}
 	if (g_pad[0]->IsTrigger(enButtonA)) {
 		Boss_attack = true;
 	}
@@ -176,7 +187,7 @@ void Boss::Damage()
 	//やっつけたらリザルト画面へGO!!
 	if (boss_HP <= 0.0f)
 	{
-		boss_game = FindGO<Game>("game");
+		
 
 		b_player->game_state = 2;
 		result = NewGO<Result>(1, "result");
@@ -216,8 +227,9 @@ void Boss::Render(RenderContext& rc)
 {
 	//モデルの描画。
 	boss_modelRender.Draw(rc);
-
-	m_bossHPSprite.Draw(rc);
-	m_bossHPWakuSprite.Draw(rc);
-	m_bossHPWakuSprite2.Draw(rc);
+	if (b_player->m_playerHP > 0) {
+		m_bossHPSprite.Draw(rc);
+		m_bossHPWakuSprite.Draw(rc);
+		m_bossHPWakuSprite2.Draw(rc);
+	}
 }
