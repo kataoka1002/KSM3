@@ -43,7 +43,7 @@ enum EffectName {
 	enBoss_Cannon_Charge,  //ボスのcannonの攻撃のChargeエフェ
 	enBoss_Cannon_Landing, //ボスのキャノンの攻撃着弾エフェ
 	enBoss_Magic_Circle,		//ボスのエフェ1(魔法陣)
-	enBoss_Cannon_Bullet   //ボスの弾丸エフェ
+	enBoss_Cannon_Bullet,   //ボスの弾丸エフェ
 
 	enGuide
 
