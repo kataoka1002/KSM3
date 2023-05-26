@@ -25,6 +25,7 @@ class Customize_UI_ver2;
 class Wave;
 class Title;
 class GuideLight;
+class Combo;
 
 
 //エフェクトの列挙
@@ -152,6 +153,7 @@ public:
 	Wave* m_wave = nullptr;
 	SkyCube* m_skyCube = nullptr;
 	GuideLight* m_guide = nullptr;
+	Combo* m_combo = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 

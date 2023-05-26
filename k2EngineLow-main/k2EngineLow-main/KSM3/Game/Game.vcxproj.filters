@@ -58,6 +58,7 @@
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Boss_Movie.cpp" />
     <ClCompile Include="GuideLight.cpp" />
+    <ClCompile Include="Combo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -114,5 +115,6 @@
     <ClInclude Include="Player_Macro.h" />
     <ClInclude Include="Player_custom_Macro.h" />
     <ClInclude Include="GuideLight.h" />
+    <ClInclude Include="Combo.h" />
   </ItemGroup>
 </Project>
