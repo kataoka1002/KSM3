@@ -24,7 +24,7 @@ public:
 	Left_leg_weapons* m_leftLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
 
-
+	SpriteRender m_redFrameSprite;
 	SpriteRender m_HPSprite;
 	SpriteRender m_HPBackSprite;
 	SpriteRender m_rightArmHPSprite;
@@ -34,10 +34,12 @@ public:
 	SpriteRender m_shoulderHPSprite;
 	SpriteRender m_enemyKillSprite;
 
+
 	FontRender m_killEnemyAmount;
 
 	float m_sizeX = 1.0f;
 	float UI_START_COLLAR_G = 1.0f;
 	float UI_START_COLLAR_R = 0.0f;
+	float m_redFrame_A = 0.0f;
 };
 

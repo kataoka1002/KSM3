@@ -25,7 +25,7 @@
 #include "Wave.h"
 #include "Customize_UI_ver2.h"
 #include "SkyCube.h"
-
+#include "GuideLight.h"
 
 
 
@@ -83,7 +83,7 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enMasinganKemuri, u"Assets/effect/enemy/masinganKemuri.efk");
 	EffectEngine::GetInstance()->ResistEffect(enGigatonAttack, u"Assets/effect/enemy/gigatonAttack.efk");
 	EffectEngine::GetInstance()->ResistEffect(enEnemyHassei, u"Assets/effect/enemy/newGO.efk");
-
+	EffectEngine::GetInstance()->ResistEffect(enGuide, u"Assets/effect/enemy/guide.efk");
 	
 
 	//サウンドの設定
@@ -150,6 +150,8 @@ void Game::SetUp()
 
 	//ウェーブ管理のクラス作成
 	m_wave = NewGO<Wave>(1, "wave");
+
+	
 }
 
 void Game::MakeEnemy()

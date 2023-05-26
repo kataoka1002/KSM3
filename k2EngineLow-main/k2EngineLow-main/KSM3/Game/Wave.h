@@ -2,6 +2,7 @@
 class Game;
 class Player;
 class Boss;
+class GuideLight;
 class Wave : public IGameObject
 {
 public:
@@ -18,6 +19,7 @@ public:
 	Game* m_game = nullptr;
 	Player* m_player = nullptr;
 	Boss* m_boss = nullptr;
+	GuideLight* m_guide = nullptr;
 
 	SpriteRender	m_waveStartSprite;							//ウェーブが変わった時に流れるスプライト
 	SpriteRender	m_waveStartWakuSprite;						//ウェーブが変わった時に流れるスプライトの枠
@@ -29,6 +31,7 @@ public:
 
 	int				m_waveNum = 0;								//ウェーブのナンバー(全部で3回のウェーブがある)
 	int				m_ensyutuCount = 0;
+	int				m_guideCount = 0;
 	float			m_timer = 0.0f;								//タイマー
 	float			m_wakuA = 0.0f;								//枠のα値
 	bool			m_ensyutuNow = false;						//演出中かどうか

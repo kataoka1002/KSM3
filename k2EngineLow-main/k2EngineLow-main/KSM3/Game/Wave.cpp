@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Boss.h"
+#include "GuideLight.h"
 
 Wave::Wave()
 {
@@ -114,6 +115,25 @@ void Wave::Update()
 			if (m_timer <= 0.0f || m_player->killEnemy == 10)
 			{
 				m_goBoss = true;
+
+				if (m_player->bossState != 1)	//ボス戦じゃないなら
+				{
+					//30フレーム毎にガイドの光が発生
+					if (m_guideCount % 30 == 0)
+					{
+						m_guide = NewGO<GuideLight>(1, "guidelight");		//ガイドの生成
+						Quaternion rotation;
+						rotation.SetRotationDeg(Vector3{ 0.0f,0.0f,1.0f }, rand() % 180);	//飛び出す方向をランダムで決める
+						Vector3 m_right = Vector3::AxisX;
+						rotation.Apply(m_right);
+						m_guide->m_velocity = (m_right * 8);				//初速
+						m_guide->m_targetPosition = { 0.0f,0.0f,10000.0f };	//ターゲットの設定
+						m_guide->m_position = m_player->player_position;	//発生位置
+
+						m_guideCount = 0;
+					}
+					m_guideCount++;
+				}
 			}
 		}
 
