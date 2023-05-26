@@ -73,6 +73,7 @@ Game::~Game()
 	if (boss != nullptr) {
 		DeleteGO(boss);
 	}
+	DeleteGO(m_combo);
 }
 
 bool Game::Start()
