@@ -38,6 +38,12 @@ bool PlayerUI::Start()
 	m_enemyKillSprite.SetScale({ 0.7f,0.6f,0.6f });
 	m_enemyKillSprite.Update();
 
+	m_redFrameSprite.Init("Assets/sprite/player/RedFrame.dds", 1600.0f, 900.0f);
+	m_redFrameSprite.SetPosition(Vector3::Zero);
+	m_redFrameSprite.SetScale({ 1.0f,1.0f,1.0f });
+	m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
+	m_redFrameSprite.Update();
+
 	return true;
 }
 
@@ -46,6 +52,14 @@ void PlayerUI::Update()
 	//プレイヤーの体力計算
 	m_HPSprite.SetMulColor(Damage(m_player->m_playerHP, m_player->m_playerHPMax));
 	m_HPSprite.Update();
+
+	//赤いフレームの生成
+	if (m_player->m_playerHP <= m_player->m_playerHPMax / 2.0f)
+	{
+		m_redFrame_A = 1.0f - (m_player->m_playerHP * (1.0f / m_player->m_playerHPMax));
+		m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
+		m_redFrameSprite.Update();
+	}
 
 	//敵を殺した数の表示
 	wchar_t text[256];
@@ -155,13 +169,18 @@ void PlayerUI::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0 && m_player->m_playerDead == false)
 	{
+		m_redFrameSprite.Draw(rc);
+
 		m_HPBackSprite.Draw(rc);
 		m_HPSprite.Draw(rc);
 
-		m_enemyKillSprite.Draw(rc);
-
-		//殺した数の表示
-		m_killEnemyAmount.Draw(rc);
+		if (m_player->bossState != 1)
+		{ 
+			//キル数の枠
+			m_enemyKillSprite.Draw(rc);
+			//キル数の表示
+			m_killEnemyAmount.Draw(rc);
+		}
 
 		//それぞれがヌルじゃないなら描画
 		if (m_rightArm != nullptr) 

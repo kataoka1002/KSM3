@@ -24,6 +24,7 @@ class PlayerUI;
 class Customize_UI_ver2;
 class Wave;
 class Title;
+class GuideLight;
 
 
 //エフェクトの列挙
@@ -36,7 +37,8 @@ enum EffectName {
 	enSenkanhouKemuri,	//戦艦砲の弾の煙
 	enMasinganKemuri,	//マシンガンの弾の煙
 	enGigatonAttack,	//ギガトンキャノンの攻撃エフェ
-	enEnemyHassei
+	enEnemyHassei,
+	enGuide
 };
 
 //サウンドの列挙
@@ -142,6 +144,7 @@ public:
 	PlayerUI* m_playerUI = nullptr;
 	Wave* m_wave = nullptr;
 	SkyCube* m_skyCube = nullptr;
+	GuideLight* m_guide = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 
