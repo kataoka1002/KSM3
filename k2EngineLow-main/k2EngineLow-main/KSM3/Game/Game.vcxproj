@@ -254,6 +254,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GigatonCannonAttack.cpp" />
+    <ClCompile Include="GuideLight.cpp" />
     <ClCompile Include="Left_arm_weapons.cpp" />
     <ClCompile Include="Left_leg_weapons.cpp" />
     <ClCompile Include="Lighting.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GigatonCannonAttack.h" />
+    <ClInclude Include="GuideLight.h" />
     <ClInclude Include="Left_arm_weapons.h" />
     <ClInclude Include="Left_leg_weapons.h" />
     <ClInclude Include="Lighting.h" />

@@ -78,7 +78,7 @@ public:
 	int m_enemyGameState = 0;
 	int m_attackCount = 0;							//攻撃の間隔
 	int m_sunaHassei = 0;							//砂ぼこりの発生間隔
-	int m_flashTime = 20;
+	int m_flashTime = 5;
 	float m_distToPlayer;							//プレイヤーまでの距離
 	float m_enemyHP = HP;							//エネミーの体力
 	float m_enemyHPMax = HP;						//エネミーの体力の最大値

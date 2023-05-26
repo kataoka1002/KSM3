@@ -23,15 +23,26 @@ bool PlayerUI::Start()
 	m_player = FindGO<Player>("player");
 
 	m_HPSprite.Init("Assets/sprite/player/playerUI.dds", 691.0f, 597.0f);
-	m_HPSprite.SetPosition({ 600.0f,-300.0f,0.0f });
+	m_HPSprite.SetPosition({ 610.0f,-300.0f,0.0f });
 	m_HPSprite.SetScale({ 0.4f,0.4f,0.4f });
 	m_HPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 	m_HPSprite.Update();
 
-	m_HPBackSprite.Init("Assets/sprite/player/Player_UI_cushion.dds", 888.0f, 888.0f);
-	m_HPBackSprite.SetPosition({ 600.0f,-300.0f,0.0f });
+	m_HPBackSprite.Init("Assets/sprite/player/PlayerUIWaku.dds", 2220.0f, 1080.0f);
+	m_HPBackSprite.SetPosition({ 730.0f,-340.0f,0.0f });
 	m_HPBackSprite.SetScale({ 0.6f,0.6f,0.6f });
 	m_HPBackSprite.Update();
+
+	m_enemyKillSprite.Init("Assets/sprite/player/enemyKillAmount.dds", 1980.0f, 1020.0f);
+	m_enemyKillSprite.SetPosition({ 600.0f,350.0f,0.0f });
+	m_enemyKillSprite.SetScale({ 0.7f,0.6f,0.6f });
+	m_enemyKillSprite.Update();
+
+	m_redFrameSprite.Init("Assets/sprite/player/RedFrame.dds", 1600.0f, 900.0f);
+	m_redFrameSprite.SetPosition(Vector3::Zero);
+	m_redFrameSprite.SetScale({ 1.0f,1.0f,1.0f });
+	m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
+	m_redFrameSprite.Update();
 
 	return true;
 }
@@ -41,6 +52,24 @@ void PlayerUI::Update()
 	//プレイヤーの体力計算
 	m_HPSprite.SetMulColor(Damage(m_player->m_playerHP, m_player->m_playerHPMax));
 	m_HPSprite.Update();
+
+	//赤いフレームの生成
+	if (m_player->m_playerHP <= m_player->m_playerHPMax / 2.0f)
+	{
+		m_redFrame_A = 1.0f - (m_player->m_playerHP * (1.0f / m_player->m_playerHPMax));
+		m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
+		m_redFrameSprite.Update();
+	}
+
+	//敵を殺した数の表示
+	wchar_t text[256];
+	swprintf_s(text, 256, L"%02d　/10",m_player->killEnemy);
+	m_killEnemyAmount.SetPivot({ 0.0f,0.5f });
+	m_killEnemyAmount.SetText(text);
+	m_killEnemyAmount.SetPosition(Vector3(580.0f, 465.0f, 0.0f));
+	m_killEnemyAmount.SetShadowParam(true, 1.0f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+	m_killEnemyAmount.SetScale(1.2f);
+	m_killEnemyAmount.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//各武器の体力計算
 	if (m_rightArm != nullptr)
@@ -98,35 +127,35 @@ void PlayerUI::WeaponUISetUp(int num)
 	{
 	case 1:	//右腕
 		m_rightArmHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_rightArmHPSprite.SetPosition({ 700.0f,-250.0f,0.0f });
+		m_rightArmHPSprite.SetPosition({ 710.0f,-250.0f,0.0f });
 		m_rightArmHPSprite.SetScale({ 0.1f,0.1f,0.1f });
 		m_rightArmHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_rightArmHPSprite.Update();
 		break;
 	case 2:	//右足
 		m_rightLegHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_rightLegHPSprite.SetPosition({ 720.0f,-330.0f,0.0f });
+		m_rightLegHPSprite.SetPosition({ 730.0f,-330.0f,0.0f });
 		m_rightLegHPSprite.SetScale({ 0.1f,0.1f,0.1f });
 		m_rightLegHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_rightLegHPSprite.Update();
 		break;
 	case 3:	//左腕
 		m_leftArmHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_leftArmHPSprite.SetPosition({ 500.0f,-250.0f,0.0f });
+		m_leftArmHPSprite.SetPosition({ 510.0f,-250.0f,0.0f });
 		m_leftArmHPSprite.SetScale({ -0.1f,0.1f,0.1f });
 		m_leftArmHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_leftArmHPSprite.Update();
 		break;
 	case 4:	//左足
 		m_leftLegHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_leftLegHPSprite.SetPosition({ 480.0f,-330.0f,0.0f });
+		m_leftLegHPSprite.SetPosition({ 490.0f,-330.0f,0.0f });
 		m_leftLegHPSprite.SetScale({ -0.1f,0.1f,0.1f });
 		m_leftLegHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_leftLegHPSprite.Update();
 		break;
 	case 5:	//肩
 		m_shoulderHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
-		m_shoulderHPSprite.SetPosition({ 605.0f,-150.0f,0.0f });
+		m_shoulderHPSprite.SetPosition({ 615.0f,-150.0f,0.0f });
 		m_shoulderHPSprite.SetScale({ 0.1f,0.1f,0.1f });
 		m_shoulderHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_shoulderHPSprite.Update();
@@ -140,8 +169,18 @@ void PlayerUI::Render(RenderContext& rc)
 {
 	if (m_player->game_state == 0 && m_player->m_playerDead == false)
 	{
+		m_redFrameSprite.Draw(rc);
+
 		m_HPBackSprite.Draw(rc);
 		m_HPSprite.Draw(rc);
+
+		if (m_player->bossState != 1)
+		{ 
+			//キル数の枠
+			m_enemyKillSprite.Draw(rc);
+			//キル数の表示
+			m_killEnemyAmount.Draw(rc);
+		}
 
 		//それぞれがヌルじゃないなら描画
 		if (m_rightArm != nullptr) 
