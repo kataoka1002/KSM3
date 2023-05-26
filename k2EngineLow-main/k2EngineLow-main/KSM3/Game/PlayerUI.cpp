@@ -44,6 +44,8 @@ bool PlayerUI::Start()
 	m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
 	m_redFrameSprite.Update();
 
+	
+
 	return true;
 }
 
@@ -181,6 +183,8 @@ void PlayerUI::Render(RenderContext& rc)
 			//ƒLƒ‹”‚Ì•\¦
 			m_killEnemyAmount.Draw(rc);
 		}
+
+		
 
 		//‚»‚ê‚¼‚ê‚ªƒkƒ‹‚¶‚á‚È‚¢‚È‚ç•`‰æ
 		if (m_rightArm != nullptr) 

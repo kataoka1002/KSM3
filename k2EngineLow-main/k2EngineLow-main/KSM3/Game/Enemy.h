@@ -8,6 +8,7 @@ class Drop_item;
 class Game;
 class Enemy_HP_UI;
 
+
 class Enemy:public IGameObject
 {
 public:

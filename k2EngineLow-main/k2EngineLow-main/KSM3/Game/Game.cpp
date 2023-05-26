@@ -26,7 +26,7 @@
 #include "Customize_UI_ver2.h"
 #include "SkyCube.h"
 #include "GuideLight.h"
-
+#include "Combo.h"
 
 
 Game::Game()
@@ -151,7 +151,8 @@ void Game::SetUp()
 	//ウェーブ管理のクラス作成
 	m_wave = NewGO<Wave>(1, "wave");
 
-	
+	//コンボ管理のクラス
+	m_combo = NewGO<Combo>(1, "combo");
 }
 
 void Game::MakeEnemy()
