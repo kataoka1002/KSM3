@@ -69,6 +69,10 @@ Game::~Game()
 	DeleteGO(game_ui);
 	DeleteGO(m_skyCube);
 	DeleteGO(m_wave);
+
+	if (boss != nullptr) {
+		DeleteGO(boss);
+	}
 }
 
 bool Game::Start()
@@ -83,7 +87,15 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enMasinganKemuri, u"Assets/effect/enemy/masinganKemuri.efk");
 	EffectEngine::GetInstance()->ResistEffect(enGigatonAttack, u"Assets/effect/enemy/gigatonAttack.efk");
 	EffectEngine::GetInstance()->ResistEffect(enEnemyHassei, u"Assets/effect/enemy/newGO.efk");
+
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Charge, u"Assets/effect/enemy/Boss_cannon.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Landing, u"Assets/effect/enemy/Boss_cannon_Landing.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Magic_Circle, u"Assets/effect/enemy/Boss_Magic_Circle.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Bullet, u"Assets/effect/enemy/Boss_Cannon_Bullet.efk");
+
+
 	EffectEngine::GetInstance()->ResistEffect(enGuide, u"Assets/effect/enemy/guide.efk");
+
 	
 
 	//サウンドの設定
@@ -104,6 +116,7 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enSoutyakuSE, "Assets/audio/soutyakuon.wav");
 	g_soundEngine->ResistWaveFileBank(enByuSE, "Assets/audio/byu.wav");
 	g_soundEngine->ResistWaveFileBank(enPlayerDead, "Assets/audio/player/playerDead.wav");
+
 
 	//m_fade = FindGO<Fade>("fade");
 	//m_fade->StartFadeIn();
@@ -210,7 +223,7 @@ void Game::GameNow()
 	}
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 9550.0f  && boss == nullptr && m_wave->m_goBoss == true)
+	if (player->player_position.z >= 9550.0f  && boss == nullptr /*&& m_wave->m_goBoss == true*/)
 	{
 		//ローディング画面が表示されたらボスを作り出す
 		if (m_wave->Loading_count == 10) {

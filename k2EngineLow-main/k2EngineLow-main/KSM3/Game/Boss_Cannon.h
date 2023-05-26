@@ -5,6 +5,7 @@ class Player;
 class Boss;
 class Boss_Cannon_attack;
 class Drop_item;
+class Game;
 
 class Boss_Cannon :public IGameObject
 {
@@ -22,8 +23,11 @@ public:
 	Boss* b_w_boss;
 	Boss_Cannon_attack* b_boss_weapons;
 	Drop_item* drop_item;
+	Game* m_game;
+	EffectEmitter* m_weaponEffect = nullptr;
 
 	//CharacterController boss_riser_characterContller;
+	CharacterController m_enemyCharacterController;	//エネミーキャラコン
 	Quaternion b_w_rotation;
 	Vector3 b_w_position;
 	Vector3 b_w_moveSpeed;
