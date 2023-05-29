@@ -3,6 +3,7 @@ class Game;
 class Player;
 class Boss;
 class GuideLight;
+class Wave3Clear;
 class Wave : public IGameObject
 {
 public:
@@ -20,6 +21,7 @@ public:
 	Player* m_player = nullptr;
 	Boss* m_boss = nullptr;
 	GuideLight* m_guide = nullptr;
+	Wave3Clear* m_waveClear = nullptr;
 
 	SpriteRender	m_waveStartSprite;							//ウェーブが変わった時に流れるスプライト
 	SpriteRender	m_waveStartWakuSprite;						//ウェーブが変わった時に流れるスプライトの枠
@@ -27,6 +29,8 @@ public:
 	SpriteRender	m_waveGageWaku;								//ウェーブのゲージ枠
 	SpriteRender	m_TimerSprite;								//タイマー
 	SpriteRender	m_TimerSprite2;								//タイマー2
+	SpriteRender	m_missionSprite;							//ミッション
+	SpriteRender	Loading_Render;
 
 
 	int				m_waveNum = 0;								//ウェーブのナンバー(全部で3回のウェーブがある)
@@ -39,7 +43,6 @@ public:
 	FontRender		m_timerFont;								//タイマーを表示するフォント
 	Vector3			m_spritePos = Vector3::Zero;				//スプライトを動かすための変数
 	Vector3         m_moveSpeed = Vector3::Zero;
-	SpriteRender Loading_Render;
 	Quaternion m_timerRot;
 	Vector4 Loading_color = { 1.0f,1.0f,1.0f,0.0f };
 	int Loading_count = 0;

@@ -6,7 +6,7 @@
 #include "Left_arm_weapons.h";
 #include "Left_leg_weapons.h";
 #include "Shoulder_weapons.h";
-
+#include "Wave.h"
 
 PlayerUI::PlayerUI()
 {
@@ -21,6 +21,7 @@ PlayerUI::~PlayerUI()
 bool PlayerUI::Start()
 {
 	m_player = FindGO<Player>("player");
+	m_wave = FindGO<Wave>("wave");
 
 	m_HPSprite.Init("Assets/sprite/player/playerUI.dds", 691.0f, 597.0f);
 	m_HPSprite.SetPosition({ 610.0f,-300.0f,0.0f });
@@ -43,6 +44,16 @@ bool PlayerUI::Start()
 	m_redFrameSprite.SetScale({ 1.0f,1.0f,1.0f });
 	m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
 	m_redFrameSprite.Update();
+
+	m_L1Sprite.Init("Assets/sprite/player/buttonL1.dds", 1600.0f, 900.0f);
+	m_L1Sprite.SetPosition({ -650.0f,-330.0f,0.0f });
+	m_L1Sprite.SetScale(0.2f);
+	m_L1Sprite.Update();
+
+	m_R2Sprite.Init("Assets/sprite/player/buttonR2.dds", 1600.0f, 900.0f);
+	m_R2Sprite.SetPosition({ -470.0f,-330.0f,0.0f });
+	m_R2Sprite.SetScale(0.2f);
+	m_R2Sprite.Update();
 
 	return true;
 }
@@ -174,13 +185,18 @@ void PlayerUI::Render(RenderContext& rc)
 		m_HPBackSprite.Draw(rc);
 		m_HPSprite.Draw(rc);
 
-		if (m_player->bossState != 1)
+		m_L1Sprite.Draw(rc);
+		m_R2Sprite.Draw(rc);
+
+		if (m_player->bossState != 1 && m_wave->m_waveClear == nullptr)	//ウェーブ３クリア演出中は表示しない
 		{ 
 			//キル数の枠
 			m_enemyKillSprite.Draw(rc);
 			//キル数の表示
 			m_killEnemyAmount.Draw(rc);
 		}
+
+		
 
 		//それぞれがヌルじゃないなら描画
 		if (m_rightArm != nullptr) 

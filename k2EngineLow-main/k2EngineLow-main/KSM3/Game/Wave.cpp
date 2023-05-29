@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Boss.h"
 #include "GuideLight.h"
+#include "Wave3Clear.h"
 
 Wave::Wave()
 {
@@ -32,6 +33,10 @@ Wave::Wave()
 	m_TimerSprite.SetPosition({ -760.0f,395.0f,0.0f });
 	m_TimerSprite.SetScale({ 0.05f,0.05f,0.05f });
 	m_TimerSprite.Update();
+
+	m_missionSprite.Init("Assets/sprite/wave/mission.dds", 1920.0f, 1080.0f);
+	m_missionSprite.SetPosition({ 600.0f,200.0f,0.0f });
+	m_missionSprite.Update();
 	
 
 	//Bossへの遷移のLoading画面の読み込み
@@ -114,6 +119,7 @@ void Wave::Update()
 			//エネミーを10体倒すか、ウェーブタイマーが0になるとボス戦へ行けるようになる
 			if (m_timer <= 0.0f || m_player->killEnemy == 10)
 			{
+				static bool m_spriteChangeFlag = false;
 				m_goBoss = true;
 
 				if (m_player->bossState != 1)	//ボス戦じゃないなら
@@ -133,6 +139,18 @@ void Wave::Update()
 						m_guideCount = 0;
 					}
 					m_guideCount++;
+				}
+
+				if (m_spriteChangeFlag == false)
+				{
+					//ミッション１クリアのスプライトに変更する
+					m_missionSprite.Init("Assets/sprite/wave/mission1clear.dds", 1920.0f, 1080.0f);
+					m_missionSprite.Update();
+
+					//ウェーブ3クリアの演出
+					m_waveClear = NewGO<Wave3Clear>(3, "wave3clear");
+
+					m_spriteChangeFlag = true;
 				}
 			}
 		}
@@ -311,9 +329,13 @@ void Wave::Render(RenderContext& rc)
 		{
 			m_waveGageWaku.Draw(rc);
 			m_waveGageNakami.Draw(rc);
-			m_timerFont.Draw(rc);
-
-			m_TimerSprite.Draw(rc);
+			if (m_waveClear == nullptr)
+			{
+				m_timerFont.Draw(rc);
+			}
+			
+			m_TimerSprite.Draw(rc);	//クリア演出中は表示しない
+			
 
 			//演出中のみ表示
 			if (m_ensyutuNow == true)
@@ -321,6 +343,11 @@ void Wave::Render(RenderContext& rc)
 				m_waveStartWakuSprite.Draw(rc);
 				m_waveStartSprite.Draw(rc);
 			}
+		}
+
+		if (m_player->m_playerDead != true)
+		{
+			m_missionSprite.Draw(rc);	//プレイヤーが生きているならミッションを表示する
 		}
 	}
 	Loading_Render.Draw(rc);

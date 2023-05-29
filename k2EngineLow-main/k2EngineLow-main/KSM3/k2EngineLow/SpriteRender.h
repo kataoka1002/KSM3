@@ -28,6 +28,12 @@ namespace nsK2EngineLow {
 		{
 			m_scale = scale;
 		}
+		void SetScale(const float&scale)
+		{
+			m_scale.x = scale;
+			m_scale.y = scale;
+			m_scale.z = scale;
+		}
 		//‘å‚«‚³‚ðŽæ“¾
 		const Vector3& GetScale() const
 		{

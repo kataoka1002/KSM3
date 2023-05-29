@@ -9,6 +9,7 @@
 #include "Enemy_Bullet.h"
 #include "Enemy_HP_UI.h"
 #include "GameCamera.h"
+#include "Combo.h"
 
 
 Enemy_Far::Enemy_Far()
@@ -471,6 +472,10 @@ void Enemy_Far::ItemDrop()
 	//画面を揺らす
 	GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
 	m_camera->VibFlag = true;
+
+	//コンボの処理
+	Combo* m_combo = FindGO<Combo>("combo");
+	m_combo->ComboUpdate();
 
 	//リストから消す
 	m_game->RemoveEnemyFarFromList(this);

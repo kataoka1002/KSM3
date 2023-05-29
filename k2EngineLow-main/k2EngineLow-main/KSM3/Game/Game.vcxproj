@@ -239,6 +239,7 @@
     <ClCompile Include="Boss_Turbo.cpp" />
     <ClCompile Include="Boss_Turbo_attack.cpp" />
     <ClCompile Include="BoxMove.cpp" />
+    <ClCompile Include="Combo.cpp" />
     <ClCompile Include="Core_weapons.cpp" />
     <ClCompile Include="Core_weapons_attack.cpp" />
     <ClCompile Include="Customize_area.cpp" />
@@ -278,6 +279,7 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Game_UI.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="Wave3Clear.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
@@ -296,6 +298,7 @@
     <ClInclude Include="Boss_Turbo.h" />
     <ClInclude Include="Boss_Turbo_attack.h" />
     <ClInclude Include="BoxMove.h" />
+    <ClInclude Include="Combo.h" />
     <ClInclude Include="Core_weapons.h" />
     <ClInclude Include="Core_weapons_attack.h" />
     <ClInclude Include="Customize_area.h" />
@@ -333,6 +336,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Game_UI.h" />
     <ClInclude Include="Wave.h" />
+    <ClInclude Include="Wave3Clear.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

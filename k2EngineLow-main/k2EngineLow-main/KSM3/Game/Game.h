@@ -25,6 +25,7 @@ class Customize_UI_ver2;
 class Wave;
 class Title;
 class GuideLight;
+class Combo;
 
 
 //エフェクトの列挙
@@ -43,6 +44,7 @@ enum EffectName {
 	enBoss_Cannon_Landing, //ボスのキャノンの攻撃着弾エフェ
 	enBoss_Magic_Circle,		//ボスのエフェ1(魔法陣)
 	enBoss_Cannon_Bullet,   //ボスの弾丸エフェ
+
 	enGuide,
 	enBoss_Dozar_Charge,	//ボスドーザーの攻撃Charge
 	enBoss_Dozar_efe,		//ボスドーザーの攻撃エフェ
@@ -53,6 +55,8 @@ enum EffectName {
 	enBoss_Death2,			//ボスの死2
 	enBoss_Drill,			//ボスドリルの攻撃エフェ
 	enBoss_Drill_Landing	//ボスドリルの着弾エフェ
+
+
 
 };
 
@@ -160,6 +164,7 @@ public:
 	Wave* m_wave = nullptr;
 	SkyCube* m_skyCube = nullptr;
 	GuideLight* m_guide = nullptr;
+	Combo* m_combo = nullptr;
 
 	//Fade* m_fade = nullptr;		//フェード。
 

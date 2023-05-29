@@ -5,6 +5,7 @@ class Right_leg_weapons;
 class Left_arm_weapons;
 class Left_leg_weapons;
 class Shoulder_weapons;
+class Wave;
 
 class PlayerUI:public IGameObject
 {
@@ -23,6 +24,7 @@ public:
 	Left_arm_weapons* m_leftArm = nullptr;
 	Left_leg_weapons* m_leftLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
+	Wave* m_wave = nullptr;
 
 	SpriteRender m_redFrameSprite;
 	SpriteRender m_HPSprite;
@@ -33,7 +35,9 @@ public:
 	SpriteRender m_leftLegHPSprite;
 	SpriteRender m_shoulderHPSprite;
 	SpriteRender m_enemyKillSprite;
-
+	SpriteRender m_L1Sprite;
+	SpriteRender m_R2Sprite;
+	
 
 	FontRender m_killEnemyAmount;
 
