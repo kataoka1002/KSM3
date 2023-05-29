@@ -65,5 +65,5 @@ public:
 	int Bullet_efe_count = 0;
 	Vector3 efePosi = Vector3::Zero;
 	bool fast = true;
-
+	bool farst = true;
 };

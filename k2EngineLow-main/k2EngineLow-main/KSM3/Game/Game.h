@@ -54,8 +54,8 @@ enum EffectName {
 	enBoss_Death,			//ボスの死
 	enBoss_Death2,			//ボスの死2
 	enBoss_Drill,			//ボスドリルの攻撃エフェ
-	enBoss_Drill_Landing	//ボスドリルの着弾エフェ
-
+	enBoss_Drill_Landing,	//ボスドリルの着弾エフェ
+	enBoss_Shovel_shock		//ボスショベルのshockエフェ
 
 
 };

@@ -74,7 +74,7 @@ bool Boss_Riser_attack::Start() {
 void Boss_Riser_attack::DestroyWithImpactEffect() {
 		m_weaponEffect = NewGO<EffectEmitter>(0);
 		m_weaponEffect->Init(enBoss_Dozar_Landing);
-		m_weaponEffect->SetScale({ 70.0f,70.0f,70.0f });
+		m_weaponEffect->SetScale({ 50.0f,50.0f,50.0f });
 		m_weaponEffect->SetPosition(firing_position);
 		m_weaponEffect->Play();
 		efePosi = firing_position;
@@ -139,7 +139,10 @@ void Boss_Riser_attack::Update()
 
 		if (firing_position.y <= 0.0f)
 		{
-			DestroyWithImpactEffect();
+			if (farst == true) {
+				DestroyWithImpactEffect();
+				farst = false;
+			}
 		}
 		b_a_Bullet.Update();
 		Damage(false);
@@ -307,7 +310,10 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffPlayer.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				b_a_player->m_playerHP -= 200.0f;
-				DestroyWithImpactEffect();
+				if (farst == true) {
+					DestroyWithImpactEffect();
+					farst = false;
+				}
 			}
 
 		}
@@ -325,7 +331,10 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffLeftArm.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_leftArm->L_a_w_HP -= 200.0f;
-				DestroyWithImpactEffect();
+				if (farst == true) {
+					DestroyWithImpactEffect();
+					farst = false;
+				}
 			}
 		}
 		//---------------------------------------------------------------------------------------------------
@@ -342,7 +351,10 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffLeftLeg.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_leftLeg->L_l_w_HP -= 200.0f;
-				DestroyWithImpactEffect();
+				if (farst == true) {
+					DestroyWithImpactEffect();
+					farst = false;
+				}
 			}
 
 		}
@@ -360,7 +372,10 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffRightArm.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_rightArm->m_rightArmHP -= 200.0f;
-				DestroyWithImpactEffect();
+				if (farst == true) {
+					DestroyWithImpactEffect();
+					farst = false;
+				}
 			}
 
 		}
@@ -378,7 +393,10 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffRightLeg.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_rightLeg->R_l_w_HP -= 200.0f;
-				DestroyWithImpactEffect();
+				if (farst == true) {
+					DestroyWithImpactEffect();
+					farst = false;
+				}
 			}
 
 		}
@@ -396,7 +414,10 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffShoulder.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_shoulder->S_w_HP -= 200.0f;
-				DestroyWithImpactEffect();
+				if (farst == true) {
+					DestroyWithImpactEffect();
+					farst = false;
+				}
 			}
 
 		}
