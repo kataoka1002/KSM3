@@ -43,7 +43,7 @@ void Core_weapons::Update() {
 	if(fast!=0) {
 		if (cw_player->game_state == 0) {
 			Move();
-			if (g_pad[0]->IsPress(enButtonRB1)) {
+			if (g_pad[0]->IsPress(enButtonLB1)) {
 
 				if (set_weapons == 1 && firing_cound % 60 == 0) {
 

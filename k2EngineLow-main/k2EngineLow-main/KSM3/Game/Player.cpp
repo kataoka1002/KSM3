@@ -335,11 +335,11 @@ void Player::RunSE()
 
 void Player::MachineGunSE()
 {
-	if (g_pad[0]->IsPress(enButtonRB1) && m_machineGunSE->IsPlaying() != true)
+	if (g_pad[0]->IsPress(enButtonLB1) && m_machineGunSE->IsPlaying() != true)
 	{
 		m_machineGunSE->Play(true);	//続けて再生
 	}
-	else if(g_pad[0]->IsPress(enButtonRB1) == false)
+	else if(g_pad[0]->IsPress(enButtonLB1) == false)
 	{
 		m_machineGunSE->Stop();		//攻撃じゃないなら停止
 	}

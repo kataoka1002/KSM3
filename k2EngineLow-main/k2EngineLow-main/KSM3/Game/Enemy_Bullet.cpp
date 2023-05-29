@@ -76,6 +76,10 @@ bool Enemy_Bullet::Start()
 {
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 	m_player = FindGO<Player>("player");
+	if (m_player->game_state == 2)
+	{
+		DeleteGO(this);
+	}
 	m_coreWeapons = FindGO<Core_weapons>("core_weapons");
 	m_game = FindGO<Game>("game");
 
@@ -224,6 +228,7 @@ void Enemy_Bullet::Setup()
 
 void Enemy_Bullet::Update() 
 {
+
 	if (m_player->game_state == 0)
 	{
 		//ˆÊ’u‚ª0ˆÈ‰º‚É‚È‚é‚ÆÁ‚¦‚é(‘S‚Ä‚Ì’e‹¤’Ê)

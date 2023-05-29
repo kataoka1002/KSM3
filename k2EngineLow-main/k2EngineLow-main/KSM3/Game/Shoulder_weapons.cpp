@@ -93,7 +93,7 @@ void Shoulder_weapons::Update()
 		}
 
 		//攻撃
-		if (g_pad[0]->IsPress(enButtonRB1)) 
+		if (g_pad[0]->IsPress(enButtonLB1))
 		{
 			//武器がマシンガンの場合
 			if (s_w_player->p_custom_point[0][1] == 2 && firing_cound % 5 == 0)

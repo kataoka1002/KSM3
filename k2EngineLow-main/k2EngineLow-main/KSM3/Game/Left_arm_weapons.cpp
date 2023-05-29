@@ -89,7 +89,7 @@ void Left_arm_weapons::Update()
 		}
 
 		//弾の生成
-		if (g_pad[0]->IsPress(enButtonRB1)) 
+		if (g_pad[0]->IsPress(enButtonLB1))
 		{
 			if (l_a_w_player->p_custom_point[0][2] == 2 && firing_cound % 5 == 0)
 			{
