@@ -45,7 +45,15 @@ bool PlayerUI::Start()
 	m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
 	m_redFrameSprite.Update();
 
-	
+	m_L1Sprite.Init("Assets/sprite/player/buttonL1.dds", 1600.0f, 900.0f);
+	m_L1Sprite.SetPosition({ -650.0f,-330.0f,0.0f });
+	m_L1Sprite.SetScale(0.2f);
+	m_L1Sprite.Update();
+
+	m_R2Sprite.Init("Assets/sprite/player/buttonR2.dds", 1600.0f, 900.0f);
+	m_R2Sprite.SetPosition({ -470.0f,-330.0f,0.0f });
+	m_R2Sprite.SetScale(0.2f);
+	m_R2Sprite.Update();
 
 	return true;
 }
@@ -176,6 +184,9 @@ void PlayerUI::Render(RenderContext& rc)
 
 		m_HPBackSprite.Draw(rc);
 		m_HPSprite.Draw(rc);
+
+		m_L1Sprite.Draw(rc);
+		m_R2Sprite.Draw(rc);
 
 		if (m_player->bossState != 1 && m_wave->m_waveClear == nullptr)	//ウェーブ３クリア演出中は表示しない
 		{ 

@@ -169,7 +169,7 @@ void Game::SetUp()
 	m_playerUI = NewGO<PlayerUI>(2, "playerui");
 
 	//コンボ管理のクラス
-	m_combo = NewGO<Combo>(1, "combo");
+	m_combo = NewGO<Combo>(2, "combo");
 }
 
 void Game::MakeEnemy()
