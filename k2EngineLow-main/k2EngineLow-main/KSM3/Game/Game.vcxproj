@@ -278,6 +278,7 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Game_UI.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="Wave3Clear.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
@@ -333,6 +334,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Game_UI.h" />
     <ClInclude Include="Wave.h" />
+    <ClInclude Include="Wave3Clear.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
