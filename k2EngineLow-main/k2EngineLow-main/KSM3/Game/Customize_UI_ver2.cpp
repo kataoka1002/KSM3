@@ -415,6 +415,17 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(1, 0, 0);
 			
 		}
+		if (g_pad[0]->IsTrigger(enButtonA) && window_count == 0)
+		{
+			//注意書きウィンドウの表示
+			window_open = true;
+			confirmatino_window_open = true;
+			window_select = true;
+			column = 0, line = 1;
+			recovery = true;
+			//決定音再生
+			PlaySE(enKetteiSE, 2.0f);
+		}
 		
 		break;
 	case 1:	//肩
@@ -768,6 +779,7 @@ void Customize_UI_ver2::tranceOut()
 	//ゲーム画面に戻る
 	if (trance_sheet_count >= 64)
 	{
+		recovery = false;
 		m_player->game_state = 0;
 	}
 
@@ -806,85 +818,91 @@ void Customize_UI_ver2::Window()
 			//Aボタンが押されたら実行(最初の3フレームは反応しない)
 			if (g_pad[0]->IsTrigger(enButtonA) && window_count != 1 && window_count != 2 && window_count != 3)
 			{
-				//プレイヤーの部位に落ちていた武器の種類を教えてやる
-				m_player->p_custom_point[column][line] = custom_kinds;
-				
+				if (recovery == false) {
+					//プレイヤーの部位に落ちていた武器の種類を教えてやる
+					m_player->p_custom_point[column][line] = custom_kinds;
 
-				//カーソルを合わせている位置によって作り出す武器を変える
-				switch (selection_position)
-				{
-				case 0:
-					
-					break;
-				case 1:
-					if (m_shoulderWeapon == nullptr) 
-					{
-						m_shoulderWeapon = NewGO<Shoulder_weapons>(2, "shoulder_weapons");	
-						//部位に武器の種類を教える
-						m_shoulderWeapon->set_weapons = custom_kinds;
-						Setup();	//モデル更新
-						//武器取り付けを承認してカスタム画面が終わる時
-						tranceOutInit();
-						//決定音再生
-						PlaySE(enSoutyakuSE, 2.0f);
-					}
-					break;
-				case 2:
-					if (m_rightArmWeapon == nullptr)
-					{
-						m_rightArmWeapon = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
-						//部位に武器の種類を教える
-						m_rightArmWeapon->set_weapons = custom_kinds;
-						Setup();	//モデル更新
-						//武器取り付けを承認してカスタム画面が終わる時
-						tranceOutInit();
-						//決定音再生
-						PlaySE(enSoutyakuSE, 2.0f);
-					}
-					break;
-				case 3:
-					if (m_leftArmWeapon == nullptr)
-					{
-						m_leftArmWeapon = NewGO<Left_arm_weapons>(2, "left_arm_weapons");
-						//部位に武器の種類を教える
-						m_leftArmWeapon->set_weapons = custom_kinds;
-						Setup();	//モデル更新
-						//武器取り付けを承認してカスタム画面が終わる時
-						tranceOutInit();
-						//決定音再生
-						PlaySE(enSoutyakuSE, 2.0f);
-					}
-					break;
-				case 4:
-					if (m_rightLegWeapon == nullptr)
-					{
-						m_rightLegWeapon = NewGO<Right_leg_weapons>(2, "right_leg_weapons");
-						//部位に武器の種類を教える
-						m_rightLegWeapon->set_weapons = custom_kinds;
-						Setup();	//モデル更新
-						//武器取り付けを承認してカスタム画面が終わる時
-						tranceOutInit();
-						//決定音再生
-						PlaySE(enSoutyakuSE, 2.0f);
-					}
-					break;
-				case 5:
-					if (m_leftLegWeapon == nullptr)
-					{
-						m_leftLegWeapon = NewGO<Left_leg_weapons>(2, "left_leg_weapons");
-						//部位に武器の種類を教える
-						m_leftLegWeapon->set_weapons = custom_kinds;
-						Setup();	//モデル更新
-						//武器取り付けを承認してカスタム画面が終わる時
-						tranceOutInit();
-						//決定音再生
-						PlaySE(enSoutyakuSE, 2.0f);
-					}
-				default:
-					break;
 
+					//カーソルを合わせている位置によって作り出す武器を変える
+					switch (selection_position)
+					{
+					case 0:
+
+						break;
+					case 1:
+						if (m_shoulderWeapon == nullptr)
+						{
+							m_shoulderWeapon = NewGO<Shoulder_weapons>(2, "shoulder_weapons");
+							//部位に武器の種類を教える
+							m_shoulderWeapon->set_weapons = custom_kinds;
+							Setup();	//モデル更新
+							//武器取り付けを承認してカスタム画面が終わる時
+							tranceOutInit();
+							//決定音再生
+							PlaySE(enSoutyakuSE, 2.0f);
+						}
+						break;
+					case 2:
+						if (m_rightArmWeapon == nullptr)
+						{
+							m_rightArmWeapon = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
+							//部位に武器の種類を教える
+							m_rightArmWeapon->set_weapons = custom_kinds;
+							Setup();	//モデル更新
+							//武器取り付けを承認してカスタム画面が終わる時
+							tranceOutInit();
+							//決定音再生
+							PlaySE(enSoutyakuSE, 2.0f);
+						}
+						break;
+					case 3:
+						if (m_leftArmWeapon == nullptr)
+						{
+							m_leftArmWeapon = NewGO<Left_arm_weapons>(2, "left_arm_weapons");
+							//部位に武器の種類を教える
+							m_leftArmWeapon->set_weapons = custom_kinds;
+							Setup();	//モデル更新
+							//武器取り付けを承認してカスタム画面が終わる時
+							tranceOutInit();
+							//決定音再生
+							PlaySE(enSoutyakuSE, 2.0f);
+						}
+						break;
+					case 4:
+						if (m_rightLegWeapon == nullptr)
+						{
+							m_rightLegWeapon = NewGO<Right_leg_weapons>(2, "right_leg_weapons");
+							//部位に武器の種類を教える
+							m_rightLegWeapon->set_weapons = custom_kinds;
+							Setup();	//モデル更新
+							//武器取り付けを承認してカスタム画面が終わる時
+							tranceOutInit();
+							//決定音再生
+							PlaySE(enSoutyakuSE, 2.0f);
+						}
+						break;
+					case 5:
+						if (m_leftLegWeapon == nullptr)
+						{
+							m_leftLegWeapon = NewGO<Left_leg_weapons>(2, "left_leg_weapons");
+							//部位に武器の種類を教える
+							m_leftLegWeapon->set_weapons = custom_kinds;
+							Setup();	//モデル更新
+							//武器取り付けを承認してカスタム画面が終わる時
+							tranceOutInit();
+							//決定音再生
+							PlaySE(enSoutyakuSE, 2.0f);
+						}
+					default:
+						break;
+
+					}
+					//ここにrtanceOutInit()を置くとなぜか2回呼ばれるのでここには置いてない
 				}
-				//ここにrtanceOutInit()を置くとなぜか2回呼ばれるのでここには置いてない
+				else {
+					m_player->m_playerHP += 300.0f;
+					tranceOutInit();
+				}
 			}
 		}
 		//DECLINE時の処理

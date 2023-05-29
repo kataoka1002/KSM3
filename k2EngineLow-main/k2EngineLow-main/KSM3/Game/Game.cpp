@@ -108,6 +108,8 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Drill, u"Assets/effect/enemy/Boss_Drill_efe.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Drill_Landing, u"Assets/effect/enemy/Boss_Drill_Landing.efk");
 
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Shovel_shock, u"Assets/effect/enemy/Boss_shovel_shock.efk");
+
 
 	//サウンドの設定
 	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
