@@ -29,6 +29,7 @@
 #include "Combo.h"
 
 
+
 Game::Game()
 {
 	
@@ -130,10 +131,9 @@ bool Game::Start()
 
 void Game::create_player(int player_color_date) {
 	//プレイヤーとコア武器とUIの作成
-	player = NewGO<Player>(1, "player");
+	player = NewGO<Player>(2, "player");
 	title = FindGO<Title>("title");
 	core_weapons = NewGO<Core_weapons>(1, "core_weapons");
-	m_playerUI = NewGO<PlayerUI>(1, "playerui");
 }
 
 void Game::Update()
@@ -163,7 +163,10 @@ void Game::SetUp()
 	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
 
 	//ウェーブ管理のクラス作成
-	m_wave = NewGO<Wave>(1, "wave");
+	m_wave = NewGO<Wave>(3, "wave");
+
+	//プレイヤーUIの作成
+	m_playerUI = NewGO<PlayerUI>(2, "playerui");
 
 	//コンボ管理のクラス
 	m_combo = NewGO<Combo>(1, "combo");
@@ -227,6 +230,10 @@ void Game::GameNow()
 	//3ウェーブ突破したらボス戦
 	if (player->player_position.z >= 9550.0f  && boss == nullptr /*&& m_wave->m_goBoss == true*/)
 	{
+		if (m_wave->Loading_count == 2)
+		{
+			player->bossState = 1;
+		}
 		//ローディング画面が表示されたらボスを作り出す
 		if (m_wave->Loading_count == 10) {
 			//スカイキューブを作り直す
@@ -237,7 +244,6 @@ void Game::GameNow()
 			m_skyCube->SetPosition({ 0.0f,40.0f,0.0f });
 			m_skyCube->SetType((EnSkyCubeType)enSkyCubeType_Wild_Night);
 
-			player->bossState = 1;
 
 			//ボスを発生させる
 			boss = NewGO<Boss>(1, "boss");
