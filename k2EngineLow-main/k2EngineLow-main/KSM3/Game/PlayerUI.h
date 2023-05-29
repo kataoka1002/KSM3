@@ -35,6 +35,8 @@ public:
 	SpriteRender m_leftLegHPSprite;
 	SpriteRender m_shoulderHPSprite;
 	SpriteRender m_enemyKillSprite;
+	SpriteRender m_L1Sprite;
+	SpriteRender m_R2Sprite;
 	
 
 	FontRender m_killEnemyAmount;
