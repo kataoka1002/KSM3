@@ -87,7 +87,7 @@ void Right_leg_weapons::Update()
 
 
 		//攻撃
-		if (g_pad[0]->IsPress(enButtonRB1)) 
+		if (g_pad[0]->IsPress(enButtonLB1))
 		{
 			//武器がマシンガンの場合
 			if (r_l_w_player->p_custom_point[1][0] == 2 && firing_cound % 5 == 0)

@@ -24,5 +24,7 @@ public:
 	bool m_flashPlay = false;					//フラッシュを再生するかどうか
 	bool m_fontDrawStop = false;				//雑魚殲滅スプライトを止めるかどうか
 	bool m_deleteFlash = false;					//白フラッシュを消すかどうか
+	bool m_yellowFinish = false;				//黄色フラッシュが終わったかどうか
+
 };
 

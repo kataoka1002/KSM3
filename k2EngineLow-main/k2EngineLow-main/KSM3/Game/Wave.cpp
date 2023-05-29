@@ -119,7 +119,6 @@ void Wave::Update()
 			//エネミーを10体倒すか、ウェーブタイマーが0になるとボス戦へ行けるようになる
 			if (m_timer <= 0.0f || m_player->killEnemy == 10)
 			{
-				static bool m_spriteChangeFlag = false;
 				m_goBoss = true;
 
 				if (m_player->bossState != 1)	//ボス戦じゃないなら

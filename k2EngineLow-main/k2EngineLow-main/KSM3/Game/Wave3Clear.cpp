@@ -119,8 +119,6 @@ void Wave3Clear::PlayFlash()
 	//白フラッシュがある程度の大きさになり、フラッシュ削除中でないなら
 	if (m_flashSpriteScale >= 20.0f && m_deleteFlash == false)	
 	{
-		static bool m_yellowFinish = false;	//黄色フラッシュが終わったかどうか
-
 		if (m_yellowFinish == false)
 		{
 			m_yellowSpriteA += 0.1f;		//黄色フラッシュの透明度を上げる

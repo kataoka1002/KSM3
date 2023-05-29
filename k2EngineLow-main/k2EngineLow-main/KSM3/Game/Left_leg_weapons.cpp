@@ -93,7 +93,7 @@ void Left_leg_weapons::Update()
 		}
 
 		//攻撃
-		if (g_pad[0]->IsPress(enButtonRB1)) 
+		if (g_pad[0]->IsPress(enButtonLB1))
 		{
 			if (l_l_w_player->p_custom_point[1][2] == 2 && firing_cound % 5 == 0)
 			{

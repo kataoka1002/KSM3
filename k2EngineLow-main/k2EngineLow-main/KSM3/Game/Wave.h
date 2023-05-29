@@ -46,6 +46,7 @@ public:
 	Quaternion m_timerRot;
 	Vector4 Loading_color = { 1.0f,1.0f,1.0f,0.0f };
 	int Loading_count = 0;
+	bool m_spriteChangeFlag = false;
 
 
 	const float		TIME_LIMIT = 180.0f;						//１ウェーブのタイムリミット
