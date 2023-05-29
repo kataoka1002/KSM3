@@ -31,10 +31,12 @@ public:
 	bool trance_Finish =false;
 	bool VibFlag = false;			//‰æ–Ê‚ª—h‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool VibBigFlag = false;			//‰æ–Ê‚ª—h‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©(‘å)
+	bool VibFinalFlag = false;			//‰æ–Ê‚ª—h‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©(ÅI)
 	int BGX = 0, BGY = 0;			//ÅI“I‚È—h‚ê‚Ì‘å‚«‚³
 	int effectCount = 0;
 	float VIBRATION_MAX = 40.0f;	
 	float VIBRATION_BIG_MAX = 160.0f;
+	float VIBRATION_FINAL_MAX = 320.0f;
 	float x;
 	float y;
 };

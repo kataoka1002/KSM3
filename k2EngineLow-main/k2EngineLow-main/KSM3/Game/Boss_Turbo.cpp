@@ -39,6 +39,8 @@ void Boss_Turbo::Setup()
 	//);
 	//boss_Riser_Render.SetRotation(b_w_rotation);
 	//boss_Riser_Render.SetPosition(b_w_position);
+	boss_Turbo_Render.SetScale(scale);
+	boss_Turbo_Render.Update();
 }
 
 void Boss_Turbo::Update()
@@ -76,7 +78,7 @@ void Boss_Turbo::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Turbo_Render.SetScale(13.0f);
+	
 	boss_Turbo_Render.Update();
 	if (turbo_HP<=0.0f)
 	{

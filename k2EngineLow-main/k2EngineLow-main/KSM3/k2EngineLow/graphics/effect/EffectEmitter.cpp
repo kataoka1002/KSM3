@@ -20,8 +20,7 @@ namespace nsK2EngineLow {
 	void EffectEmitter::Update()
 	{
 		m_effect.Update();
-
-		if (!IsPlay())
+		if (!IsPlay() && Coercion_destruction)
 		{
 			DeleteGO(this);
 		}

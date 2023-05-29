@@ -43,4 +43,5 @@ public:
 	int fast = 0;
 
 	float turbo_HP = HP;
+	float scale = 13.0f;
 };

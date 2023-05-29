@@ -105,7 +105,12 @@ namespace nsK2EngineLow {
 		//アニメーションの再生
 		void PlayAnimation(int animNo, float interpolateTime = 0.0f)//アニメーションクリップの番号,補完時間
 		{
+			Now_Animation_Number = animNo;
 			m_animation.Play(animNo, interpolateTime);
+		}
+
+		int  GetAnimNum() {
+			return Now_Animation_Number;
 		}
 
 		void OnDraw(RenderContext& rc)
@@ -156,5 +161,7 @@ namespace nsK2EngineLow {
 
 		bool syuok = false;
 		bool m_flashFlag = false;
+
+		int Now_Animation_Number = -1;
 	};
 }

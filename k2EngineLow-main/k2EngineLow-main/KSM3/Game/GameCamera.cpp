@@ -141,6 +141,28 @@ void GameCamera::Update()
 				BGY = rand() % vib - vibHalf;
 			}
 		}
+		if (VibFinalFlag == true)
+		{
+			static int Vibration = VIBRATION_FINAL_MAX * 16;
+			int vib = Vibration / 2;	//振幅
+			Vibration -= 40;
+
+			//揺れの大きさが0になったら
+			if (vib == 0)
+			{
+				//揺れの為に必要な変数を初期化
+				VibFinalFlag = false;
+				BGX = 0; BGY = 0;
+				Vibration = VIBRATION_FINAL_MAX * 16;
+			}
+			else
+			{
+				//左右に揺れるために半分の値を引く
+				int vibHalf = vib / 2;
+				BGX = rand() % vib - vibHalf;
+				BGY = rand() % vib - vibHalf;
+			}
+		}
 	}
 	else if (CameraState == 1)//ボス戦の時のカメラ。
 	{

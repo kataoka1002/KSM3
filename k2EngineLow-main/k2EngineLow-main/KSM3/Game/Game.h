@@ -45,7 +45,18 @@ enum EffectName {
 	enBoss_Magic_Circle,		//ボスのエフェ1(魔法陣)
 	enBoss_Cannon_Bullet,   //ボスの弾丸エフェ
 
-	enGuide
+	enGuide,
+	enBoss_Dozar_Charge,	//ボスドーザーの攻撃Charge
+	enBoss_Dozar_efe,		//ボスドーザーの攻撃エフェ
+	enBoss_Dozar_Landing,	//ボスドーザーの着弾エフェ
+	enBoss_Explosion,		//ボスの破壊爆発エフェ
+	enBoss_Explosion_Another,//ボスの破壊ダメージエフェ
+	enBoss_Death,			//ボスの死
+	enBoss_Death2,			//ボスの死2
+	enBoss_Drill,			//ボスドリルの攻撃エフェ
+	enBoss_Drill_Landing	//ボスドリルの着弾エフェ
+
+
 
 };
 

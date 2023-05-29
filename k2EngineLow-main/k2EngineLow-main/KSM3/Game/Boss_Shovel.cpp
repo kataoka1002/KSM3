@@ -56,6 +56,8 @@ void Boss_Shovel::Setup()
 	//);
 	//boss_Riser_Render.SetRotation(b_w_rotation);
 	//boss_Riser_Render.SetPosition(b_w_position);
+	boss_Shovel_Render.SetScale(scale);
+	boss_Shovel_Render.Update();
 }
 
 void Boss_Shovel::Update()
@@ -71,28 +73,28 @@ void Boss_Shovel::Update()
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
 		if (fast >=270&&fast<630) {
-			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle2);
+			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle2,0.5f);
 		}
 		else if (fast == 630) {
 			fast = 0;
 		}
 		else {
-			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle);
+			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle,0.5f);
 		}
 		
 		Move();
-		if (attack_ok == true)
-		{
-			firing_cound++;//攻撃のタイミングの計算。
-			if (firing_cound % 108 == 0)
-			{
-				b_boss_weapons = NewGO<Boss_Shovel_attack>(1, "boss_Shovel_attack");
-				attack_state = true;
-				b_boss_weapons->firing_position = b_w_position;
-				b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
-				b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
-			}
-		}
+		//if (attack_ok == true)
+		//{
+		//	firing_cound++;//攻撃のタイミングの計算。
+		//	if (firing_cound % 108 == 0)
+		//	{
+		//		b_boss_weapons = NewGO<Boss_Shovel_attack>(1, "boss_Shovel_attack");
+		//		attack_state = true;
+		//		b_boss_weapons->firing_position = b_w_position;
+		//		b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
+		//		b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
+		//	}
+		//}
 	}
 	if (b_w_player->game_end_state == 1)
 	{
@@ -106,7 +108,7 @@ void Boss_Shovel::Update()
 		break;
 	}
 
-	boss_Shovel_Render.SetScale(15.0f);
+	
 	boss_Shovel_Render.Update();
 
 	if (shovel_HP<=0.0f)

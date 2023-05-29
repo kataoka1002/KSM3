@@ -94,11 +94,20 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Landing, u"Assets/effect/enemy/Boss_cannon_Landing.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Magic_Circle, u"Assets/effect/enemy/Boss_Magic_Circle.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Bullet, u"Assets/effect/enemy/Boss_Cannon_Bullet.efk");
-
-
-	EffectEngine::GetInstance()->ResistEffect(enGuide, u"Assets/effect/enemy/guide.efk");
-
 	
+	EffectEngine::GetInstance()->ResistEffect(enGuide, u"Assets/effect/enemy/guide.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Dozar_Charge, u"Assets/effect/enemy/Boss_dozar_Charge.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Dozar_efe, u"Assets/effect/enemy/Boss_dozar.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Dozar_Landing, u"Assets/effect/enemy/Boss_Dozar_Landing2.efk");
+
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Explosion, u"Assets/effect/enemy/Boss_NotCore_Explosion.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Explosion_Another, u"Assets/effect/enemy/Boss_NotCore_Explosion_attack.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Death, u"Assets/effect/enemy/Boss_Explosion.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Death2, u"Assets/effect/enemy/Boss_Explosion2.efk");
+
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Drill, u"Assets/effect/enemy/Boss_Drill_efe.efk");
+	EffectEngine::GetInstance()->ResistEffect(enBoss_Drill_Landing, u"Assets/effect/enemy/Boss_Drill_Landing.efk");
+
 
 	//サウンドの設定
 	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
@@ -297,10 +306,10 @@ void Game::GameNow()
 	//m_spriteRender.Update();
 
 	//リザルトへの遷移
-	if (g_pad[0]->IsTrigger(enButtonSelect)) {
+	/*if (g_pad[0]->IsTrigger(enButtonSelect)) {
 		result = NewGO<Result>(1, "result");
 		DeleteGO(this);
-	}
+	}*/
 }
 
 Vector3 Game::RandomPosition()

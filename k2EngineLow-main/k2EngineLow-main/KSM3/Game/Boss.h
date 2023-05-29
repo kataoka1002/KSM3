@@ -11,6 +11,8 @@ class Boss_Cannon;
 class Boss_Turbo;
 class Result;
 class Game;
+class Boss_Saber;
+class GameCamera;
 
 class Boss :public IGameObject
 {
@@ -26,6 +28,7 @@ public:
 	void SetHPScale();
 	void PlayerSearch();//索敵
 
+
 	Player* b_player = nullptr;
 	Battle_ship_attack* b_battle_ship_attack;
 	Drop_item* drop_item;
@@ -36,6 +39,7 @@ public:
 	Boss_Turbo* b_boss_turbo;
 	Result* result;
 	Game* boss_game;
+	Boss_Saber* b_boss_saber;
 
 	//std::vector<Boss_Riser*>m_riserObject;
 
@@ -44,9 +48,12 @@ public:
 	SpriteRender m_bossHPWakuSprite;
 	SpriteRender m_bossHPWakuSprite2;
 	EffectEmitter* m_BossEffect = nullptr;
+	EffectEmitter* Boss_Explosion;
+	EffectEmitter* Explosion_Another;
 	Vector3 boss_position;//座標
 	CharacterController boss_characterController;//キャラクターコントローラー
 	Quaternion boss_rotation;//クォータニオン
+	
 	Vector3 boss_moveSpeed;//移動速度
 	Vector3 boss_forward{ 0.0f,0.0f,-1.0f };//エネミーの正面ベクトル
 	Vector3 riser_pos;
@@ -66,5 +73,9 @@ public:
 
 	int Boss_efecount = 0;
 	Vector3 movespeed = { 0.0f,0.0f,0.0f };
+
+	int Death_count = 0;
+	float Scale = 15.0f;
+	float Efect_scale = 70.0f;
 };
 

@@ -95,6 +95,9 @@ namespace nsK2EngineLow {
 		{
 			return m_effect.IsPlay();
 		}
+
+		// 自動で削除するかどうか（普段はtrue）
+		bool Coercion_destruction = true;
 	private:
 		Effect m_effect;					//エフェクト。
 	};
