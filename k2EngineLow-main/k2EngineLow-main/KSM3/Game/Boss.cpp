@@ -16,6 +16,8 @@
 #include "Result.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Boss_Saber.h"
+#include"GameCamera.h"
 
 
 Boss::Boss() 
@@ -28,6 +30,7 @@ Boss::Boss()
 	b_boss_drill = NewGO<Boss_Drill>(2, "boss_drill");
 	b_boss_cannon = NewGO<Boss_Cannon>(2, "boss_cannon");
 	b_boss_turbo = NewGO<Boss_Turbo>(2, "boss_turbo");
+	b_boss_saber = NewGO<Boss_Saber>(2, "boss_saber");
 }
 
 Boss::~Boss() 
@@ -38,6 +41,9 @@ Boss::~Boss()
 	DeleteGO(b_boss_drill);//ドリルの武器削除。
 	DeleteGO(b_boss_cannon);//キャノンの武器削除。
 	DeleteGO(b_boss_turbo);//ターボの武器削除。
+	if (b_boss_saber != nullptr) {
+		DeleteGO(b_boss_saber);
+	}
 }
 
 bool Boss::Start()
@@ -66,6 +72,8 @@ bool Boss::Start()
 		40.0f,			//高さ。
 		boss_position	//座標。
 	);
+	boss_modelRender.SetScale(Scale);
+	boss_modelRender.Update();
 	return true;
 }
 
@@ -76,7 +84,7 @@ void Boss::Update()
 	if (Boss_efecount % 1000 == 0) {
 		m_BossEffect = NewGO<EffectEmitter>(0);
 		m_BossEffect->Init(enBoss_Magic_Circle);
-		m_BossEffect->SetScale({ 70.0f,70.0f,70.0f });
+		m_BossEffect->SetScale({ Efect_scale,Efect_scale,Efect_scale });
 		Vector3 efeLP = { 0.0f,680.0f,2000.0f };
 		efeLP += boss_position;
 		m_BossEffect->SetPosition(efeLP);
@@ -92,7 +100,7 @@ void Boss::Update()
 		boss_time_score = 0.0f;
 	}
 
-	boss_modelRender.SetScale(15.0f);
+	
 	boss_modelRender.Update();
 }
 
@@ -188,28 +196,144 @@ void Boss::Damage()
 	if (boss_HP <= 0.0f)
 	{
 		
-
-		b_player->game_state = 2;
-		result = NewGO<Result>(1, "result");
-		result->SE_volume = boss_game->SEvol;
-		result->BGM_volume = boss_game->BGMvol;
-		
-		result->minute = (int)boss_time / 60;
-		result->sec = (int)boss_time % 60;
-		b_player->boss_survival = false;	//ボスが生きているかをプレーヤーに教える
-		//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
-		//ココもいらない?
-		if (defeat_state == true)
-		{
-			drop_item->drop_kinds = b_boss_riser->set_weapons;
-			drop_item->drop_kinds = b_boss_shovel->set_weapons;
-			drop_item->drop_kinds = b_boss_drill->set_weapons;
-			drop_item->drop_kinds = b_boss_cannon->set_weapons;
-			drop_item->drop_kinds = b_boss_turbo->set_weapons;
+		b_player->game_state = 7;
+		boss_HP = 0.0f;
+		if (Death_count >= 0 && Death_count < 20) {
+			if (b_boss_riser != nullptr) {
+				b_boss_riser->scale -= 0.6f;
+				b_boss_riser->boss_Riser_Render.SetScale(b_boss_riser->scale);
+			}
+			if (b_boss_drill != nullptr) {
+				b_boss_drill->Drill_scale -= 1.02f;
+				b_boss_drill->boss_Drill_Render.SetScale(b_boss_drill->Drill_scale);
+			}
+			if (b_boss_cannon != nullptr) {
+				b_boss_cannon->scale -= 0.75f;
+				b_boss_cannon->boss_Cannon_Render.SetScale(b_boss_cannon->scale);
+			}
+			if (b_boss_saber != nullptr) {
+				b_boss_saber->scale -= 0.75f;
+				b_boss_saber->boss_Cannon_Render.SetScale(b_boss_saber->scale);
+			}
+			if (b_boss_shovel != nullptr) {
+				b_boss_shovel->scale -= 0.75f;
+				b_boss_shovel->boss_Shovel_Render.SetScale(b_boss_shovel->scale);
+			}
+			if (b_boss_turbo != nullptr) {
+				b_boss_turbo->scale -= 0.651f;
+				b_boss_turbo->boss_Turbo_Render.SetScale(b_boss_riser->scale);
+			}
 		}
+		if (Death_count == 0) {
+			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+			m_camera->VibFinalFlag = true;
+			if (b_boss_riser != nullptr) {
+				
+				Explosion_Another = NewGO<EffectEmitter>(0);
+				Explosion_Another->Init(enBoss_Explosion);
+				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+				Explosion_Another->Coercion_destruction = false;	// 勝手に消さない
+				//efeLP += b_w_position;
+				Explosion_Another->SetPosition(b_boss_riser->b_w_position);
+				Explosion_Another->SetRotation(b_boss_riser->b_w_rotation);
+				Explosion_Another->Play();
+			}
+			if (b_boss_drill != nullptr) {
+				Explosion_Another = NewGO<EffectEmitter>(0);
+				Explosion_Another->Init(enBoss_Explosion);
+				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+				Explosion_Another->Coercion_destruction = false;	// 勝手に消さない
+				//efeLP += b_w_position;
+				Explosion_Another->SetPosition(b_boss_drill->b_w_position);
+				Explosion_Another->SetRotation(b_boss_drill->b_w_rotation);
+				Explosion_Another->Play();
+			}
+			if (b_boss_saber != nullptr) {
+				Explosion_Another = NewGO<EffectEmitter>(0);
+				Explosion_Another->Init(enBoss_Explosion);
+				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+				Explosion_Another->Coercion_destruction = false;	// 勝手に消さない
+				//efeLP += b_w_position;
+				Explosion_Another->SetPosition(b_boss_saber->b_w_position);
+				Explosion_Another->SetRotation(b_boss_saber->b_w_rotation);
+				Explosion_Another->Play();
+			}
+			if (b_boss_shovel != nullptr) {
+				Explosion_Another = NewGO<EffectEmitter>(0);
+				Explosion_Another->Init(enBoss_Explosion);
+				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+				Explosion_Another->Coercion_destruction = false;	// 勝手に消さない
+				//efeLP += b_w_position;
+				Explosion_Another->SetPosition(b_boss_shovel->b_w_position);
+				Explosion_Another->SetRotation(b_boss_shovel->b_w_rotation);
+				Explosion_Another->Play();
+			}
+			if (b_boss_turbo != nullptr) {
+				Explosion_Another = NewGO<EffectEmitter>(0);
+				Explosion_Another->Init(enBoss_Explosion);
+				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+				Explosion_Another->Coercion_destruction = false;	// 勝手に消さない
+				//efeLP += b_w_position;
+				Explosion_Another->SetPosition(b_boss_turbo->b_w_position);
+				Explosion_Another->SetRotation(b_boss_turbo->b_w_rotation);
+				Explosion_Another->Play();
+			}
+			
+		}
+		if (Death_count == 60) {
+			Boss_Explosion = NewGO<EffectEmitter>(0);
+			Boss_Explosion->Init(enBoss_Death);
+			Boss_Explosion->SetScale({ 70.0f,70.0f,70.0f });
+			Boss_Explosion->Coercion_destruction = false;	// 勝手に消さない
+			//efeLP += b_w_position;
+			Boss_Explosion->SetPosition(boss_position);
+			Boss_Explosion->SetRotation(boss_rotation);
+			Boss_Explosion->Play();
+		}
+		if (Death_count >= 60 && Death_count < 120) {
+			
+			Scale -= 0.25f;
+			boss_modelRender.SetScale(Scale);
+			
+		}
+		if (Death_count == 120) {
+			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+			m_camera->VibBigFlag = true;
+			Boss_Explosion = NewGO<EffectEmitter>(0);
+			Boss_Explosion->Init(enBoss_Death2);
+			Boss_Explosion->SetScale({ 70.0f,70.0f,70.0f });
+			Boss_Explosion->Coercion_destruction = false;	// 勝手に消さない
+			//efeLP += b_w_position;
+			Boss_Explosion->SetPosition(boss_position);
+			Boss_Explosion->SetRotation(boss_rotation);
+			Boss_Explosion->Play();
+		}
+		if (Death_count==240) {
+			b_player->game_state = 2;
+			result = NewGO<Result>(1, "result");
+			result->SE_volume = boss_game->SEvol;
+			result->BGM_volume = boss_game->BGMvol;
+
+			result->minute = (int)boss_time / 60;
+			result->sec = (int)boss_time % 60;
+			b_player->boss_survival = false;	//ボスが生きているかをプレーヤーに教える
+			//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
+			//ココもいらない?
+			if (defeat_state == true)
+			{
+				drop_item->drop_kinds = b_boss_riser->set_weapons;
+				drop_item->drop_kinds = b_boss_shovel->set_weapons;
+				drop_item->drop_kinds = b_boss_drill->set_weapons;
+				drop_item->drop_kinds = b_boss_cannon->set_weapons;
+				drop_item->drop_kinds = b_boss_turbo->set_weapons;
+			}
 
 
-		DeleteGO(this);
+			DeleteGO(this);
+
+		}
+		Death_count++;
+		
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "Boss_Cannon_attack.h"
 #include "Drop_item.h"
 #include "Game.h"
+#include "Boss_Saber.h"
 
 Boss_Cannon::Boss_Cannon()
 {
@@ -37,6 +38,8 @@ void Boss_Cannon::Setup()
 	//);
 	//boss_Riser_Render.SetRotation(b_w_rotation);
 	//boss_Riser_Render.SetPosition(b_w_position);
+	boss_Cannon_Render.SetScale(scale);
+	boss_Cannon_Render.Update();
 }
 
 void Boss_Cannon::Update()
@@ -50,22 +53,37 @@ void Boss_Cannon::Update()
 	if (b_w_player->game_state == 0 && fast != 0)
 	{
 		Move();
-		if (firing_cound == 600) {
+		Rotation();
+
+		if (firing_cound == 1800) {
 			m_weaponEffect = NewGO<EffectEmitter>(0);
 			m_weaponEffect->Init(enBoss_Cannon_Charge);
 			m_weaponEffect->SetScale({ 70.0f,70.0f,70.0f });
-			Vector3 efeLP= { 0.0f,680.0f,-200.0f };
-			efeLP += b_w_position;
-			m_weaponEffect->SetPosition(efeLP);
+			m_weaponEffect->Coercion_destruction = false;	// 勝手に消さない
+			//efeLP += b_w_position;
+			m_weaponEffect->SetPosition(efeLP + b_w_position);
+			m_weaponEffect->SetRotation(b_w_rotation);
 			m_weaponEffect->Play();
 		}
-		if (firing_cound == 735)
+
+		if (m_weaponEffect != nullptr) {
+			if (m_weaponEffect->IsPlay() == true) {
+				m_weaponEffect->SetRotation(b_w_rotation);
+				m_weaponEffect->SetPosition(efeLP + b_w_position);
+			}
+			else {
+				DeleteGO(m_weaponEffect);
+				m_weaponEffect = nullptr;
+			}
+		}
+
+		if (firing_cound == 1935)
 		{
 			b_boss_weapons = NewGO<Boss_Cannon_attack>(1, "boss_Connon_attack");
 			attack_state = true;
 			b_boss_weapons->firing_position = b_w_position;
-			b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
-			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
+			b_boss_weapons->b_a_aiming = b_w_rotation;
+			b_boss_weapons->b_a_Bullet_Fowrad = b_w_Fowrad;
 			firing_cound = 0;
 		}
 		firing_cound++;//攻撃のタイミングの計算。
@@ -87,7 +105,7 @@ void Boss_Cannon::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Cannon_Render.SetScale(15.0f);
+	
 
 	if (connon_HP <= 0.0f)
 	{
@@ -99,11 +117,26 @@ void Boss_Cannon::Update()
 	}
 }
 
+void Boss_Cannon::Rotation() {
+	//エネミーからプレイヤーが入ってきたら追いかける。
+	Vector3 toPlayer = b_w_player->player_position - b_w_position;
+
+	//プレイヤーとの距離を計算する。
+	float distToPlayer = toPlayer.Length();
+	//プレイヤーに向かって伸びるベクトルを正規化する。
+	Vector3 toPlayerDir = toPlayer;
+	toPlayerDir.Normalize();
+	b_w_Fowrad = toPlayerDir;
+	b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
+	boss_Cannon_Render.SetRotation(b_w_rotation);
+	
+}
+
 void Boss_Cannon::Move()
 {
 	//ここは丸パクリでOK
-	Quaternion originRotation = b_w_boss->boss_rotation;
-	b_w_position = b_w_boss->boss_position;
+	Quaternion originRotation = b_w_boss->b_boss_saber->b_w_rotation;
+	b_w_position = b_w_boss->b_boss_saber->b_w_position;
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
 	b_w_position += lp;

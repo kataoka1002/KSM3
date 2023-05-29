@@ -114,12 +114,12 @@ void Boss_Cannon_attack::SetUp()
 {
 	
 	//íeÉÇÉfÉãÅB
-
+	GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+	m_camera->VibFlag = true;
 	b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
 	b_a_aiming.Multiply(m_bulletLocalPosition);	//ä|ÇØéZ
 	m_rot = b_a_aiming;
 	firing_position += m_bulletLocalPosition;
-	b_a_Bullet_Fowrad = b_a_boss->boss_forward;
 	b_a_Bullet.SetScale(30);
 	b_a_Bullet.SetPosition(firing_position);
 	b_a_Bullet.SetRotation(m_rot);

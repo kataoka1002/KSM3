@@ -52,5 +52,5 @@ public:
 	int fast = 0;
 
 	float shovel_HP = HP;
-
+	float scale = 15.0f;
 };

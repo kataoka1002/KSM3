@@ -233,6 +233,7 @@
     <ClCompile Include="Boss_Movie.cpp" />
     <ClCompile Include="Boss_Riser.cpp" />
     <ClCompile Include="Boss_Riser_attack.cpp" />
+    <ClCompile Include="Boss_Saber.cpp" />
     <ClCompile Include="Boss_Shovel.cpp" />
     <ClCompile Include="Boss_Shovel_attack.cpp" />
     <ClCompile Include="Boss_Turbo.cpp" />
@@ -289,6 +290,7 @@
     <ClInclude Include="Boss_Movie.h" />
     <ClInclude Include="Boss_Riser.h" />
     <ClInclude Include="Boss_Riser_attack.h" />
+    <ClInclude Include="Boss_Saber.h" />
     <ClInclude Include="Boss_Shovel.h" />
     <ClInclude Include="Boss_Shovel_attack.h" />
     <ClInclude Include="Boss_Turbo.h" />
