@@ -59,7 +59,7 @@ void Boss_Cannon::Update()
 			m_weaponEffect = NewGO<EffectEmitter>(0);
 			m_weaponEffect->Init(enBoss_Cannon_Charge);
 			m_weaponEffect->SetScale({ 70.0f,70.0f,70.0f });
-			m_weaponEffect->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+			
 			//efeLP += b_w_position;
 			m_weaponEffect->SetPosition(efeLP + b_w_position);
 			m_weaponEffect->SetRotation(b_w_rotation);

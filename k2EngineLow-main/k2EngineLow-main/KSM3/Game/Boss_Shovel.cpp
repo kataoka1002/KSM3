@@ -89,7 +89,6 @@ void Boss_Shovel::Update()
 				shovel_shock = NewGO<EffectEmitter>(0);
 				shovel_shock->Init(enBoss_Shovel_shock);
 				shovel_shock->SetScale({ 70.0f,70.0f,70.0f });
-				shovel_shock->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
 				//efeLP += b_w_position;
 				shovel_shock->SetPosition(b_w_position+ shock_efe_lpos);
 				shovel_shock->SetRotation(b_w_rotation);
@@ -99,6 +98,9 @@ void Boss_Shovel::Update()
 			boss_Shovel_Render.PlayAnimation(enAnimationClip_Shock_Ground, 0.5f);
 		}
 		else if (fast == 1680) {
+			
+			DeleteGO(shovel_shock);
+			shovel_shock = nullptr;
 			fast = 0;
 		}
 		else {

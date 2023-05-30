@@ -105,6 +105,10 @@ void Boss_Cannon_attack::DestroyWithImpactEffect() {
 	}
 	if (Landing_count == 130) {
 		// ’…’e‚µ‚½‚çŽ€‚Ê
+		DeleteGO(m_weaponEffect);
+		m_weaponEffect = nullptr;
+		DeleteGO(m_BulletEffect);
+		m_BulletEffect = nullptr;
 		DeleteGO(this);
 	}
 
