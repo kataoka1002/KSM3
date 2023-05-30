@@ -66,6 +66,8 @@ void Boss_Riser::Update()
 			boss_Riser_Render.PlayAnimation(enAnimationClip_Idle,0.5f);
 		}
 		if (fast == 809) {
+			DeleteGO(m_weaponEffect);
+			m_weaponEffect = nullptr;
 			fast = 1;
 		}
 		
@@ -77,7 +79,7 @@ void Boss_Riser::Update()
 			m_weaponEffect = NewGO<EffectEmitter>(0);
 			m_weaponEffect->Init(enBoss_Dozar_Charge);
 			m_weaponEffect->SetScale({ 30.0f,30.0f,30.0f });
-			m_weaponEffect->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+			
 			//efeLP += b_w_position;
 			m_weaponEffect->SetPosition(efeLP + b_w_position);
 			m_weaponEffect->SetRotation(b_w_rotation);

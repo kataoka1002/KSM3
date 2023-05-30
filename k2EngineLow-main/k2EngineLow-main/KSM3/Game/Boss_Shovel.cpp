@@ -6,9 +6,16 @@
 #include "Boss.h"
 #include "Boss_Shovel_attack.h"
 #include "Drop_item.h"
+#include "Game.h"
+#include "Left_arm_weapons.h"
+#include "Left_leg_weapons.h"
+#include "Right_arm_weapons.h"
+#include "Right_leg_weapons.h"
+#include "Shoulder_weapons.h"
 
 Boss_Shovel::Boss_Shovel()
 {
+	m_game = FindGO<Game>("game");
 	b_w_player = FindGO<Player>("player");
 }
 
@@ -27,6 +34,8 @@ bool Boss_Shovel::Start()
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_Idle2].Load("Assets/animData/Boss_shovel_idol02.tka");
 	m_animationClip[enAnimationClip_Idle2].SetLoopFlag(true);
+	m_animationClip[enAnimationClip_Shock_Ground].Load("Assets/animData/Boss_shovel_crash.tka");
+	m_animationClip[enAnimationClip_Shock_Ground].SetLoopFlag(true);
 	//初期化
 	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel4.tkm", true, true , m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
 	//boss_Shovel_Render.Init("Assets/modelData/unityChan.tkm", true,true,m_animationClip, enAnimationClip_Num, enModelUpAxisY);
@@ -75,7 +84,23 @@ void Boss_Shovel::Update()
 		if (fast >=270&&fast<630) {
 			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle2,0.5f);
 		}
-		else if (fast == 630) {
+		else if (fast >= 1170 && fast < 1500) {
+			if (fast == 1400) {
+				shovel_shock = NewGO<EffectEmitter>(0);
+				shovel_shock->Init(enBoss_Shovel_shock);
+				shovel_shock->SetScale({ 70.0f,70.0f,70.0f });
+				//efeLP += b_w_position;
+				shovel_shock->SetPosition(b_w_position+ shock_efe_lpos);
+				shovel_shock->SetRotation(b_w_rotation);
+				shovel_shock->Play();
+				Damage(0);
+			}
+			boss_Shovel_Render.PlayAnimation(enAnimationClip_Shock_Ground, 0.5f);
+		}
+		else if (fast == 1680) {
+			
+			DeleteGO(shovel_shock);
+			shovel_shock = nullptr;
 			fast = 0;
 		}
 		else {
@@ -131,6 +156,126 @@ void Boss_Shovel::Move()
 	b_w_rotation = originRotation;
 	boss_Shovel_Render.SetPosition(b_w_position);
 	boss_Shovel_Render.SetRotation(b_w_rotation);
+}
+
+void Boss_Shovel::Damage(int attack_Num) {
+	if (attack_Num == 0) {
+		//---------------------------------------------------------------------------------------------------
+		if (b_w_player != nullptr)	//プレイヤーの情報が入っているなら
+		{
+			//弾とプレイヤーの距離を測る
+			Vector3 diffPlayer = b_w_position + shock_efe_lpos - Vector3{ b_w_player->player_position.x, b_w_player->player_position.y + 50.0f, b_w_player->player_position.z };
+
+			//武器によってダメージを変える
+
+				//距離を測り一定以下なら体力減少
+			if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
+			{
+				b_w_player->m_playerHP -= 10.0f;
+				
+
+			}
+
+		}
+
+
+
+		//---------------------------------------------------------------------------------------------------
+
+		//---------------------------------------------------------------------------------------------------
+		if (m_leftArm != nullptr)	//左腕に情報が入っているなら
+		{
+			//弾と左腕の距離を測る
+			Vector3 diffLeftArm = b_w_position + shock_efe_lpos - Vector3{ m_leftArm->l_a_w_position.x, m_leftArm->l_a_w_position.y, m_leftArm->l_a_w_position.z };
+
+			//武器によってダメージを変える
+
+				//距離を測り一定以下なら体力減少
+			if (diffLeftArm.Length() <= 2000.0f) //ダメージが入る範囲
+			{
+				m_leftArm->L_a_w_HP -= 10.0f;
+				
+
+			}
+		}
+		//---------------------------------------------------------------------------------------------------
+
+		//---------------------------------------------------------------------------------------------------
+		if (m_leftLeg != nullptr)	//左足に情報が入っているなら
+		{
+			//弾と左腕の距離を測る
+			Vector3 diffLeftLeg = b_w_position + shock_efe_lpos - Vector3{ m_leftLeg->l_l_w_position.x, m_leftLeg->l_l_w_position.y, m_leftLeg->l_l_w_position.z };
+
+			//武器によってダメージを変える
+
+				//距離を測り一定以下なら体力減少
+			if (diffLeftLeg.Length() <= 2000.0f) //ダメージが入る範囲
+			{
+				m_leftLeg->L_l_w_HP -= 10.0f;
+				
+
+			}
+
+		}
+		//---------------------------------------------------------------------------------------------------
+
+		//---------------------------------------------------------------------------------------------------
+		if (m_rightArm != nullptr)	//右手に情報が入っているなら
+		{
+			//弾と左腕の距離を測る
+			Vector3 diffRightArm = b_w_position + shock_efe_lpos - Vector3{ m_rightArm->r_a_w_position.x, m_rightArm->r_a_w_position.y, m_rightArm->r_a_w_position.z };
+
+			//武器によってダメージを変える
+
+				//距離を測り一定以下なら体力減少
+			if (diffRightArm.Length() <= 2000.0f) //ダメージが入る範囲
+			{
+				m_rightArm->m_rightArmHP -= 10.0f;
+				
+
+			}
+
+		}
+		//---------------------------------------------------------------------------------------------------
+
+		//---------------------------------------------------------------------------------------------------
+		if (m_rightLeg != nullptr)	//右足に情報が入っているなら
+		{
+			//弾と左腕の距離を測る
+			Vector3 diffRightLeg = b_w_position + shock_efe_lpos - Vector3{ m_rightLeg->r_l_w_position.x, m_rightLeg->r_l_w_position.y, m_rightLeg->r_l_w_position.z };
+
+			//武器によってダメージを変える
+
+				//距離を測り一定以下なら体力減少
+			if (diffRightLeg.Length() <= 2000.0f) //ダメージが入る範囲
+			{
+				m_rightLeg->R_l_w_HP -= 10.0f;
+				
+
+			}
+
+		}
+		//---------------------------------------------------------------------------------------------------
+
+		//---------------------------------------------------------------------------------------------------
+		if (m_shoulder != nullptr)	//肩に情報が入っているなら
+		{
+			//弾と左腕の距離を測る
+			Vector3 diffShoulder = b_w_position + shock_efe_lpos - Vector3{ m_shoulder->s_w_position.x, m_shoulder->s_w_position.y, m_shoulder->s_w_position.z };
+
+			//武器によってダメージを変える
+
+				//距離を測り一定以下なら体力減少
+			if (diffShoulder.Length() <= 2000.0f) //ダメージが入る範囲
+			{
+				m_shoulder->S_w_HP -= 10.0f;
+				Effect();
+
+			}
+
+		}
+		//---------------------------------------------------------------------------------------------------
+	}
 }
 
 void Boss_Shovel::PlayerSearch()

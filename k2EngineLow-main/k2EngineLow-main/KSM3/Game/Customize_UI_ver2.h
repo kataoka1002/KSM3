@@ -113,6 +113,8 @@ public:
 
 	int trance_sheet_count=0;//遷移カウント
 	Vector4 trance_sheet_color={ 0.0f,0.0f,0.0f,1.0f };
+
+	bool recovery = false;
 	//float trance_sheet_α = 1;//アルファ値
 };
 

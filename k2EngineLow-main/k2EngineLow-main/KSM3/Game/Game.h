@@ -54,10 +54,10 @@ enum EffectName {
 	enBoss_Death,			//ボスの死
 	enBoss_Death2,			//ボスの死2
 	enBoss_Drill,			//ボスドリルの攻撃エフェ
-	enBoss_Drill_Landing	//ボスドリルの着弾エフェ
-
-
-
+	enBoss_Drill_Landing,	//ボスドリルの着弾エフェ
+	enBoss_Shovel_shock,		//ボスショベルのshockエフェ
+	enTatumaki_charge,
+	enTatumaki_fire
 };
 
 //サウンドの列挙
@@ -85,7 +85,8 @@ enum SoundName {
 	enStartSE,				//Titleのスタートの音(Title用のトラックのため使用しないで)
 	enResultBGM,			//リザルトのBGM
 	enVoice,				//登場シーンの音声
-	enPutun					//プツン音
+	enPutun,					//プツン音
+	enTatumaki
 };
 
 class Game :public IGameObject

@@ -53,6 +53,8 @@ Boss_Drill_attack::~Boss_Drill_attack()
 		m_BulletEffect2->Stop();
 		DeleteGO(m_BulletEffect);
 		DeleteGO(m_BulletEffect2);
+		m_BulletEffect = nullptr;
+		m_BulletEffect2 = nullptr;
 	}
 	b_a_weapons->attack_state = false;
 }
