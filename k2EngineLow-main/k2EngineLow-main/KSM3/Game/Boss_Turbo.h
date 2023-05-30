@@ -19,13 +19,19 @@ public:
 	void PlayerSearch();
 	void Render(RenderContext& rc);
 
+	enum EnAnimation {
+		enAnimationClip_Idle,
+		enAnimationClip_Attack,
+		enAnimationClip_Num
+	};
+
 	Player* b_w_player;
 	Boss* b_w_boss;
 	Boss_Turbo_attack* b_boss_weapons;
 	Drop_item* drop_item;
 	EffectEmitter* m_weaponEffect = nullptr;
 	SoundSource*TatumakiSE=nullptr;
-
+	AnimationClip m_animationClip[enAnimationClip_Num];
 	//CharacterController boss_riser_characterContller;
 	Quaternion b_w_rotation;
 	Vector3 b_w_position;
