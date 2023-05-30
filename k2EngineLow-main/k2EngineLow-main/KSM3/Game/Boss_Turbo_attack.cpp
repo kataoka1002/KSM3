@@ -101,7 +101,7 @@ void Boss_Turbo_attack::DestroyWithImpactEffect()
 
 void Boss_Turbo_attack::SetUp()
 {
-		b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
+		//b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
 		b_a_aiming.Multiply(m_bulletLocalPosition);	//Š|‚¯ŽZ
 		//m_rot = b_a_weapons->b_w_rotation;
 		firing_position += m_bulletLocalPosition;
