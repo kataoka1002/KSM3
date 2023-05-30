@@ -51,6 +51,7 @@ public:
 	SoundSource* m_enemyDeadSE = nullptr;				//€‚ñ‚¾‚Æ‚«‚Ì”š”jSE
 	SoundSource* m_asiotoSE = nullptr;					//‘«‰¹
 	SoundSource* m_battleShipGunSE = nullptr;			//íŠÍ–CSE
+	SoundSource* m_bisiSE = nullptr;					//ƒrƒVSE
 	Enemy_HP_UI* m_HPUI = nullptr;
 
 
