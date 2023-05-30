@@ -88,8 +88,9 @@ enum SoundName {
 	enStartSE,				//Titleのスタートの音(Title用のトラックのため使用しないで)
 	enResultBGM,			//リザルトのBGM
 	enVoice,				//登場シーンの音声
-	enPutun,					//プツン音
-	enTatumaki
+	enPutun,				//プツン音
+	enTatumaki,
+	enBisi					//エネミーのビシッの音
 };
 
 class Game :public IGameObject

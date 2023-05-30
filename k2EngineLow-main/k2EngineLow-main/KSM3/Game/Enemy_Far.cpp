@@ -30,7 +30,7 @@ Enemy_Far::~Enemy_Far()
 	//m_player->enemy_survival = false;	
 
 	
-
+	DeleteGO(m_bisiSE);
 	DeleteGO(m_asiotoSE);
 	DeleteGO(m_HPUI);
 }
@@ -151,6 +151,12 @@ void Enemy_Far::Update()
 					impact->SetRotation(m_enemyRotation);
 					impact->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
 					impact->Play();
+
+					m_bisiSE = NewGO<SoundSource>(0);
+					m_bisiSE->Init(enBisi);						//‰Šú‰»
+					m_bisiSE->SetVolume(3.8f * m_game->SEvol);	//‰¹—Ê’²®
+					m_bisiSE->Play(false);						//Ä¶
+
 					m_impactPlay = true;
 				}
 				m_enemyModel.PlayFlash();	//ƒ‚ƒfƒ‹‚ğ”’‚­‚³‚¹‚é

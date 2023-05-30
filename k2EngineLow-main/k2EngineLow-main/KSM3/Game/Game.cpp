@@ -139,6 +139,7 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enVoice, "Assets/audio/OP/OPvoice.wav");
 	g_soundEngine->ResistWaveFileBank(enPutun, "Assets/audio/OP/putun.wav");
 	g_soundEngine->ResistWaveFileBank(enTatumaki, "Assets/audio/enemy/Tatumaki.wav");
+	g_soundEngine->ResistWaveFileBank(enBisi, "Assets/audio/enemy/bisi2.wav");
 
 	//m_fade = FindGO<Fade>("fade");
 	//m_fade->StartFadeIn();
