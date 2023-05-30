@@ -57,7 +57,8 @@ enum EffectName {
 	enBoss_Drill_Landing,	//ボスドリルの着弾エフェ
 	enBoss_Shovel_shock,		//ボスショベルのshockエフェ
 	enTatumaki_charge,
-	enTatumaki_fire
+	enTatumaki_fire,
+	enImpact
 };
 
 //サウンドの列挙
