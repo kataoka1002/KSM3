@@ -58,7 +58,9 @@ enum EffectName {
 	enBoss_Shovel_shock,		//ボスショベルのshockエフェ
 	enTatumaki_charge,
 	enTatumaki_fire,
-	enImpact
+	enImpact,
+	enSword,				//プレイヤーが死んだときの剣
+	enFeatherBall
 };
 
 //サウンドの列挙

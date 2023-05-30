@@ -78,6 +78,11 @@ void Core_weapons::Move() {
 	Core_Weapons_Render.Update();
 }
 
-void Core_weapons::Render(RenderContext& rc) {
+void Core_weapons::Render(RenderContext& rc) 
+{
+	if (cw_player->m_deadBakuhaPlay == true)
+	{
+		return;
+	}
 	Core_Weapons_Render.Draw(rc);
 }
