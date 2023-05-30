@@ -126,7 +126,7 @@ void Boss_Drill::Update()
 			Explosion_Another = NewGO<EffectEmitter>(0);
 			Explosion_Another->Init(enBoss_Explosion_Another);
 			Explosion_Another->SetScale({ 25.0f,25.0f,25.0f });
-			Explosion_Another->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+			
 			//efeLP += b_w_position;
 			Explosion_Another->SetPosition(efeLP + b_w_position);
 			Explosion_Another->SetRotation(b_w_rotation);
@@ -143,7 +143,7 @@ void Boss_Drill::Update()
 			Explosion_efe = NewGO<EffectEmitter>(0);
 			Explosion_efe->Init(enBoss_Explosion);
 			Explosion_efe->SetScale({ 70.0f,70.0f,70.0f });
-			Explosion_efe->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+			
 			//efeLP += b_w_position;
 			Explosion_efe->SetPosition(efeLP + b_w_position);
 			Explosion_efe->SetRotation(b_w_rotation);

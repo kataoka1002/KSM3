@@ -232,7 +232,7 @@ void Boss::Damage()
 				Explosion_Another = NewGO<EffectEmitter>(0);
 				Explosion_Another->Init(enBoss_Explosion);
 				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
-				Explosion_Another->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+				
 				//efeLP += b_w_position;
 				Explosion_Another->SetPosition(b_boss_riser->b_w_position);
 				Explosion_Another->SetRotation(b_boss_riser->b_w_rotation);
@@ -242,7 +242,7 @@ void Boss::Damage()
 				Explosion_Another = NewGO<EffectEmitter>(0);
 				Explosion_Another->Init(enBoss_Explosion);
 				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
-				Explosion_Another->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+				
 				//efeLP += b_w_position;
 				Explosion_Another->SetPosition(b_boss_drill->b_w_position);
 				Explosion_Another->SetRotation(b_boss_drill->b_w_rotation);
@@ -252,7 +252,7 @@ void Boss::Damage()
 				Explosion_Another = NewGO<EffectEmitter>(0);
 				Explosion_Another->Init(enBoss_Explosion);
 				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
-				Explosion_Another->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+				
 				//efeLP += b_w_position;
 				Explosion_Another->SetPosition(b_boss_saber->b_w_position);
 				Explosion_Another->SetRotation(b_boss_saber->b_w_rotation);
@@ -262,7 +262,7 @@ void Boss::Damage()
 				Explosion_Another = NewGO<EffectEmitter>(0);
 				Explosion_Another->Init(enBoss_Explosion);
 				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
-				Explosion_Another->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+				
 				//efeLP += b_w_position;
 				Explosion_Another->SetPosition(b_boss_shovel->b_w_position);
 				Explosion_Another->SetRotation(b_boss_shovel->b_w_rotation);
@@ -272,7 +272,7 @@ void Boss::Damage()
 				Explosion_Another = NewGO<EffectEmitter>(0);
 				Explosion_Another->Init(enBoss_Explosion);
 				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
-				Explosion_Another->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+				
 				//efeLP += b_w_position;
 				Explosion_Another->SetPosition(b_boss_turbo->b_w_position);
 				Explosion_Another->SetRotation(b_boss_turbo->b_w_rotation);
@@ -284,7 +284,7 @@ void Boss::Damage()
 			Boss_Explosion = NewGO<EffectEmitter>(0);
 			Boss_Explosion->Init(enBoss_Death);
 			Boss_Explosion->SetScale({ 70.0f,70.0f,70.0f });
-			Boss_Explosion->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+			
 			//efeLP += b_w_position;
 			Boss_Explosion->SetPosition(boss_position);
 			Boss_Explosion->SetRotation(boss_rotation);
@@ -302,7 +302,7 @@ void Boss::Damage()
 			Boss_Explosion = NewGO<EffectEmitter>(0);
 			Boss_Explosion->Init(enBoss_Death2);
 			Boss_Explosion->SetScale({ 70.0f,70.0f,70.0f });
-			Boss_Explosion->Coercion_destruction = false;	// ŸŽè‚ÉÁ‚³‚È‚¢
+			
 			//efeLP += b_w_position;
 			Boss_Explosion->SetPosition(boss_position);
 			Boss_Explosion->SetRotation(boss_rotation);

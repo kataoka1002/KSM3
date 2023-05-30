@@ -122,14 +122,21 @@ void Boss_Riser_attack::SetUp()
 
 void Boss_Riser_attack::Update()
 {
-	if (Bullet_efe_count % 600 == 0) {
+	if (Bullet_efe_count == 0) {
 		m_BulletEffect = NewGO<EffectEmitter>(0);
 		m_BulletEffect->Init(enBoss_Dozar_efe);
 		m_BulletEffect->SetScale({ 35.0f,35.0f,35.0f });
 
 		m_BulletEffect->Play();
 	}
-	m_BulletEffect->SetPosition(firing_position);
+	if (Bullet_efe_count == 600) {
+		DeleteGO(m_BulletEffect);
+		m_BulletEffect = nullptr;
+		Bullet_efe_count = -1;
+	}
+	if (m_BulletEffect != nullptr) {
+		m_BulletEffect->SetPosition(firing_position);
+	}
 	Bullet_efe_count++;
 
 	if (b_a_player->game_state == 0)
