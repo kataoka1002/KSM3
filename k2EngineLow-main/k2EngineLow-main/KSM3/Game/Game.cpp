@@ -111,7 +111,7 @@ bool Game::Start()
 
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Shovel_shock, u"Assets/effect/enemy/Boss_shovel_shock.efk");
 	EffectEngine::GetInstance()->ResistEffect(enTatumaki_charge, u"Assets/effect/enemy/Tatumaki_charge.efk");
-	EffectEngine::GetInstance()->ResistEffect(enTatumaki_fire, u"Assets/effect/enemy/Tatumaki_fire.efk");
+	EffectEngine::GetInstance()->ResistEffect(enTatumaki_fire, u"Assets/effect/enemy/Tatumaki_fire2.efk");
 	EffectEngine::GetInstance()->ResistEffect(enImpact, u"Assets/effect/enemy/impact.efk");
 	EffectEngine::GetInstance()->ResistEffect(enSword, u"Assets/effect/enemy/swordEfe.efk");
 	EffectEngine::GetInstance()->ResistEffect(enFeatherBall, u"Assets/effect/enemy/featherBall.efk");
@@ -138,7 +138,7 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enResultBGM, "Assets/audio/BGM/result.wav");
 	g_soundEngine->ResistWaveFileBank(enVoice, "Assets/audio/OP/OPvoice.wav");
 	g_soundEngine->ResistWaveFileBank(enPutun, "Assets/audio/OP/putun.wav");
-	g_soundEngine->ResistWaveFileBank(enTatumaki, "Assets/audio/enemy/Tatumaki.wav");
+	g_soundEngine->ResistWaveFileBank(enTatumaki, "Assets/audio/enemy/Tatumaki2.wav");
 	g_soundEngine->ResistWaveFileBank(enBisi, "Assets/audio/enemy/bisi2.wav");
 
 	//m_fade = FindGO<Fade>("fade");
