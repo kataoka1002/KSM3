@@ -91,6 +91,11 @@ bool Enemy_Bullet::Start()
 
 void Enemy_Bullet::FindWeapon()
 {
+	if (m_player->m_playerDead == true)
+	{
+		return;
+	}
+
 	//¶˜r
 	if (m_customizeUI->m_leftArmWeapon != nullptr)
 	{

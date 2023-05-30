@@ -90,6 +90,25 @@ void Player::Update()
 			m_deadSE->Play(false);
 			m_playDeadSE = true;
 		}
+		else if (m_deadCount > 150 && m_deadBakuhaPlay == false)
+		{
+			//エフェクト発生
+			EffectEmitter* featherBall = NewGO<EffectEmitter>(0);
+			featherBall->Init(enFeatherBall);
+			featherBall->SetScale({ 20.0f,20.0f,20.0f });
+			featherBall->SetRotation(player_rotation);
+			featherBall->SetPosition(player_position);
+			featherBall->Play();
+
+			EffectEmitter* deadBakuha = NewGO<EffectEmitter>(0);
+			deadBakuha->Init(enTyakudan);
+			deadBakuha->SetScale({ 20.0f,20.0f,20.0f });
+			deadBakuha->SetRotation(player_rotation);
+			deadBakuha->SetPosition(player_position);
+			deadBakuha->Play();
+
+			m_deadBakuhaPlay = true;
+		}
 		else if (m_deadCount >= 300)
 		{
 			//リザルトへ
@@ -158,7 +177,6 @@ void Player::Update()
 	//HPが0以下になるなると死亡
 	if (m_playerHP <= 0 && m_playerDead == false)
 	{
-		
 		//死亡の演出
 		g_renderingEngine->SetGrayScale(true);	//画面全体を灰色にする
 		m_playerDead = true;
@@ -166,6 +184,14 @@ void Player::Update()
 		//効果音を消す
 		m_game->SEvol = 0.0f;
 		
+		//エフェクト発生
+		EffectEmitter* sword = NewGO<EffectEmitter>(0);
+		sword->Init(enSword);
+		sword->SetScale({ 13.0f,13.0f,13.0f });
+		sword->SetRotation(player_rotation);
+		sword->SetPosition(player_position);
+		sword->Play();
+
 	}
 }
 
@@ -348,6 +374,11 @@ void Player::MachineGunSE()
 
 void Player::Render(RenderContext& rc)
 {
+	if (m_deadBakuhaPlay == true)
+	{
+		return;
+	}
+
 	player_modelRender.Draw(rc);
 
 	//ポーズ中ならポーズ画面を表示
