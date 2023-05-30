@@ -62,10 +62,7 @@ bool Boss_Cannon_attack::Start() {
 	//‰¹(‰¼)
 	g_soundEngine->ResistWaveFileBank(2, "Assets/audio/Taihou_kouho1.wav");
 
-	b_attack_SE = NewGO<SoundSource>(0);
-	b_attack_SE->Init(2);
-	b_attack_SE->SetVolume(0.2f);
-	b_attack_SE->Play(false);
+	
 	SetUp();
 
 	return true;
