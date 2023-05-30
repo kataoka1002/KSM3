@@ -72,10 +72,7 @@ bool Boss_Drill_attack::Start() {
 	//音(仮)
 	g_soundEngine->ResistWaveFileBank(2, "Assets/audio/Taihou_kouho1.wav");
 
-	b_attack_SE = NewGO<SoundSource>(0);
-	b_attack_SE->Init(2);
-	b_attack_SE->SetVolume(0.2f);
-	b_attack_SE->Play(false);
+	
 	SetUp();
 
 	return true;
@@ -98,6 +95,12 @@ void Boss_Drill_attack::SetUp()
 
 void Boss_Drill_attack::Update()
 {
+	if (Bullet_efe_count == 0) {
+		//b_attack_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		//b_attack_SE->Init(en_Boss_Drill);		//初期化
+		//b_attack_SE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+		//b_attack_SE->Play(false);
+	}
 	if (Bullet_efe_count % 510 == 0) {
 		m_BulletEffect = NewGO<EffectEmitter>(0);
 		m_BulletEffect->Init(enBoss_Drill);
@@ -194,6 +197,10 @@ void Boss_Drill_attack::Move()
 		if (drill_count == 230) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
 			m_camera->VibFlag = true;
+			b_attack_SE=NewGO<SoundSource>(0);
+			b_attack_SE->Init(en_Boss_Drill_sonic);		//初期化
+			b_attack_SE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+			b_attack_SE->Play(false);
 		}
 		if (drill_count >= 270 && drill_count < 300) {
 			last_fowrad.y += 0.05;
@@ -222,6 +229,7 @@ void Boss_Drill_attack::Move()
 		}
 		if (drill_count == 400) {
 			b_a_weapons->b_boss_weapons = nullptr;
+			DeleteGO(b_attack_SE);
 			DeleteGO(this);
 		}
 		drill_count++;

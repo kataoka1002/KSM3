@@ -40,6 +40,8 @@ public:
 	Right_arm_weapons* m_rightArm = nullptr;
 	Right_leg_weapons* m_rightLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
+	SoundSource* m_Shovel_roar_SE = nullptr;
+	SoundSource* m_Shovel_shock_SE = nullptr;
 	Boss* b_w_boss;
 	Boss_Shovel_attack* b_boss_weapons;
 	Drop_item* drop_item;

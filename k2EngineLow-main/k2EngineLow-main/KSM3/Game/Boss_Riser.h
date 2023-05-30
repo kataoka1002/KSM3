@@ -40,6 +40,7 @@ public:
 	Vector3 b_w_Fowrad = { 0.0f,0.0f,1.0f };
 	int game_state = 0;
 	ModelRender boss_Riser_Render;
+	SoundSource* m_Dozar_ChargeSE = nullptr;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
 	Vector3 b_w_localposition = { 600.0f,300.0f,-100.0f };

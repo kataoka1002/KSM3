@@ -28,7 +28,7 @@ public:
 	Drop_item* drop_item;
 	Game* m_game;
 	EffectEmitter* m_weaponEffect = nullptr;
-
+	SoundSource* m_Cannon_ChargeSE = nullptr;
 	//CharacterController boss_riser_characterContller;
 	CharacterController m_enemyCharacterController;	//エネミーキャラコン
 	Quaternion b_w_rotation;

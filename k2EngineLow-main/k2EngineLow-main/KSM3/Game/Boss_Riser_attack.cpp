@@ -62,10 +62,6 @@ bool Boss_Riser_attack::Start() {
 	//音(仮)
 	g_soundEngine->ResistWaveFileBank(2, "Assets/audio/Taihou_kouho1.wav");
 
-	b_attack_SE = NewGO<SoundSource>(0);
-	b_attack_SE->Init(2);
-	b_attack_SE->SetVolume(0.2f);
-	b_attack_SE->Play(false);
 	SetUp();
 
 	return true;
@@ -84,7 +80,7 @@ void Boss_Riser_attack::DestroyWithImpactEffect() {
 	if (fast == true) {
 		//着弾したら効果音発生
 		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
+		m_battleShipGunTyakutiSE->Init(en_Boss_Dozar_Langing_SE);		//初期化
 		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
 		m_battleShipGunTyakutiSE->Play(false);
 

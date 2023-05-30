@@ -117,6 +117,7 @@ void Boss_Turbo::Update()
 			if (firing_cound == 900) {
 				firing_cound = 0;
 				Rote = false;
+				DeleteGO(TatumakiSE);
 			}
 		}
 
