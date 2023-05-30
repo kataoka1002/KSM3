@@ -165,5 +165,9 @@ void Left_arm_weapons::Move()
 
 void Left_arm_weapons::Render(RenderContext& rc)
 {
+	if (l_a_w_player->m_deadBakuhaPlay == true)
+	{
+		return;
+	}
 	Left_arm_weapons_Render.Draw(rc);
 }

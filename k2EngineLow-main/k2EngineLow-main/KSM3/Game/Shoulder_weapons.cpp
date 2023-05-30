@@ -224,6 +224,11 @@ void Shoulder_weapons::Move2()
 
 void Shoulder_weapons::Render(RenderContext& rc) 
 {
+	if (s_w_player->m_deadBakuhaPlay == true)
+	{
+		return;
+	}
+
 	Shoulder_weapons_Render.Draw(rc);
 	//付けている武器がマシンガンならDraw
 	if (s_w_player->p_custom_point[0][1] == 2)

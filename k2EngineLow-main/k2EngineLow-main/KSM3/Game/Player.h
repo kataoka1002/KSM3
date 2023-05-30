@@ -69,6 +69,7 @@ public:
 	bool boss_survival = true;
 	bool m_playerDead = false;						//ƒvƒŒƒCƒ„[‚ª€‚ñ‚¾‚©‚Ç‚¤‚©
 	bool m_playDeadSE = false;						//€–S‰¹‚ğ–Â‚ç‚µ‚½‚©‚Ç‚¤‚©
+	bool m_deadBakuhaPlay = false;					//€–S‚Ì”š”j‚ğ”­¶‚³‚¹‚½‚©
 
 	int player_color_date = 0;
 	int player_color_random = 0;

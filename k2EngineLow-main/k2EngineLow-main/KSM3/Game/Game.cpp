@@ -113,6 +113,9 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enTatumaki_charge, u"Assets/effect/enemy/Tatumaki_charge.efk");
 	EffectEngine::GetInstance()->ResistEffect(enTatumaki_fire, u"Assets/effect/enemy/Tatumaki_fire.efk");
 	EffectEngine::GetInstance()->ResistEffect(enImpact, u"Assets/effect/enemy/impact.efk");
+	EffectEngine::GetInstance()->ResistEffect(enSword, u"Assets/effect/enemy/swordEfe.efk");
+	EffectEngine::GetInstance()->ResistEffect(enFeatherBall, u"Assets/effect/enemy/featherBall.efk");
+
 
 	//サウンドの設定
 	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
@@ -136,6 +139,7 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enVoice, "Assets/audio/OP/OPvoice.wav");
 	g_soundEngine->ResistWaveFileBank(enPutun, "Assets/audio/OP/putun.wav");
 	g_soundEngine->ResistWaveFileBank(enTatumaki, "Assets/audio/enemy/Tatumaki.wav");
+	g_soundEngine->ResistWaveFileBank(enBisi, "Assets/audio/enemy/bisi2.wav");
 
 	//m_fade = FindGO<Fade>("fade");
 	//m_fade->StartFadeIn();

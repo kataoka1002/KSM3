@@ -58,7 +58,9 @@ enum EffectName {
 	enBoss_Shovel_shock,		//ボスショベルのshockエフェ
 	enTatumaki_charge,
 	enTatumaki_fire,
-	enImpact
+	enImpact,
+	enSword,				//プレイヤーが死んだときの剣
+	enFeatherBall
 };
 
 //サウンドの列挙
@@ -86,8 +88,9 @@ enum SoundName {
 	enStartSE,				//Titleのスタートの音(Title用のトラックのため使用しないで)
 	enResultBGM,			//リザルトのBGM
 	enVoice,				//登場シーンの音声
-	enPutun,					//プツン音
-	enTatumaki
+	enPutun,				//プツン音
+	enTatumaki,
+	enBisi					//エネミーのビシッの音
 };
 
 class Game :public IGameObject
