@@ -143,6 +143,16 @@ void Enemy_Far::Update()
 			if (m_enemyHP <= 0.0f)
 			{
 				m_defeatState = false;
+				if (m_impactPlay == false)
+				{
+					EffectEmitter* impact = NewGO<EffectEmitter>(0);
+					impact->Init(enImpact);
+					impact->SetScale({ 10.0f,10.0f,10.0f });
+					impact->SetRotation(m_enemyRotation);
+					impact->SetPosition({ m_enemyPosition.x,m_enemyPosition.y ,m_enemyPosition.z });
+					impact->Play();
+					m_impactPlay = true;
+				}
 				m_enemyModel.PlayFlash();	//ƒ‚ƒfƒ‹‚ð”’‚­‚³‚¹‚é
 			}
 
@@ -168,6 +178,8 @@ void Enemy_Far::Update()
 				m_flashTime--;
 				return;
 			}
+
+			
 
 			m_enemySize -= 0.15f;
 			
