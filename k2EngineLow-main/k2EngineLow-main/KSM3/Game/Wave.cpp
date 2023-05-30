@@ -161,6 +161,13 @@ void Wave::Update()
 			SpritePlay();
 		}
 
+		//最初だけウェーブ開始演出が終わるとUIを生成する
+		if (m_waveNum == 1 && m_playerUISet == false)
+		{
+			m_game->MakePlayerUI();
+			m_playerUISet = true;
+		}
+
 		//残り時間の計測
 		TimeCount();
 
@@ -326,15 +333,17 @@ void Wave::Render(RenderContext& rc)
 	{
 		if (m_player->bossState != 1)	//ボス戦じゃないなら表示
 		{
-			m_waveGageWaku.Draw(rc);
-			m_waveGageNakami.Draw(rc);
-			if (m_waveClear == nullptr)
+			if (m_playerUISet == true)	//プレイヤーUIがセットされる時に一緒に描画
 			{
-				m_timerFont.Draw(rc);
+				m_waveGageWaku.Draw(rc);
+				m_waveGageNakami.Draw(rc);
+				if (m_waveClear == nullptr)
+				{
+					m_timerFont.Draw(rc);
+				}
+
+				m_TimerSprite.Draw(rc);	//クリア演出中は表示しない
 			}
-			
-			m_TimerSprite.Draw(rc);	//クリア演出中は表示しない
-			
 
 			//演出中のみ表示
 			if (m_ensyutuNow == true)
@@ -344,7 +353,7 @@ void Wave::Render(RenderContext& rc)
 			}
 		}
 
-		if (m_player->m_playerDead != true)
+		if (m_player->m_playerDead != true && m_playerUISet == true)
 		{
 			m_missionSprite.Draw(rc);	//プレイヤーが生きているならミッションを表示する
 		}

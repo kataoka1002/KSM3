@@ -103,6 +103,7 @@ public:
 	void GameNow();
 	void TitleToGame();
 	void SetUp();
+	void MakePlayerUI();
 	void MakeEnemy();
 	void DeleteEnemy();
 	Vector3 RandomPosition();

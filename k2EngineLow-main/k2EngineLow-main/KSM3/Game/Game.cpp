@@ -186,11 +186,14 @@ void Game::SetUp()
 	//ウェーブ管理のクラス作成
 	m_wave = NewGO<Wave>(3, "wave");
 
-	//プレイヤーUIの作成
-	m_playerUI = NewGO<PlayerUI>(2, "playerui");
-
 	//コンボ管理のクラス
 	m_combo = NewGO<Combo>(2, "combo");
+}
+
+void Game::MakePlayerUI()
+{
+	//プレイヤーUIの作成
+	m_playerUI = NewGO<PlayerUI>(2, "playerui");
 }
 
 void Game::MakeEnemy()
