@@ -101,11 +101,12 @@ void Boss_Turbo_attack::DestroyWithImpactEffect()
 
 void Boss_Turbo_attack::SetUp()
 {
-		//b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
+		b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
 		b_a_aiming.Multiply(m_bulletLocalPosition);	//掛け算
 		//m_rot = b_a_weapons->b_w_rotation;
 		firing_position += m_bulletLocalPosition;
-		//b_a_Bullet_Fowrad = b_a_boss->boss_forward;
+		firing_position = b_a_weapons->b_w_position;
+		b_a_Bullet_Fowrad = b_a_weapons->b_w_Fowrad;
 		b_a_Bullet.SetScale(30);
 		b_a_Bullet.SetPosition(firing_position);
 		//b_a_Bullet.SetRotation(m_rot);
@@ -135,17 +136,17 @@ void Boss_Turbo_attack::Update()
 
 void Boss_Turbo_attack::Rotation() 
 {
-	//エネミーからプレイヤーが入ってきたら追いかける。
-	Vector3 toPlayer = b_a_player->player_position-firing_position;
+		//エネミーからプレイヤーが入ってきたら追いかける。
+		//Vector3 toPlayer = b_a_player->player_position - firing_position;
 
-	//プレイヤーとの距離を計算する。
-	float distToPlayer = toPlayer.Length();
-	//プレイヤーに向かって伸びるベクトルを正規化する。
-	Vector3 toPlayerDir = toPlayer;
-	toPlayerDir.Normalize();
-	b_a_Bullet_Fowrad = toPlayerDir;
-	m_rot.SetRotationY(atan2(b_a_Bullet_Fowrad.x, b_a_Bullet_Fowrad.z));
-	b_a_Bullet.SetRotation(m_rot);
+		//プレイヤーとの距離を計算する。
+		//float distToPlayer = toPlayer.Length();
+		////プレイヤーに向かって伸びるベクトルを正規化する。
+		//Vector3 toPlayerDir = toPlayer;
+		//toPlayerDir.Normalize();
+		//b_a_Bullet_Fowrad = toPlayerDir;
+		/*m_rot.SetRotationY(atan2(b_a_Bullet_Fowrad.x, b_a_Bullet_Fowrad.z));
+		b_a_Bullet.SetRotation(m_rot);*/
 
 }
 
@@ -154,6 +155,7 @@ void Boss_Turbo_attack::Move()
 	//弾を前に飛ばす処理
 		Move_speed += b_a_Bullet_Fowrad *3.5f;
 		//Move_speed.y -= 0.2 + fall_speed;
+		//firing_position= b_a_weapons->b_w_position;
 		firing_position += Move_speed;
 	//バレットの更新
 		b_a_Bullet.SetRotation(m_rot);
@@ -313,7 +315,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 				//距離を測り一定以下なら体力減少
 			if (diffLeftArm.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_leftArm->L_a_w_HP -= 1.5f;
+				m_leftArm->L_a_w_HP -= 1.0f;
 				DestroyWithImpactEffect();
 			}
 		}
@@ -330,7 +332,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 				//距離を測り一定以下なら体e力減少
 			if (diffLeftLeg.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_leftLeg->L_l_w_HP -= 1.5f;
+				m_leftLeg->L_l_w_HP -= 1.0f;
 				DestroyWithImpactEffect();
 			}
 
@@ -348,7 +350,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 				//距離を測り一定以下なら体力減少
 			if (diffRightArm.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_rightArm->m_rightArmHP -= 1.5f;
+				m_rightArm->m_rightArmHP -= 1.0f;
 				DestroyWithImpactEffect();
 			}
 
@@ -366,7 +368,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 				//距離を測り一定以下なら体力減少
 			if (diffRightLeg.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_rightLeg->R_l_w_HP -= 1.5f;
+				m_rightLeg->R_l_w_HP -= 1.0f;
 				DestroyWithImpactEffect();
 			}
 
@@ -384,7 +386,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 				//距離を測り一定以下なら体力減少
 			if (diffShoulder.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_shoulder->S_w_HP -= 1.5f;
+				m_shoulder->S_w_HP -= 1.0f;
 				DestroyWithImpactEffect();
 			}
 

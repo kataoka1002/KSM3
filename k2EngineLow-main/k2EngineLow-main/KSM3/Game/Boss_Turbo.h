@@ -42,6 +42,7 @@ public:
 	bool attack_state = false;
 	bool attack_ok = false;
 	bool defeatState = false;
+	bool Rote = false;
 	int set_weapons = 0;
 
 	int firing_cound = 0;
