@@ -35,7 +35,7 @@ bool PlayerUI::Start()
 	m_HPBackSprite.Update();
 
 	m_enemyKillSprite.Init("Assets/sprite/player/enemyKillAmount.dds", 1980.0f, 1020.0f);
-	m_enemyKillSprite.SetPosition({ 600.0f,350.0f,0.0f });
+	m_enemyKillSprite.SetPosition({ 1000.0f,350.0f,0.0f });
 	m_enemyKillSprite.SetScale({ 0.7f,0.6f,0.6f });
 	m_enemyKillSprite.Update();
 
@@ -46,12 +46,12 @@ bool PlayerUI::Start()
 	m_redFrameSprite.Update();
 
 	m_L1Sprite.Init("Assets/sprite/player/buttonL1.dds", 1600.0f, 900.0f);
-	m_L1Sprite.SetPosition({ -650.0f,-330.0f,0.0f });
+	m_L1Sprite.SetPosition({ m_L1SpritePosX,-330.0f,0.0f });
 	m_L1Sprite.SetScale(0.2f);
 	m_L1Sprite.Update();
 
 	m_R2Sprite.Init("Assets/sprite/player/buttonR2.dds", 1600.0f, 900.0f);
-	m_R2Sprite.SetPosition({ -470.0f,-330.0f,0.0f });
+	m_R2Sprite.SetPosition({ m_R2SpritePosX,-330.0f,0.0f });
 	m_R2Sprite.SetScale(0.2f);
 	m_R2Sprite.Update();
 
@@ -60,6 +60,61 @@ bool PlayerUI::Start()
 
 void PlayerUI::Update()
 {
+	if (m_setUI == false)
+	{
+		//スプライトの横移動を求める
+		m_killSpritePosX -= (m_killSpritePosX - m_killSpriteTargetPos  ) / 10.0f;
+		m_HPSpriteX		 -= (m_HPSpriteX      - m_HPSpriteTargetPos    ) / 10.0f;
+		m_HPwakuSpriteX	 -= (m_HPwakuSpriteX  - m_HPwakuSpriteTargetPos) / 10.0f;
+		m_L1SpritePosX	 -= (m_L1SpritePosX   - m_L1SpriteTargetPos    ) / 10.0f;
+		m_R2SpritePosX	 -= (m_R2SpritePosX   - m_R2SpriteTargetPos    ) / 10.0f;
+
+		//それぞれ目的の位置にたどり着いたらそこで固定
+		if (m_killSpritePosX - 0.05f <= m_killSpriteTargetPos)
+		{
+			m_killSpritePosX = m_killSpriteTargetPos;
+			setA = true;
+		}
+		if (m_HPSpriteX - 0.05f <= m_HPSpriteTargetPos)
+		{
+			m_HPSpriteX = m_HPSpriteTargetPos;
+			setB = true;
+		}
+		if (m_HPwakuSpriteX - 0.05f <= m_HPwakuSpriteTargetPos)
+		{
+			m_HPwakuSpriteX = m_HPwakuSpriteTargetPos;
+			setC = true;
+		}
+		if (m_L1SpritePosX + 0.05f >= m_L1SpriteTargetPos)
+		{
+			m_L1SpritePosX = m_L1SpriteTargetPos;
+			setD = true;
+		}
+		if (m_R2SpritePosX + 0.05f >= m_R2SpriteTargetPos)
+		{
+			m_R2SpritePosX = m_R2SpriteTargetPos;
+			setE = true;
+		}
+
+		//全てのスプライトがセット出来たら
+		if (setA == true && setB == true && setC == true && setD == true && setE == true)
+		{
+			m_setUI = true;
+		}
+
+		//更新
+		m_enemyKillSprite.SetPosition({ m_killSpritePosX,350.0f,0.0f });
+		m_enemyKillSprite.Update();
+		m_HPSprite.SetPosition({ m_HPSpriteX,-300.0f,0.0f });
+		m_HPSprite.Update();
+		m_HPBackSprite.SetPosition({ m_HPwakuSpriteX,-340.0f,0.0f });
+		m_HPBackSprite.Update();
+		m_L1Sprite.SetPosition({ m_L1SpritePosX,-330.0f,0.0f });
+		m_L1Sprite.Update();
+		m_R2Sprite.SetPosition({ m_R2SpritePosX,-330.0f,0.0f });
+		m_R2Sprite.Update();
+	}
+
 	//プレイヤーの体力計算
 	m_HPSprite.SetMulColor(Damage(m_player->m_playerHP, m_player->m_playerHPMax));
 	m_HPSprite.Update();
@@ -192,11 +247,13 @@ void PlayerUI::Render(RenderContext& rc)
 		{ 
 			//キル数の枠
 			m_enemyKillSprite.Draw(rc);
-			//キル数の表示
-			m_killEnemyAmount.Draw(rc);
-		}
 
-		
+			if (m_setUI == true)
+			{
+				//キル数の表示
+				m_killEnemyAmount.Draw(rc);
+			}
+		}
 
 		//それぞれがヌルじゃないなら描画
 		if (m_rightArm != nullptr) 

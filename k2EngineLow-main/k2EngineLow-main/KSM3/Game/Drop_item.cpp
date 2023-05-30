@@ -85,11 +85,13 @@ void Drop_item::Update()
 			drop_player->game_state = 3;
 			
 			DeleteGO(this);
+			m_game->RemoveDropItemFromList(this);	//リストから消す
 		}
 
 		if (m_deleteCount <= 0)
 		{
 			DeleteGO(this);
+			m_game->RemoveDropItemFromList(this);	//リストから消す
 		}
 		m_deleteCount--;
 	}

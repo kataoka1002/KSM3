@@ -13,7 +13,7 @@ Title::Title()
 	////system_Render.Init("Assets/sprite/title/system.dds", /*1920.0f, 1080.0f*/);
 	////nannka_Render.Init("Assets/sprite/title/nannka.dds", /*1920.0f, 1080.0f*/);
 	//yajirusi_Render.Init("Assets/sprite/title/yajirusi/dds", /*1920.0f, 1080.0f*/);
-	SetUp();
+	
 	lighting = NewGO<Lighting>(1, "lighting");
 	title_Render.SetScale(title_scale);
 
@@ -35,6 +35,7 @@ void Title::PlaySE(int track_number, float vol)
 	m_SE->Play(false);
 }
 bool Title::Start() {
+	SetUp();
 	return true;
 }
 void Title::SetUp()

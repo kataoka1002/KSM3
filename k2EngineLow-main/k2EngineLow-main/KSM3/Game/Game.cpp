@@ -27,7 +27,7 @@
 #include "SkyCube.h"
 #include "GuideLight.h"
 #include "Combo.h"
-
+#include "OPVoice.h"
 
 
 Game::Game()
@@ -36,8 +36,6 @@ Game::Game()
 
 	//ライトの作成
 	lighting = NewGO<Lighting>(1, "lighting");
-
-	
 
 	//ステージの作成
 	background = NewGO< BackGround>(1, "background");
@@ -51,6 +49,9 @@ Game::Game()
 	m_skyCube->SetScale(4000.0f);
 	m_skyCube->SetPosition({ 0.0f,40.0f,0.0f });
 	m_skyCube->SetType((EnSkyCubeType)enSkyCubeType_DayToon_2);
+
+	//オープニングボイスの生成
+	OPVoice* m_voice = NewGO<OPVoice>(1, "opvoice");
 }
 
 Game::~Game()
@@ -131,6 +132,9 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enSoutyakuSE, "Assets/audio/soutyakuon.wav");
 	g_soundEngine->ResistWaveFileBank(enByuSE, "Assets/audio/byu.wav");
 	g_soundEngine->ResistWaveFileBank(enPlayerDead, "Assets/audio/player/playerDead.wav");
+	g_soundEngine->ResistWaveFileBank(enResultBGM, "Assets/audio/BGM/result.wav");
+	g_soundEngine->ResistWaveFileBank(enVoice, "Assets/audio/OP/OPvoice.wav");
+	g_soundEngine->ResistWaveFileBank(enPutun, "Assets/audio/OP/putun.wav");
 	g_soundEngine->ResistWaveFileBank(enTatumaki, "Assets/audio/enemy/Tatumaki.wav");
 
 	//m_fade = FindGO<Fade>("fade");

@@ -34,8 +34,8 @@ Result::Result()
 		}
 	gamecamera=FindGO<GameCamera>("gamecamera");
 
-	g_soundEngine->ResistWaveFileBank(17, "Assets/audio/ketteion.wav");
-	g_soundEngine->ResistWaveFileBank(21, "Assets/audio/BGM/result.wav");
+	//g_soundEngine->ResistWaveFileBank(17, "Assets/audio/ketteion.wav");
+	//g_soundEngine->ResistWaveFileBank(21, "Assets/audio/BGM/result.wav");
 }
 
 Result::~Result()
