@@ -10,6 +10,11 @@
 
 Boss_Turbo::Boss_Turbo()
 {
+
+	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_turbo.tka");
+	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
+	m_animationClip[enAnimationClip_Attack].Load("Assets/animData/Boss_turbo_attack.tka");
+	m_animationClip[enAnimationClip_Attack].SetLoopFlag(true);
 	b_w_player = FindGO<Player>("player");
 }
 
@@ -28,7 +33,7 @@ void Boss_Turbo::Setup()
 	b_w_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
-		boss_Turbo_Render.Init("Assets/modelData/Boss_turbo.tkm");
+		boss_Turbo_Render.Init("Assets/modelData/Boss_turbo2.tkm", true, true, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
 		boss_Turbo_Render.Update();
 	}
 
@@ -69,6 +74,12 @@ void Boss_Turbo::Update()
 				m_weaponEffect->SetRotation(b_w_rotation);
 				m_weaponEffect->Play();*/
 
+			}
+			if (firing_cound >= 500) {
+				boss_Turbo_Render.PlayAnimation(enAnimationClip_Attack, 0.5f);
+			}
+			else {
+				boss_Turbo_Render.PlayAnimation(enAnimationClip_Idle, 0.5f);
 			}
 			if (firing_cound == 500) {
 
@@ -127,14 +138,14 @@ void Boss_Turbo::Update()
 	/*PlayerSearch();*/
 
 
-	if (turbo_HP <= 0.0f)
-	{
-		drop_item = NewGO<Drop_item>(1, "drop_item");
-		drop_item->Drop_position = b_w_position;
-		drop_item->Drop_position.y += 50.0f;
-		defeatState = true;
-		DeleteGO(this);
-	}
+	//if (turbo_HP <= 0.0f)
+	//{
+	//	drop_item = NewGO<Drop_item>(1, "drop_item");
+	//	drop_item->Drop_position = b_w_position;
+	//	drop_item->Drop_position.y += 50.0f;
+	//	defeatState = true;
+	//	DeleteGO(this);
+	//}
 }
 
 void Boss_Turbo::Rotation() {
