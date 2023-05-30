@@ -68,6 +68,7 @@ void PlayerUI::Update()
 		m_HPwakuSpriteX	 -= (m_HPwakuSpriteX  - m_HPwakuSpriteTargetPos) / 10.0f;
 		m_L1SpritePosX	 -= (m_L1SpritePosX   - m_L1SpriteTargetPos    ) / 10.0f;
 		m_R2SpritePosX	 -= (m_R2SpritePosX   - m_R2SpriteTargetPos    ) / 10.0f;
+		m_killFontPos    -= (m_killFontPos    - m_killFontTargetPos    ) / 10.0f;
 
 		//それぞれ目的の位置にたどり着いたらそこで固定
 		if (m_killSpritePosX - 0.05f <= m_killSpriteTargetPos)
@@ -95,9 +96,14 @@ void PlayerUI::Update()
 			m_R2SpritePosX = m_R2SpriteTargetPos;
 			setE = true;
 		}
+		if (m_killFontPos - 0.05f <= m_killFontTargetPos)
+		{
+			m_killFontPos = m_killFontTargetPos;
+			setF = true;
+		}
 
 		//全てのスプライトがセット出来たら
-		if (setA == true && setB == true && setC == true && setD == true && setE == true)
+		if (setA == true && setB == true && setC == true && setD == true && setE == true && setF == true)
 		{
 			m_setUI = true;
 		}
@@ -132,7 +138,7 @@ void PlayerUI::Update()
 	swprintf_s(text, 256, L"%02d　/10",m_player->killEnemy);
 	m_killEnemyAmount.SetPivot({ 0.0f,0.5f });
 	m_killEnemyAmount.SetText(text);
-	m_killEnemyAmount.SetPosition(Vector3(580.0f, 465.0f, 0.0f));
+	m_killEnemyAmount.SetPosition(Vector3(m_killFontPos, 465, 0.0f));
 	m_killEnemyAmount.SetShadowParam(true, 1.0f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 	m_killEnemyAmount.SetScale(1.2f);
 	m_killEnemyAmount.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -244,15 +250,12 @@ void PlayerUI::Render(RenderContext& rc)
 		m_R2Sprite.Draw(rc);
 
 		if (m_player->bossState != 1 && m_wave->m_waveClear == nullptr)	//ウェーブ３クリア演出中は表示しない
-		{ 
+		{
 			//キル数の枠
 			m_enemyKillSprite.Draw(rc);
 
-			if (m_setUI == true)
-			{
-				//キル数の表示
-				m_killEnemyAmount.Draw(rc);
-			}
+			//キル数の表示
+			m_killEnemyAmount.Draw(rc);
 		}
 
 		//それぞれがヌルじゃないなら描画

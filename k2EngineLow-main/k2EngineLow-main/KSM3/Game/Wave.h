@@ -47,7 +47,7 @@ public:
 	Vector4 Loading_color = { 1.0f,1.0f,1.0f,0.0f };
 	int Loading_count = 0;
 	bool m_spriteChangeFlag = false;
-
+	bool m_playerUISet = false;
 
 	const float		TIME_LIMIT = 180.0f;						//１ウェーブのタイムリミット
 	const Vector3	SPRITE_POSITION = { 1000.0f,0.0f,0.0f };	//ウェーブ変更スプライトの初期場所

@@ -55,11 +55,14 @@ public:
 	float m_L1SpriteTargetPos = -650.0f;
 	float m_R2SpritePosX = -1100.0f;
 	float m_R2SpriteTargetPos = -470.0f;
+	float m_killFontPos = 1000.0f;
+	float m_killFontTargetPos = 580.0f;
 	bool m_setUI = false;					//UIが全てセットできたか
 	bool setA = false;
 	bool setB = false;
 	bool setC = false;
 	bool setD = false;
 	bool setE = false;
+	bool setF = false;
 };
 
