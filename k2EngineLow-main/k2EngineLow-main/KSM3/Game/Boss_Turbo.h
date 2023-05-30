@@ -14,6 +14,7 @@ public:
 
 	void Setup();
 	void Update();
+	void Rotation();
 	void Move();
 	void PlayerSearch();
 	void Render(RenderContext& rc);
@@ -22,17 +23,21 @@ public:
 	Boss* b_w_boss;
 	Boss_Turbo_attack* b_boss_weapons;
 	Drop_item* drop_item;
+	EffectEmitter* m_weaponEffect = nullptr;
+	SoundSource*TatumakiSE=nullptr;
 
 	//CharacterController boss_riser_characterContller;
 	Quaternion b_w_rotation;
 	Vector3 b_w_position;
 	Vector3 b_w_moveSpeed;
-	Vector3 b_w_Fowrad = { 0.0f,0.0f,1.0f };
+	Vector3 b_w_Fowrad;
+	Vector3 Move_speed = Vector3::Zero;
+	Vector3 efeLP = { 0.0f,410.0f,0.0f };
 	int game_state = 0;
 	ModelRender boss_Turbo_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { -630.0f,230.0f,-100.0f };
+	Vector3 b_w_localposition = { -630.0f,20.0f,-100.0f };
 
 	bool attack_state = false;
 	bool attack_ok = false;
