@@ -21,11 +21,11 @@ public:
 
 	ModelRender Drop_item_Render;
 
-	Player* drop_player;
-	Left_arm_weapons* left_arm_weapons;
+	Player* drop_player = nullptr;
+	Left_arm_weapons* left_arm_weapons = nullptr;
 	Customize_UI* customize_UI = nullptr;
 	Customize_UI_ver2* customize_UI_ver2 = nullptr;
-	GameCamera* m_gameCamera;
+	GameCamera* m_gameCamera = nullptr;
 	Game* m_game = nullptr;
 
 	Vector3 Drop_position;//DropˆÊ’u

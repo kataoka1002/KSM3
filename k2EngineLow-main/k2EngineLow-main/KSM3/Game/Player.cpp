@@ -55,6 +55,7 @@ bool Player::Start()
 	m_runSE = NewGO<SoundSource>(0);
 	m_walkSE = NewGO<SoundSource>(0);
 
+
 	//効果音の設定
 	m_machineGunSE->Init(enMachineGun);	//初期化
 	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//音量調整

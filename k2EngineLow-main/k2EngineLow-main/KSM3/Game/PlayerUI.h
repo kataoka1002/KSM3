@@ -45,5 +45,21 @@ public:
 	float UI_START_COLLAR_G = 1.0f;
 	float UI_START_COLLAR_R = 0.0f;
 	float m_redFrame_A = 0.0f;
+	float m_killSpritePosX = 1000.0f;		//キル数の枠のポジション
+	float m_HPSpriteX = 1000.0f;			//HPのポジション
+	float m_HPwakuSpriteX = 1000.0f;		//HPの枠のポジション
+	float m_killSpriteTargetPos = 600.0f;	//キル数の枠のターゲットポジション
+	float m_HPSpriteTargetPos = 610.0f;		//HPのターゲットポジション
+	float m_HPwakuSpriteTargetPos = 730.0f;	//HPの枠のターゲットポジション
+	float m_L1SpritePosX = -1100.0f;
+	float m_L1SpriteTargetPos = -650.0f;
+	float m_R2SpritePosX = -1100.0f;
+	float m_R2SpriteTargetPos = -470.0f;
+	bool m_setUI = false;					//UIが全てセットできたか
+	bool setA = false;
+	bool setB = false;
+	bool setC = false;
+	bool setD = false;
+	bool setE = false;
 };
 

@@ -82,7 +82,10 @@ enum SoundName {
 	enKetteiSE_Title,		//決定音(Title用のトラックのため使用しないで)
 	enCancelSE_Title,		//キャンセル音(Title用のトラックのため使用しないで)
 	enSentakuIdouSE_Title,	//カーソル移動音(Title用のトラックのため使用しないで)
-	enStartSE				//Titleのスタートの音(Title用のトラックのため使用しないで)
+	enStartSE,				//Titleのスタートの音(Title用のトラックのため使用しないで)
+	enResultBGM,			//リザルトのBGM
+	enVoice,				//登場シーンの音声
+	enPutun					//プツン音
 };
 
 class Game :public IGameObject
@@ -134,6 +137,18 @@ public:
 
 		if (it != m_enemyFarObject.end()) {
 			m_enemyFarObject.erase(it);
+		}
+	}
+
+	void RemoveDropItemFromList(Drop_item* dropItem)
+	{
+		std::vector<Drop_item*>::iterator it = std::find(
+			m_dropItemObject.begin()
+			, m_dropItemObject.end()
+			, dropItem);
+
+		if (it != m_dropItemObject.end()) {
+			m_dropItemObject.erase(it);
 		}
 	}
 
