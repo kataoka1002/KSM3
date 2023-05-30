@@ -56,6 +56,11 @@ void Boss_Cannon::Update()
 		Rotation();
 
 		if (firing_cound == 1800) {
+			m_Cannon_ChargeSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+			m_Cannon_ChargeSE->Init(enBoss_Cannon_Charge_SE);		//初期化
+			m_Cannon_ChargeSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+			m_Cannon_ChargeSE->Play(false);
+
 			m_weaponEffect = NewGO<EffectEmitter>(0);
 			m_weaponEffect->Init(enBoss_Cannon_Charge);
 			m_weaponEffect->SetScale({ 70.0f,70.0f,70.0f });

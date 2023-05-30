@@ -90,7 +90,15 @@ enum SoundName {
 	enVoice,				//登場シーンの音声
 	enPutun,				//プツン音
 	enTatumaki,
-	enBisi					//エネミーのビシッの音
+	enBisi,					//エネミーのビシッの音
+	enBoss_Cannon_Charge_SE,//ボスキャノンのCharge音
+	enBoss_Shovel_roar,		//ボスショベルの吠える
+	en_Boss_Drill,			//ボスドリル音
+	en_Boss_Drill_sonic,	//ボスDrill通過
+	en_Boss_Dozar_Charge_SE,//ボスドーザーチャージ
+	en_Boss_Shovel_shock,	//ボスショベル衝撃
+	en_Boss_cannon_Langing_SE,//ボスキャノン着弾
+	en_Boss_Dozar_Langing_SE//ボスドーザー着弾
 };
 
 class Game :public IGameObject

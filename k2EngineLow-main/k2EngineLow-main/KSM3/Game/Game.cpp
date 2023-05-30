@@ -141,6 +141,15 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enTatumaki, "Assets/audio/enemy/Tatumaki2.wav");
 	g_soundEngine->ResistWaveFileBank(enBisi, "Assets/audio/enemy/bisi2.wav");
 
+	g_soundEngine->ResistWaveFileBank(enBoss_Shovel_roar, "Assets/audio/Shovel_roar.wav");
+	g_soundEngine->ResistWaveFileBank(en_Boss_Drill, "Assets/audio/Drill.wav");
+	g_soundEngine->ResistWaveFileBank(enBoss_Cannon_Charge_SE, "Assets/audio/Cannon_Charge.wav");
+	g_soundEngine->ResistWaveFileBank(en_Boss_Drill_sonic, "Assets/audio/Drill_sonic.wav");
+	g_soundEngine->ResistWaveFileBank(en_Boss_Dozar_Charge_SE, "Assets/audio/Dozar_Charge.wav");
+	g_soundEngine->ResistWaveFileBank(en_Boss_Shovel_shock, "Assets/audio/Shovel_shock.wav");
+	g_soundEngine->ResistWaveFileBank(en_Boss_cannon_Langing_SE, "Assets/audio/Cannon_Langing.wav");
+	g_soundEngine->ResistWaveFileBank(en_Boss_Dozar_Langing_SE, "Assets/audio/Dozar_Langing.wav");
+
 	//m_fade = FindGO<Fade>("fade");
 	//m_fade->StartFadeIn();
 

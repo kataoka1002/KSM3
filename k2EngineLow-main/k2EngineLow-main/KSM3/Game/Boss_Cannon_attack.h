@@ -52,6 +52,7 @@ public:
 	EffectEmitter* m_tyakudanEffect = nullptr;
 	EffectEmitter* m_BulletEffect = nullptr;
 	SoundSource* m_battleShipGunTyakutiSE = nullptr;
+	SoundSource* m_Cannon_LangingSE = nullptr;
 	Vector3 to_core_weapons;
 	Vector3 m_bulletLocalPosition = { 0.0f,680.0f,200.0f };	//弾のローカルポジション
 

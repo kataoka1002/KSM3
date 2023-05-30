@@ -73,6 +73,11 @@ bool Boss_Cannon_attack::Start() {
 
 void Boss_Cannon_attack::DestroyWithImpactEffect() {
 	if (Landing_count == 0){
+		m_Cannon_LangingSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_Cannon_LangingSE->Init(en_Boss_cannon_Langing_SE);		//初期化
+		m_Cannon_LangingSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+		m_Cannon_LangingSE->Play(false);
+
 		m_weaponEffect = NewGO<EffectEmitter>(0);
 		m_weaponEffect->Init(enBoss_Cannon_Landing);
 		m_weaponEffect->SetScale({ 70.0f,70.0f,70.0f });
@@ -82,6 +87,11 @@ void Boss_Cannon_attack::DestroyWithImpactEffect() {
 	}
 	if (Landing_count == 126) {
 		//戦艦砲エフェクトの初期化と再生
+		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
+		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+		m_battleShipGunTyakutiSE->Play(false);
+
 		m_weaponEffect = NewGO<EffectEmitter>(0);
 		m_weaponEffect->Init(enTyakudan);
 		m_weaponEffect->SetScale({ 70.0f,70.0f,70.0f });
@@ -92,10 +102,7 @@ void Boss_Cannon_attack::DestroyWithImpactEffect() {
 	Landing_count++;
 	if (fast == true) {
 		//着弾したら効果音発生
-		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
-		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
-		m_battleShipGunTyakutiSE->Play(false);
+		
 		
 		//画面を揺らす
 		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
