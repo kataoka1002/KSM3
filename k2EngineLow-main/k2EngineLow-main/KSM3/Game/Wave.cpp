@@ -107,8 +107,8 @@ void Wave::Update()
 		//最終ウェーブじゃないとき
 		if (m_waveNum != 3)
 		{
-			//プレイヤーがエネミーを10体倒すか、ウェーブタイマーが0になると追加でエネミー生成
-			if (m_timer <= 0.0f || m_player->killEnemy == 10)
+			//プレイヤーがエネミーを倒すか、ウェーブタイマーが0になると追加でエネミー生成
+			if (m_timer <= 0.0f || m_game->m_numDefeatedEnemy == m_game->m_numEnemy)
 			{
 				//演出開始
 				m_ensyutuNow = true;
@@ -116,8 +116,8 @@ void Wave::Update()
 		}
 		else if (m_waveNum == 3)
 		{
-			//エネミーを10体倒すか、ウェーブタイマーが0になるとボス戦へ行けるようになる
-			if (m_timer <= 0.0f || m_player->killEnemy == 10)
+			//エネミーを倒すか、ウェーブタイマーが0になるとボス戦へ行けるようになる
+			if (m_timer <= 0.0f || m_player->killEnemy == 30)
 			{
 				m_goBoss = true;
 
@@ -146,8 +146,11 @@ void Wave::Update()
 					m_missionSprite.Init("Assets/sprite/wave/mission1clear.dds", 1920.0f, 1080.0f);
 					m_missionSprite.Update();
 
-					//ウェーブ3クリアの演出
-					m_waveClear = NewGO<Wave3Clear>(3, "wave3clear");
+					if (m_player->killEnemy == 30)	//殺した数が３０体なら殲滅演出
+					{
+						//ウェーブ3クリアの演出
+						m_waveClear = NewGO<Wave3Clear>(3, "wave3clear");
+					}
 
 					m_spriteChangeFlag = true;
 				}
@@ -242,7 +245,7 @@ void Wave::SpritePlay()
 		{
 			//演出が終わるとエネミーを追加生成
 			m_game->MakeEnemy();
-			m_player->killEnemy -= 10;		//殺した数をリセット
+			//m_player->killEnemy -= 10;		//殺した数をリセット
 			m_timer = TIME_LIMIT;			//タイマーをリセット
 		}
 
