@@ -308,7 +308,7 @@ void Boss::Damage()
 			Boss_Explosion->SetRotation(boss_rotation);
 			Boss_Explosion->Play();
 		}
-		if (Death_count==240) {
+		if (Death_count==440) {
 			b_player->game_state = 2;
 			result = NewGO<Result>(1, "result");
 			result->SE_volume = boss_game->SEvol;

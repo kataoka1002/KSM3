@@ -200,10 +200,13 @@ void Player::Move()
 	player_moveSpeed = { 0.0f,0.0f,0.0f };//移動速度の初期化
 
 	Vector3 stickL;
-	throttle = 0;
+	throttle = 0.0f;
 	stickL.x = g_pad[0]->GetLStickXF();
 	//スティックを倒した量の取得
 	throttle = g_pad[0]->GetRTrigger();
+	if (throttle == 0.0f) {
+		throttle = g_pad[0]->GetLTrigger();
+	}
 
 	Vector3 right = g_camera3D->GetRight();
 	right.y = 0.0f;
