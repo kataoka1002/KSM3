@@ -69,8 +69,7 @@ bool Player::Start()
 
 void Player::Update() 
 {
-	//プレイヤーのY座標は固定
-	player_position.y = 0.0f;
+	
 
 	//プレイヤーが死んでいてリザルト中でないときの処理
 	if (m_playerDead == true && game_state != 2)
@@ -251,10 +250,12 @@ void Player::Move()
 
 	move_s = 4.0f * accelerator;
 	player_moveSpeed += playerForward  * move_s * (throttle / 2.0f);
-
+	
 	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
-
+	characterController.SetPosition({ player_position.x ,0.0f,player_position.z });
+	player_position.y = 0.0f;
 	//座標を教える。
+	//プレイヤーのY座標は固定
 	player_modelRender.SetPosition(player_position);
 	player_modelRender.SetRotation(player_rotation);
 }
