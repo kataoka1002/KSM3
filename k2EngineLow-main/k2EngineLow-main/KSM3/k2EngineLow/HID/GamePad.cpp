@@ -93,14 +93,24 @@ namespace nsK2EngineLow {
 			}
 		}
 		//左トリガー。
-		if (xInputState.Gamepad.bLeftTrigger > 5) {
-			m_trigger[enButtonLB2] = 1 ^ m_press[enButtonLB2];
-			m_press[enButtonLB2] = 1;
+		//if (xInputState.Gamepad.bLeftTrigger > 5) {
+		//	m_trigger[enButtonLB2] = 1 ^ m_press[enButtonLB2];
+		//	m_press[enButtonLB2] = 1;
+		//}
+		//else {
+		//	m_trigger[enButtonLB2] = 0;
+		//	m_press[enButtonLB2] = 0;
+		//}
+		
+		//左トリガー(入力量取得可能)
+		if (xInputState.Gamepad.bLeftTrigger != 0) {
+			m_ltrigger = static_cast<float>(xInputState.Gamepad.bLeftTrigger);
 		}
 		else {
-			m_trigger[enButtonLB2] = 0;
-			m_press[enButtonLB2] = 0;
+			xInputState.Gamepad.bLeftTrigger = 0;
+			m_ltrigger = 0;
 		}
+
 		//右トリガー(入力量取得可能)
 		if (xInputState.Gamepad.bRightTrigger !=0) {
 			m_rtrigger = static_cast<float>(xInputState.Gamepad.bRightTrigger);
