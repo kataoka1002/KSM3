@@ -60,7 +60,9 @@ enum EffectName {
 	enTatumaki_fire,
 	enImpact,
 	enSword,				//プレイヤーが死んだときの剣
-	enFeatherBall
+	enFeatherBall,
+	en_Boss_attack,			//ボスの攻撃エフェ
+	en_Boss_attack_Explosion//ボス攻撃の爆発エフェ
 };
 
 //サウンドの列挙
@@ -99,6 +101,7 @@ enum SoundName {
 	en_Boss_Shovel_shock,	//ボスショベル衝撃
 	en_Boss_cannon_Langing_SE,//ボスキャノン着弾
 	en_Boss_Dozar_Langing_SE//ボスドーザー着弾
+	
 };
 
 class Game :public IGameObject

@@ -6,6 +6,7 @@
 #include "Game.h"
 #include <time.h>
 #include <stdlib.h>
+#include "Customize_UI_ver2.h"
 #include "Battle_ship_attack.h"
 #include "Drop_item.h"
 #include "Boss_Riser.h"
@@ -18,10 +19,43 @@
 #include <math.h>
 #include "Boss_Saber.h"
 #include"GameCamera.h"
+#include "Left_arm_weapons.h"
+#include "Left_leg_weapons.h"
+#include "Right_arm_weapons.h"
+#include "Right_leg_weapons.h"
+#include "Shoulder_weapons.h"
 
 
 Boss::Boss() 
 {
+
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+	//左腕
+	if (m_customizeUI->m_leftArmWeapon != nullptr)
+	{
+		m_leftArm = m_customizeUI->m_leftArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//左足
+	if (m_customizeUI->m_leftLegWeapon != nullptr)
+	{
+		m_leftLeg = m_customizeUI->m_leftLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//右腕
+	if (m_customizeUI->m_rightArmWeapon != nullptr)
+	{
+		m_rightArm = m_customizeUI->m_rightArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//右足
+	if (m_customizeUI->m_rightLegWeapon != nullptr)
+	{
+		m_rightLeg = m_customizeUI->m_rightLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+	//肩
+	if (m_customizeUI->m_shoulderWeapon != nullptr)
+	{
+		m_shoulder = m_customizeUI->m_shoulderWeapon;	//カスタマイズUIにあるポインタを渡してやる
+	}
+
 	boss_game = FindGO<Game>("game");
 	b_player = FindGO<Player>("player");
 	//b_boss_riser = FindGO<Boss_Riser>("boss_riser");
@@ -90,8 +124,62 @@ void Boss::Update()
 		m_BossEffect->SetPosition(efeLP);
 		m_BossEffect->Play();
 	}
-	Boss_efecount++;
+	if (boss_attack_count == 500) {
+		switch (Boss_attack_kind)
+		{
+		case 1:
+			Boss_attack_efe = NewGO<EffectEmitter>(0);
+			Boss_attack_efe->Init(en_Boss_attack);
+			Boss_attack_efe->SetScale({ 35.0f, 35.0f, 35.0f });
+			attack_efe_LP += boss_position;
+			Boss_attack_efe->SetPosition(attack_efe_LP);
+			Boss_attack_efe->Play();
+			break;
+		default:
+			break;
+		}
+			
+		
+	}
+	if (boss_attack_count >= 500 && boss_attack_count < 520) {
+		switch (Boss_attack_kind)
+		{
+		case 1:
+			attack_efe_LP.y -= 200.0f;
+			Boss_attack_efe->SetPosition(attack_efe_LP);
+			Player_Damage(1, false);
+			break;
+		default:
+			break;
+		}
+	}
+	switch (Boss_attack_kind)
+	{
+	case 1:
+		if (boss_attack_count == 520) {
+			Player_Damage(1, true);
+			attack_efe_LP = { 0.0f,1000.0f,0.0f };
+			boss_attack_count = 0;
+		}
+	default:
+		break;
+	}
+	if (boss_attack_count == 400&&Boss_attack_kind==1) {
+		Boss_attack_Explosion_efe = NewGO<EffectEmitter>(0);
+		Boss_attack_Explosion_efe->Init(en_Boss_attack_Explosion);
+		Boss_attack_Explosion_efe->SetScale({ 50.0f, 50.0f, 50.0f });
+		Boss_attack_Explosion_efe->SetPosition(boss_position);
+		Boss_attack_Explosion_efe->Play();
+		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
+		m_battleShipGunTyakutiSE->SetVolume(2.0f * boss_game->SEvol);	//音量調整
+		m_battleShipGunTyakutiSE->Play(false);
+	}
 
+
+
+	Boss_efecount++;
+	boss_attack_count++;
 	boss_time += g_gameTime->GetFrameDeltaTime();
 	boss_time_score += g_gameTime->GetFrameDeltaTime();
 	if (boss_time_score >= 1.0f)
@@ -102,6 +190,245 @@ void Boss::Update()
 
 	
 	boss_modelRender.Update();
+}
+
+void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
+	if (Landing_state == false) {
+		switch (boss_damage_kind)
+		{
+			case 1:
+				//---------------------------------------------------------------------------------------------------
+				if (b_player != nullptr)	//プレイヤーの情報が入っているなら
+				{
+					//弾とプレイヤーの距離を測る
+					Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->player_position.x, b_player->player_position.y + 50.0f, b_player->player_position.z };
+
+					//武器によってダメージを変える
+
+						//距離を測り一定以下なら体力減少
+					if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
+					{
+						b_player->m_playerHP -= 1.0f;
+
+					}
+
+				}
+
+
+
+				//---------------------------------------------------------------------------------------------------
+
+				//---------------------------------------------------------------------------------------------------
+				if (m_leftArm != nullptr)	//左腕に情報が入っているなら
+				{
+					//弾と左腕の距離を測る
+					Vector3 diffLeftArm = attack_efe_LP - Vector3{ m_leftArm->l_a_w_position.x, m_leftArm->l_a_w_position.y, m_leftArm->l_a_w_position.z };
+
+					//武器によってダメージを変える
+
+						//距離を測り一定以下なら体力減少
+					if (diffLeftArm.Length() <= 2000.0f) //ダメージが入る範囲
+					{
+						m_leftArm->L_a_w_HP -= 1.0f;
+
+					}
+				}
+				//---------------------------------------------------------------------------------------------------
+
+				//---------------------------------------------------------------------------------------------------
+				if (m_leftLeg != nullptr)	//左足に情報が入っているなら
+				{
+					//弾と左腕の距離を測る
+					Vector3 diffLeftLeg = attack_efe_LP - Vector3{ m_leftLeg->l_l_w_position.x, m_leftLeg->l_l_w_position.y, m_leftLeg->l_l_w_position.z };
+
+					//武器によってダメージを変える
+
+						//距離を測り一定以下なら体力減少
+					if (diffLeftLeg.Length() <= 2000.0f) //ダメージが入る範囲
+					{
+						m_leftLeg->L_l_w_HP -= 1.0f;
+
+					}
+
+				}
+				//---------------------------------------------------------------------------------------------------
+
+				//---------------------------------------------------------------------------------------------------
+				if (m_rightArm != nullptr)	//右手に情報が入っているなら
+				{
+					//弾と左腕の距離を測る
+					Vector3 diffRightArm = attack_efe_LP - Vector3{ m_rightArm->r_a_w_position.x, m_rightArm->r_a_w_position.y, m_rightArm->r_a_w_position.z };
+
+					//武器によってダメージを変える
+
+						//距離を測り一定以下なら体力減少
+					if (diffRightArm.Length() <= 2000.0f) //ダメージが入る範囲
+					{
+						m_rightArm->m_rightArmHP -= 1.0f;
+
+					}
+
+				}
+				//---------------------------------------------------------------------------------------------------
+
+				//---------------------------------------------------------------------------------------------------
+				if (m_rightLeg != nullptr)	//右足に情報が入っているなら
+				{
+					//弾と左腕の距離を測る
+					Vector3 diffRightLeg = attack_efe_LP - Vector3{ m_rightLeg->r_l_w_position.x, m_rightLeg->r_l_w_position.y, m_rightLeg->r_l_w_position.z };
+
+					//武器によってダメージを変える
+
+						//距離を測り一定以下なら体力減少
+					if (diffRightLeg.Length() <= 2000.0f) //ダメージが入る範囲
+					{
+						m_rightLeg->R_l_w_HP -= 1.0f;
+
+					}
+
+				}
+				//---------------------------------------------------------------------------------------------------
+
+				//---------------------------------------------------------------------------------------------------
+				if (m_shoulder != nullptr)	//肩に情報が入っているなら
+				{
+					//弾と左腕の距離を測る
+					Vector3 diffShoulder = attack_efe_LP - Vector3{ m_shoulder->s_w_position.x, m_shoulder->s_w_position.y, m_shoulder->s_w_position.z };
+
+					//武器によってダメージを変える
+
+						//距離を測り一定以下なら体力減少
+					if (diffShoulder.Length() <= 2000.0f) //ダメージが入る範囲
+					{
+						m_shoulder->S_w_HP -= 1.0f;
+
+					}
+
+				}
+				//---------------------------------------------------------------------------------------------------
+				break;
+		default:
+			break;
+		}
+	}
+	else {
+		switch (boss_damage_kind)
+		{
+		case 1:
+			//---------------------------------------------------------------------------------------------------
+			if (b_player != nullptr)	//プレイヤーの情報が入っているなら
+			{
+				//弾とプレイヤーの距離を測る
+				Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->player_position.x, b_player->player_position.y + 50.0f, b_player->player_position.z };
+
+				//武器によってダメージを変える
+
+					//距離を測り一定以下なら体力減少
+				if (diffPlayer.Length() <= 2500.0f) //ダメージが入る範囲
+				{
+					b_player->m_playerHP -= 100.0f;
+
+				}
+
+			}
+
+
+
+			//---------------------------------------------------------------------------------------------------
+
+			//---------------------------------------------------------------------------------------------------
+			if (m_leftArm != nullptr)	//左腕に情報が入っているなら
+			{
+				//弾と左腕の距離を測る
+				Vector3 diffLeftArm = attack_efe_LP - Vector3{ m_leftArm->l_a_w_position.x, m_leftArm->l_a_w_position.y, m_leftArm->l_a_w_position.z };
+
+				//武器によってダメージを変える
+
+					//距離を測り一定以下なら体力減少
+				if (diffLeftArm.Length() <= 2500.0f) //ダメージが入る範囲
+				{
+					m_leftArm->L_a_w_HP -= 100.0f;
+
+				}
+			}
+			//---------------------------------------------------------------------------------------------------
+
+			//---------------------------------------------------------------------------------------------------
+			if (m_leftLeg != nullptr)	//左足に情報が入っているなら
+			{
+				//弾と左腕の距離を測る
+				Vector3 diffLeftLeg = attack_efe_LP - Vector3{ m_leftLeg->l_l_w_position.x, m_leftLeg->l_l_w_position.y, m_leftLeg->l_l_w_position.z };
+
+				//武器によってダメージを変える
+
+					//距離を測り一定以下なら体力減少
+				if (diffLeftLeg.Length() <= 2500.0f) //ダメージが入る範囲
+				{
+					m_leftLeg->L_l_w_HP -= 100.0f;
+
+				}
+
+			}
+			//---------------------------------------------------------------------------------------------------
+
+			//---------------------------------------------------------------------------------------------------
+			if (m_rightArm != nullptr)	//右手に情報が入っているなら
+			{
+				//弾と左腕の距離を測る
+				Vector3 diffRightArm = attack_efe_LP - Vector3{ m_rightArm->r_a_w_position.x, m_rightArm->r_a_w_position.y, m_rightArm->r_a_w_position.z };
+
+				//武器によってダメージを変える
+
+					//距離を測り一定以下なら体力減少
+				if (diffRightArm.Length() <= 2500.0f) //ダメージが入る範囲
+				{
+					m_rightArm->m_rightArmHP -= 100.0f;
+
+				}
+
+			}
+			//---------------------------------------------------------------------------------------------------
+
+			//---------------------------------------------------------------------------------------------------
+			if (m_rightLeg != nullptr)	//右足に情報が入っているなら
+			{
+				//弾と左腕の距離を測る
+				Vector3 diffRightLeg = attack_efe_LP - Vector3{ m_rightLeg->r_l_w_position.x, m_rightLeg->r_l_w_position.y, m_rightLeg->r_l_w_position.z };
+
+				//武器によってダメージを変える
+
+					//距離を測り一定以下なら体力減少
+				if (diffRightLeg.Length() <= 2500.0f) //ダメージが入る範囲
+				{
+					m_rightLeg->R_l_w_HP -= 100.0f;
+
+				}
+
+			}
+			//---------------------------------------------------------------------------------------------------
+
+			//---------------------------------------------------------------------------------------------------
+			if (m_shoulder != nullptr)	//肩に情報が入っているなら
+			{
+				//弾と左腕の距離を測る
+				Vector3 diffShoulder = attack_efe_LP - Vector3{ m_shoulder->s_w_position.x, m_shoulder->s_w_position.y, m_shoulder->s_w_position.z };
+
+				//武器によってダメージを変える
+
+					//距離を測り一定以下なら体力減少
+				if (diffShoulder.Length() <= 2500.0f) //ダメージが入る範囲
+				{
+					m_shoulder->S_w_HP -= 100.0f;
+
+				}
+
+			}
+			//---------------------------------------------------------------------------------------------------
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void Boss::PlayerSearch()
