@@ -193,6 +193,21 @@ void Boss_Drill_attack::Move()
 			move_speed += b_a_Bullet_Fowrad * 400.0;
 			firing_position += move_speed;
 			b_a_Bullet.SetPosition(firing_position);
+
+			if (b_a_weapons != nullptr) {
+				//弾とボスの距離を測る
+				Vector3 diffShoulder = firing_position - Vector3{ b_a_weapons->b_w_position.x, b_a_weapons->b_w_position.y, b_a_weapons->b_w_position.z };
+
+				//武器によってダメージを変える
+
+					//距離を測り一定以下なら体力減少
+				if (diffShoulder.Length() <= 500.0f) //ダメージが入る範囲
+				{
+					b_a_weapons->drill_HP -= 2.0f;
+					Effect();
+
+				}
+			}
 		}
 		if (drill_count == 230) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
@@ -370,6 +385,22 @@ void Boss_Drill_attack::Damage() {
 
 	}
 	//---------------------------------------------------------------------------------------------------
+	if (b_a_boss != nullptr) {
+		//弾とボスの距離を測る
+		Vector3 diffShoulder = firing_position - Vector3{ b_a_boss->boss_position.x, b_a_boss->boss_position.y, b_a_boss->boss_position.z };
+
+		//武器によってダメージを変える
+
+			//距離を測り一定以下なら体力減少
+		if (diffShoulder.Length() <= 500.0f) //ダメージが入る範囲
+		{
+			b_a_boss->boss_HP -= 50.0f;
+			Effect();
+
+		}
+	}
+
+	
 }
 
 void Boss_Drill_attack::Effect() {
