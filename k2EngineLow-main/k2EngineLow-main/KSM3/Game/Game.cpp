@@ -116,6 +116,8 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enSword, u"Assets/effect/enemy/swordEfe.efk");
 	EffectEngine::GetInstance()->ResistEffect(enFeatherBall, u"Assets/effect/enemy/featherBall.efk");
 
+	EffectEngine::GetInstance()->ResistEffect(en_Boss_attack, u"Assets/effect/enemy/Boss_attack.efk");
+	EffectEngine::GetInstance()->ResistEffect(en_Boss_attack_Explosion, u"Assets/effect/enemy/Boss_attack_Explosion.efk");
 
 	//サウンドの設定
 	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
@@ -267,7 +269,7 @@ void Game::GameNow()
 	}
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 9550.0f  && boss == nullptr /*&& m_wave->m_goBoss == true*/)
+	if (player->player_position.z >= 9550.0f  && boss == nullptr && m_wave->m_goBoss == true)
 	{
 		if (m_wave->Loading_count == 2)
 		{
