@@ -214,6 +214,8 @@ void Game::MakeEnemy()
 		enemy->m_enemyPosition = RandomPosition();
 
 		m_enemyObject.push_back(enemy);
+
+		m_numEnemy++;	//エネミーの存在数をプラス
 	}
 	for (int i = 0; i < 4; i++)
 	{
@@ -221,6 +223,8 @@ void Game::MakeEnemy()
 		enemyFar->m_enemyPosition = RandomPosition();
 
 		m_enemyFarObject.push_back(enemyFar);
+
+		m_numEnemy++;	//エネミーの存在数をプラス
 	}
 	for (int i = 0; i < 2; i++)
 	{
@@ -228,6 +232,8 @@ void Game::MakeEnemy()
 		enemyNear->m_enemyPosition = RandomPosition();
 
 		m_enemyNearObject.push_back(enemyNear);
+
+		m_numEnemy++;	//エネミーの存在数をプラス
 	}
 }
 

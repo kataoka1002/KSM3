@@ -7,6 +7,7 @@
 #include "Left_leg_weapons.h";
 #include "Shoulder_weapons.h";
 #include "Wave.h"
+#include "Game.h"
 
 PlayerUI::PlayerUI()
 {
@@ -22,6 +23,7 @@ bool PlayerUI::Start()
 {
 	m_player = FindGO<Player>("player");
 	m_wave = FindGO<Wave>("wave");
+	m_game = FindGO<Game>("game");
 
 	m_HPSprite.Init("Assets/sprite/player/playerUI.dds", 691.0f, 597.0f);
 	m_HPSprite.SetPosition({ 610.0f,-300.0f,0.0f });
@@ -135,7 +137,7 @@ void PlayerUI::Update()
 
 	//“G‚ðŽE‚µ‚½”‚Ì•\Ž¦
 	wchar_t text[256];
-	swprintf_s(text, 256, L"%02d@/10",m_player->killEnemy);
+	swprintf_s(text, 256, L"%02d@/%02d", m_game->m_numDefeatedEnemy,m_game->m_numEnemy);
 	m_killEnemyAmount.SetPivot({ 0.0f,0.5f });
 	m_killEnemyAmount.SetText(text);
 	m_killEnemyAmount.SetPosition(Vector3(m_killFontPos, 465, 0.0f));
