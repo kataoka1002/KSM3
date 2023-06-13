@@ -62,6 +62,7 @@
     <ClCompile Include="Combo.cpp" />
     <ClCompile Include="Wave3Clear.cpp" />
     <ClCompile Include="OPVoice.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -122,5 +123,6 @@
     <ClInclude Include="Combo.h" />
     <ClInclude Include="Wave3Clear.h" />
     <ClInclude Include="OPVoice.h" />
+    <ClInclude Include="EnemyBase.h" />
   </ItemGroup>
 </Project>

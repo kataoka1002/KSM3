@@ -1,6 +1,5 @@
 #pragma once
 #include "LevelRender.h"
-//class BoxMove;
 class Player;		//プレイヤー
 class Title;		//タイトル
 class Result;		//リザルト
@@ -8,18 +7,13 @@ class Lighting;		//ライティング
 class Enemy_Near;
 class Enemy;		//エネミー
 class Enemy_Far;
-class Left_arm_weapons;
 class Drop_item;
 class BackGround;
 class Core_weapons;
 class GameCamera;
-//class Test;
 class Boss;
-class Boss_Riser;
-class Game_UI;
 class Enemy_HP_UI;
 class SoundManage;
-//class Fade;
 class PlayerUI;
 class Customize_UI_ver2;
 class Wave;
@@ -27,80 +21,79 @@ class Title;
 class GuideLight;
 class Combo;
 
-
 //エフェクトの列挙
-enum EffectName {
-	enSunabokori,		//砂ぼこり
-	enMasinganHibana,	//マシンガンから出る火花
-	enHidan,			//被弾
-	enTyakudan,			//弾が着弾した時
-	enEnemyDead,		//敵死亡時のエフェ
-	enSenkanhouKemuri,	//戦艦砲の弾の煙
-	enMasinganKemuri,	//マシンガンの弾の煙
-	enGigatonAttack,	//ギガトンキャノンの攻撃エフェ
-	enEnemyHassei,
-
-	enBoss_Cannon_Charge,  //ボスのcannonの攻撃のChargeエフェ
-	enBoss_Cannon_Landing, //ボスのキャノンの攻撃着弾エフェ
+enum EffectName 
+{
+	enSunabokori,				//砂ぼこり
+	enMasinganHibana,			//マシンガンから出る火花
+	enHidan,					//被弾
+	enTyakudan,					//弾が着弾した時
+	enEnemyDead,				//敵死亡時のエフェ
+	enSenkanhouKemuri,			//戦艦砲の弾の煙
+	enMasinganKemuri,			//マシンガンの弾の煙
+	enGigatonAttack,			//ギガトンキャノンの攻撃エフェ
+	enEnemyHassei,				//エネミーが生成されるときの魔法陣
+	enBoss_Cannon_Charge,		//ボスのcannonの攻撃のChargeエフェ
+	enBoss_Cannon_Landing,		//ボスのキャノンの攻撃着弾エフェ
 	enBoss_Magic_Circle,		//ボスのエフェ1(魔法陣)
-	enBoss_Cannon_Bullet,   //ボスの弾丸エフェ
-
-	enGuide,
-	enBoss_Dozar_Charge,	//ボスドーザーの攻撃Charge
-	enBoss_Dozar_efe,		//ボスドーザーの攻撃エフェ
-	enBoss_Dozar_Landing,	//ボスドーザーの着弾エフェ
-	enBoss_Explosion,		//ボスの破壊爆発エフェ
-	enBoss_Explosion_Another,//ボスの破壊ダメージエフェ
-	enBoss_Death,			//ボスの死
-	enBoss_Death2,			//ボスの死2
-	enBoss_Drill,			//ボスドリルの攻撃エフェ
-	enBoss_Drill_Landing,	//ボスドリルの着弾エフェ
+	enBoss_Cannon_Bullet,		//ボスの弾丸エフェ
+	enGuide,					//ボス戦へのガイド光
+	enBoss_Dozar_Charge,		//ボスドーザーの攻撃Charge
+	enBoss_Dozar_efe,			//ボスドーザーの攻撃エフェ
+	enBoss_Dozar_Landing,		//ボスドーザーの着弾エフェ
+	enBoss_Explosion,			//ボスの破壊爆発エフェ
+	enBoss_Explosion_Another,	//ボスの破壊ダメージエフェ
+	enBoss_Death,				//ボスの死
+	enBoss_Death2,				//ボスの死2
+	enBoss_Drill,				//ボスドリルの攻撃エフェ
+	enBoss_Drill_Landing,		//ボスドリルの着弾エフェ
 	enBoss_Shovel_shock,		//ボスショベルのshockエフェ
 	enTatumaki_charge,
 	enTatumaki_fire,
 	enImpact,
-	enSword,				//プレイヤーが死んだときの剣
+	enSword,					//プレイヤーが死んだときの剣
 	enFeatherBall,
-	en_Boss_attack,			//ボスの攻撃エフェ
-	en_Boss_attack_Explosion//ボス攻撃の爆発エフェ
+	en_Boss_attack,				//ボスの攻撃エフェ
+	en_Boss_attack_Explosion	//ボス攻撃の爆発エフェ
 };
 
 //サウンドの列挙
-enum SoundName {
-	enRunning,				//移動中の音(プレイヤーもエネミーも)
-	enDash,					//ダッシュ中の音(エネミーのみ)
-	enMachineGun,			//マシンガン
-	enGigatonCannon,		//ギガトンキャノン
-	enButtleShipGun,		//戦艦砲
-	enEnemyDeadSE,			//敵死亡時のSE
-	enButtleShipTyakudan,	//戦艦砲の着弾SE
-	enPlayerRun,			//プレイヤーの足音(速い方)
-	enGameBGM,				//ゲーム中のBGM
-	enBossBGM,				//ボス戦BGM
-	enCustomizeBGM,			//カスタマイズ画面BGM
-	enKetteiSE,				//決定音
-	enCancelSE,				//キャンセル音
-	enSentakuIdouSE,		//カーソル移動音
-	enSoutyakuSE,			//装着音
-	enByuSE,				//ドロップアイテム取得時の音
-	enPlayerDead,			//プレイヤー死亡時の音
-	enKetteiSE_Title,		//決定音(Title用のトラックのため使用しないで)
-	enCancelSE_Title,		//キャンセル音(Title用のトラックのため使用しないで)
-	enSentakuIdouSE_Title,	//カーソル移動音(Title用のトラックのため使用しないで)
-	enStartSE,				//Titleのスタートの音(Title用のトラックのため使用しないで)
-	enResultBGM,			//リザルトのBGM
-	enVoice,				//登場シーンの音声
-	enPutun,				//プツン音
+enum SoundName 
+{
+	enRunning,					//移動中の音(プレイヤーもエネミーも)
+	enDash,						//ダッシュ中の音(エネミーのみ)
+	enMachineGun,				//マシンガン
+	enGigatonCannon,			//ギガトンキャノン
+	enButtleShipGun,			//戦艦砲
+	enEnemyDeadSE,				//敵死亡時のSE
+	enButtleShipTyakudan,		//戦艦砲の着弾SE
+	enPlayerRun,				//プレイヤーの足音(速い方)
+	enGameBGM,					//ゲーム中のBGM
+	enBossBGM,					//ボス戦BGM
+	enCustomizeBGM,				//カスタマイズ画面BGM
+	enKetteiSE,					//決定音
+	enCancelSE,					//キャンセル音
+	enSentakuIdouSE,			//カーソル移動音
+	enSoutyakuSE,				//装着音
+	enByuSE,					//ドロップアイテム取得時の音
+	enPlayerDead,				//プレイヤー死亡時の音
+	enKetteiSE_Title,			//決定音(Title用のトラックのため使用しないで)
+	enCancelSE_Title,			//キャンセル音(Title用のトラックのため使用しないで)
+	enSentakuIdouSE_Title,		//カーソル移動音(Title用のトラックのため使用しないで)
+	enStartSE,					//Titleのスタートの音(Title用のトラックのため使用しないで)
+	enResultBGM,				//リザルトのBGM
+	enVoice,					//登場シーンの音声
+	enPutun,					//プツン音
 	enTatumaki,
-	enBisi,					//エネミーのビシッの音
-	enBoss_Cannon_Charge_SE,//ボスキャノンのCharge音
-	enBoss_Shovel_roar,		//ボスショベルの吠える
-	en_Boss_Drill,			//ボスドリル音
-	en_Boss_Drill_sonic,	//ボスDrill通過
-	en_Boss_Dozar_Charge_SE,//ボスドーザーチャージ
-	en_Boss_Shovel_shock,	//ボスショベル衝撃
-	en_Boss_cannon_Langing_SE,//ボスキャノン着弾
-	en_Boss_Dozar_Langing_SE//ボスドーザー着弾
+	enBisi,						//エネミーのビシッの音
+	enBoss_Cannon_Charge_SE,	//ボスキャノンのCharge音
+	enBoss_Shovel_roar,			//ボスショベルの吠える
+	en_Boss_Drill,				//ボスドリル音
+	en_Boss_Drill_sonic,		//ボスDrill通過
+	en_Boss_Dozar_Charge_SE,	//ボスドーザーチャージ
+	en_Boss_Shovel_shock,		//ボスショベル衝撃
+	en_Boss_cannon_Langing_SE,	//ボスキャノン着弾
+	en_Boss_Dozar_Langing_SE	//ボスドーザー着弾
 	
 };
 
@@ -119,7 +112,9 @@ public:
 	void DeleteEnemy();
 	Vector3 RandomPosition();
 	void Render(RenderContext& rc);
-	void create_player(int player_color_date);
+	void InitEffect();
+	void InitSound();
+
 
 	void RemoveEnemyFromList(Enemy* enemy)
 	{
@@ -171,25 +166,22 @@ public:
 
 	void AddDefeatedEnemyNumber()
 	{
+
+		//死んだエネミーのカウントを増やす
 		m_numDefeatedEnemy++;
+
 	}
 
-	int						m_numEnemy = 0;					//エネミーの数。
-	int						m_numDefeatedEnemy = 0;			//倒されたエネミーの数。
 
-	bool					m_isWaitFadeout = false;
-
-	Player* player = nullptr;			//プレイヤー
-	Title* title = nullptr;			//タイトル
-	Result* result = nullptr;			//リザルト
-	Lighting* lighting = nullptr;		//ライティング
+	Player* player = nullptr;			
+	Title* title = nullptr;			
+	Result* result = nullptr;			
+	Lighting* lighting = nullptr;		
 	SoundManage* m_soundManage = nullptr;
-	Left_arm_weapons* s_left_arm_weapons = nullptr;
 	Drop_item* drop_item = nullptr;
 	BackGround* background = nullptr;
 	Core_weapons* core_weapons = nullptr;
 	GameCamera* gamecamera = nullptr;
-	Game_UI* game_ui = nullptr;
 	Enemy_HP_UI* e_h_ui = nullptr;
 	Boss* boss = nullptr;
 	PlayerUI* m_playerUI = nullptr;
@@ -197,40 +189,18 @@ public:
 	SkyCube* m_skyCube = nullptr;
 	GuideLight* m_guide = nullptr;
 	Combo* m_combo = nullptr;
-
-	//Fade* m_fade = nullptr;		//フェード。
-
-	//std::vector<Boss*>m_bossObject;
-	//std::vector<Boss_Riser*>m_riserObject;
-
-	Customize_UI_ver2* m_customizeUI;
+	Customize_UI_ver2* m_customizeUI = nullptr;
 
 	std::vector<Enemy*>	m_enemyObject;
 	std::vector<Enemy_Far*> m_enemyFarObject;
 	std::vector<Enemy_Near*> m_enemyNearObject;
 	std::vector<Drop_item*> m_dropItemObject;
-	Vector3 dv;
 
-	//int Loading_count = 0;
-	float BGMvol = 1.0f;	//こいつらを音量にかけてやることで調整する
-	float SEvol = 1.0f;
-	float SaveSEvol = 0.0f;
-
-	int player_color_date = 0;//プレイヤーのカラーデータ
-private:
-	//ModelRender m_modelRender;		//キャラ
-	//ModelRender m_modelRender2;		//床
-	//ModelRender m_modelRender3;		//ライト
-	//SpriteRender m_spriteRender;
-	//LevelRender m_levelRender;
-	//std::vector<BoxMove*> m_boxmoves;				//moveボックス
-	//FontRender m_fontRender;
-	float m_timer = 0.0f;
-
-	//Test* test;
-
-	int m_gameStartState = 0;	//ロード画面からゲームへの遷移
-
-	
+	float	BGMvol				= 1.0f;		//こいつらを音量にかけてやることで調整する
+	float	SEvol				= 1.0f;		//こいつらを音量にかけてやることで調整する
+	float	SaveSEvol			= 0.0f;		//効果音の大きさを保存しておく変数
+	int		player_color_date	= 0;		//プレイヤーのカラーデータ
+	int		m_numEnemy			= 0;		//エネミーの数。
+	int		m_numDefeatedEnemy	= 0;		//倒されたエネミーの数。
 };
 

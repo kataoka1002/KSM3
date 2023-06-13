@@ -1,6 +1,6 @@
 #pragma once
+#include "Game.h"
 
-class Left_arm_weapons;
 class Customize_UI_ver2;
 class Result;
 class Game;
@@ -18,13 +18,18 @@ public:
 	void Move();									//移動処理
 	void RunSE();									//ステート管理
 	void pause();									//ポーズ画面
-	void MakeEfe();									//エフェクト再生
+	void PauseSelect();
+	void MakeSunabokoriEfe();						//砂ぼこりエフェクト再生
+	void MakeEfe(EffectName name, Quaternion rot, Vector3 scale = Vector3::One, Vector3 pos = Vector3::Zero);
 	void MachineGunSE();
+	void PlayerDeadtoResult();
 	void PlayerDead();
+	void InitSprite();
+	void InitModel();
+	void InitSE();
 
-	Title* title;
+	Title* title = nullptr;
 	Result* m_result = nullptr;
-	Left_arm_weapons* p_left_arm_weapons = nullptr;
 	Customize_UI_ver2* p_customize_ui_ver2 = nullptr;
 	Game* m_game = nullptr;
 	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
@@ -40,7 +45,7 @@ public:
 	SpriteRender pouse_spriteRender;				//pause画面用のスプライトレンダー
 	SpriteRender m_playerDeadSprite;				//プレイヤーが死んだときのスプライトレンダー
 	CharacterController characterController;		//キャラクターコントローラー
-	Vector3 player_position = {0.0f,0.0f,-1000.0f};						//座標
+	Vector3 player_position = {0.0f,0.0f,-1000.0f};	//座標
 	Vector3 player_moveSpeed;						//移動速度
 	Vector3 playerForward = { 0.0f, 0.0f, 1.0f };	//プレイヤーの正面ベクトル
 	Quaternion player_rotation;						//クォータニオン
@@ -52,6 +57,8 @@ public:
 	int effectCount = 0;							//エフェクト関係
 	int killEnemy = 0;								//敵を殺した数(10になるとウェーブが進む)
 	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };	//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足
+	int player_color_date = 0;
+	int player_color_random = 0;
 	float accelerator = 0;
 	float brake = 0;
 	float throttle = 0;
@@ -70,8 +77,5 @@ public:
 	bool m_playerDead = false;						//プレイヤーが死んだかどうか
 	bool m_playDeadSE = false;						//死亡音を鳴らしたかどうか
 	bool m_deadBakuhaPlay = false;					//死亡時の爆破を発生させたか
-
-	int player_color_date = 0;
-	int player_color_random = 0;
 };
 
