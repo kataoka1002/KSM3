@@ -337,7 +337,8 @@ void Title::Menu() {
 		{
 			//ゲームを始めると同時に音量のデータも送る
 			Game* game = NewGO<Game>(0, "game");
-			game->create_player(player_color_date);
+			//game->create_player(player_color_date);
+			game->player_color_date = player_color_date;
 			game->SEvol = BGM_volume;
 			game->BGMvol = SE_volume;
 			DeleteGO(this);

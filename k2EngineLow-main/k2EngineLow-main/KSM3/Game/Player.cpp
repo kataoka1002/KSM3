@@ -1,22 +1,185 @@
 #include "stdafx.h"
-#include "Player.h"
 #include <math.h>
-#include "Left_arm_weapons.h"
+#include <map>
+#include <random>
+#include "Player.h"
 #include "Customize_UI_ver2.h"
 #include "Game.h"
 #include "Result.h"
 #include "GameCamera.h"
 #include "Title.h"
 #include "Boss.h"
-#include <map>
 #include "Player_Macro.h"
 #include "Title.h"
-#include <random>
+
+
 
 Player::Player() 
 {
+
+	//タイトルを見つける
 	title = FindGO<Title>("title");
-	if (title->player_color_date == 6) {
+
+
+}
+
+
+
+Player::~Player()
+{
+
+	//削除
+	DeleteGO(m_machineGunSE);
+	DeleteGO(m_runSE);
+	DeleteGO(m_walkSE);
+	DeleteGO(m_game);
+	DeleteGO(m_gameCamera);
+
+
+	//もしボス戦なら
+	if (bossState == 1)
+	{
+		
+		//ボスを探す
+		Boss* m_boss = FindGO<Boss>("boss");
+		
+
+		//ボスを消す
+		DeleteGO(m_boss);
+
+	}
+
+}
+
+
+
+bool Player::Start()
+{
+
+	//モデルの初期化
+	InitModel();
+
+
+	//ゲームとゲームカメラを見つける
+	m_game = FindGO<Game>("game");
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
+
+
+	//スプライトの初期化
+	InitSprite();
+
+
+	//SEの初期化
+	InitSE();
+
+
+	return true;
+
+}
+
+
+
+void Player::Update() 
+{
+
+	//プレイヤーが死んでいてリザルト中でないとき
+	if (m_playerDead == true && game_state != 2)
+	{
+
+		//死んでからリザルトまでの処理
+		PlayerDeadtoResult();
+
+		return;
+	}
+
+
+	//登場シーンの間
+	if (game_state == 4)
+	{
+
+		//モデルのポジション更新
+		player_modelRender.SetPosition(player_position);
+		player_modelRender.Update(true);
+
+		return;
+	}
+
+
+	//メインゲームのとき
+	if (game_state == 0) 
+	{
+
+		//移動処理
+		Move();	
+
+
+		//マシンガンの効果音再生			
+		MachineGunSE();
+
+
+		//足音の再生
+		RunSE();		
+
+
+		//ポーズ画面を選択する処理
+		PauseSelect();	
+
+	}
+	else if (game_state == 1) 
+	{
+
+		//ポーズ画面
+		pause();
+
+	}
+	else if (game_state == 2)
+	{
+
+		//リザルト中は攻撃音も出さない
+		m_machineGunSE->Stop();
+
+	}
+	else if (game_state == 3)
+	{
+
+		//カスタマイズ中は攻撃音も出さない
+		m_machineGunSE->Stop();
+
+	}
+
+
+	//プレイヤーが死んだときの処理
+	PlayerDead();	
+
+}
+
+
+
+void  Player::InitSprite()
+{
+
+	//ポーズ画面のスプライトの初期化
+	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
+
+
+	//プレイヤーが死んだときのスプライトの初期化
+	m_playerDeadSprite.Init("Assets/sprite/player/YOU_LOSE.DDS", 1280.0f, 720.0f);
+	m_playerDeadSprite.SetScale({ 1.4f,1.4f,1.0f });
+	m_playerDeadSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_deadSpriteColw });
+	m_playerDeadSprite.Update();
+
+}
+
+
+
+void  Player::InitModel()
+{
+
+	//カラー選択がランダムの場合
+	if (player_color_date == 6)
+	{
+
+		//プレイヤーモデルをランダムカラーで初期化
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<int> dis(0, 7);
@@ -24,285 +187,347 @@ Player::Player()
 		player_modelRender.Init(getPlayer_color(player_color_random));
 
 	}
-	//プレイヤーのモデルとポーズ画面のスプライトの初期化
-	else {
-		player_modelRender.Init(getPlayer_color(title->player_color_date));
-		player_color_random = title->player_color_date;
+	else 
+	{
+
+		//プレイヤーモデルを指定されたカラーで初期化
+		player_modelRender.Init(getPlayer_color(player_color_date));
+
+
+		//変数にタイトルで指定されたカラーを覚えさせておく
+		player_color_random = player_color_date;
+
 	}
-	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
-	m_playerDeadSprite.Init("Assets/sprite/player/YOU_LOSE.DDS", 1280.0f, 720.0f);
-	m_playerDeadSprite.SetScale({ 1.4f,1.4f,1.0f });
-	m_playerDeadSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_deadSpriteColw });
-	m_playerDeadSprite.Update();
+
+
 	//キャラコンの初期化
 	characterController.Init(70.0f, 150.0f, player_position);
+
 }
 
-Player::~Player()
-{
-	DeleteGO(m_machineGunSE);
-	DeleteGO(m_runSE);
-	DeleteGO(m_walkSE);
-}
 
-bool Player::Start()
+
+void  Player::InitSE()
 {
-	m_game = FindGO<Game>("game");
-	m_gameCamera = FindGO<GameCamera>("gamecamera");
 
 	//効果音の作成(流し続ける音源なのでインスタンスを保持させる)
+
 	m_machineGunSE = NewGO<SoundSource>(0);
-	m_runSE = NewGO<SoundSource>(0);
-	m_walkSE = NewGO<SoundSource>(0);
-
-
-	//効果音の設定
-	m_machineGunSE->Init(enMachineGun);	//初期化
+	m_machineGunSE->Init(enMachineGun);					//初期化
 	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
-	m_runSE->Init(enPlayerRun);	//初期化
-	m_runSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
-	m_walkSE->Init(enRunning);	//初期化
-	m_walkSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
 
-	return true;
+
+	m_runSE = NewGO<SoundSource>(0);
+	m_runSE->Init(enPlayerRun);							//初期化
+	m_runSE->SetVolume(0.5f * m_game->SEvol);			//音量調整
+
+
+	m_walkSE = NewGO<SoundSource>(0);
+	m_walkSE->Init(enRunning);							//初期化
+	m_walkSE->SetVolume(0.5f * m_game->SEvol);			//音量調整
+
 }
 
-void Player::Update() 
+
+
+void Player::PlayerDeadtoResult()
 {
-	
 
-	//プレイヤーが死んでいてリザルト中でないときの処理
-	if (m_playerDead == true && game_state != 2)
+	//カウントアップ
+	m_deadCount++;
+
+
+	//カウントによって処理を変更する
+	if (m_deadCount <= 60)
 	{
-		m_deadCount++;
-		if (m_deadCount <= 60)
-		{
-			//だんだん透明度を上げていく
-			m_deadSpriteColw += 1.0f / 60.0f;
-		}
-		else if (m_deadCount > 60 && m_deadCount<=65 && m_playDeadSE == false)
-		{
-			//死亡音再生
-			m_deadSE = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-			m_deadSE->Init(enPlayerDead);						//初期化
-			m_deadSE->SetVolume(2.0f * m_game->BGMvol);			//音量調整
-			m_deadSE->Play(false);
-			m_playDeadSE = true;
-		}
-		else if (m_deadCount > 150 && m_deadBakuhaPlay == false)
-		{
-			//エフェクト発生
-			EffectEmitter* featherBall = NewGO<EffectEmitter>(0);
-			featherBall->Init(enFeatherBall);
-			featherBall->SetScale({ 20.0f,20.0f,20.0f });
-			featherBall->SetRotation(player_rotation);
-			featherBall->SetPosition(player_position);
-			featherBall->Play();
 
-			EffectEmitter* deadBakuha = NewGO<EffectEmitter>(0);
-			deadBakuha->Init(enTyakudan);
-			deadBakuha->SetScale({ 20.0f,20.0f,20.0f });
-			deadBakuha->SetRotation(player_rotation);
-			deadBakuha->SetPosition(player_position);
-			deadBakuha->Play();
+		//だんだん透明度を上げていく
+		m_deadSpriteColw += 1.0f / 60.0f;
 
-			m_deadBakuhaPlay = true;
-		}
-		else if (m_deadCount >= 300)
-		{
-			//リザルトへ
-			m_result = NewGO<Result>(1, "result");
-			game_state = 2;			//リザルトステートへ
-			//色付きに戻す
-			g_renderingEngine->SetGrayScale(false);
-			//セーブしていた効果音の大きさに戻してやり、リザルトにそのデータを送る
-			m_game->SEvol = m_game->SaveSEvol;
-			m_result->SE_volume = m_game->SEvol;
-			m_result->BGM_volume = m_game->BGMvol;
-			//YOU LOSEの透明度を0に戻す
-			m_deadSpriteColw = 0.0f;
-			DeleteGO(m_game);
-		}
-		m_playerDeadSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_deadSpriteColw });
-		m_playerDeadSprite.Update();
-		return;
 	}
-
-	//登場シーンの間の処理
-	if (game_state == 4)
+	else if (m_deadCount > 60 && m_deadCount <= 65 && m_playDeadSE == false)
 	{
-		//モデルのポジション更新
-		player_modelRender.SetPosition(player_position);
-		player_modelRender.Update(true);
-		return;
+
+		//死亡音再生
+		m_deadSE = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_deadSE->Init(enPlayerDead);						//初期化
+		m_deadSE->SetVolume(2.0f * m_game->BGMvol);			//音量調整
+		m_deadSE->Play(false);
+
+
+		//死亡時のSEを流したフラグを立てる
+		m_playDeadSE = true;
+
 	}
-
-	if (game_state == 0) //メインゲーム
+	else if (m_deadCount > 150 && m_deadBakuhaPlay == false)
 	{
-		Move();			//移動処理
-		MachineGunSE();	//マシンガンの効果音再生
-		RunSE();		//足音の再生
 
-		//スタートボタンを押すとポーズ画面に移動
-		if (g_pad[0]->IsTrigger(enButtonStart)) 
-		{
-			game_state = 1;
-
-			//メニュー画面移動SE
-			m_kettei = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-			m_kettei->Init(enKetteiSE);							//初期化
-			m_kettei->SetVolume(2.0f * m_game->SEvol);			//音量調整
-			m_kettei->Play(false);
-		}
-
-		//モデルの更新
-		player_modelRender.Update(true);
-	}
-	else if (game_state == 1) //ポーズ画面
-	{
-		pause();
-	}
-	else if (game_state == 2)
-	{
-		//リザルト中は攻撃音も出さない
-		m_machineGunSE->Stop();
-	}
-	else if (game_state == 3)
-	{
-		//カスタマイズ中は攻撃音も出さない
-		m_machineGunSE->Stop();
-	}
-
-	//HPが0以下になるなると死亡
-	if (m_playerHP <= 0 && m_playerDead == false)
-	{
-		//死亡の演出
-		g_renderingEngine->SetGrayScale(true);	//画面全体を灰色にする
-		m_playerDead = true;
-
-		//効果音を消す
-		m_game->SEvol = 0.0f;
-		
 		//エフェクト発生
-		EffectEmitter* sword = NewGO<EffectEmitter>(0);
-		sword->Init(enSword);
-		sword->SetScale({ 13.0f,13.0f,13.0f });
-		sword->SetRotation(player_rotation);
-		sword->SetPosition(player_position);
-		sword->Play();
+		MakeEfe(enFeatherBall, player_rotation, { 20.0f,20.0f,20.0f }, player_position);
+		MakeEfe(enTyakudan, player_rotation, { 20.0f,20.0f,20.0f }, player_position);
+
+
+		//死亡時のエフェクトを流したフラグを立てる
+		m_deadBakuhaPlay = true;
 
 	}
+	else if (m_deadCount >= 300)
+	{
+
+		//リザルトの作成
+		m_result = NewGO<Result>(1, "result");
+
+
+		//リザルトステートへ
+		game_state = 2;			
+
+
+		//色付きに戻す
+		g_renderingEngine->SetGrayScale(false);
+
+
+		//セーブしていた効果音の大きさに戻してやり、リザルトにそのデータを送る
+		m_game->SEvol = m_game->SaveSEvol;
+		m_result->SE_volume = m_game->SEvol;
+		m_result->BGM_volume = m_game->BGMvol;
+
+
+		//YOU LOSEの透明度を0に戻す
+		m_deadSpriteColw = 0.0f;
+
+
+		//ゲームクラスの削除
+		DeleteGO(m_game);
+
+	}
+
+
+	//スプライトの更新
+	m_playerDeadSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_deadSpriteColw });
+	m_playerDeadSprite.Update();
 }
+
+
 
 void Player::Move()
 {
-	player_moveSpeed = { 0.0f,0.0f,0.0f };//移動速度の初期化
 
-	Vector3 stickL;
-	throttle = 0.0f;
-	stickL.x = g_pad[0]->GetLStickXF();
+	//移動速度の初期化
+	player_moveSpeed = { 0.0f,0.0f,0.0f };
+
+
 	//スティックを倒した量の取得
+	Vector3 stickL;
+	stickL.x = g_pad[0]->GetLStickXF();
+
+
+	//アクセルボタンの入力量の取得
+	throttle = 0.0f;
+
+	//Rボタン
 	throttle = g_pad[0]->GetRTrigger();
-	if (throttle == 0.0f) {
+
+	//Lボタン
+	if (throttle == 0.0f)
+	{
 		throttle = g_pad[0]->GetLTrigger();
 	}
 
+
+	//カメラの右向きを取得
 	Vector3 right = g_camera3D->GetRight();
 	right.y = 0.0f;
 	right *= stickL.x * 120.0f;
 
-	//スピードが0じゃないならエフェクトを出す
+
+	//スピードが0じゃないなら
 	if (throttle != 0)
 	{
-		MakeEfe();	
-	}
 		
+		//エフェクトを出す
+		MakeSunabokoriEfe();
+
+	}
+
+
+	//プレイヤーの正面ベクトルを正規化
 	playerForward.Normalize();
+
 
 	//xかzの移動速度があったら(スティックの入力があったら)。
 	//回転処理
-	if (stickL.x!=0.0f)
+	if (stickL.x != 0.0f)
 	{
+
 		playerForward.x = playerForward.x * cos(stickL.x * -0.05) - playerForward.z * sin(stickL.x * -0.05);
 		playerForward.z = playerForward.x * sin(stickL.x * -0.05) + playerForward.z * cos(stickL.x * -0.05);
 
 		player_rotation.SetRotationY(atan2(playerForward.x, playerForward.z));
+
 	}
+
+
 	//回転していないときの移動
-	if (throttle != 0.0f) 
+	if (throttle != 0.0f)
 	{
+
 		//だんだん速くする
 		accelerator += 0.05;
-		if (accelerator >= 2) 
+
+
+		//最大値は2
+		if (accelerator >= 2)
 		{
-			accelerator = 2;	//最大値は2
+			accelerator = 2;
 		}
+
 	}
-	else 
+	else
 	{
+
 		//だんだん遅くする
 		accelerator -= 0.05;
-		if (accelerator <= 0) 
+
+
+		//最小値は0
+		if (accelerator <= 0)
 		{
-			accelerator = 0;	//最小値は0
+			accelerator = 0;
 		}
+
 	}
 
+
 	move_s = 4.0f * accelerator;
-	player_moveSpeed += playerForward  * move_s * (throttle / 2.0f);
-	
+	player_moveSpeed += playerForward * move_s * (throttle / 2.0f);
+
+
+	//座標を教える。
 	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
 	characterController.SetPosition({ player_position.x ,0.0f,player_position.z });
-	player_position.y = 0.0f;
-	//座標を教える。
+
+
 	//プレイヤーのY座標は固定
+	player_position.y = 0.0f;
+
+
+	//モデルの更新
 	player_modelRender.SetPosition(player_position);
 	player_modelRender.SetRotation(player_rotation);
+	player_modelRender.Update(true);
+
 }
 
-void Player::MakeEfe()
+
+
+//死亡の演出
+void Player::PlayerDead()
 {
+
+	//HPが0以下になるなると死亡
+	if (m_playerHP <= 0 && m_playerDead == false)
+	{
+
+		//画面全体を灰色にする
+		g_renderingEngine->SetGrayScale(true);	
+
+
+		//プレイヤーは死んだ
+		m_playerDead = true;					
+
+
+		//効果音を消す
+		m_game->SEvol = 0.0f;
+
+
+		//エフェクト発生
+		MakeEfe(enSword, player_rotation, { 13.0f,13.0f,13.0f }, player_position);
+
+	}
+
+}
+
+
+
+void Player::MakeSunabokoriEfe()
+{
+
 	//プレイヤーのボタンを押している量によって砂ぼこりの量を変える
 	if (throttle < 126.0f)
 	{
+
 		//動いている間20フレームごとに砂ぼこりを発生させる
 		if (effectCount > 20)
 		{
-			//砂ぼこりエフェクトの初期化と再生
-			sunabokoriEffect = NewGO<EffectEmitter>(0);
-			sunabokoriEffect->Init(enSunabokori);
-			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
-			sunabokoriEffect->SetRotation(player_rotation);
-			sunabokoriEffect->SetPosition(player_position);
-			sunabokoriEffect->Play();
 
-			effectCount = 0;	//カウントリセット
+			//砂ぼこりエフェクトの初期化と再生
+			MakeEfe(enSunabokori, player_rotation, { 4.0f,4.0f,4.0f }, player_position);
+
+			
+			//カウントリセット
+			effectCount = 0;	
+
 		}
+
 	}
 	else if (throttle > 127.0f)
 	{
+
 		//動いている間3フレームごとに砂ぼこりを発生させる
 		if (effectCount > 3)
 		{
-			//砂ぼこりエフェクトの初期化と再生
-			sunabokoriEffect = NewGO<EffectEmitter>(0);
-			sunabokoriEffect->Init(enSunabokori);
-			sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
-			sunabokoriEffect->SetRotation(player_rotation);
-			sunabokoriEffect->SetPosition(player_position);
-			sunabokoriEffect->Play();
 
-			effectCount = 0;	//カウントリセット
+			//砂ぼこりエフェクトの初期化と再生
+			MakeEfe(enSunabokori, player_rotation, { 4.0f,4.0f,4.0f }, player_position);
+
+
+			//カウントリセット
+			effectCount = 0;	
+
 		}
+
 	}
+
+
+	//カウントアップ
 	effectCount++;
+
 }
+
+
+
+void Player::PauseSelect()
+{
+
+	//スタートボタンを押すとポーズ画面に移動
+	if (g_pad[0]->IsTrigger(enButtonStart))
+	{
+
+		//ポーズ画面へ
+		game_state = 1;
+
+
+		//メニュー画面移動SE
+		m_kettei = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		m_kettei->Init(enKetteiSE);							//初期化
+		m_kettei->SetVolume(2.0f * m_game->SEvol);			//音量調整
+		m_kettei->Play(false);
+
+	}
+
+}
+
+
 
 void Player::pause() 
 {
+
 	if (g_pad[0]->IsTrigger(enButtonB)) 
 	{
-		game_state = 0;	//メインゲームに戻る
+
+		//メインゲームに戻る
+		game_state = 0;	
+
 
 		//メニュー画面移動SE
 		m_kettei = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
@@ -313,26 +538,31 @@ void Player::pause()
 	}
 	else if (g_pad[0]->IsTrigger(enButtonA)) 
 	{
-		game_end_state = 1;	//ゲーム終了
 
-		DeleteGO(m_game);
-		Title* title = NewGO<Title>(0, "title");
-		DeleteGO(m_gameCamera);
+		//ゲーム終了
+		game_end_state = 1;	
+
+
+		//自分自身の削除
 		DeleteGO(this);
 
-		//もしボス戦ならボスを消す
-		if (bossState == 1)
-		{
-			Boss* m_boss = FindGO<Boss>("boss");
-			DeleteGO(m_boss);
-		}
+
+		//タイトルの生成
+		Title* title = NewGO<Title>(0, "title");
+
 	}
+
 }
+
+
 
 void Player::RunSE()
 {
-	if (throttle <= 0)	//動いてない時
+	
+	//動いてない時
+	if (throttle <= 0)	
 	{
+
 		//効果音停止
 		m_walkSE->Stop();
 		m_runSE->Stop();
@@ -340,60 +570,124 @@ void Player::RunSE()
 		return;
 	}
 
-	if (throttle > 0 && throttle <= 127 && m_runSE->IsPlaying() != true)	//ゆっくり動いている時
+
+	//ゆっくり動いている時
+	if (throttle > 0 && throttle <= 127 && m_runSE->IsPlaying() != true)	
 	{
+
 		//歩く音再生
 		m_walkSE->Play(true);
+
 	}
-	else if (throttle > 127 && m_walkSE->IsPlaying() != true)	//速く動いている時
+	//速く動いている時
+	else if (throttle > 127 && m_walkSE->IsPlaying() != true)	
 	{
+
 		//走る音再生
 		m_runSE->Play(true);
+
 	}
 
 
-	//走っているとき歩きの音は止める
+	//走っているとき
 	if (throttle > 127)
 	{
+		
+		//歩きの音は止める
 		m_walkSE->Stop();
+
 	}
-	//歩いているとき走りの音は止める
+
+
+	//歩いているとき
 	if (throttle > 0 && throttle <= 127)
 	{
+		
+		//走りの音は止める
 		m_runSE->Stop();
+
 	}
+
 }
+
+
 
 void Player::MachineGunSE()
 {
+
+	//ボタンを押している間
 	if (g_pad[0]->IsPress(enButtonLB1) && m_machineGunSE->IsPlaying() != true && m_playerDead != true)
 	{
-		m_machineGunSE->Play(true);	//続けて再生
+
+		//マシンガン発射音を続けて再生
+		m_machineGunSE->Play(true);	
+
 	}
+	//ボタンを離したら
 	else if(g_pad[0]->IsPress(enButtonLB1) == false)
 	{
-		m_machineGunSE->Stop();		//攻撃じゃないなら停止
+
+		//マシンガン発射音を停止
+		m_machineGunSE->Stop();		
+
 	}
 
+
+	//プレイヤーが死んだら
 	if (m_playerDead == true)
 	{
+
+		//マシンガン発射音を停止
 		m_machineGunSE->Stop();
+
 	}
+
 }
+
+
+
+void  Player::MakeEfe(EffectName name, Quaternion rot, Vector3 scale, Vector3 pos)
+{
+
+	//エフェクト発生
+	EffectEmitter* efe = NewGO<EffectEmitter>(0);
+	efe->Init(name);
+	efe->SetScale(scale);
+	efe->SetRotation(rot);
+	efe->SetPosition(pos);
+	efe->Play();
+
+}
+
+
 
 void Player::Render(RenderContext& rc)
 {
+
+	//プレイヤーが死亡して爆破した演出があったら
 	if (m_deadBakuhaPlay == true)
 	{
+
+		//ここで処理を止める
 		return;
+
 	}
 
+
+	//プレイヤーモデル表示
 	player_modelRender.Draw(rc);
 
-	//ポーズ中ならポーズ画面を表示
+
+	//ポーズ中なら
 	if (game_state == 1)
 	{
+
+		//ポーズ画面を表示
 		pouse_spriteRender.Draw(rc);
+
 	}
+
+
+	//YOU LOSEのスプライト表示
 	m_playerDeadSprite.Draw(rc);
 }

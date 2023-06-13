@@ -1,0 +1,105 @@
+#pragma once
+#include "Game.h"
+
+class Game;
+class Player;
+class Drop_item;
+class GameCamera;
+class Combo;
+class Enemy_HP_UI;
+
+class EnemyBase : public IGameObject
+{
+public:
+
+	//コンストラクタ
+	EnemyBase(){}
+
+
+	//デストラクタはバーチャルにしておく
+	virtual ~EnemyBase(){}
+
+
+	bool Start();
+	void CalcDistance(float dist);				//引数はプレイヤーをロックオンするまでの距離
+	void CalcSpeed(float speed,int dirState);	//移動速度計算
+	void NormalAction(float dist);				//引数はプレイヤーをロックオンするまでの距離
+	void MakePoint();							//パス移動用のポイントを生成
+	Vector3 RandPos();							//ランダムなポジションを設定する
+	void DustEffect();							//砂ぼこりエフェクト
+	void ExecuteOnEnemyDefeated();				//死亡時の処理
+	void ItemDrop();							//アイテムドロップ
+	void WeaponSetUp();							//武器セット
+	void WeaponMove();							//離れる処理
+	void PassMove();							//パス移動
+	void PlayEffect(EffectName name, Vector3 pos, Quaternion rot, Vector3 scale);
+	void AsiotoSEManage(bool play);
+
+
+	//純粋仮想関数にして、派生クラスで実装する。
+	virtual void GameSetUp()				= 0;	//ゲーム全般の初期化
+	virtual void Update()					= 0;	//更新処理
+	virtual void Render(RenderContext& rc)	= 0;	//描画処理
+	virtual void Move()						= 0;	//移動処理
+	virtual void PlayerSearch()				= 0;	//索敵処理
+	virtual void Attack()					= 0;	//武器を選んで攻撃
+	virtual void Fire(int m_weaponNum)		= 0;	//発射
+	virtual void EnemyDead()				= 0;
+	virtual void HPUnder0()					= 0;
+	virtual void InitEnemyModel()			= 0;
+
+
+//派生クラスからアクセスできるようにprotectedにしておく
+protected:
+
+	//パス移動用
+	virtual struct Point 
+	{
+		Vector3 m_position;	//ポイントの座標
+		int m_num;			//ポイントの番号
+	};
+	//パス移動に必要な奴ら
+	std::vector<Point> m_pointList;
+	Point* m_point = nullptr;
+
+
+	Game* m_game = nullptr;
+	Player* m_player = nullptr;
+	Drop_item* m_dropItem = nullptr;
+	Enemy_HP_UI* m_HPUI = nullptr;
+	SoundSource* m_enemyDeadSE = nullptr;			//死んだときの爆破SE
+	SoundSource* m_asiotoSE = nullptr;				//足音
+
+
+	ModelRender m_enemyModel;						//エネミーモデル
+	ModelRender m_enemyWeaponModel;					//武器モデル
+	CharacterController m_enemyCharacterController;	//エネミーキャラコン
+	Quaternion m_weaponRotation;					//武器クォータニオン
+	Vector3 m_weaponPosition = Vector3::Zero;		//武器ポジション
+	Vector3 m_weaponLocalPos = Vector3::Zero;		//武器ローカルポジション
+	Vector3 m_toPlayer = Vector3::Zero;				//プレイヤーへのベクトル
+	Vector3 m_toPlayerDir = Vector3::Zero;			//プレイヤーへの方向
+	Vector3 m_enemyMoveSpeed = Vector3::Zero;		//エネミー移動速度
+	Vector3 m_Up = { 0.0f,1.0f,0.0f };				//上方向の設定	
+
+
+	bool m_lockOn = false;							//エネミーがパスのポイントをロックオンしているかどうか
+	bool m_running = false;							//走っているかどうか
+	bool m_asiotoPlay = false;						//足音がなっているかどうか
+	int m_enemyDirState = 0;						//エネミーの向き
+	int m_attackCount = 0;							//攻撃の間隔
+	int m_sunaHassei = 0;							//砂ぼこりが発生する間隔
+	float m_distToPlayer = 0;						//プレイヤーまでの距離
+
+public:
+
+	Quaternion m_enemyRotation;						//エネミークォータニオン
+	Vector3 m_enemyForward = Vector3::Zero;			//エネミーの正面ベクトル
+	Vector3 m_enemyPosition = Vector3::Zero;		//エネミー座標
+	int m_setWeapon = 0;							//武器の種類
+	float m_enemyHP = 0;							//エネミーの体力
+	float m_enemyHPMax = 0;							//エネミーの体力の最大値
+	float m_enemySpeed = 0;							//エネミーの移動速度
+
+};
+

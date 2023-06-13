@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "BoxMove.h"
 #include "Player.h"
 #include "Title.h"
 #include "Result.h"
@@ -14,14 +13,11 @@
 #include "Core_weapons.h"
 #include "GameCamera.h"
 #include "Boss.h"
-#include "Boss_Riser.h"
-#include "Game_UI.h"
 #include "Enemy_HP_UI.h"
 #include "SoundManage.h"
 #include <time.h>
 #include <stdlib.h>
 #include "PlayerUI.h"
-//#include "Fade.h"
 #include "Wave.h"
 #include "Customize_UI_ver2.h"
 #include "SkyCube.h"
@@ -32,16 +28,18 @@
 
 Game::Game()
 {
-	
 
 	//ライトの作成
 	lighting = NewGO<Lighting>(1, "lighting");
 
+
 	//ステージの作成
 	background = NewGO< BackGround>(1, "background");
 
+
 	//ゲームカメラの作成
 	gamecamera = NewGO<GameCamera>(1, "gamecamera");
+
 	
 	//スカイキューブの作成
 	m_skyCube = NewGO<SkyCube>(0, "skycube");
@@ -50,36 +48,79 @@ Game::Game()
 	m_skyCube->SetPosition({ 0.0f,40.0f,0.0f });
 	m_skyCube->SetType((EnSkyCubeType)enSkyCubeType_DayToon_2);
 
+
 	//オープニングボイスの生成
 	OPVoice* m_voice = NewGO<OPVoice>(1, "opvoice");
+
 }
 
 Game::~Game()
 {
-	DeleteGO(core_weapons);
-	DeleteGO(m_playerUI);
-	//プッシュしたエネミーを削除していく
+
+	//エネミーを削除
 	DeleteEnemy();
+
+
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
 	{
 		DeleteGO(dropItem);
 	}
+
+
+	//削除
 	DeleteGO(m_soundManage);
 	DeleteGO(m_customizeUI);
 	DeleteGO(background);
-	DeleteGO(game_ui);
 	DeleteGO(m_skyCube);
 	DeleteGO(m_wave);
+	DeleteGO(core_weapons);
+	DeleteGO(m_playerUI);
+	DeleteGO(m_combo);
 
-	if (boss != nullptr) {
+
+	//ボスが存在するなら
+	if (boss != nullptr) 
+	{
 		DeleteGO(boss);
 	}
-	DeleteGO(m_combo);
+
 }
 
 bool Game::Start()
 {
+
+	//プレイヤーの作成
+	player = NewGO<Player>(2, "player");
+	
+	
+	//プレイヤーにカラーの情報を渡す
+	player->player_color_date = player_color_date;	
+
+
+	//コア武器の作成
+	core_weapons = NewGO<Core_weapons>(1, "core_weapons");
+
+
+	//エフェクトの初期化
+	InitEffect();
+
+
+	//サウンドの初期化
+	InitSound();
+
+
+	//効果音の大きさをセーブする
+	SaveSEvol = SEvol;
+		
+
+	return true;
+
+}
+
+void Game::InitEffect()
+{
+
 	//エフェクトの設定
 	EffectEngine::GetInstance()->ResistEffect(enSunabokori, u"Assets/effect/enemy/sunabokori2.efk");
 	EffectEngine::GetInstance()->ResistEffect(enMasinganHibana, u"Assets/effect/enemy/masinganHibana.efk");
@@ -90,34 +131,34 @@ bool Game::Start()
 	EffectEngine::GetInstance()->ResistEffect(enMasinganKemuri, u"Assets/effect/enemy/masinganKemuri.efk");
 	EffectEngine::GetInstance()->ResistEffect(enGigatonAttack, u"Assets/effect/enemy/gigatonAttack.efk");
 	EffectEngine::GetInstance()->ResistEffect(enEnemyHassei, u"Assets/effect/enemy/newGO.efk");
-
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Charge, u"Assets/effect/enemy/Boss_cannon.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Landing, u"Assets/effect/enemy/Boss_cannon_Landing.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Magic_Circle, u"Assets/effect/enemy/Boss_Magic_Circle.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Cannon_Bullet, u"Assets/effect/enemy/Boss_Cannon_Bullet.efk");
-	
 	EffectEngine::GetInstance()->ResistEffect(enGuide, u"Assets/effect/enemy/guide.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Dozar_Charge, u"Assets/effect/enemy/Boss_dozar_Charge.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Dozar_efe, u"Assets/effect/enemy/Boss_dozar.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Dozar_Landing, u"Assets/effect/enemy/Boss_Dozar_Landing2.efk");
-
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Explosion, u"Assets/effect/enemy/Boss_NotCore_Explosion.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Explosion_Another, u"Assets/effect/enemy/Boss_NotCore_Explosion_attack.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Death, u"Assets/effect/enemy/Boss_Explosion.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Death2, u"Assets/effect/enemy/Boss_Explosion2.efk");
-
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Drill, u"Assets/effect/enemy/Boss_Drill_efe.efk");
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Drill_Landing, u"Assets/effect/enemy/Boss_Drill_Landing.efk");
-
 	EffectEngine::GetInstance()->ResistEffect(enBoss_Shovel_shock, u"Assets/effect/enemy/Boss_shovel_shock.efk");
 	EffectEngine::GetInstance()->ResistEffect(enTatumaki_charge, u"Assets/effect/enemy/Tatumaki_charge.efk");
 	EffectEngine::GetInstance()->ResistEffect(enTatumaki_fire, u"Assets/effect/enemy/Tatumaki_fire2.efk");
 	EffectEngine::GetInstance()->ResistEffect(enImpact, u"Assets/effect/enemy/impact.efk");
 	EffectEngine::GetInstance()->ResistEffect(enSword, u"Assets/effect/enemy/swordEfe.efk");
 	EffectEngine::GetInstance()->ResistEffect(enFeatherBall, u"Assets/effect/enemy/featherBall.efk");
-
 	EffectEngine::GetInstance()->ResistEffect(en_Boss_attack, u"Assets/effect/enemy/Boss_attack.efk");
 	EffectEngine::GetInstance()->ResistEffect(en_Boss_attack_Explosion, u"Assets/effect/enemy/Boss_attack_Explosion.efk");
+
+}
+
+
+void Game::InitSound()
+{
 
 	//サウンドの設定
 	g_soundEngine->ResistWaveFileBank(enRunning, "Assets/audio/enemy/enemyRunning.wav");
@@ -142,7 +183,6 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(enPutun, "Assets/audio/OP/putun.wav");
 	g_soundEngine->ResistWaveFileBank(enTatumaki, "Assets/audio/enemy/Tatumaki2.wav");
 	g_soundEngine->ResistWaveFileBank(enBisi, "Assets/audio/enemy/bisi2.wav");
-
 	g_soundEngine->ResistWaveFileBank(enBoss_Shovel_roar, "Assets/audio/Shovel_roar.wav");
 	g_soundEngine->ResistWaveFileBank(en_Boss_Drill, "Assets/audio/Drill.wav");
 	g_soundEngine->ResistWaveFileBank(enBoss_Cannon_Charge_SE, "Assets/audio/Cannon_Charge.wav");
@@ -152,63 +192,68 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(en_Boss_cannon_Langing_SE, "Assets/audio/Cannon_Langing.wav");
 	g_soundEngine->ResistWaveFileBank(en_Boss_Dozar_Langing_SE, "Assets/audio/Dozar_Langing.wav");
 
-	//m_fade = FindGO<Fade>("fade");
-	//m_fade->StartFadeIn();
-
-	//効果音の大きさをセーブする
-	SaveSEvol = SEvol;
-		
-	return true;
 }
 
-void Game::create_player(int player_color_date) {
-	//プレイヤーとコア武器とUIの作成
-	player = NewGO<Player>(2, "player");
-	title = FindGO<Title>("title");
-	core_weapons = NewGO<Core_weapons>(1, "core_weapons");
-}
 
 void Game::Update()
 {
+
 	//最初のシーン中
 	if (player->game_state == 4)
 	{
+
+		//タイトルからメインゲームへの遷移時の処理
 		TitleToGame();
+
 	}
+
 
 	//最初のシーンじゃなかったら
 	if (player->game_state != 4)
 	{
+
+		//メインゲーム中の処理
 		GameNow();
+
 	}
+
 }
 
 void Game::SetUp()
 {
+
 	//BGMの作成
 	m_soundManage = NewGO<SoundManage>(1, "soundmanage");
+
 
 	//エネミーの生成
 	MakeEnemy();
 
+
 	//カスタム画面の作成
 	m_customizeUI = NewGO<Customize_UI_ver2>(1, "customize_ui_ver2");
+
 
 	//ウェーブ管理のクラス作成
 	m_wave = NewGO<Wave>(3, "wave");
 
+
 	//コンボ管理のクラス
 	m_combo = NewGO<Combo>(2, "combo");
+
 }
 
 void Game::MakePlayerUI()
 {
+
 	//プレイヤーUIの作成
 	m_playerUI = NewGO<PlayerUI>(2, "playerui");
+
 }
 
 void Game::MakeEnemy()
 {
+
 	//エネミーを複数体生成
 	for (int i = 0; i < 4; i++)
 	{
@@ -219,6 +264,9 @@ void Game::MakeEnemy()
 
 		m_numEnemy++;	//エネミーの存在数をプラス
 	}
+
+
+	//遠距離エネミーを複数体生成
 	for (int i = 0; i < 4; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
@@ -228,6 +276,9 @@ void Game::MakeEnemy()
 
 		m_numEnemy++;	//エネミーの存在数をプラス
 	}
+
+
+	//近距離エネミーを複数体生成
 	for (int i = 0; i < 2; i++)
 	{
 		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
@@ -237,22 +288,29 @@ void Game::MakeEnemy()
 
 		m_numEnemy++;	//エネミーの存在数をプラス
 	}
+
 }
 
 void Game::DeleteEnemy()
 {
+
+	//プッシュしたエネミーの削除
+
 	for (auto enemy : m_enemyObject)
 	{
 		DeleteGO(enemy);
 	}
+
 	for (auto enemyFar : m_enemyFarObject)
 	{
 		DeleteGO(enemyFar);
 	}
+
 	for (auto enemyNear : m_enemyNearObject)
 	{
 		DeleteGO(enemyNear);
 	}
+
 }
 
 void Game::TitleToGame()
@@ -262,21 +320,32 @@ void Game::TitleToGame()
 
 void Game::GameNow()
 {
+
 	//敵の全滅コマンド
 	if (g_pad[0]->IsTrigger(enButtonX))
 	{
-		
+
 	}
 
+
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 9550.0f  && boss == nullptr && m_wave->m_goBoss == true)
+	if (player->player_position.z >= 9550.0f && boss == nullptr && m_wave->m_goBoss == true)
 	{
+
+		//一定のカウントまでいったら
 		if (m_wave->Loading_count == 2)
 		{
+
+			//ボス戦中に変更
 			player->bossState = 1;
+
 		}
+
+
 		//ローディング画面が表示されたらボスを作り出す
-		if (m_wave->Loading_count == 10) {
+		if (m_wave->Loading_count == 10) 
+		{
+
 			//スカイキューブを作り直す
 			DeleteGO(m_skyCube);
 			m_skyCube = NewGO<SkyCube>(0, "skycube");
@@ -289,63 +358,51 @@ void Game::GameNow()
 			//ボスを発生させる
 			boss = NewGO<Boss>(1, "boss");
 			boss->boss_position = { -19800.0f,0.0f,7800.0f };
+
+
 			//ウェーブクラスのボスポインタに教えてやる
 			m_wave->m_boss = (boss);
+
+
 			//プレイヤーの場所をボスの場所へ移動させる
 			player->player_position = { -19246.0f,0.0f,-130.0f };
 			player->player_modelRender.SetPosition(player->player_position);
 			player->characterController.SetPosition(player->player_position);
+
+
+			//ばねカメラを瞬間移動させる
 			gamecamera->m_springCamera.Refresh();
+
+
+			//プレイヤーの更新
 			player->player_modelRender.Update(true);
+
 
 			//今いる雑魚敵を全部消す
 			DeleteEnemy();
+
 		}
 	}
-	
-	if (boss != nullptr)
+
+
+	//プレイヤーが死んだら
+	if (player->game_end_state == 1)
 	{
-		if (player->boss_survival == true)
-		{
-			
-		}
-	}
 
-	//if (m_gameState == enGameState_GameClear_Idle)
-//	{
-		//if (m_isWaitFadeout)
-	{
-		//if (!m_fade->IsFade())
-		{
-			if (player->game_end_state == 1)
-			{
-				title = NewGO<Title>(1, "title");
-				DeleteGO(this);
-			}
-		}
-	}
-	//		else
-	//		{
-	//			if (g_pad[0]->IsTrigger(enButtonA))
-	//			{
-	//				m_isWaitFadeout = true;
-	//				m_fade->StartFadeOut();
-	//			}
-	//		}
-	//		return;
-	//	}
+		//タイトルを作成
+		title = NewGO<Title>(1, "title");
 
-	//m_spriteRender.Update();
 
-	//リザルトへの遷移
-	/*if (g_pad[0]->IsTrigger(enButtonSelect)) {
-		result = NewGO<Result>(1, "result");
+		//自分自身の削除
 		DeleteGO(this);
-	}*/
+
+	}
+
 }
 
 Vector3 Game::RandomPosition()
 {
+
 	Vector3 m_pos;
 
 	//ランダムにポジションを当てはめる
@@ -354,9 +411,10 @@ Vector3 Game::RandomPosition()
 	m_pos.z = rand() % 9000;
 
 	return m_pos;
+
 }
 
 void Game::Render(RenderContext& rc)
 {
-	//Loading_Render.Draw(rc);
+	
 }
