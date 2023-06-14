@@ -46,19 +46,19 @@ void Enemy_HP_UI::SetPosition()
 	//親によってポジションを変える
 	if (m_enemyNear != nullptr)
 	{
-		pos = m_enemyNear->m_enemyPosition;
+		pos = m_enemyNear->GetPos();
 		//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
 		pos.y += 160.0f;
 	}
 	else if (m_enemy != nullptr)
 	{
-		pos = m_enemy->m_enemyPosition;
+		pos = m_enemy->GetPos();
 		//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
 		pos.y += 130.0f;
 	}
 	else if (m_enemyFar != nullptr)
 	{
-		pos = m_enemyFar->m_enemyPosition;
+		pos = m_enemyFar->GetPos();
 		//エネミーの上の方に画像を表示したいので,y座標を少し大きくする。
 		pos.y += 250.0f;
 	}
@@ -85,15 +85,15 @@ void Enemy_HP_UI::Damage()
 	//親の体力の割合からUIのサイズを計算している。
 	if (m_enemyNear != nullptr)
 	{
-		m_scale.x = m_enemyNear->m_enemyHP * (1.0 / m_enemyNear->m_enemyHPMax);
+		m_scale.x = m_enemyNear->GetHP() * (1.0 / m_enemyNear->GetMaxHP());
 	}
 	else if (m_enemy != nullptr)
 	{
-		m_scale.x = m_enemy->m_enemyHP * (1.0 / m_enemy->m_enemyHPMax);
+		m_scale.x = m_enemy->GetHP() * (1.0 / m_enemy->GetMaxHP());
 	}
 	else if (m_enemyFar != nullptr)
 	{
-		m_scale.x = m_enemyFar->m_enemyHP * (1.0 / m_enemyFar->m_enemyHPMax);
+		m_scale.x = m_enemyFar->GetHP() * (1.0 / m_enemyFar->GetMaxHP());
 	}
 
 	//サイズは0より小さくならない
@@ -127,7 +127,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 		if (m_enemyNear != nullptr)
 		{
 			//カメラからエネミーの位置へのベクトルを求める
-			Vector3 toEnemy = m_enemyNear->m_enemyPosition - m_camera->pos;
+			Vector3 toEnemy = m_enemyNear->GetPos() - m_camera->pos;
 			toEnemy.Normalize();
 			//カメラの前向きとカメラからエネミーへのベクトルの内積を求める
 			float angle = m_camera->m_cameraForward.Dot(toEnemy);
@@ -137,7 +137,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{			
 				//プレイヤーとエネミーの距離を求める
-				Vector3 diff = m_enemyNear->m_enemyPosition - m_player->player_position;
+				Vector3 diff = m_enemyNear->GetPos() - m_player->player_position;
 				if (diff.Length() <= 2000.0f)
 				{
 					m_HPFrameSprite.Draw(rc);
@@ -148,7 +148,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 		if (m_enemy != nullptr)
 		{
 			//計算の方法は上と一緒
-			Vector3 toEnemy = m_enemy->m_enemyPosition - m_camera->pos;
+			Vector3 toEnemy = m_enemy->GetPos() - m_camera->pos;
 			toEnemy.Normalize();
 
 			float angle = m_camera->m_cameraForward.Dot(toEnemy);
@@ -156,7 +156,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 
 			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{
-				Vector3 diff = m_enemy->m_enemyPosition - m_player->player_position;
+				Vector3 diff = m_enemy->GetPos() - m_player->player_position;
 
 				if (diff.Length() <= 2000.0f)
 				{
@@ -168,7 +168,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 		if (m_enemyFar != nullptr)
 		{
 			//計算の方法は上と一緒
-			Vector3 toEnemy = m_enemyFar->m_enemyPosition - m_camera->pos;
+			Vector3 toEnemy = m_enemyFar->GetPos() - m_camera->pos;
 			toEnemy.Normalize();
 
 			float angle = m_camera->m_cameraForward.Dot(toEnemy);
@@ -176,7 +176,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 
 			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{
-				Vector3 diff = m_enemyFar->m_enemyPosition - m_player->player_position;
+				Vector3 diff = m_enemyFar->GetPos() - m_player->player_position;
 				if (diff.Length() <= 2000.0f)
 				{
 					m_HPFrameSprite.Draw(rc);

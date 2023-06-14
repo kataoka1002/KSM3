@@ -18,6 +18,8 @@ public:
 	void HPUnder0()					override;
 	void InitEnemyModel()			override;
 
+
+private:
 	SoundSource* m_bisiSE = nullptr;				//‘«‰¹
 	SoundSource* m_battleShipGunSE = nullptr;
 

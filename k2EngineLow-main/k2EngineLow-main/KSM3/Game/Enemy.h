@@ -20,6 +20,8 @@ public:
 	void InitEnemyModel()			override;
 	void SE();
 
+
+private:
 	SoundSource* m_machineGunSE = nullptr;			//ƒ}ƒVƒ“ƒKƒ“SE
 
 	bool m_atackOK = false;
