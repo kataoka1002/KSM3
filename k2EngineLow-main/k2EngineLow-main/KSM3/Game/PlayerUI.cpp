@@ -128,9 +128,18 @@ void PlayerUI::Update()
 	m_HPSprite.Update();
 
 	//赤いフレームの生成
+	//体力が半分以下の時
 	if (m_player->m_playerHP <= m_player->m_playerHPMax / 2.0f)
 	{
 		m_redFrame_A = 1.0f - (m_player->m_playerHP * (1.0f / m_player->m_playerHPMax));
+		m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
+		m_redFrameSprite.Update();
+	}
+	//体力が半分以上の時
+	else
+	{
+		//赤いフレームは見えない
+		m_redFrame_A = 0.0f;
 		m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
 		m_redFrameSprite.Update();
 	}
