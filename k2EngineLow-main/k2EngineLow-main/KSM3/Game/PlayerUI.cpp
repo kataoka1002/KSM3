@@ -146,7 +146,7 @@ void PlayerUI::Update()
 
 	//“G‚ðŽE‚µ‚½”‚Ì•\Ž¦
 	wchar_t text[256];
-	swprintf_s(text, 256, L"%02d@/%02d", m_game->m_numDefeatedEnemy,m_game->m_numEnemy);
+	swprintf_s(text, 256, L"%02d@/%02d", m_game->GetDefeatedEnemyNum(), m_game->GetEnemyNum());
 	m_killEnemyAmount.SetPivot({ 0.0f,0.5f });
 	m_killEnemyAmount.SetText(text);
 	m_killEnemyAmount.SetPosition(Vector3(m_killFontPos, 465, 0.0f));

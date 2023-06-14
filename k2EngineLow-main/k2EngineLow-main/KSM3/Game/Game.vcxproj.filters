@@ -21,7 +21,6 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Left_arm_weapons.cpp" />
-    <ClCompile Include="Customize_UI.cpp" />
     <ClCompile Include="Enumeration.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Battle_ship_attack.cpp" />
@@ -31,7 +30,6 @@
     <ClCompile Include="Core_weapons_attack.cpp" />
     <ClCompile Include="Customize_area.cpp" />
     <ClCompile Include="Customize_UI_ver2.cpp" />
-    <ClCompile Include="Test.cpp" />
     <ClCompile Include="Shoulder_weapons.cpp" />
     <ClCompile Include="Right_leg_weapons.cpp" />
     <ClCompile Include="Left_leg_weapons.cpp" />
@@ -45,12 +43,10 @@
     <ClCompile Include="Boss_Drill.cpp" />
     <ClCompile Include="Boss_Drill_attack.cpp" />
     <ClCompile Include="Enemy_HP_UI.cpp" />
-    <ClCompile Include="Game_UI.cpp" />
     <ClCompile Include="Boss_Cannon.cpp" />
     <ClCompile Include="Boss_Cannon_attack.cpp" />
     <ClCompile Include="Boss_Turbo.cpp" />
     <ClCompile Include="Boss_Turbo_attack.cpp" />
-    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="MachineGunAttack.cpp" />
     <ClCompile Include="GigatonCannonAttack.cpp" />
     <ClCompile Include="SoundManage.cpp" />
@@ -79,7 +75,6 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Left_arm_weapons.h" />
-    <ClInclude Include="Customize_UI.h" />
     <ClInclude Include="Enumeration.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Battle_ship_attack.h" />
@@ -89,7 +84,6 @@
     <ClInclude Include="Core_weapons_attack.h" />
     <ClInclude Include="Customize_area.h" />
     <ClInclude Include="Customize_UI_ver2.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="Shoulder_weapons.h" />
     <ClInclude Include="Right_leg_weapons.h" />
     <ClInclude Include="Left_leg_weapons.h" />
@@ -103,12 +97,10 @@
     <ClInclude Include="Boss_Drill.h" />
     <ClInclude Include="Boss_Drill_attack.h" />
     <ClInclude Include="Enemy_HP_UI.h" />
-    <ClInclude Include="Game_UI.h" />
     <ClInclude Include="Boss_Cannon.h" />
     <ClInclude Include="Boss_Cannon_attack.h" />
     <ClInclude Include="Boss_Turbo.h" />
     <ClInclude Include="Boss_Turbo_attack.h" />
-    <ClInclude Include="Fade.h" />
     <ClInclude Include="MachineGunAttack.h" />
     <ClInclude Include="GigatonCannonAttack.h" />
     <ClInclude Include="SoundManage.h" />

@@ -214,7 +214,7 @@ void Boss_Drill_attack::Move()
 			m_camera->VibFlag = true;
 			b_attack_SE=NewGO<SoundSource>(0);
 			b_attack_SE->Init(en_Boss_Drill_sonic);		//‰Šú‰»
-			b_attack_SE->SetVolume(2.0f * m_game->SEvol);	//‰¹—Ê’²®
+			b_attack_SE->SetVolume(2.0f * m_game->GetSEVol());	//‰¹—Ê’²®
 			b_attack_SE->Play(false);
 		}
 		if (drill_count >= 270 && drill_count < 300) {

@@ -58,7 +58,7 @@ void Enemy::GameSetUp()
 	//効果音の作成(流し続ける音源なのでインスタンスを保持させる)
 	m_machineGunSE = NewGO<SoundSource>(0);
 	m_machineGunSE->Init(enMachineGun);					//初期化
-	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
+	m_machineGunSE->SetVolume(0.5f * m_game->GetSEVol());	//音量調整
 	
 	
 	//作成したUIクラスに自分のポインタを教える
@@ -89,7 +89,7 @@ void Enemy::Update()
 {
 
 	//プレイヤーが死亡した時用の音量調整
-	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);
+	m_machineGunSE->SetVolume(0.5f * m_game->GetSEVol());
 
 
 	//プレイヤーがメインゲーム中なら
@@ -466,7 +466,7 @@ void Enemy::EnemyDead()
 	//爆発音の設定と再生
 	m_enemyDeadSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_enemyDeadSE->Init(enEnemyDeadSE);				
-	m_enemyDeadSE->SetVolume(1.5f * m_game->SEvol);	
+	m_enemyDeadSE->SetVolume(1.5f * m_game->GetSEVol());
 	m_enemyDeadSE->Play(false);
 
 }

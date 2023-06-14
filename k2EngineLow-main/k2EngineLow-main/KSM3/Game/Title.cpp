@@ -1,18 +1,12 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Game.h"
-//#include "Fade.h"
 #include "Lighting.h"
 #include "SoundManage.h"
 
 
 Title::Title()
 {
-	//title_Render.Init("Assets/sprite/title_test.dds", 1920.0f, 1080.0f);
-	//gameStart_Render.Init("Assets/sprite/title/gameStart.dds", /*1920.0f, 1080.0f*/);
-	////system_Render.Init("Assets/sprite/title/system.dds", /*1920.0f, 1080.0f*/);
-	////nannka_Render.Init("Assets/sprite/title/nannka.dds", /*1920.0f, 1080.0f*/);
-	//yajirusi_Render.Init("Assets/sprite/title/yajirusi/dds", /*1920.0f, 1080.0f*/);
 	
 	lighting = NewGO<Lighting>(1, "lighting");
 	title_Render.SetScale(title_scale);
@@ -40,8 +34,6 @@ bool Title::Start() {
 }
 void Title::SetUp()
 {
-	//m_fade = FindGO<Fade>("fade");
-	//m_fade->StartFadeIn();
 	//モデルの読み込み
 	model_batt.Init("Assets/modelData/battleship_gun_Drop.tkm");
 	model_batt.SetScale(scale);
@@ -337,10 +329,9 @@ void Title::Menu() {
 		{
 			//ゲームを始めると同時に音量のデータも送る
 			Game* game = NewGO<Game>(0, "game");
-			//game->create_player(player_color_date);
-			game->player_color_date = player_color_date;
-			game->SEvol = BGM_volume;
-			game->BGMvol = SE_volume;
+			game->SetPlayerColorData(player_color_date);
+			game->SetSEVol(BGM_volume);
+			game->SetBGM(SE_volume);
 			DeleteGO(this);
 		}
 	}

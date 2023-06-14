@@ -40,7 +40,7 @@ void Battle_ship_attack::DestroyWithImpactEffect()
 	//着弾したら効果音発生
 	m_battleShipGunTyakudanSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_battleShipGunTyakudanSE->Init(enButtleShipTyakudan);		//初期化
-	m_battleShipGunTyakudanSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+	m_battleShipGunTyakudanSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 	m_battleShipGunTyakudanSE->Play(false);
 	DeleteGO(this);	//弾は消える
 }
@@ -53,7 +53,7 @@ bool Battle_ship_attack::Start()
 	//発射音の設定と再生
 	m_battleShipGunSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_battleShipGunSE->Init(enButtleShipGun);	//初期化
-	m_battleShipGunSE->SetVolume(1.0f * m_game->SEvol);			//音量調整
+	m_battleShipGunSE->SetVolume(1.0f * m_game->GetSEVol());			//音量調整
 	m_battleShipGunSE->Play(false);
 
 
@@ -126,7 +126,7 @@ void Battle_ship_attack::Move()
 void Battle_ship_attack::Damage()
 {
 	//エネミーの数だけ繰り返す
-	for (auto enemy : m_game->m_enemyObject)
+	for (auto enemy : m_game->GetEnemyObject())
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemy->GetPos();
@@ -137,7 +137,7 @@ void Battle_ship_attack::Damage()
 		}
 	}
 	//エネミーFarの数だけ繰り返す
-	for (auto enemyFar : m_game->m_enemyFarObject)
+	for (auto enemyFar : m_game->GetEnemyFarObject())
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemyFar->GetPos();
@@ -148,7 +148,7 @@ void Battle_ship_attack::Damage()
 		}
 	}
 	//エネミーNearの数だけ繰り返す
-	for (auto enemyNear : m_game->m_enemyNearObject)
+	for (auto enemyNear : m_game->GetEnemyNearObject())
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
 		Vector3 diff = firing_position - enemyNear->GetPos();
@@ -160,25 +160,25 @@ void Battle_ship_attack::Damage()
 	}
 
 	//弾とボスの距離を測り一定以下なら体力減少
-	if (m_game->boss != nullptr)
+	if (m_game->GetBoss() != nullptr)
 	{
-		Vector3 diff = firing_position - m_game->boss->boss_position;
+		Vector3 diff = firing_position - m_game->GetBoss()->boss_position;
 		if (diff.Length() <= 300.0f)
 		{
-			m_game->boss->boss_HP -= m_bulletDamage;
+			m_game->GetBoss()->boss_HP -= m_bulletDamage;
 			DestroyWithImpactEffect();
 		}
 	}
 
 	//弾とドリルの距離を測り一定以下なら体力減少
-	if (m_game->boss != nullptr)
+	if (m_game->GetBoss() != nullptr)
 	{
-		if (m_game->boss->b_boss_drill != nullptr)
+		if (m_game->GetBoss()->b_boss_drill != nullptr)
 		{
-			Vector3 diff = firing_position - m_game->boss->b_boss_drill->b_w_position;
+			Vector3 diff = firing_position - m_game->GetBoss()->b_boss_drill->b_w_position;
 			if (diff.Length() <= 300.0f)
 			{
-				m_game->boss->b_boss_drill->drill_HP -= m_bulletDamage;
+				m_game->GetBoss()->b_boss_drill->drill_HP -= m_bulletDamage;
 				DestroyWithImpactEffect();
 			}
 		}

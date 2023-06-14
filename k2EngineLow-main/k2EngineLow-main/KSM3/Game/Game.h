@@ -116,6 +116,10 @@ public:
 	void InitSound();
 
 
+	/// <summary>
+	/// エネミーのオブジェクトをリストから消す
+	/// </summary>
+	/// <param name="enemy">消したいエネミーのポインタ</param>
 	void RemoveEnemyFromList(Enemy* enemy)
 	{
 		std::vector<Enemy*>::iterator it = std::find(
@@ -128,6 +132,11 @@ public:
 		}
 	}
 
+
+	/// <summary>
+	/// エネミーのオブジェクトをリストから消す
+	/// </summary>
+	/// <param name="enemyNear">消したいエネミーのポインタ</param>
 	void RemoveEnemyNearFromList(Enemy_Near* enemyNear)
 	{
 		std::vector<Enemy_Near*>::iterator it = std::find(
@@ -140,6 +149,11 @@ public:
 		}
 	}
 
+
+	/// <summary>
+	/// エネミーのオブジェクトをリストから消す
+	/// </summary>
+	/// <param name="enemyFar">消したいエネミーのポインタ</param>
 	void RemoveEnemyFarFromList(Enemy_Far* enemyFar)
 	{
 		std::vector<Enemy_Far*>::iterator it = std::find(
@@ -152,6 +166,11 @@ public:
 		}
 	}
 
+
+	/// <summary>
+	/// ドロップアイテムのオブジェクトをリストから消す
+	/// </summary>
+	/// <param name="dropItem">消したいドロップアイテムのポインタ</param>
 	void RemoveDropItemFromList(Drop_item* dropItem)
 	{
 		std::vector<Drop_item*>::iterator it = std::find(
@@ -164,15 +183,156 @@ public:
 		}
 	}
 
+
+	/// <summary>
+	/// 死んだエネミーの数を増やす
+	/// </summary>
 	void AddDefeatedEnemyNumber()
 	{
-
-		//死んだエネミーのカウントを増やす
 		m_numDefeatedEnemy++;
-
 	}
 
 
+	//getter関数------------------------------------------------------------------
+
+
+	/// <summary>
+	/// エネミーのオブジェクトを返す
+	/// </summary>
+	/// <returns>エネミーのオブジェクト</returns>
+	std::vector<Enemy*> GetEnemyObject()
+	{
+		return m_enemyObject;
+	}
+
+
+	/// <summary>
+	/// エネミーのオブジェクトを返す
+	/// </summary>
+	/// <returns>エネミーのオブジェクト</returns>
+	std::vector<Enemy_Far*> GetEnemyFarObject()
+	{
+		return m_enemyFarObject;
+	}
+
+
+	/// <summary>
+	/// エネミーのオブジェクトを返す
+	/// </summary>
+	/// <returns>エネミーのオブジェクト</returns>
+	std::vector<Enemy_Near*> GetEnemyNearObject()
+	{
+		return m_enemyNearObject;
+	}
+
+
+	/// <summary>
+	/// ドロップアイテムのオブジェクトを返す
+	/// </summary>
+	/// <returns>ドロップアイテムのオブジェクト</returns>
+	std::vector<Drop_item*> GetDropItemObject()
+	{
+		return m_dropItemObject;
+	}
+
+
+	/// <summary>
+	/// ボスのポインタを返す
+	/// </summary>
+	/// <returns>ボスのポインタ</returns>
+	Boss* GetBoss()
+	{
+		return boss;
+	}
+
+
+	/// <summary>
+	/// BGMの音量を返す
+	/// </summary>
+	/// <returns>BGMの音量</returns>
+	float GetBGMVol()
+	{
+		return BGMvol;
+	}
+
+
+	/// <summary>
+	/// SEの音量を返す
+	/// </summary>
+	/// <returns>SEの音量</returns>
+	float GetSEVol()
+	{
+		return SEvol;
+	}
+
+
+	/// <summary>
+	/// セーブしたSEの音量を返す
+	/// </summary>
+	/// <returns>セーブしたSEの音量</returns>
+	float GetSaveSEvol()
+	{
+		return SaveSEvol;
+	}
+
+
+	/// <summary>
+	/// エネミーの数を返す
+	/// </summary>
+	/// <returns>エネミーの数</returns>
+	int GetEnemyNum()
+	{
+		return m_numEnemy;
+	}
+
+	/// <summary>
+	/// 死んだエネミーの数を返す
+	/// </summary>
+	/// <returns>死んだエネミーの数</returns>
+	int GetDefeatedEnemyNum()
+	{
+		return m_numDefeatedEnemy;
+	}
+
+	//----------------------------------------------------------------------------
+
+
+	//setter関数------------------------------------------------------------------
+
+
+	/// <summary>
+	/// SEの音量をセットする
+	/// </summary>
+	/// <param name="vol">新しい音量</param>
+	void SetSEVol(float vol)
+	{
+		SEvol = vol;
+	}
+
+
+	/// <summary>
+	/// BGMの音量をセットする
+	/// </summary>
+	/// <param name="vol">新しい音量</param>
+	void SetBGM(float vol)
+	{
+		BGMvol = vol;
+	}
+
+
+	/// <summary>
+	/// プレイヤーカラーのデータをセットする
+	/// </summary>
+	/// <param name="col">プレイヤーカラーデータ</param>
+	void SetPlayerColorData(int col)
+	{
+		player_color_date = col;
+	}
+
+
+	//----------------------------------------------------------------------------
+
+private:
 	Player* player = nullptr;			
 	Title* title = nullptr;			
 	Result* result = nullptr;			
@@ -191,10 +351,10 @@ public:
 	Combo* m_combo = nullptr;
 	Customize_UI_ver2* m_customizeUI = nullptr;
 
-	std::vector<Enemy*>	m_enemyObject;
-	std::vector<Enemy_Far*> m_enemyFarObject;
-	std::vector<Enemy_Near*> m_enemyNearObject;
-	std::vector<Drop_item*> m_dropItemObject;
+	std::vector<Enemy*>			m_enemyObject;
+	std::vector<Enemy_Far*>		m_enemyFarObject;
+	std::vector<Enemy_Near*>	m_enemyNearObject;
+	std::vector<Drop_item*>		m_dropItemObject;
 
 	float	BGMvol				= 1.0f;		//こいつらを音量にかけてやることで調整する
 	float	SEvol				= 1.0f;		//こいつらを音量にかけてやることで調整する

@@ -71,9 +71,9 @@ void SoundManage::SetUp()
 
 	//ПЙК·Й╗
 	m_gameBGM->Init(enGameBGM);
-	m_gameBGM->SetVolume(0.5f * m_game->BGMvol);		//Й╣Ч╩Т▓Ро
+	m_gameBGM->SetVolume(0.5f * m_game->GetBGMVol());		//Й╣Ч╩Т▓Ро
 	m_customizeBGM->Init(enCustomizeBGM);
-	m_customizeBGM->SetVolume(0.5f * m_game->BGMvol);	//Й╣Ч╩Т▓Ро
+	m_customizeBGM->SetVolume(0.5f * m_game->GetBGMVol());	//Й╣Ч╩Т▓Ро
 	m_bossBGM->Init(enBossBGM);
-	m_bossBGM->SetVolume(1.0f * m_game->BGMvol);		//Й╣Ч╩Т▓Ро
+	m_bossBGM->SetVolume(1.0f * m_game->GetBGMVol());		//Й╣Ч╩Т▓Ро
 }

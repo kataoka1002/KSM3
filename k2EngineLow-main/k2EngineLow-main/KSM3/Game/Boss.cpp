@@ -172,7 +172,7 @@ void Boss::Update()
 		Boss_attack_Explosion_efe->Play();
 		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
-		m_battleShipGunTyakutiSE->SetVolume(2.0f * boss_game->SEvol);	//音量調整
+		m_battleShipGunTyakutiSE->SetVolume(2.0f * boss_game->GetSEVol());	//音量調整
 		m_battleShipGunTyakutiSE->Play(false);
 	}
 
@@ -638,8 +638,8 @@ void Boss::Damage()
 		if (Death_count==440) {
 			b_player->game_state = 2;
 			result = NewGO<Result>(1, "result");
-			result->SE_volume = boss_game->SEvol;
-			result->BGM_volume = boss_game->BGMvol;
+			result->SE_volume = boss_game->GetSEVol();
+			result->BGM_volume = boss_game->GetBGMVol();
 
 			result->minute = (int)boss_time / 60;
 			result->sec = (int)boss_time % 60;

@@ -72,7 +72,7 @@ void Boss_Cannon_attack::DestroyWithImpactEffect() {
 	if (Landing_count == 0){
 		m_Cannon_LangingSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_Cannon_LangingSE->Init(en_Boss_cannon_Langing_SE);		//初期化
-		m_Cannon_LangingSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+		m_Cannon_LangingSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 		m_Cannon_LangingSE->Play(false);
 
 		m_weaponEffect = NewGO<EffectEmitter>(0);
@@ -86,7 +86,7 @@ void Boss_Cannon_attack::DestroyWithImpactEffect() {
 		//戦艦砲エフェクトの初期化と再生
 		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
-		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 		m_battleShipGunTyakutiSE->Play(false);
 
 		m_weaponEffect = NewGO<EffectEmitter>(0);

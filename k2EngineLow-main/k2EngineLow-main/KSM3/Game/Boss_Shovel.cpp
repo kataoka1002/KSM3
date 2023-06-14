@@ -84,13 +84,13 @@ void Boss_Shovel::Update()
 		if (fast == 400) {
 			m_Shovel_roar_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_Shovel_roar_SE->Init(enBoss_Shovel_roar);		//初期化
-			m_Shovel_roar_SE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+			m_Shovel_roar_SE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_Shovel_roar_SE->Play(false);
 		}
 		if (fast == 1300) {
 			m_Shovel_roar_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_Shovel_roar_SE->Init(enBoss_Shovel_roar);		//初期化
-			m_Shovel_roar_SE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+			m_Shovel_roar_SE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_Shovel_roar_SE->Play(false);
 		}
 		if (fast >=270&&fast<630) {
@@ -102,7 +102,7 @@ void Boss_Shovel::Update()
 
 				m_Shovel_shock_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 				m_Shovel_shock_SE->Init(en_Boss_Shovel_shock);		//初期化
-				m_Shovel_shock_SE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+				m_Shovel_shock_SE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 				m_Shovel_shock_SE->Play(false);
 
 				shovel_shock = NewGO<EffectEmitter>(0);

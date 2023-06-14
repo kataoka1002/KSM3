@@ -31,7 +31,7 @@ bool GameCamera::Start()
 	//効果音の設定
 	m_walkSE = NewGO<SoundSource>(0);
 	m_walkSE->Init(enRunning);	//初期化
-	m_walkSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
+	m_walkSE->SetVolume(0.5f * m_game->GetSEVol());	//音量調整
 
 
 	//注視点から視点までのベクトルを設定。

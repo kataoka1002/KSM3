@@ -243,7 +243,6 @@
     <ClCompile Include="Core_weapons.cpp" />
     <ClCompile Include="Core_weapons_attack.cpp" />
     <ClCompile Include="Customize_area.cpp" />
-    <ClCompile Include="Customize_UI.cpp" />
     <ClCompile Include="Customize_UI_ver2.cpp" />
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -253,7 +252,6 @@
     <ClCompile Include="Enemy_Near.cpp" />
     <ClCompile Include="Enemy_HP_UI.cpp" />
     <ClCompile Include="Enumeration.cpp" />
-    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GigatonCannonAttack.cpp" />
@@ -277,9 +275,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
-    <ClCompile Include="Test.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="Game_UI.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Wave3Clear.cpp" />
   </ItemGroup>
@@ -304,7 +300,6 @@
     <ClInclude Include="Core_weapons.h" />
     <ClInclude Include="Core_weapons_attack.h" />
     <ClInclude Include="Customize_area.h" />
-    <ClInclude Include="Customize_UI.h" />
     <ClInclude Include="Customize_UI_ver2.h" />
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Enemy.h" />
@@ -314,7 +309,6 @@
     <ClInclude Include="Enemy_Near.h" />
     <ClInclude Include="Enemy_HP_UI.h" />
     <ClInclude Include="Enumeration.h" />
-    <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GigatonCannonAttack.h" />
@@ -336,9 +330,7 @@
     <ClInclude Include="SoundManage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="Title.h" />
-    <ClInclude Include="Game_UI.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Wave3Clear.h" />
   </ItemGroup>

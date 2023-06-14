@@ -68,7 +68,7 @@ void Drop_item::Update()
 		{
 			SoundSource* m_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_SE->Init(enByuSE);								//初期化
-			m_SE->SetVolume(1.0f * m_game->SEvol);				//音量調整
+			m_SE->SetVolume(1.0f * m_game->GetSEVol());				//音量調整
 			m_SE->Play(false);
 
 			GetState = true;
