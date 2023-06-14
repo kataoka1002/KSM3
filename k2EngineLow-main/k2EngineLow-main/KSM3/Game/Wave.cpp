@@ -108,7 +108,7 @@ void Wave::Update()
 		if (m_waveNum != 3)
 		{
 			//プレイヤーがエネミーを倒すか、ウェーブタイマーが0になると追加でエネミー生成
-			if (m_timer <= 0.0f || m_game->m_numDefeatedEnemy == m_game->m_numEnemy)
+			if (m_timer <= 0.0f || m_game->GetDefeatedEnemyNum() == m_game->GetEnemyNum())
 			{
 				//演出開始
 				m_ensyutuNow = true;

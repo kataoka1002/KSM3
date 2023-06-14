@@ -61,7 +61,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 			//着弾したら効果音発生
 			m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
-			m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+			m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_battleShipGunTyakutiSE->Play(false);
 
 			//画面を揺らす

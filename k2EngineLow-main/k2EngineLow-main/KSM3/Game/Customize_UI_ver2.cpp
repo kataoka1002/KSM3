@@ -1214,7 +1214,7 @@ void Customize_UI_ver2::PlaySE(SoundName name, float vol)
 {
 	SoundSource* m_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_SE->Init(name);									//初期化
-	m_SE->SetVolume(vol * m_game->SEvol);				//音量調整
+	m_SE->SetVolume(vol * m_game->GetSEVol());				//音量調整
 	m_SE->Play(false);
 }
 

@@ -12,6 +12,8 @@ public:
 	void ChangeFont();
 	void Render(RenderContext& rc);
 
+private:
+
 	SpriteRender m_voiceSprite;
 	SpriteRender m_voiceFrameSprite;
 	SpriteRender m_fontSprite;

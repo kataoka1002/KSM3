@@ -456,7 +456,7 @@ void Enemy_Near::Fire(int weaponNum)
 		//爆発音の設定と再生
 		m_cannonSE = NewGO<SoundSource>(0);
 		m_cannonSE->Init(enGigatonCannon);					//初期化
-		m_cannonSE->SetVolume(2.0f * m_game->SEvol);		//音量調整
+		m_cannonSE->SetVolume(2.0f * m_game->GetSEVol());		//音量調整
 		m_cannonSE->Play(false);
 
 
@@ -499,7 +499,7 @@ void Enemy_Near::EnemyDead()
 	//爆発音の設定と再生
 	m_enemyDeadSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_enemyDeadSE->Init(enEnemyDeadSE);				//初期化
-	m_enemyDeadSE->SetVolume(1.5f * m_game->SEvol);	//音量調整
+	m_enemyDeadSE->SetVolume(1.5f * m_game->GetSEVol());	//音量調整
 	m_enemyDeadSE->Play(false);
 
 }

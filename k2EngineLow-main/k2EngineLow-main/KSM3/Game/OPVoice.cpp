@@ -38,7 +38,7 @@ bool OPVoice::Start()
 	//OP音声の再生
 	m_voiceSE = NewGO<SoundSource>(0);				//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_voiceSE->Init(enVoice);						//初期化
-	m_voiceSE->SetVolume(1.5f * m_game->BGMvol);	//音量調整
+	m_voiceSE->SetVolume(1.5f * m_game->GetBGMVol());	//音量調整
 	m_voiceSE->Play(false);
 
 	return true;
@@ -66,7 +66,7 @@ void OPVoice::Update()
 		//プツン音の再生
 		m_putunSE = NewGO<SoundSource>(0);				//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_putunSE->Init(enPutun);						//初期化
-		m_putunSE->SetVolume(1.5f * m_game->BGMvol);	//音量調整
+		m_putunSE->SetVolume(1.5f * m_game->GetBGMVol());	//音量調整
 		m_putunSE->Play(false);
 	}
 

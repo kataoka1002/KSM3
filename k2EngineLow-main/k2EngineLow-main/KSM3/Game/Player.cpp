@@ -214,17 +214,17 @@ void  Player::InitSE()
 
 	m_machineGunSE = NewGO<SoundSource>(0);
 	m_machineGunSE->Init(enMachineGun);					//初期化
-	m_machineGunSE->SetVolume(0.5f * m_game->SEvol);	//音量調整
+	m_machineGunSE->SetVolume(0.5f * m_game->GetSEVol());	//音量調整
 
 
 	m_runSE = NewGO<SoundSource>(0);
 	m_runSE->Init(enPlayerRun);							//初期化
-	m_runSE->SetVolume(0.5f * m_game->SEvol);			//音量調整
+	m_runSE->SetVolume(0.5f * m_game->GetSEVol());			//音量調整
 
 
 	m_walkSE = NewGO<SoundSource>(0);
 	m_walkSE->Init(enRunning);							//初期化
-	m_walkSE->SetVolume(0.5f * m_game->SEvol);			//音量調整
+	m_walkSE->SetVolume(0.5f * m_game->GetSEVol());			//音量調整
 
 }
 
@@ -251,7 +251,7 @@ void Player::PlayerDeadtoResult()
 		//死亡音再生
 		m_deadSE = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_deadSE->Init(enPlayerDead);						//初期化
-		m_deadSE->SetVolume(2.0f * m_game->BGMvol);			//音量調整
+		m_deadSE->SetVolume(2.0f * m_game->GetBGMVol());			//音量調整
 		m_deadSE->Play(false);
 
 
@@ -286,10 +286,13 @@ void Player::PlayerDeadtoResult()
 		g_renderingEngine->SetGrayScale(false);
 
 
-		//セーブしていた効果音の大きさに戻してやり、リザルトにそのデータを送る
-		m_game->SEvol = m_game->SaveSEvol;
-		m_result->SE_volume = m_game->SEvol;
-		m_result->BGM_volume = m_game->BGMvol;
+		//セーブしていた効果音の大きさに戻す
+		m_game->SetSEVol(m_game->GetSaveSEvol());
+
+
+		//リザルトにそのデータを送る
+		m_result->SE_volume = m_game->GetSEVol();
+		m_result->BGM_volume = m_game->GetBGMVol();
 
 
 		//YOU LOSEの透明度を0に戻す
@@ -437,7 +440,7 @@ void Player::PlayerDead()
 
 
 		//効果音を消す
-		m_game->SEvol = 0.0f;
+		m_game->SetSEVol(0.0f);
 
 
 		//エフェクト発生
@@ -510,7 +513,7 @@ void Player::PauseSelect()
 		//メニュー画面移動SE
 		m_kettei = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_kettei->Init(enKetteiSE);							//初期化
-		m_kettei->SetVolume(2.0f * m_game->SEvol);			//音量調整
+		m_kettei->SetVolume(2.0f * m_game->GetSEVol());			//音量調整
 		m_kettei->Play(false);
 
 	}
@@ -532,7 +535,7 @@ void Player::pause()
 		//メニュー画面移動SE
 		m_kettei = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_kettei->Init(enCancelSE);							//初期化
-		m_kettei->SetVolume(2.0f * m_game->SEvol);			//音量調整
+		m_kettei->SetVolume(2.0f * m_game->GetSEVol());			//音量調整
 		m_kettei->Play(false);
 
 	}

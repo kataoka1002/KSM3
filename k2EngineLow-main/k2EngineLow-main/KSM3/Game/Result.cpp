@@ -6,7 +6,6 @@
 #include "Boss.h"
 #include <time.h>
 #include <stdlib.h>
-#include "Fade.h"
 #include "Core_weapons.h"
 #include "Shoulder_weapons.h"
 #include "Right_arm_weapons.h"
@@ -34,18 +33,12 @@ Result::Result()
 		}
 	gamecamera=FindGO<GameCamera>("gamecamera");
 
-	//g_soundEngine->ResistWaveFileBank(17, "Assets/audio/ketteion.wav");
-	//g_soundEngine->ResistWaveFileBank(21, "Assets/audio/BGM/result.wav");
 }
 
 Result::~Result()
 {	
 	DeleteGO(gamecamera);
 	DeleteGO(player);
-	/*Game* game = FindGO<Game>("game");
-	DeleteGO(game);
-	DeleteGO(core_weapons);
-	DeleteGO(drop_item);*/
 	DeleteGO(m_BGM);
 }
 
@@ -66,9 +59,6 @@ void Result::Update()
 {
 	BackGround();
 	
-	/*Enemy_count();
-	Font();
-	Rank();*/
 
 	//タイトルへの遷移(フェードあり)
 	if (g_pad[0]->IsTrigger(enButtonA)&&fast_count!=1) {
@@ -623,16 +613,6 @@ void Result::Back_set() { //モデルの読み込み
 	//右足
 	if (p_custom_point[1][0] != 0)	
 	{
-		//移動の処理
-		//Quaternion originRotation = custom_model_body_rotation;
-		//Vector3 rlw_position = Player_position;
-		//originRotation.Multiply(rlw_lp);
-		//rlw_position += rlw_lp;
-		//Quaternion rlw_Rotation = originRotation;
-
-		////更新
-		//custom_model_Right_leg.SetRotation(rlw_Rotation);
-		//custom_model_Right_leg.SetPosition(rlw_position);
 
 		//武器によってモデルを変える
 		switch (p_custom_point[1][0])
@@ -642,8 +622,6 @@ void Result::Back_set() { //モデルの読み込み
 			custom_model_Right_leg.Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
 			custom_model_Right_leg.SetScale(scale2);
-			//ローカルポジションの設定
-			//rlw_lp = { 90.0f,30.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
@@ -651,8 +629,6 @@ void Result::Back_set() { //モデルの読み込み
 			custom_model_Right_leg.Init("Assets/modelData/GIgaton_cannon.tkm");
 			//モデルの大きさの設定
 			custom_model_Right_leg.SetScale(0.8f);
-			//ローカルポジションの設定
-			//rlw_lp = { 90.0f,30.0f,0.0f };
 
 			break;
 
@@ -661,8 +637,6 @@ void Result::Back_set() { //モデルの読み込み
 			custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
 			//モデルの大きさの設定
 			custom_model_Right_leg.SetScale(scale2);
-			//ローカルポジションの設定
-			//rlw_lp = { 90.0f,30.0f,55.0f };
 
 
 			break;

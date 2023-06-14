@@ -9,7 +9,6 @@ class Right_arm_weapons;
 class Right_leg_weapons;
 class Left_arm_weapons;
 class Left_leg_weapons;
-class Fade;
 class Drop_item;
 class GameCamera;
 using namespace std;
@@ -88,7 +87,6 @@ public:
 	Player* player;
 	Boss* boss;
 	Customize_UI_ver2* customize_UI_ver2;
-	Fade* m_fade = nullptr;
 	Core_weapons* core_weapons;
 	Shoulder_weapons* shoulder_weapons;
 	Right_arm_weapons* right_arm_weapons;

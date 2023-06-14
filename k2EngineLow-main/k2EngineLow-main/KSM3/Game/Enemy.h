@@ -23,7 +23,6 @@ public:
 
 private:
 	SoundSource* m_machineGunSE = nullptr;			//ƒ}ƒVƒ“ƒKƒ“SE
-
 	bool m_atackOK = false;
 	bool m_machinGunSEPlay = false;
 	bool m_enemyEscape = false;

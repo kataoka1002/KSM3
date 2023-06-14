@@ -77,7 +77,7 @@ void Boss_Riser::Update()
 		if (fast == 540) {
 			m_Dozar_ChargeSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_Dozar_ChargeSE->Init(en_Boss_Dozar_Charge_SE);		//初期化
-			m_Dozar_ChargeSE->SetVolume(2.0f * m_game->SEvol);	//音量調整
+			m_Dozar_ChargeSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_Dozar_ChargeSE->Play(false);
 		}
 		if (fast == 640) {
