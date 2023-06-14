@@ -307,6 +307,8 @@ public:
 	void SetSEVol(float vol)
 	{
 		SEvol = vol;
+
+		SEvol = max(SEvol, 0.0f);
 	}
 
 
@@ -317,6 +319,8 @@ public:
 	void SetBGM(float vol)
 	{
 		BGMvol = vol;
+
+		BGMvol = max(BGMvol, 0.0f);
 	}
 
 
