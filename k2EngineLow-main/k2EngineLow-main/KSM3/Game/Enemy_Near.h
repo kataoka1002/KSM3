@@ -20,6 +20,8 @@ public:
 	void HPUnder0()					override;
 	void InitEnemyModel()			override;
 
+
+private:
 	SoundSource* m_cannonSE = nullptr;				//ギガトンキャノンSE
 
 	Vector3 m_enemyTargetPos = { 0.0f,0.0f,0.0f };	//ターゲットのポジション

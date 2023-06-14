@@ -131,10 +131,10 @@ void MachineGunAttack::Damage()
 	for (auto enemy : m_game->m_enemyObject)
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = m_position - enemy->m_enemyPosition;
+		Vector3 diff = m_position - enemy->GetPos();
 		if (diff.Length() <= 300.0f)
 		{
-			enemy->m_enemyHP -= m_bulletDamage;
+			enemy->ApplyDamage(m_bulletDamage);
 			DestroyWithImpactEffect();
 		}
 	}
@@ -142,10 +142,10 @@ void MachineGunAttack::Damage()
 	for (auto enemyFar : m_game->m_enemyFarObject)
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = m_position - enemyFar->m_enemyPosition;
+		Vector3 diff = m_position - enemyFar->GetPos();
 		if (diff.Length() <= 400.0f)
 		{
-			enemyFar->m_enemyHP -= m_bulletDamage;
+			enemyFar->ApplyDamage(m_bulletDamage);
 			DestroyWithImpactEffect();
 		}
 	}
@@ -153,10 +153,10 @@ void MachineGunAttack::Damage()
 	for (auto enemyNear : m_game->m_enemyNearObject)
 	{
 		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = Vector3{ m_position.x,m_position.y + 20.0f,m_position.z } - enemyNear->m_enemyPosition;
+		Vector3 diff = Vector3{ m_position.x,m_position.y + 20.0f,m_position.z } - enemyNear->GetPos();
 		if (diff.Length() <= 400.0f)
 		{
-			enemyNear->m_enemyHP -= m_bulletDamage;
+			enemyNear->ApplyDamage(m_bulletDamage);
 			DestroyWithImpactEffect();
 		}
 	}

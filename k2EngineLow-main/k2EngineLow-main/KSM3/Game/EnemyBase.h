@@ -49,10 +49,120 @@ public:
 	virtual void InitEnemyModel()			= 0;
 
 
+	//getter関数-------------------------------------------------------------
+	
+	/// <summary>
+	/// 回転量を返す
+	/// </summary>
+	/// <returns></returns>
+	Quaternion GetRot()
+	{
+		return m_enemyRotation;
+	}
+
+	/// <summary>
+	/// 前方向を返す
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetForward()
+	{
+		return m_enemyForward;
+	}
+
+	
+	/// <summary>
+	/// ポジションを返す
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetPos()
+	{
+		return m_enemyPosition;
+	}
+
+	
+	/// <summary>
+	/// 取り付けている武器の種類を返す
+	/// </summary>
+	/// <returns></returns>
+	int GetWeponKind()
+	{		
+		return m_setWeapon;
+	}
+	
+
+	/// <summary>
+	/// 現在のHPを返す
+	/// </summary>
+	/// <returns></returns>
+	float GetHP()
+	{
+		return m_enemyHP;
+	}
+	
+
+	/// <summary>
+	/// HPの最大値を返す
+	/// </summary>
+	/// <returns></returns>
+	float GetMaxHP()
+	{
+		return m_enemyHPMax;
+	}
+
+	
+	/// <summary>
+	/// スピードを返す
+	/// </summary>
+	/// <returns></returns>
+	float GetSpeed()
+	{
+		return m_enemySpeed;
+	}
+
+	//-------------------------------------------------------------------------
+
+
+
+
+	//setter関数---------------------------------------------------------------
+
+	/// <summary>
+	/// ダメージ処理
+	/// </summary>
+	/// <param name="damage">ダメージ量</param>
+	void ApplyDamage(float damage)
+	{
+
+		//今のHPからダメージ分を引く
+		m_enemyHP -= damage;
+
+
+		//0.0f以下にならないようにする
+		m_enemyHP = max(m_enemyHP, 0.0f);
+
+	}
+
+	/// <summary>
+	/// ポジションをセット
+	/// </summary>
+	/// <param name="pos">新しいポジション</param>
+	void SetPosition(Vector3 pos)
+	{
+
+		//新しいポジションをセット
+		m_enemyPosition = pos;
+
+	}
+
+	//-------------------------------------------------------------------------
+
+
 //派生クラスからアクセスできるようにprotectedにしておく
 protected:
 
-	//パス移動用
+	/// <summary>
+	/// パス移動用の構造体
+	/// </summary>
 	virtual struct Point 
 	{
 		Vector3 m_position;	//ポイントの座標
@@ -91,8 +201,8 @@ protected:
 	int m_sunaHassei = 0;							//砂ぼこりが発生する間隔
 	float m_distToPlayer = 0;						//プレイヤーまでの距離
 
-public:
 
+	//ここから、派生クラス外からいじられる変数
 	Quaternion m_enemyRotation;						//エネミークォータニオン
 	Vector3 m_enemyForward = Vector3::Zero;			//エネミーの正面ベクトル
 	Vector3 m_enemyPosition = Vector3::Zero;		//エネミー座標

@@ -29,7 +29,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 	//親によってエフェクトを変える
 	if (m_enemyMama != nullptr)
 	{
-		if (m_enemyMama->m_setWeapon == 2)//マシンガンの弾の煙エフェ
+		if (m_enemyMama->GetWeponKind() == 2)//マシンガンの弾の煙エフェ
 		{
 			m_tyakudanEffect = NewGO<EffectEmitter>(0);
 			m_tyakudanEffect->Init(enMasinganKemuri);
@@ -40,7 +40,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 	}
 	else if (m_enemyNearMama != nullptr)
 	{
-		if (m_enemyNearMama->m_setWeapon == 4)//ギガトンキャノンの弾の煙エフェ
+		if (m_enemyNearMama->GetWeponKind() == 4)//ギガトンキャノンの弾の煙エフェ
 		{
 			//画面を揺らす
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
@@ -49,7 +49,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 	}
 	else if (m_enemyFarMama != nullptr)
 	{
-		if (m_enemyFarMama->m_setWeapon == 6)	//戦艦砲の煙エフェクト
+		if (m_enemyFarMama->GetWeponKind() == 6)	//戦艦砲の煙エフェクト
 		{
 			//戦艦砲エフェクトの初期化と再生
 			m_weaponEffect = NewGO<EffectEmitter>(0);
@@ -128,7 +128,7 @@ void Enemy_Bullet::Setup()
 	//親によって初期情報を変える
 	if (m_enemyMama != nullptr)
 	{
-		switch (m_enemyMama->m_setWeapon)
+		switch (m_enemyMama->GetWeponKind())
 		{
 		case 1:	//ギガプラズマ
 			break;
@@ -145,9 +145,9 @@ void Enemy_Bullet::Setup()
 			m_rot = originRotation;
 			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
 			//バレットの前方向の設定
-			m_bulletFowrad = m_enemyMama->m_enemyForward;
+			m_bulletFowrad = m_enemyMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyMama->m_enemyRotation);
+			m_bulletModel.SetRotation(m_enemyMama->GetRot());
 			m_bulletModel.SetPosition(m_position);
 
 			//音はエネミー側で鳴らしている
@@ -165,7 +165,7 @@ void Enemy_Bullet::Setup()
 	}
 	else if (m_enemyNearMama != nullptr)
 	{
-		switch (m_enemyNearMama->m_setWeapon)
+		switch (m_enemyNearMama->GetWeponKind())
 		{
 		case 4:	//ギガトンキャノン
 
@@ -178,9 +178,9 @@ void Enemy_Bullet::Setup()
 			m_rot = originRotation;
 			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
 			//バレットの前方向の設定
-			m_bulletFowrad = m_enemyNearMama->m_enemyForward;
+			m_bulletFowrad = m_enemyNearMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyNearMama->m_enemyRotation);
+			m_bulletModel.SetRotation(m_enemyNearMama->GetRot());
 			m_bulletModel.SetPosition(m_position);
 
 			//爆発音はエネミー側で鳴らしている
@@ -198,7 +198,7 @@ void Enemy_Bullet::Setup()
 	}
 	else if (m_enemyFarMama != nullptr)
 	{
-		switch (m_enemyFarMama->m_setWeapon)
+		switch (m_enemyFarMama->GetWeponKind())
 		{
 		case 5:	//ミサイル
 
@@ -216,9 +216,9 @@ void Enemy_Bullet::Setup()
 			m_rot = originRotation;
 			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
 			//バレットの前方向の設定
-			m_bulletFowrad = m_enemyFarMama->m_enemyForward;
+			m_bulletFowrad = m_enemyFarMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyFarMama->m_enemyRotation);
+			m_bulletModel.SetRotation(m_enemyFarMama->GetRot());
 			m_bulletModel.SetPosition(m_position);
 
 			//エフェクトの再生
@@ -246,17 +246,17 @@ void Enemy_Bullet::Update()
 		if (m_enemyMama != nullptr)
 		{
 			Move();	
-			Damage(m_enemyMama->m_setWeapon);
+			Damage(m_enemyMama->GetWeponKind());
 		}
 		else if (m_enemyNearMama != nullptr)
 		{
 			MoveNear();
-			Damage(m_enemyNearMama->m_setWeapon);
+			Damage(m_enemyNearMama->GetWeponKind());
 		}
 		else if (m_enemyFarMama != nullptr)
 		{
 			MoveFar();
-			Damage(m_enemyFarMama->m_setWeapon);
+			Damage(m_enemyFarMama->GetWeponKind());
 		}
 	}
 	else if (m_player->game_state == 2)
@@ -272,18 +272,18 @@ void Enemy_Bullet::Update()
 
 void Enemy_Bullet::Move()
 {
-	if (m_enemyMama->m_setWeapon == 1)	//ギガプラズマ
+	if (m_enemyMama->GetWeponKind() == 1)	//ギガプラズマ
 	{
 
 	}
-	if (m_enemyMama->m_setWeapon == 2)	//マシンガン
+	if (m_enemyMama->GetWeponKind() == 2)	//マシンガン
 	{
 		//弾を前に飛ばす処理
 		m_bulletSpeed += m_bulletFowrad * 2.0f;
 		m_position += m_bulletSpeed;
 
 		//弾とエネミー(親)の距離を計算して一定距離以上なら弾を消す
-		Vector3 m_toEnemy = m_enemyMama->m_enemyPosition - m_position;
+		Vector3 m_toEnemy = m_enemyMama->GetPos() - m_position;
 		float m_dirToEnemy = m_toEnemy.Length();
 		if (m_dirToEnemy >= 1800.0f)
 		{
@@ -295,7 +295,7 @@ void Enemy_Bullet::Move()
 		m_bulletModel.SetPosition(m_position);
 		m_bulletModel.Update();
 	}
-	if (m_enemyMama->m_setWeapon == 3)	//ヘルファイヤライフル
+	if (m_enemyMama->GetWeponKind() == 3)	//ヘルファイヤライフル
 	{
 
 	}
@@ -303,14 +303,14 @@ void Enemy_Bullet::Move()
 
 void Enemy_Bullet::MoveNear()
 {
-	if (m_enemyNearMama->m_setWeapon == 4)	//ギガトンキャノン
+	if (m_enemyNearMama->GetWeponKind() == 4)	//ギガトンキャノン
 	{
 		//弾を前に飛ばす処理
 		m_bulletSpeed += m_bulletFowrad * 2.0f;
 		m_position += m_bulletSpeed;
 
 		//弾とエネミー(親)の距離を計算して一定距離以上なら弾を消す
-		Vector3 m_toEnemy = m_enemyNearMama->m_enemyPosition - m_position;
+		Vector3 m_toEnemy = m_enemyNearMama->GetPos() - m_position;
 		float m_dirToEnemy = m_toEnemy.Length();
 		if (m_dirToEnemy >= 100.0f)
 		{
@@ -326,11 +326,11 @@ void Enemy_Bullet::MoveNear()
 
 void Enemy_Bullet::MoveFar()
 {
-	if (m_enemyFarMama->m_setWeapon == 5)	//ミサイル
+	if (m_enemyFarMama->GetWeponKind() == 5)	//ミサイル
 	{
 
 	}
-	else if (m_enemyFarMama->m_setWeapon == 6)	//戦艦砲
+	else if (m_enemyFarMama->GetWeponKind() == 6)	//戦艦砲
 	{
 		//弾を前に飛ばす処理
 		m_bulletSpeed += m_bulletFowrad * 1.7f;
@@ -615,33 +615,33 @@ void Enemy_Bullet::Render(RenderContext& rc)
 {
 	if (m_enemyMama != nullptr)
 	{
-		if (m_enemyMama->m_setWeapon == 1)	//ギガプラズマ
+		if (m_enemyMama->GetWeponKind() == 1)	//ギガプラズマ
 		{
 
 		}
-		else if (m_enemyMama->m_setWeapon == 2)	//マシンガン
+		else if (m_enemyMama->GetWeponKind() == 2)	//マシンガン
 		{
 			m_bulletModel.Draw(rc);
 		}
-		else if (m_enemyMama->m_setWeapon == 3)	//ヘイルファイヤーライフル
+		else if (m_enemyMama->GetWeponKind() == 3)	//ヘイルファイヤーライフル
 		{
 
 		}
 	}
 	else if (m_enemyNearMama != nullptr)
 	{
-		if (m_enemyNearMama->m_setWeapon == 4)	//ギガトンキャノン
+		if (m_enemyNearMama->GetWeponKind() == 4)	//ギガトンキャノン
 		{
 			m_bulletModel.Draw(rc);
 		}
 	}
 	else if (m_enemyFarMama != nullptr)
 	{
-		if (m_enemyFarMama->m_setWeapon == 5)	//ミサイル
+		if (m_enemyFarMama->GetWeponKind() == 5)	//ミサイル
 		{
 
 		}
-		else if (m_enemyFarMama->m_setWeapon == 6)	//戦艦砲
+		else if (m_enemyFarMama->GetWeponKind() == 6)	//戦艦砲
 		{
 			m_bulletModel.Draw(rc);
 		}

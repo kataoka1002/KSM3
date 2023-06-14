@@ -258,7 +258,7 @@ void Game::MakeEnemy()
 	for (int i = 0; i < 4; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
-		enemy->m_enemyPosition = RandomPosition();
+		enemy->SetPosition(RandomPosition());
 
 		m_enemyObject.push_back(enemy);
 
@@ -270,7 +270,7 @@ void Game::MakeEnemy()
 	for (int i = 0; i < 4; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
-		enemyFar->m_enemyPosition = RandomPosition();
+		enemyFar->SetPosition(RandomPosition());
 
 		m_enemyFarObject.push_back(enemyFar);
 
@@ -282,7 +282,7 @@ void Game::MakeEnemy()
 	for (int i = 0; i < 2; i++)
 	{
 		Enemy_Near* enemyNear = NewGO<Enemy_Near>(1, "enemy_near");
-		enemyNear->m_enemyPosition = RandomPosition();
+		enemyNear->SetPosition(RandomPosition());
 
 		m_enemyNearObject.push_back(enemyNear);
 
