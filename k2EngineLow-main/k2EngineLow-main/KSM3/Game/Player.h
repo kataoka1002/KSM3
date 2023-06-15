@@ -28,6 +28,9 @@ public:
 	void InitModel();
 	void InitSE();
 
+
+//private:
+
 	Title* title = nullptr;
 	Result* m_result = nullptr;
 	Customize_UI_ver2* p_customize_ui_ver2 = nullptr;
@@ -66,11 +69,6 @@ public:
 	float m_playerHP = 500.0f;						//プレイヤーのHP
 	float m_playerHPMax = 500.0f;					//プレイヤーのHPの最大値
 	float m_deadSpriteColw = 0.0f;					//プレイヤー死亡時のスプライトの透明度
-	bool attack_state_la = false;
-	bool attack_state_ll = false;
-	bool attack_state_rl = false;
-	bool attack_state_ra = false;
-	bool attack_state_s = false;
 	bool m_cameraMove = false;						//カメラ切り替え中かどうか
 	bool enemy_survival = true;
 	bool boss_survival = true;

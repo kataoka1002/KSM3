@@ -12,196 +12,132 @@
 Battle_ship_attack::Battle_ship_attack() 
 {
 	
+	//ステータスの初期化---------------------------------
+
+	//弾のダメージ
+	m_bulletDamage = 50.0f;
+
+	//落下スピード
+	m_fallSpeed = 0.0f;
+
+	//前方向のスピード
+	m_moveSpeed = 30.0f;
+
+	//スピード減少量
+	m_decreaseSpeed = 0.05f;
+
+	//落下スピード増加量
+	m_addFallSpeed = 0.1f;
+
+	//---------------------------------------------------
+
 }
 
 Battle_ship_attack::~Battle_ship_attack()
 {
-	if (m_player->p_custom_point[0][2] != 0)
-		m_player->attack_state_ra = false;
-	if (m_player->p_custom_point[0][1] != 0)
-		m_player->attack_state_s = false;
-	if (m_player->p_custom_point[0][0] != 0)
-		m_player->attack_state_la = false;
-	if (m_player->p_custom_point[1][0] != 0)
-		m_player->attack_state_ll = false;
-	if (m_player->p_custom_point[1][2] != 0)
-		m_player->attack_state_rl = false;
+
 }
 
 void Battle_ship_attack::DestroyWithImpactEffect()
 {
-	//着弾したらエフェクト発生
-	m_tyakudanEffect = NewGO<EffectEmitter>(0);
-	m_tyakudanEffect->Init(enTyakudan);
-	m_tyakudanEffect->SetScale({ 5.7f,5.7f,5.7f });
-	m_tyakudanEffect->SetPosition({ firing_position.x,firing_position.y + 50.0f,firing_position.z });
-	m_tyakudanEffect->Play();
 
-	//着弾したら効果音発生
-	m_battleShipGunTyakudanSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-	m_battleShipGunTyakudanSE->Init(enButtleShipTyakudan);		//初期化
+	//着弾エフェクトの再生
+	PlayEffect(enTyakudan, { m_position.x,m_position.y + 50.0f,m_position.z }, m_rot, { 5.7f,5.7f,5.7f });
+
+
+	//SE発生
+	m_battleShipGunTyakudanSE = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_battleShipGunTyakudanSE->Init(enButtleShipTyakudan);				//初期化
 	m_battleShipGunTyakudanSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 	m_battleShipGunTyakudanSE->Play(false);
-	DeleteGO(this);	//弾は消える
-}
-bool Battle_ship_attack::Start()
-{
-	m_player = FindGO<Player>("player");
-	m_game = FindGO<Game>("game");
-	//m_boss = FindGO<Boss>("boss");
 
-	//発射音の設定と再生
-	m_battleShipGunSE = NewGO<SoundSource>(0);	//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-	m_battleShipGunSE->Init(enButtleShipGun);	//初期化
-	m_battleShipGunSE->SetVolume(1.0f * m_game->GetSEVol());			//音量調整
+
+	//自分自身の削除
+	DeleteGO(this);	
+
+}
+
+void Battle_ship_attack::SetUp() 
+{
+
+	//発射音の再生
+	m_battleShipGunSE = NewGO<SoundSource>(0);					//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+	m_battleShipGunSE->Init(enButtleShipGun);					//初期化
+	m_battleShipGunSE->SetVolume(1.0f * m_game->GetSEVol());	//音量調整
 	m_battleShipGunSE->Play(false);
 
 
-	Setup();
+	//弾の初期化
+	BulletSetUp(5.0f);
 
-	return true;
-}
-
-void Battle_ship_attack::Setup() 
-{
-	//モデルの初期化
-	m_bulletModel.Init("Assets/modelData/battleship_gun_bullet.tkm");
-	m_bulletModel.SetScale(5.0f);
-
-	//エネミーから見て正しい位置に弾を設定
-	originRotation.Multiply(m_bulletLocalPosition);	//掛け算
-
-	//最終的な弾の回転を決定
-	B_S_aiming = originRotation;
-	firing_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
-
-	//前方向はプレイヤーと一緒
-	m_bulletForward = m_player->playerForward;
-	
-	//更新
-	m_bulletModel.SetRotation(B_S_aiming);
-	m_bulletModel.SetPosition(firing_position);
 }
 
 void Battle_ship_attack::Update()
 {
+
+	//メインゲーム中
 	if (m_player->game_state == 0)
 	{
-		EfeEfe();
-		Move();
-		Damage();
-		
-		m_bulletModel.Update();
-		if (firing_position.y <= 0.0f)
-		{
-			m_player->attack_state_la = false;
-			m_player->attack_state_ra = false;
-			m_player->attack_state_s = false;
-			m_player->attack_state_ll = false;
-			m_player->attack_state_rl = false;
+	
+		//ダメージ処理
+		DamageEvent(m_bulletDamage);
 
-			DestroyWithImpactEffect();
-		}
+
+		//煙の発生
+		SmokeEfect();
+
+
+		//移動処理
+		Move(2000.0f);
+
 	}
+	//リザルト画面に行くと
 	else if (m_player->game_state == 2)
 	{
-		DeleteGO(this);	//リザルト画面に行くと消す
+
+		//自分自身の削除
+		DeleteGO(this);	
+
 	}
 
+
+	//プレイヤーがポーズ画面からゲームを終了させると
 	if (m_player->game_end_state == 1)
 	{
-		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
+
+		//自分自身の削除
+		DeleteGO(this);	
+
 	}
+
 }
 
-void Battle_ship_attack::Move() 
+void Battle_ship_attack::SmokeEfect()
 {
-	firing_position += m_bulletForward * move_speed;
-	firing_position.y -= fall_speed;
-	move_speed -= 0.05f;
-	fall_speed += 0.1f;
-	m_bulletModel.SetPosition(firing_position);
-}
 
-void Battle_ship_attack::Damage()
-{
-	//エネミーの数だけ繰り返す
-	for (auto enemy : m_game->GetEnemyObject())
-	{
-		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = firing_position - enemy->GetPos();
-		if (diff.Length() <= 300.0f)
-		{
-			enemy->ApplyDamage(m_bulletDamage);
-			DestroyWithImpactEffect();
-		}
-	}
-	//エネミーFarの数だけ繰り返す
-	for (auto enemyFar : m_game->GetEnemyFarObject())
-	{
-		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = firing_position - enemyFar->GetPos();
-		if (diff.Length() <= 300.0f)
-		{
-			enemyFar->ApplyDamage(m_bulletDamage);
-			DestroyWithImpactEffect();
-		}
-	}
-	//エネミーNearの数だけ繰り返す
-	for (auto enemyNear : m_game->GetEnemyNearObject())
-	{
-		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = firing_position - enemyNear->GetPos();
-		if (diff.Length() <= 300.0f)
-		{
-			enemyNear->ApplyDamage(m_bulletDamage);
-			DestroyWithImpactEffect();
-		}
-	}
+	//カウントアップ
+	m_smokeCount++;
 
-	//弾とボスの距離を測り一定以下なら体力減少
-	if (m_game->GetBoss() != nullptr)
-	{
-		Vector3 diff = firing_position - m_game->GetBoss()->boss_position;
-		if (diff.Length() <= 300.0f)
-		{
-			m_game->GetBoss()->boss_HP -= m_bulletDamage;
-			DestroyWithImpactEffect();
-		}
-	}
 
-	//弾とドリルの距離を測り一定以下なら体力減少
-	if (m_game->GetBoss() != nullptr)
+	//カウントが一定以上になったら
+	if (m_smokeCount >= 2)
 	{
-		if (m_game->GetBoss()->b_boss_drill != nullptr)
-		{
-			Vector3 diff = firing_position - m_game->GetBoss()->b_boss_drill->b_w_position;
-			if (diff.Length() <= 300.0f)
-			{
-				m_game->GetBoss()->b_boss_drill->drill_HP -= m_bulletDamage;
-				DestroyWithImpactEffect();
-			}
-		}
-	}
-}
 
-void Battle_ship_attack::EfeEfe()
-{
-	m_kemuriCount++;
-	if (m_kemuriCount >= 2)
-	{
 		//エフェクトの初期化と再生
-		m_kemuriEffect = NewGO<EffectEmitter>(0);
-		m_kemuriEffect->Init(enSenkanhouKemuri);
-		m_kemuriEffect->SetScale({ 5.0f,5.0f,5.0f });
-		m_kemuriEffect->SetRotation(B_S_aiming);
-		m_kemuriEffect->SetPosition({ firing_position.x,firing_position.y + 50.0f,firing_position.z });
-		m_kemuriEffect->Play();
-		m_kemuriCount = 0;
+		PlayEffect(enSenkanhouKemuri, { m_position.x,m_position.y + 50.0f,m_position.z }, m_rot, { 5.0f,5.0f,5.0f });
+
+
+		//カウントリセット
+		m_smokeCount = 0;
+
 	}
+
 }
 
 void Battle_ship_attack::Render(RenderContext& rc) 
 {
+
+	//弾モデルの描画
 	m_bulletModel.Draw(rc);
+
 }

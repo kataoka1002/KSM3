@@ -99,27 +99,24 @@ void Left_leg_weapons::Update()
 			{
 				//弾にポジションと回転を教えて生成する
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->originRotation = l_l_Rotation;
-				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
-				m_machineGunAttack->m_position = l_l_w_position;
-				atack_state = true;
+				m_machineGunAttack->SetRotation(l_l_Rotation);
+				m_machineGunAttack->SetLocalPosition(Vector3{0.0f,-10.0f,170.0f});
+				m_machineGunAttack->SetPosition(l_l_w_position);
 			}
 			else if (l_l_w_player->p_custom_point[1][2] == 4 && firing_cound % 180 == 0)
 			{
 				//弾にポジションと回転を教えて生成する
 				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
-				m_gigatonAttack->originRotation = l_l_Rotation;
-				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 0.0f,0.0f,100.0f };
-				m_gigatonAttack->m_position = l_l_w_position;
-				atack_state = true;
+				m_gigatonAttack->SetRotation(l_l_Rotation);
+				m_gigatonAttack->SetLocalPosition(Vector3{0.0f,0.0f,100.0f});
+				m_gigatonAttack->SetPosition(l_l_w_position);
 			}
 			else if (l_l_w_player->p_custom_point[1][2] == 6 && firing_cound % 180 == 0) 
 			{
 				battle_ship_attack = NewGO<Battle_ship_attack>(1, "battle_ship_attack");
-				battle_ship_attack->originRotation = l_l_Rotation;
-				battle_ship_attack->m_bulletLocalPosition = Vector3{ 0.0f,-37.0f,70.0f };
-				battle_ship_attack->firing_position = l_l_w_position;
-				atack_state = true;
+				battle_ship_attack->SetRotation(l_l_Rotation);
+				battle_ship_attack->SetLocalPosition(Vector3{ 0.0f,-37.0f,70.0f });
+				battle_ship_attack->SetPosition(l_l_w_position);
 			}
 			firing_cound++;
 		}
@@ -133,7 +130,6 @@ void Left_leg_weapons::Update()
 			DeleteGO(this);
 		}
 
-		l_l_w_player->attack_state_ll = atack_state;
 		Left_leg_weapons_Render.Update();
 	}
 }
