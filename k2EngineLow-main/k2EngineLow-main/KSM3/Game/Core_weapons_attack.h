@@ -1,41 +1,20 @@
 #pragma once
-class Player;
-class Core_weapons;
-class Enemy;
-class Game;
-class Boss;
+#include "AttackBase.h"
 
-
-class Core_weapons_attack:public IGameObject
+class Core_weapons_attack : public AttackBase
 {
 public:
 	Core_weapons_attack();
 	~Core_weapons_attack();
 
-	void Setup();
-	void Update();
-	void Move();
-	void Render(RenderContext& rc);
-	void Damage();
+	void Update()					override;
+	void DestroyWithImpactEffect()	override;
+	void Render(RenderContext& rc)	override;
+	void SetUp()					override;
 
-	Player* C_W_A_player = nullptr;
-	Core_weapons* C_W_A_core_weapons = nullptr;
-	Enemy* c_w_a_enemy = nullptr;
-	Game* m_game = nullptr;
-	EffectEmitter* m_tyakudanEffect = nullptr;
+private:
 
+	Core_weapons* m_coreWeapon = nullptr;
 
-	ModelRender C_W_Bullet;
-	Quaternion C_W_aiming;
-	Vector3 firing_position = Vector3::Zero;
-	Vector3 C_W_Bullet_Fowrad = Vector3::Zero;
-
-	bool stack_state = true;
-	bool Landing_state_cw = false;
-	float move_speed = 30.0f;
-	float fall_speed = 0.0f;
-	float m_bulletDamage = 5.0f;
-
-	float damage_volume = 0.0f;
 };
 

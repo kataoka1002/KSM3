@@ -223,6 +223,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttackBase.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Battle_ship_attack.cpp" />
     <ClCompile Include="Boss.cpp" />
@@ -280,6 +281,7 @@
     <ClCompile Include="Wave3Clear.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttackBase.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Battle_ship_attack.h" />
     <ClInclude Include="Boss.h" />

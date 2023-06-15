@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "Core_weapons.h"
 #include "Core_weapons_attack.h"
 #include "Player.h"
-#include "Core_weapons.h"
 #include "Enemy.h"
 #include "Enemy_Far.h"
 #include "Enemy_Near.h"
@@ -9,146 +9,130 @@
 #include "Boss.h"
 #include "Boss_Drill.h"
 
-Core_weapons_attack::Core_weapons_attack() {
-	C_W_A_player = FindGO<Player>("player");
-	C_W_A_core_weapons = FindGO<Core_weapons>("core_weapons");
-	m_game = FindGO<Game>("game");
-	Setup();
-}
+Core_weapons_attack::Core_weapons_attack() 
+{
+	
+	//ステータスの初期化---------------------------------
 
-void Core_weapons_attack::Setup() {
-	switch (C_W_A_core_weapons->set_weapons)
-	{
-	case 1:
-		break;
-	case 2:
-		C_W_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
-		C_W_Bullet.SetScale(4.0f);
-		C_W_aiming = C_W_A_core_weapons->cw_Rotation;
-		firing_position= C_W_A_core_weapons->cw_position;
-		firing_position.y += 12.0f;
-		move_speed = 200.0f;
-		C_W_Bullet_Fowrad = C_W_A_player->playerForward;
-		C_W_Bullet.SetPosition(firing_position);
-		C_W_Bullet.SetRotation(C_W_aiming);
-		damage_volume=10.0f;
-		break;
-	default:
-		break;
-	}
+	//弾のダメージ
+	m_bulletDamage = 5.0f;
+
+	//落下スピード
+	m_fallSpeed = 0.1f;
+
+	//前方向のスピード
+	m_moveSpeed = 200.0f;
+
+	//スピード減少量
+	m_decreaseSpeed = 0.05f;
+
+	//落下スピード増加量
+	m_addFallSpeed = 0.1f;
+
+	//---------------------------------------------------
+
 }
 
 Core_weapons_attack::~Core_weapons_attack()
 {
-	C_W_A_core_weapons->atack_state = false;
 
-	//着弾したらエフェクト再生
-	m_tyakudanEffect = NewGO<EffectEmitter>(0);
-	m_tyakudanEffect->Init(enMasinganKemuri);
-	m_tyakudanEffect->SetScale({ 10.0f,10.0f,10.0f });
-	m_tyakudanEffect->SetPosition({ firing_position.x,firing_position.y,firing_position.z });
-	m_tyakudanEffect->Play();
 }
 
-void Core_weapons_attack::Update() {
-	if (C_W_A_player->game_state == 0) {
-		Move();
-		Damage();
-		C_W_Bullet.Update();
-		if (firing_position.y <= 0.0f) {
-			DeleteGO(this);
-		}
-	}
-	else if (C_W_A_player->game_state == 2)
-	{
-		DeleteGO(this);	//リザルト画面に行くと消す
-	}
-
-	if (C_W_A_player->game_end_state == 1)
-	{
-		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
-	}
-}
-
-void Core_weapons_attack::Damage()
+void Core_weapons_attack::SetUp() 
 {
-	//エネミーの数だけ繰り返す
-	for (auto enemy : m_game->GetEnemyObject())
+
+	//コア武器を探す
+	m_coreWeapon = FindGO<Core_weapons>("core_weapons");
+
+
+	//元の回転量を求める
+	m_originRotation = m_coreWeapon->cw_Rotation;
+
+
+	//発生する場所を求める
+	m_position = m_coreWeapon->cw_position;
+
+
+	//付けているコア武器によって変える
+	switch (m_coreWeapon->set_weapons)
 	{
-		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = firing_position - enemy->GetPos();
-		if (diff.Length() <= 200.0f)
-		{
-			enemy->ApplyDamage(m_bulletDamage);
-			DeleteGO(this);	//弾は消える
-		}
-	}
-	//エネミーFarの数だけ繰り返す
-	for (auto enemyFar : m_game->GetEnemyFarObject())
-	{
-		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = firing_position - enemyFar->GetPos();
-		if (diff.Length() <= 200.0f)
-		{
-			enemyFar->ApplyDamage(m_bulletDamage);
-			DeleteGO(this);	//弾は消える
-		}
-	}
-	//エネミーNearの数だけ繰り返す
-	for (auto enemyNear : m_game->GetEnemyNearObject())
-	{
-		//弾とエネミーの距離を測り一定以下なら体力減少
-		Vector3 diff = firing_position - enemyNear->GetPos();
-		if (diff.Length() <= 200.0f)
-		{
-			enemyNear->ApplyDamage(m_bulletDamage);
-			DeleteGO(this);	//弾は消える
-		}
-	}
-	//弾とボスの距離を測り一定以下なら体力減少
-	if (m_game->GetBoss() != nullptr)
-	{
-		Vector3 diff = firing_position - m_game->GetBoss()->boss_position;
-		if (diff.Length() <= 200.0f)
-		{
-			m_game->GetBoss()->boss_HP -= m_bulletDamage;
-			DeleteGO(this);	//弾は消える
-		}
+
+	case 1:
+
+		break;
+
+	case 2:
+
+		//ローカルポジションの設定
+		m_bulletLocalPosition = { 0.0f,12.0f,0.0f };
+
+		break;
+
+	default:
+		break;
+
 	}
 
-	//弾とドリルの距離を測り一定以下なら体力減少
-	if (m_game->GetBoss() != nullptr)
-	{
-		if (m_game->GetBoss()->b_boss_drill != nullptr)
-		{
-			Vector3 diff = firing_position - m_game->GetBoss()->b_boss_drill->b_w_position;
-			if (diff.Length() <= 200.0f)
-			{
-				m_game->GetBoss()->b_boss_drill->drill_HP -= m_bulletDamage;
-				DeleteGO(this);	//弾は消える
-			}
-		}
-	}
-}
 
-void Core_weapons_attack::Move() {
-	firing_position += C_W_Bullet_Fowrad * move_speed;
-	firing_position.y -= fall_speed;
-	move_speed -= 0.05f;
-	fall_speed += 0.1f;
-	C_W_Bullet.SetPosition(firing_position);
-
-	//弾とプレイヤー(親)の距離を計算して一定距離以上なら弾を消す
-	Vector3 m_toPlayer = C_W_A_player->player_position - firing_position;
-	float m_dirToPlayer = m_toPlayer.Length();
-	if (m_dirToPlayer >= 2000.0f)
-	{
-		DeleteGO(this);
-	}
+	//弾の初期化
+	BulletSetUp(2.0f);
 
 }
 
-void Core_weapons_attack::Render(RenderContext& rc) {
-	C_W_Bullet.Draw(rc);
+
+void Core_weapons_attack::DestroyWithImpactEffect()
+{
+
+	//着弾エフェクトの再生
+	PlayEffect(enMasinganKemuri, m_position, m_rot, { 10.0f,10.0f,10.0f });
+
+
+	//自分自身の削除
+	DeleteGO(this);
+
+}
+
+void Core_weapons_attack::Update() 
+{
+
+	//メインゲーム中
+	if (m_player->game_state == 0) 
+	{
+
+		//ダメージ処理
+		DamageEvent(m_bulletDamage);
+
+
+		//移動処理
+		Move(2000.0f);
+
+	}
+	//リザルト画面に行くと
+	else if (m_player->game_state == 2)
+	{
+		
+		//自分自身の削除
+		DeleteGO(this);	
+
+	}
+
+	
+	//プレイヤーがポーズ画面からゲームを終了させると
+	if (m_player->game_end_state == 1)
+	{
+
+		//自分自身の削除
+		DeleteGO(this);	
+
+	}
+
+}
+
+void Core_weapons_attack::Render(RenderContext& rc) 
+{
+
+	//弾モデルの初期化
+	m_bulletModel.Draw(rc);
+
 }
 

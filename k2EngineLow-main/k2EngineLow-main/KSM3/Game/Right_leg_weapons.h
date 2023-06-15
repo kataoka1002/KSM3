@@ -34,7 +34,6 @@ public:
 	Vector3 r_l_w_localPosition = { 90.0f,30.0f,55.0f };
 	Vector3 scale2 = { 2.0f,2.0f,2.0f };
 
-	bool atack_state = false;
 	int set_weapons = 0;
 
 	int firing_cound = 0;

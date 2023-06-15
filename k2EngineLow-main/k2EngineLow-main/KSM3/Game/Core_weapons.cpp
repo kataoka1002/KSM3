@@ -8,9 +8,7 @@ Core_weapons::Core_weapons() {
 }
 
 Core_weapons::~Core_weapons() {
-	if (atack_state == true) {
 		DeleteGO(core_weapons_attack);
-	}
 }
 
 void Core_weapons::CW_set() {
@@ -50,7 +48,6 @@ void Core_weapons::Update() {
 				}
 				else if (set_weapons == 2 && firing_cound % 5 == 0) {
 					core_weapons_attack = NewGO<Core_weapons_attack>(1, "core_weapons_attack");
-					atack_state = true;
 				}
 				firing_cound++;
 			}

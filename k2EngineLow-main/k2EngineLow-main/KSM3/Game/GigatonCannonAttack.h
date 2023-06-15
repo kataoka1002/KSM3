@@ -1,41 +1,20 @@
 #pragma once
+#include "AttackBase.h"
 
-class Player;
-class Game;
-class Boss;
-
-class GigatonCannonAttack :public IGameObject
+class GigatonCannonAttack : public AttackBase
 {
 public:
 	GigatonCannonAttack();
 	~GigatonCannonAttack();
-	bool Start();
-	void Setup();
-	void Update();
-	void Move();
-	void Damage();
-	void DestroyWithImpactEffect();
-	void Render(RenderContext& rc);
 
-	Player* m_player = nullptr;
-	Game* m_game = nullptr;
-	Boss* m_boss = nullptr;
-	EffectEmitter* m_tyakudanEffect = nullptr;
-	SoundSource* m_cannonSE = nullptr;					//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“SE
+	void Update()					override;
+	void DestroyWithImpactEffect()	override;
+	void Render(RenderContext& rc)	override;
+	void SetUp()					override;
 
+private:
 
-	ModelRender m_bulletModel;
-	Vector3 m_position = Vector3::Zero;
-	Vector3 m_bulletForward = Vector3::Zero;
-	Vector3 m_moveSpeed = Vector3::Zero;
-	Vector3 m_bulletLocalPosition = Vector3::Zero;	//’e‚Ìƒ[ƒJƒ‹ƒ|ƒWƒVƒ‡ƒ“
-	Quaternion m_rot;
-	Quaternion originRotation;
-
-	bool m_atackState = true;
-	bool Landing_state_BB = false;
-	float m_fallSpeed = 0.0f;
-	float m_bulletDamage = 100.0f;
+	SoundSource* m_cannonSE = nullptr;	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“SE
 
 };
 

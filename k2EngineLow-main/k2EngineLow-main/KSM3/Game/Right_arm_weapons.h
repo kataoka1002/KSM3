@@ -35,7 +35,6 @@ public:
 	ModelRender Right_arm_weapons_Render;
 
 
-	bool atack_state = false;
 	int set_weapons = 0;
 	int game_state = 0;
 	int firing_count=0;

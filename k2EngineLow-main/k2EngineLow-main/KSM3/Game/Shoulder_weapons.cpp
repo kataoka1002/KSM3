@@ -100,48 +100,45 @@ void Shoulder_weapons::Update()
 			{
 				//弾にポジションと回転を教えて生成する
 				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->originRotation = Shoulder_Rotation;
-				m_machineGunAttack->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
-				m_machineGunAttack->m_position = s_w_position;
+				m_machineGunAttack->SetRotation(Shoulder_Rotation);
+				m_machineGunAttack->SetLocalPosition(Vector3{ 0.0f,-10.0f,170.0f });
+				m_machineGunAttack->SetPosition(s_w_position);
 
 				m_machineGunAttack2 = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack2->originRotation = Shoulder_Rotation2;
-				m_machineGunAttack2->m_bulletLocalPosition = Vector3{ 0.0f,-10.0f,170.0f };
-				m_machineGunAttack2->m_position = s_w_position2;
+				m_machineGunAttack2->SetRotation(Shoulder_Rotation2);
+				m_machineGunAttack2->SetLocalPosition(Vector3{ 0.0f,-10.0f,170.0f });
+				m_machineGunAttack2->SetPosition(s_w_position2);
 
-				atack_state = true;
 			}
 			//武器がギガトンキャノンの場合
 			else if (s_w_player->p_custom_point[0][1] == 4 && firing_cound % 180 == 0)
 			{
 				//弾にポジションと回転を教えて生成する
 				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
-				m_gigatonAttack->originRotation = Shoulder_Rotation;
-				m_gigatonAttack->m_bulletLocalPosition = Vector3{ 40.0f,0.0f,100.0f };
-				m_gigatonAttack->m_position = s_w_position;
+				m_gigatonAttack->SetRotation(Shoulder_Rotation);
+				m_gigatonAttack->SetLocalPosition(Vector3{ 40.0f,0.0f,100.0f });
+				m_gigatonAttack->SetPosition(s_w_position);
 
 				m_gigatonAttack2 = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
-				m_gigatonAttack2->originRotation = Shoulder_Rotation;
-				m_gigatonAttack2->m_bulletLocalPosition = Vector3{ -40.0f,0.0f,100.0f };
-				m_gigatonAttack2->m_position = s_w_position;
+				m_gigatonAttack2->SetRotation(Shoulder_Rotation2);
+				m_gigatonAttack2->SetLocalPosition(Vector3{ -40.0f,0.0f,100.0f });
+				m_gigatonAttack2->SetPosition(s_w_position);
 
-				atack_state = true;
 			}
 			//武器が戦艦砲の場合
 			else if (s_w_player->p_custom_point[0][1] == 6 && firing_cound % 180 == 0) 
 			{
 				//弾にポジションと回転を教えて生成する
 				battle_ship_attack = NewGO<Battle_ship_attack>(1, "battle_ship_attack");
-				battle_ship_attack->originRotation = Shoulder_Rotation;
-				battle_ship_attack->m_bulletLocalPosition = Vector3{ 40.0f,-40.0f,70.0f };
-				battle_ship_attack->firing_position = s_w_position;
+				battle_ship_attack->SetRotation(Shoulder_Rotation);
+				battle_ship_attack->SetLocalPosition(Vector3{ 40.0f,-40.0f,70.0f });
+				battle_ship_attack->SetPosition(s_w_position);
 
 				battle_ship_attack2 = NewGO<Battle_ship_attack>(1, "battle_ship_attack");
-				battle_ship_attack2->originRotation = Shoulder_Rotation;
-				battle_ship_attack2->m_bulletLocalPosition = Vector3{ -40.0f,-40.0f,70.0f };
-				battle_ship_attack2->firing_position = s_w_position;
+				battle_ship_attack2->SetRotation(Shoulder_Rotation2);
+				battle_ship_attack2->SetLocalPosition(Vector3{ -40.0f,-40.0f,70.0f });
+				battle_ship_attack2->SetPosition(s_w_position);
 
-				atack_state = true;
 			}
 			firing_cound++;
 		}
@@ -156,7 +153,6 @@ void Shoulder_weapons::Update()
 			DeleteGO(this);
 		}
 
-		s_w_player->attack_state_s = atack_state;
 
 		//武器の更新
 		Shoulder_weapons_Render.Update();
