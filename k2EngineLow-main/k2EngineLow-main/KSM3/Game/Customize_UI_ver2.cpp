@@ -52,7 +52,7 @@ bool Customize_UI_ver2::Start()
 	m_player = FindGO<Player>("player");
 	m_coreWeapon = FindGO<Core_weapons>("core_weapons");	//コア武器はGame.cppでNewGOしている
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
-	m_dropItem = FindGO<Drop_item>("drop_item");
+	//m_dropItem = FindGO<Drop_item>("drop_item");
 	m_game = FindGO<Game>("game");
 
 	//マシンガンモデルの初期化
@@ -132,7 +132,7 @@ void Customize_UI_ver2::Setup()
 	{
 		Custom_model_Right_arm();
 		//武器によってモデルを変える
-		switch (m_rightArmWeapon->set_weapons)
+		switch (m_rightArmWeapon->GetWeaponKind())
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
@@ -169,7 +169,7 @@ void Customize_UI_ver2::Setup()
 	{
 		Custom_model_Left_arm();
 		//武器によってモデルを変える
-		switch (m_leftArmWeapon->set_weapons)
+		switch (m_leftArmWeapon->GetWeaponKind())
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
@@ -207,7 +207,7 @@ void Customize_UI_ver2::Setup()
 	{
 		Custom_model_Shoulder();
 		//武器によってモデルを変える
-		switch (m_shoulderWeapon->set_weapons)
+		switch (m_shoulderWeapon->GetWeaponKind())
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
@@ -245,7 +245,7 @@ void Customize_UI_ver2::Setup()
 	{
 		Custom_model_Right_leg();
 		//武器によってモデルを変える
-		switch (m_rightLegWeapon->set_weapons)
+		switch (m_rightLegWeapon->GetWeaponKind())
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
@@ -284,7 +284,7 @@ void Customize_UI_ver2::Setup()
 	{
 		Custom_model_Left_leg();
 		//武器によってモデルを変える
-		switch (m_leftLegWeapon->set_weapons)
+		switch (m_leftLegWeapon->GetWeaponKind())
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
@@ -834,7 +834,7 @@ void Customize_UI_ver2::Window()
 						{
 							m_shoulderWeapon = NewGO<Shoulder_weapons>(2, "shoulder_weapons");
 							//部位に武器の種類を教える
-							m_shoulderWeapon->set_weapons = custom_kinds;
+							m_shoulderWeapon->SetWeaponKind(custom_kinds);
 							Setup();	//モデル更新
 							//武器取り付けを承認してカスタム画面が終わる時
 							tranceOutInit();
@@ -847,7 +847,7 @@ void Customize_UI_ver2::Window()
 						{
 							m_rightArmWeapon = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
 							//部位に武器の種類を教える
-							m_rightArmWeapon->set_weapons = custom_kinds;
+							m_rightArmWeapon->SetWeaponKind(custom_kinds);
 							Setup();	//モデル更新
 							//武器取り付けを承認してカスタム画面が終わる時
 							tranceOutInit();
@@ -860,7 +860,7 @@ void Customize_UI_ver2::Window()
 						{
 							m_leftArmWeapon = NewGO<Left_arm_weapons>(2, "left_arm_weapons");
 							//部位に武器の種類を教える
-							m_leftArmWeapon->set_weapons = custom_kinds;
+							m_leftArmWeapon->SetWeaponKind(custom_kinds);
 							Setup();	//モデル更新
 							//武器取り付けを承認してカスタム画面が終わる時
 							tranceOutInit();
@@ -873,7 +873,7 @@ void Customize_UI_ver2::Window()
 						{
 							m_rightLegWeapon = NewGO<Right_leg_weapons>(2, "right_leg_weapons");
 							//部位に武器の種類を教える
-							m_rightLegWeapon->set_weapons = custom_kinds;
+							m_rightLegWeapon->SetWeaponKind(custom_kinds);
 							Setup();	//モデル更新
 							//武器取り付けを承認してカスタム画面が終わる時
 							tranceOutInit();
@@ -886,7 +886,7 @@ void Customize_UI_ver2::Window()
 						{
 							m_leftLegWeapon = NewGO<Left_leg_weapons>(2, "left_leg_weapons");
 							//部位に武器の種類を教える
-							m_leftLegWeapon->set_weapons = custom_kinds;
+							m_leftLegWeapon->SetWeaponKind(custom_kinds);
 							Setup();	//モデル更新
 							//武器取り付けを承認してカスタム画面が終わる時
 							tranceOutInit();
@@ -973,7 +973,7 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 	Right_arm_weapon_set = true;
 
 	//付けている武器によってカスタム画面のモデルを変更する
-	switch (m_rightArmWeapon->set_weapons)
+	switch (m_rightArmWeapon->GetWeaponKind())
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
@@ -1018,7 +1018,7 @@ void Customize_UI_ver2::Custom_model_Left_arm()
 	Left_arm_weapon_set = true;
 
 	//付けている武器によってカスタム画面のモデルを変更する
-	switch (m_leftArmWeapon->set_weapons)
+	switch (m_leftArmWeapon->GetWeaponKind())
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
@@ -1063,7 +1063,7 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 	Shoulder_weapon_set = true;
 
 	//付けている武器によってカスタム画面のモデルを変更する
-	switch (m_shoulderWeapon->set_weapons)
+	switch (m_shoulderWeapon->GetWeaponKind())
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
@@ -1124,7 +1124,7 @@ void Customize_UI_ver2::Custom_model_Right_leg()
 	Right_leg_weapon_set = true;
 
 	//付けている武器によってカスタム画面のモデルを変更する
-	switch (m_rightLegWeapon->set_weapons)
+	switch (m_rightLegWeapon->GetWeaponKind())
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
@@ -1170,7 +1170,7 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 	Left_leg_weapon_set = true;
 
 	//付けている武器によってカスタム画面のモデルを変更する
-	switch (m_leftLegWeapon->set_weapons)
+	switch (m_leftLegWeapon->GetWeaponKind())
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定			
@@ -1239,7 +1239,7 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 		{
 			custom_model_shoulder.Draw(rc);		//肩
 
-			if (m_shoulderWeapon->set_weapons == 2)
+			if (m_shoulderWeapon->GetWeaponKind() == 2)
 			{
 				//2個目のマシンガンをDraw
 				custom_model_shoulder2.Draw(rc);

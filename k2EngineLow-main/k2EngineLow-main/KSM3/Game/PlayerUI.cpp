@@ -157,27 +157,27 @@ void PlayerUI::Update()
 	//Še•Ší‚Ì‘Ì—ÍŒvŽZ
 	if (m_rightArm != nullptr)
 	{
-		m_rightArmHPSprite.SetMulColor(Damage(m_rightArm->m_rightArmHP, m_rightArm->m_rightArmHPMax));
+		m_rightArmHPSprite.SetMulColor(Damage(m_rightArm->GetHP(), m_rightArm->GetHPMax()));
 		m_rightArmHPSprite.Update();
 	}
 	if (m_rightLeg != nullptr)
 	{
-		m_rightLegHPSprite.SetMulColor(Damage(m_rightLeg->R_l_w_HP, m_rightLeg->R_l_w_HPMax));
+		m_rightLegHPSprite.SetMulColor(Damage(m_rightLeg->GetHP(), m_rightLeg->GetHPMax()));
 		m_rightLegHPSprite.Update();
 	}
 	if (m_leftArm != nullptr)
 	{
-		m_leftArmHPSprite.SetMulColor(Damage(m_leftArm->L_a_w_HP, m_leftArm->L_a_w_HPMax));
+		m_leftArmHPSprite.SetMulColor(Damage(m_leftArm->GetHP(), m_leftArm->GetHPMax()));
 		m_leftArmHPSprite.Update();
 	}
 	if (m_leftLeg != nullptr)
 	{
-		m_leftLegHPSprite.SetMulColor(Damage(m_leftLeg->L_l_w_HP, m_leftLeg->L_l_w_HPMax));
+		m_leftLegHPSprite.SetMulColor(Damage(m_leftLeg->GetHP(), m_leftLeg->GetHPMax()));
 		m_leftLegHPSprite.Update();
 	}
 	if (m_shoulder != nullptr)
 	{
-		m_shoulderHPSprite.SetMulColor(Damage(m_shoulder->S_w_HP, m_shoulder->S_w_HPMax));
+		m_shoulderHPSprite.SetMulColor(Damage(m_shoulder->GetHP(), m_shoulder->GetHPMax()));
 		m_shoulderHPSprite.Update();
 	}
 }

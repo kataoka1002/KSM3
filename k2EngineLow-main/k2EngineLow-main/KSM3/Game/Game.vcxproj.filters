@@ -60,6 +60,7 @@
     <ClCompile Include="OPVoice.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AttackBase.cpp" />
+    <ClCompile Include="WeaponBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -118,5 +119,6 @@
     <ClInclude Include="OPVoice.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="AttackBase.h" />
+    <ClInclude Include="WeaponBase.h" />
   </ItemGroup>
 </Project>

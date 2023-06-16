@@ -308,14 +308,14 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftArm = firing_position - Vector3{ m_leftArm->l_a_w_position.x, m_leftArm->l_a_w_position.y, m_leftArm->l_a_w_position.z };
+			Vector3 diffLeftArm = firing_position - m_leftArm->GetPosition();
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffLeftArm.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_leftArm->L_a_w_HP -= 1.0f;
+				m_leftArm->ApplyDamage(1.0f);
 				DestroyWithImpactEffect();
 			}
 		}
@@ -325,14 +325,14 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftLeg = firing_position - Vector3{ m_leftLeg->l_l_w_position.x, m_leftLeg->l_l_w_position.y, m_leftLeg->l_l_w_position.z };
+			Vector3 diffLeftLeg = firing_position - m_leftLeg->GetPosition();
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体e力減少
 			if (diffLeftLeg.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_leftLeg->L_l_w_HP -= 1.0f;
+				m_leftLeg->ApplyDamage(1.0f);
 				DestroyWithImpactEffect();
 			}
 
@@ -343,14 +343,14 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_rightArm != nullptr)	//右手に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightArm = firing_position - Vector3{ m_rightArm->r_a_w_position.x, m_rightArm->r_a_w_position.y, m_rightArm->r_a_w_position.z };
+			Vector3 diffRightArm = firing_position - m_rightArm->GetPosition();
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffRightArm.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_rightArm->m_rightArmHP -= 1.0f;
+				m_rightArm->ApplyDamage(1.0f);
 				DestroyWithImpactEffect();
 			}
 
@@ -361,14 +361,14 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightLeg = firing_position - Vector3{ m_rightLeg->r_l_w_position.x, m_rightLeg->r_l_w_position.y, m_rightLeg->r_l_w_position.z };
+			Vector3 diffRightLeg = firing_position - m_rightLeg->GetPosition();
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffRightLeg.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_rightLeg->R_l_w_HP -= 1.0f;
+				m_rightLeg->ApplyDamage(1.0f);
 				DestroyWithImpactEffect();
 			}
 
@@ -379,14 +379,14 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_shoulder != nullptr)	//肩に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffShoulder = firing_position - Vector3{ m_shoulder->s_w_position.x, m_shoulder->s_w_position.y, m_shoulder->s_w_position.z };
+			Vector3 diffShoulder = firing_position - m_shoulder->GetPosition();
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffShoulder.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				m_shoulder->S_w_HP -= 1.0f;
+				m_shoulder->ApplyDamage(1.0f);
 				DestroyWithImpactEffect();
 			}
 

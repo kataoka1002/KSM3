@@ -279,6 +279,7 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Wave3Clear.cpp" />
+    <ClCompile Include="WeaponBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackBase.h" />
@@ -335,6 +336,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Wave3Clear.h" />
+    <ClInclude Include="WeaponBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
