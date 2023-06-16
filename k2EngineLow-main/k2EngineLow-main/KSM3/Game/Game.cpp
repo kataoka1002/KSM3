@@ -255,7 +255,7 @@ void Game::MakeEnemy()
 {
 
 	//エネミーを複数体生成
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
 		enemy->SetPosition(RandomPosition());
@@ -267,7 +267,7 @@ void Game::MakeEnemy()
 
 
 	//遠距離エネミーを複数体生成
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
 		enemyFar->SetPosition(RandomPosition());

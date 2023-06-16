@@ -8,7 +8,6 @@
 #include "Customize_UI_ver2.h"
 #include "PlayerUI.h"
 
-
 Right_arm_weapons::Right_arm_weapons() 
 {
 	
@@ -19,162 +18,183 @@ Right_arm_weapons::~Right_arm_weapons()
 	
 }
 
-bool Right_arm_weapons::Start()
+void Right_arm_weapons::SetUp()
 {
-	r_a_w_player = FindGO<Player>("player");
-	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+	
+	//UIの初期化
+	m_playerUI->WeaponUISetUp(1);		
+	
 
-	m_playerUI = FindGO<PlayerUI>("playerui");
-	m_playerUI ->WeaponUISetUp(1);		//UIの初期化
-	m_playerUI->m_rightArm = (this);	//自分のポインタを教える
+	//自分のポインタを教える
+	m_playerUI->m_rightArm = (this);	
 
-	R_a_w_set();
 
-	return true;
+	//武器の初期化
+	InitWeapon();
+
 }
 
-void Right_arm_weapons::R_a_w_set() 
+void Right_arm_weapons::InitWeapon()
 {
-	//付いている武器によってモデルを変更する
-	switch (r_a_w_player->p_custom_point[0][0])
+
+	//付いている武器によって処理の変更
+	switch (m_player->p_custom_point[0][0])
 	{
-	case 2:
-		Right_arm_weapons_Render.Init("Assets/modelData/machine_gun_drop.tkm");
-		Right_arm_weapons_Render.SetScale(scale2);
-		Right_arm_weapons_Render.Update();
-		set_weapons = r_a_w_player->p_custom_point[0][0];
-		//武器の体力の設定
-		m_rightArmHP = 700.0f;
-		m_rightArmHPMax = 700.0f;
+	case 2:	//マシンガンの時
+
+		//武器モデルの初期化
+		m_weaponModel.Init("Assets/modelData/machine_gun_drop.tkm");
+
+
+		//ローカルポジションの設定
+		m_localPosition = { 60.0f,100.0f,0.0f };
+
 		break;
-	case 4:
-		Right_arm_weapons_Render.Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
-		Right_arm_weapons_Render.SetScale(0.8f);
-		Right_arm_weapons_Render.Update();
-		set_weapons = r_a_w_player->p_custom_point[0][0];
-		//武器の体力の設定
-		m_rightArmHP = 500.0f;
-		m_rightArmHPMax = 500.0f;
+
+
+	case 4:	//ギガトンキャノンの時
+
+		//武器モデルの初期化
+		m_weaponModel.Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
+
+
+		//ローカルポジションの設定
+		m_localPosition = { 50.0f,100.0f,30.0f };
+
 		break;
-	case 6:
-		Right_arm_weapons_Render.Init("Assets/modelData/battleship_gun_right_arm.tkm");
-		Right_arm_weapons_Render.SetScale(scale2);
-		Right_arm_weapons_Render.Update();
-		set_weapons = r_a_w_player->p_custom_point[0][0];
-		//武器の体力の設定
-		m_rightArmHP = 400.0f;
-		m_rightArmHPMax = 400.0f;
+
+
+	case 6:	//戦艦砲の時
+
+		//武器モデルの初期化
+		m_weaponModel.Init("Assets/modelData/battleship_gun_right_arm.tkm");
+
+
+		//ローカルポジションの設定
+		m_localPosition = { 60.0f,80.0f,-10.0f };
+
 		break;
+
+
 	default:
+
 		break;
+
 	}
+
+
+	//武器の細かい設定を行う	
+	SetWeapon(m_player->p_custom_point[0][0]);
+
 }
 
 void Right_arm_weapons::Update() 
 {
-	if (r_a_w_player->game_state == 0) 
+
+	//メインゲーム中
+	if (m_player->game_state == 0) 
 	{
+
+		//動きの処理
 		Move();
 
-		//HPが0以下になると消える
-		if (m_rightArmHP <= 0)
+
+		//破壊されたときの処理
+		DestroyEvent();
+
+
+		//攻撃処理
+		MakeBullet(m_player->p_custom_point[0][0]);
+
+
+		//プレイヤーが死亡したら
+		if (m_player->game_end_state == 1) 
 		{
-			//プレイヤーの設定武器を空にする
-			r_a_w_player->p_custom_point[0][0] = 0;
-			m_customizeUI->Right_arm_weapon_set = false;
-			m_customizeUI->m_rightArmWeapon = nullptr;
+
 			//UIの中身を空にする
 			m_playerUI->m_rightArm = nullptr;
+
+
+			//自分自身の削除
 			DeleteGO(this);
+
 		}
 
-		//攻撃
-		if (g_pad[0]->IsPress(enButtonLB1))
-		{
-			//武器がマシンガンの場合
-			if (r_a_w_player->p_custom_point[0][0] == 2 && firing_count % 5 == 0)
-			{
-				//弾にポジションと回転を教えて生成する
-				m_machineGunAttack = NewGO<MachineGunAttack>(1, "machinegunattack");
-				m_machineGunAttack->SetRotation(r_a_Rotation);
-				m_machineGunAttack->SetLocalPosition(Vector3{0.0f,-10.0f,170.0f});
-				m_machineGunAttack->SetPosition(r_a_w_position);
-			}
-			//武器がギガトンキャノンの場合
-			else if (r_a_w_player->p_custom_point[0][0] == 4 && firing_count % 180 == 0)
-			{
-				//弾にポジションと回転を教えて生成する
-				m_gigatonAttack = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
-				m_gigatonAttack->SetRotation(r_a_Rotation);
-				m_gigatonAttack->SetLocalPosition(Vector3{0.0f,0.0f,100.0f});
-				m_gigatonAttack->SetPosition(r_a_w_position);
-			}
-			//武器が戦艦砲の場合
-			else if (r_a_w_player->p_custom_point[0][0] == 6 && firing_count % 180 == 0)
-			{
-				//弾にポジションと回転を教えて生成する
-				battle_ship_attack = NewGO<Battle_ship_attack>(1, "battle_ship_attack");
-				battle_ship_attack->SetRotation(r_a_Rotation);
-				battle_ship_attack->SetLocalPosition(Vector3{ 0.0f,-30.0f,70.0f });
-				battle_ship_attack->SetPosition(r_a_w_position);
-			}
-			firing_count++;
-		}
-		else 
-		{
-			firing_count = 0;
-		}
-
-		//プレイヤーが死亡したら武器も消える
-		if (r_a_w_player->game_end_state == 1) 
-		{
-			//UIの中身を空にする
-			m_playerUI->m_rightArm = nullptr;
-			DeleteGO(this);
-		}
-
-
-		Right_arm_weapons_Render.Update();
 	}
+
 }
 
-void Right_arm_weapons::Move() 
+void Right_arm_weapons::SetBulletLocalPosition()
 {
-	//武器によって取り付けるポジションの変更
-	Vector3 lp;
-	switch (r_a_w_player->p_custom_point[0][0])
+
+	//武器がマシンガンの場合
+	if (m_player->p_custom_point[0][0] == 2)
 	{
-	case 2:	//マシンガン
-		lp = { 60.0f,100.0f,0.0f };
-		break;
-	case 4:	//ギガトンキャノン
-		lp = { 50.0f,100.0f,30.0f };
-		break;
-	case 6:	//戦艦砲
-		lp = { 60.0f,80.0f,-10.0f };
-		break;
-	default:
-		break;
+
+		//弾のローカルポジションの設定
+		m_machineGunAttack->SetLocalPosition(Vector3{ 0.0f,-10.0f,170.0f });
+
+	}
+	//武器がギガトンキャノンの場合
+	else if (m_player->p_custom_point[0][0] == 4)
+	{
+
+		//弾のローカルポジションの設定
+		m_gigatonAttack->SetLocalPosition(Vector3{ 0.0f,0.0f,100.0f });
+
+	}
+	//武器が戦艦砲の場合
+	else if (m_player->p_custom_point[0][0] == 6)
+	{
+
+		//弾のローカルポジションの設定
+		m_battleShipAttack->SetLocalPosition(Vector3{ 0.0f,-30.0f,70.0f });
+
 	}
 
-	//ポジションの計算
-	Quaternion originRotation = r_a_w_player->player_rotation;
-	r_a_w_position = r_a_w_player->player_position;
-	originRotation.Multiply(lp);
-	r_a_w_position += lp;
-	r_a_Rotation = originRotation;
+}
 
-	//更新
-	Right_arm_weapons_Render.SetPosition(r_a_w_position);
-	Right_arm_weapons_Render.SetRotation(r_a_Rotation);
+void Right_arm_weapons::DestroyEvent()
+{
+
+	//武器のHPが0以下になると
+	if (m_HP <= 0)
+	{
+
+		//プレイヤーの設定武器を空にする
+		m_player->p_custom_point[0][0] = 0;
+
+
+		//UIの設定武器を空にする
+		m_customizeUI->Right_arm_weapon_set = false;
+
+
+		//UIの設定していたポインタを空にする
+		m_playerUI->m_rightArm = nullptr;
+
+		
+		//カスタマイズ画面の設定していたポインタを空にする
+		m_customizeUI->m_rightArmWeapon = nullptr;
+
+
+		//自分自身の削除
+		DeleteGO(this);
+
+	}
+
 }
 
 void Right_arm_weapons::Render(RenderContext& rc) 
 {
-	if (r_a_w_player->m_deadBakuhaPlay == true)
+
+	//プレイヤー死亡時のエフェクトを発生させたら
+	if (m_player->m_deadBakuhaPlay == true)
 	{
 		return;
 	}
 
-	Right_arm_weapons_Render.Draw(rc);
+
+	//武器モデルの描画
+	m_weaponModel.Draw(rc);
+
 }
