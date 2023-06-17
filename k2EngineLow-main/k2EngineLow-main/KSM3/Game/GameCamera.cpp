@@ -54,7 +54,7 @@ void GameCamera::Update()
 	Vector3 toCameraPosOld = m_toCameraPos;
 
 	//カスタマイズ画面以外でプレイヤーが死んでないならパッドの入力を使ってカメラを回す。
-	if (CameraState != 3 && CameraState != 4 && m_player->m_playerDead != true)
+	if (CameraState != 3 && CameraState != 4 && m_player->GetPlayerDead() != true)
 	{
 		x = g_pad[0]->GetRStickXF();
 		y = g_pad[0]->GetRStickYF();
@@ -80,7 +80,7 @@ void GameCamera::Update()
 	if (CameraState == 0)//雑魚戦の時カメラ。
 	{
 		//注視点を計算する。
-		target = m_player->player_position;
+		target = m_player->GetPlayerPosition();
 		target.y += 180.0f;		//プレイヤの足元からちょっと上を注視点とする。
 
 		if (toPosDir.y < 0.1f)
@@ -167,7 +167,7 @@ void GameCamera::Update()
 	else if (CameraState == 1)//ボス戦の時のカメラ。
 	{
 		//注視点を計算する。
-		target = m_player->player_position;
+		target = m_player->GetPlayerPosition();
 		target.y += 200.0f;		//プレイヤの足元からちょっと上を注視点とする。
 
 		if (toPosDir.y < -0.2f)
@@ -199,7 +199,7 @@ void GameCamera::Update()
 	}
 
 	//カスタム画面とリザルト以外の時
-	if (CameraState != 3 && m_player->game_state != 2)
+	if (CameraState != 3 && m_player->GetGameState() != 2)
 	{
 		//揺れの大きさを足す
 		target.x += BGX;
@@ -225,20 +225,20 @@ void GameCamera::Update()
 void GameCamera::Move()
 {
 	//注視点を計算する。
-	target = m_player->player_position;
+	target = m_player->GetPlayerPosition();
 	target.y += 180.0f;		//プレイヤの足元からちょっと上を注視点とする。
 
 	if (opCount >= 0 && opCount <= 200)
 	{
 		//プレイヤーを前へ進める
-		m_player->player_position.z += 5.0f;
+		m_player->AddPositionZ(5.0f);
 
 		m_toCameraPos.Set(50.0f, 40.0f, 500.0f);
 	}
 	else if (opCount > 200 && opCount <= 280)
 	{
 		//プレイヤーを前へ進める
-		m_player->player_position.z += 3.0f;
+		m_player->AddPositionZ(3.0f);
 
 		//Y軸周りの回転
 		Quaternion YRot;
@@ -265,9 +265,9 @@ void GameCamera::Move()
 		);
 
 		//キャラコンをプレイヤーが今いる位置で設定
-		m_player->characterController.SetPosition(m_player->player_position);
+		m_player->SetCharacterControllerPosition(m_player->GetPlayerPosition());
 		m_game->SetUp();
-		m_player->game_state = 0;
+		m_player->SetGameState(0);
 		CameraState = 0;
 	}
 
@@ -288,8 +288,8 @@ void GameCamera::Move()
 		sunabokoriEffect = NewGO<EffectEmitter>(0);
 		sunabokoriEffect->Init(enSunabokori);
 		sunabokoriEffect->SetScale({ 4.0f,4.0f,4.0f });
-		sunabokoriEffect->SetRotation(m_player->player_rotation);
-		sunabokoriEffect->SetPosition(m_player->player_position);
+		sunabokoriEffect->SetRotation(m_player->GetPlayerRotation());
+		sunabokoriEffect->SetPosition(m_player->GetPlayerPosition());
 		sunabokoriEffect->Play();
 
 		effectCount = 0;	//カウントリセット

@@ -86,7 +86,7 @@ void Enemy_Far::Update()
 {
 
 	//ƒƒCƒ“ƒQ[ƒ€’†
-	if (m_player->game_state == 0)
+	if (m_player->GetGameState() == 0)
 	{
 
 		//¶‚«‚Ä‚¢‚éŠÔ
@@ -154,7 +154,7 @@ void Enemy_Far::Update()
 
 		}
 	}
-	else if (m_player->game_state == 1 || m_player->game_state == 3)
+	else if (m_player->GetGameState() == 1 || m_player->GetGameState() == 3)
 	{
 
 		//‘«‰¹’â~

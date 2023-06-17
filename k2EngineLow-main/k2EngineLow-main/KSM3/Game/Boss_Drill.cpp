@@ -57,7 +57,7 @@ void Boss_Drill::Update()
 		Setup();
 	}
 	fast++;
-	if (b_a_player->game_state == 0 && fast != 0)
+	if (b_a_player->GetGameState() == 0 && fast != 0)
 	{
 		Move();
 
@@ -101,7 +101,7 @@ void Boss_Drill::Update()
 		//	}
 		//}
 	}
-	if (b_a_player->game_end_state == 1)
+	if (b_a_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
@@ -175,7 +175,7 @@ void Boss_Drill::Move()
 void Boss_Drill::PlayerSearch()
 {
 	////エネミーからプレイヤーが入ってきたら追いかける。
-	//Vector3 toPlayer = b_w_player->player_position - b_w_position;
+	//Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
 
 	////プレイヤーとの距離を計算する。
 	//float distToPlayer = toPlayer.Length();
@@ -199,14 +199,14 @@ void Boss_Drill::Damage()
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = efePosi - Vector3{ b_a_player->player_position.x, b_a_player->player_position.y + 50.0f, b_a_player->player_position.z };
+			Vector3 diffPlayer = efePosi - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 			float a = diffPlayer.Length();
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
 			{
-				b_a_player->m_playerHP -= 200.0f;
+				b_a_player->ApplyDamage(200.0f);
 
 			}
 

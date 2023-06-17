@@ -47,7 +47,7 @@ void AttackBase::BulletSetUp(float scale)
 
 
 	//前方向はプレイヤーと一緒
-	m_bulletForward = m_player->playerForward;
+	m_bulletForward = m_player->GetPlayerForward();
 
 
 	//更新
@@ -65,7 +65,7 @@ void AttackBase::Move(float deleteDir)
 
 
 	//弾からプレイヤーまでのベクトルを求める
-	Vector3 m_toPlayer = m_player->player_position - m_position;
+	Vector3 m_toPlayer = m_player->GetPlayerPosition() - m_position;
 
 
 	//少しづつ下に落とす

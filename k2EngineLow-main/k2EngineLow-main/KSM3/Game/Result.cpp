@@ -28,7 +28,7 @@ Result::Result()
 	player = FindGO<Player>("player");
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 3; j++) {
-				p_custom_point[i][j] = player->p_custom_point[i][j];
+				p_custom_point[i][j] = player->GetCustomPoint(i, j);
 			}
 		}
 	gamecamera=FindGO<GameCamera>("gamecamera");
@@ -410,7 +410,7 @@ void Result::Font_set() {
 
 
 	//SCOREの設定
-	if (player->m_playerDead == false) {
+	if (player->GetPlayerDead() == false) {
 		time_set[0] = minute / 10;//分10の位
 		time_set[1] = minute % 10;//分1の位
 		time_set[2] = sec / 10;//秒10の位
@@ -487,7 +487,7 @@ void Result::Font_set() {
 	Rank_sheet.SetMulColor(Rank_Sheet_color);
 	MAX_SCORE /= 4;//ランクが四段階のため
 	//今回何ランクだったかの計算
-	if (player->m_playerDead == false) {
+	if (player->GetPlayerDead() == false) {
 		for (int i = 1; i <= 4; i++) {
 			Rank_Render[i - 1].Init(getRank(i - 1), 1632.0f, 918.0f);
 			Rank_Render[i - 1].SetScale(Rank_Scale);
@@ -516,7 +516,7 @@ void Result::Font_set() {
 
 void Result::Back_set() { //モデルの読み込み
 	//プレイヤー
-	Player_modelrender.Init(getPlayer_result_color(player->player_color_random));
+	Player_modelrender.Init(getPlayer_result_color(player->GetRandomColor()));
 	Player_modelrender.SetPosition(Player_position);
 	Player_rotation.SetRotationDegY(-135.0f);
 	Player_modelrender.SetRotation(Player_rotation);

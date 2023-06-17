@@ -124,14 +124,14 @@ void PlayerUI::Update()
 	}
 
 	//プレイヤーの体力計算
-	m_HPSprite.SetMulColor(Damage(m_player->m_playerHP, m_player->m_playerHPMax));
+	m_HPSprite.SetMulColor(Damage(m_player->GetPlayerHP(), m_player->GetPlayerHPMax()));
 	m_HPSprite.Update();
 
 	//赤いフレームの生成
 	//体力が半分以下の時
-	if (m_player->m_playerHP <= m_player->m_playerHPMax / 2.0f)
+	if (m_player->GetPlayerHP() <= m_player->GetPlayerHPMax() / 2.0f)
 	{
-		m_redFrame_A = 1.0f - (m_player->m_playerHP * (1.0f / m_player->m_playerHPMax));
+		m_redFrame_A = 1.0f - (m_player->GetPlayerHP() * (1.0f / m_player->GetPlayerHPMax()));
 		m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
 		m_redFrameSprite.Update();
 	}
@@ -250,7 +250,7 @@ void PlayerUI::WeaponUISetUp(int num)
 
 void PlayerUI::Render(RenderContext& rc)
 {
-	if (m_player->game_state == 0 && m_player->m_playerDead == false)
+	if (m_player->GetGameState() == 0 && m_player->GetPlayerDead() == false)
 	{
 		m_redFrameSprite.Draw(rc);
 
@@ -260,7 +260,7 @@ void PlayerUI::Render(RenderContext& rc)
 		m_L1Sprite.Draw(rc);
 		m_R2Sprite.Draw(rc);
 
-		if (m_player->bossState != 1 && m_wave->m_waveClear == nullptr)	//ウェーブ３クリア演出中は表示しない
+		if (m_player->GetBossState() != 1 && m_wave->m_waveClear == nullptr)	//ウェーブ３クリア演出中は表示しない
 		{
 			//キル数の枠
 			m_enemyKillSprite.Draw(rc);

@@ -121,7 +121,7 @@ Vector3 Enemy_HP_UI::HPBerSend(Vector3 size, Vector3 scale)
 
 void Enemy_HP_UI::Render(RenderContext& rc)
 {
-	if (m_player->game_state == 0 && m_player->m_playerDead == false) 
+	if (m_player->GetGameState() == 0 && m_player->GetPlayerDead() == false)
 	{
 		//一定距離以内&カメラの視野に入っているなら体力表示
 		if (m_enemyNear != nullptr)
@@ -137,7 +137,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{			
 				//プレイヤーとエネミーの距離を求める
-				Vector3 diff = m_enemyNear->GetPos() - m_player->player_position;
+				Vector3 diff = m_enemyNear->GetPos() - m_player->GetPlayerPosition();
 				if (diff.Length() <= 2000.0f)
 				{
 					m_HPFrameSprite.Draw(rc);
@@ -156,7 +156,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 
 			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{
-				Vector3 diff = m_enemy->GetPos() - m_player->player_position;
+				Vector3 diff = m_enemy->GetPos() - m_player->GetPlayerPosition();
 
 				if (diff.Length() <= 2000.0f)
 				{
@@ -176,7 +176,7 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 
 			if (fabsf(angle) <= Math::DegToRad(50.0f))
 			{
-				Vector3 diff = m_enemyFar->GetPos() - m_player->player_position;
+				Vector3 diff = m_enemyFar->GetPos() - m_player->GetPlayerPosition();
 				if (diff.Length() <= 2000.0f)
 				{
 					m_HPFrameSprite.Draw(rc);

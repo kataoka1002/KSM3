@@ -56,7 +56,7 @@ bool Boss_Turbo_attack::Start()
 	b_a_core_weapons = FindGO<Core_weapons>("core_weapons");
 	//弾モデル。
 	//b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
-	//characterController.Init(1170.0f, 150.0f, m_bulletLocalPosition);
+	//m_characterController.Init(1170.0f, 150.0f, m_bulletLocalPosition);
 	//音(仮)
 	/*g_soundEngine->ResistWaveFileBank(2, "Assets/audio/Taihou_kouho1.wav");
 
@@ -115,7 +115,7 @@ void Boss_Turbo_attack::SetUp()
 
 void Boss_Turbo_attack::Update()
 {	
-	if (b_a_player->game_state == 0)
+	if (b_a_player->GetGameState() == 0)
 	{
 		DestroyWithImpactEffect();
 		b_a_Bullet.Update();
@@ -123,12 +123,12 @@ void Boss_Turbo_attack::Update()
 		Move();
 		Rotation();
 	}
-	else if (b_a_player->game_state == 2)
+	else if (b_a_player->GetGameState() == 2)
 	{
 		DeleteGO(this);	//リザルト画面に行くと消す
 	}
 
-	if (b_a_player->game_end_state == 1)
+	if (b_a_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
 	}
@@ -137,7 +137,7 @@ void Boss_Turbo_attack::Update()
 void Boss_Turbo_attack::Rotation() 
 {
 		//エネミーからプレイヤーが入ってきたら追いかける。
-		//Vector3 toPlayer = b_a_player->player_position - firing_position;
+		//Vector3 toPlayer = b_a_player->GetPlayerPosition() - firing_position;
 
 		//プレイヤーとの距離を計算する。
 		//float distToPlayer = toPlayer.Length();
@@ -179,7 +179,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 	//	if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 	//	{
 	//		//弾とプレイヤーの距離を測る
-	//		Vector3 diffPlayer = efePosi - Vector3{ b_a_player->player_position.x, b_a_player->player_position.y + 50.0f, b_a_player->player_position.z };
+	//		Vector3 diffPlayer = efePosi - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 	//		//武器によってダメージを変える
 
@@ -290,14 +290,14 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = firing_position - Vector3{b_a_player->player_position.x, b_a_player->player_position.y + 50.0f, b_a_player->player_position.z};
+			Vector3 diffPlayer = firing_position - Vector3{b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z};
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 400.0f) //ダメージが入る範囲
 			{
-				b_a_player->m_playerHP -= 0.2f;
+				b_a_player->ApplyDamage(0.2f);
 				DestroyWithImpactEffect();
 			}
 

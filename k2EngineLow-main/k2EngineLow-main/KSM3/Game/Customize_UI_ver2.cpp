@@ -128,7 +128,7 @@ void Customize_UI_ver2::Setup()
 	}
 
 	//取り付けている部位によって処理を変える
-	if (m_player->p_custom_point[0][0] != 0)	//右腕
+	if (m_player->GetCustomPoint(0, 0) != 0)	//右腕
 	{
 		Custom_model_Right_arm();
 		//武器によってモデルを変える
@@ -165,7 +165,7 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->p_custom_point[0][2] != 0)	//左腕
+	if (m_player->GetCustomPoint(0, 2) != 0)	//左腕
 	{
 		Custom_model_Left_arm();
 		//武器によってモデルを変える
@@ -203,7 +203,7 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->p_custom_point[0][1] != 0)	//肩
+	if (m_player->GetCustomPoint(0, 1) != 0)	//肩
 	{
 		Custom_model_Shoulder();
 		//武器によってモデルを変える
@@ -241,7 +241,7 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->p_custom_point[1][0] != 0)	//右足
+	if (m_player->GetCustomPoint(1, 0) != 0)	//右足
 	{
 		Custom_model_Right_leg();
 		//武器によってモデルを変える
@@ -280,7 +280,7 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->p_custom_point[1][2] != 0)	//左足
+	if (m_player->GetCustomPoint(1, 2) != 0)	//左足
 	{
 		Custom_model_Left_leg();
 		//武器によってモデルを変える
@@ -323,7 +323,7 @@ void Customize_UI_ver2::Setup()
 void Customize_UI_ver2::Update()
 {
 	//カスタマイズ画面の時のみ実行
-	if (m_player->game_state == 3)
+	if (m_player->GetGameState() == 3)
 	{
 		//それぞれのモデルがnullじゃないなら,モデルの移動回転を計算している関数を実行
 		Custom_model_Core();			//コア
@@ -440,7 +440,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 0, 1);
 			
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][1] == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(0, 1) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -464,7 +464,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 0, 0);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][0] == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(0, 0) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -488,7 +488,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 0, 2);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[0][2] == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(0, 2) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -512,7 +512,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 1, 0);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][0] == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(1, 0) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -535,7 +535,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 1, 2);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->p_custom_point[1][2] == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(1, 2) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -593,7 +593,7 @@ void Customize_UI_ver2::init_parameter(int Drop, int line, int row) {//パラメ
 		}
 	}
 	else {
-		switch (m_player->p_custom_point[line][row])
+		switch (m_player->GetCustomPoint(line, row))
 		{
 		case 0:	//装備なし
 			m_parameterSheet.Init("Assets/sprite/Non_attachment_UI_parameter.DDS", 650.0f, 600.0f);
@@ -780,7 +780,7 @@ void Customize_UI_ver2::tranceOut()
 	if (trance_sheet_count >= 64)
 	{
 		recovery = false;
-		m_player->game_state = 0;
+		m_player->SetGameState(0);
 	}
 
 	trance_sheet[0].Update();
@@ -820,7 +820,7 @@ void Customize_UI_ver2::Window()
 			{
 				if (recovery == false) {
 					//プレイヤーの部位に落ちていた武器の種類を教えてやる
-					m_player->p_custom_point[column][line] = custom_kinds;
+					m_player->SetCustomPoint(column, line, custom_kinds);
 
 
 					//カーソルを合わせている位置によって作り出す武器を変える
@@ -900,7 +900,7 @@ void Customize_UI_ver2::Window()
 					//ここにrtanceOutInit()を置くとなぜか2回呼ばれるのでここには置いてない
 				}
 				else {
-					m_player->m_playerHP += 300.0f;
+					m_player->HealingHP(300.0f);
 					tranceOutInit();
 				}
 			}
@@ -942,7 +942,7 @@ void Customize_UI_ver2::Window()
 void Customize_UI_ver2::Custom_model_body()
 {
 	//ボディのモデルの初期化
-	custom_model_body.Init(getPlayer_custom_color(m_player->player_color_random));
+	custom_model_body.Init(getPlayer_custom_color(m_player->GetRandomColor()));
 
 	//回転と座標を教えて更新
 	custom_model_body.SetPosition(custom_model_body_position);
@@ -1221,7 +1221,7 @@ void Customize_UI_ver2::PlaySE(SoundName name, float vol)
 void Customize_UI_ver2::Render(RenderContext& rc)
 {
 	//カスタマイズ画面の時のみDrawする
-	if (m_player->game_state == 3)
+	if (m_player->GetGameState() == 3)
 	{
 		//各部位に装備されているならDrawする
 		custom_model_Core.Draw(rc);				//コア武器はずっと存在するので分岐なし

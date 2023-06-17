@@ -57,7 +57,7 @@ void Boss_Turbo::Update()
 		Setup();
 	}
 	fast++;
-	if (b_w_player->game_state == 0 && fast != 0)
+	if (b_w_player->GetGameState() == 0 && fast != 0)
 	{
 		Move();
 			Rotation();
@@ -127,7 +127,7 @@ void Boss_Turbo::Update()
 
 		}
 	}
-	if (b_w_player->game_end_state == 1)
+	if (b_w_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
@@ -154,7 +154,7 @@ void Boss_Turbo::Rotation() {
 	
 	if (Rote == false) {
 		//エネミーからプレイヤーが入ってきたら追いかける。
-		Vector3 toPlayer = b_w_player->player_position - b_w_position;
+		Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
 
 		//プレイヤーとの距離を計算する。
 		float distToPlayer = toPlayer.Length();
@@ -191,7 +191,7 @@ void Boss_Turbo::Move()
 void Boss_Turbo::PlayerSearch()
 {
 	////エネミーからプレイヤーが入ってきたら追いかける。
-	//Vector3 toPlayer = b_w_player->player_position - b_w_position;
+	//Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
 
 	////プレイヤーとの距離を計算する。
 	//float distToPlayer = toPlayer.Length();

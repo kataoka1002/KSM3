@@ -38,7 +38,7 @@ void Left_arm_weapons::InitWeapon()
 {
 
 	//付いている武器によって処理の変更
-	switch (m_player->p_custom_point[0][2])
+	switch (m_player->GetCustomPoint(0, 2))
 	{
 	case 2:	//マシンガンの時
 
@@ -84,7 +84,7 @@ void Left_arm_weapons::InitWeapon()
 
 
 	//武器の細かい設定を行う	
-	SetWeapon(m_player->p_custom_point[0][2]);
+	SetWeapon(m_player->GetCustomPoint(0, 2));
 
 }
 
@@ -92,7 +92,7 @@ void Left_arm_weapons::Update()
 {
 	
 	//メインゲーム中
-	if (m_player->game_state == 0) 
+	if (m_player->GetGameState() == 0)
 	{
 
 		//動きの処理
@@ -104,11 +104,11 @@ void Left_arm_weapons::Update()
 
 
 		//攻撃処理
-		MakeBullet(m_player->p_custom_point[0][2]);
+		MakeBullet(m_player->GetCustomPoint(0, 2));
 
 		
 		// プレイヤーが死亡したら
-		if (m_player->game_end_state == 1) 
+		if (m_player->GetGameEndState() == 1)
 		{
 
 			//UIの中身を空にする
@@ -128,7 +128,7 @@ void Left_arm_weapons::SetBulletLocalPosition()
 {
 
 	//武器がマシンガンの場合
-	if (m_player->p_custom_point[0][2] == 2)
+	if (m_player->GetCustomPoint(0, 2) == 2)
 	{
 
 		//弾のローカルポジションの設定
@@ -136,7 +136,7 @@ void Left_arm_weapons::SetBulletLocalPosition()
 
 	}
 	//武器がギガトンキャノンの場合
-	else if (m_player->p_custom_point[0][2] == 4)
+	else if (m_player->GetCustomPoint(0, 2) == 4)
 	{
 
 		//弾のローカルポジションの設定
@@ -144,7 +144,7 @@ void Left_arm_weapons::SetBulletLocalPosition()
 
 	}
 	//武器が戦艦砲の場合
-	else if (m_player->p_custom_point[0][2] == 6)
+	else if (m_player->GetCustomPoint(0, 2) == 6)
 	{
 
 		//弾のローカルポジションの設定
@@ -161,7 +161,7 @@ void Left_arm_weapons::DestroyEvent()
 	{
 
 		//プレイヤーの設定武器を空にする
-		m_player->p_custom_point[0][2] = 0;
+		m_player->SetCustomPoint(0, 2, 0);
 		
 		
 		//UIの設定武器を空にする
@@ -187,7 +187,7 @@ void Left_arm_weapons::Render(RenderContext& rc)
 {
 
 	//プレイヤー死亡時のエフェクトを発生させたら
-	if (m_player->m_deadBakuhaPlay == true)
+	if (m_player->IsDeadBakuhaPlay() == true)
 	{
 		return;
 	}

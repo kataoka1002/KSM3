@@ -135,7 +135,7 @@ void Boss_Riser_attack::Update()
 	}
 	Bullet_efe_count++;
 
-	if (b_a_player->game_state == 0)
+	if (b_a_player->GetGameState() == 0)
 	{
 
 		fall_speed += 0.002;
@@ -152,12 +152,12 @@ void Boss_Riser_attack::Update()
 		Move();
 
 	}
-	else if (b_a_player->game_state == 2)
+	else if (b_a_player->GetGameState() == 2)
 	{
 		DeleteGO(this);	//リザルト画面に行くと消す
 	}
 
-	if (b_a_player->game_end_state == 1)
+	if (b_a_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
 	}
@@ -192,14 +192,14 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = efePosi - Vector3{ b_a_player->player_position.x, b_a_player->player_position.y + 50.0f, b_a_player->player_position.z };
+			Vector3 diffPlayer = efePosi - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 50000.0f) //ダメージが入る範囲
 			{
-				b_a_player->m_playerHP -= 5.0f;
+				b_a_player->ApplyDamage(5.0f);
 
 			}
 
@@ -305,14 +305,14 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = firing_position - Vector3{ b_a_player->player_position.x, b_a_player->player_position.y + 50.0f, b_a_player->player_position.z };
+			Vector3 diffPlayer = firing_position - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 200.0f) //ダメージが入る範囲
 			{
-				b_a_player->m_playerHP -= 200.0f;
+				b_a_player->ApplyDamage(200.0f);
 				if (farst == true) {
 					DestroyWithImpactEffect();
 					farst = false;

@@ -18,7 +18,7 @@ Player::Player()
 {
 
 	//タイトルを見つける
-	title = FindGO<Title>("title");
+	m_title = FindGO<Title>("title");
 
 
 }
@@ -37,7 +37,7 @@ Player::~Player()
 
 
 	//もしボス戦なら
-	if (bossState == 1)
+	if (m_bossState == 1)
 	{
 		
 		//ボスを探す
@@ -83,7 +83,7 @@ void Player::Update()
 {
 
 	//プレイヤーが死んでいてリザルト中でないとき
-	if (m_playerDead == true && game_state != 2)
+	if (m_playerDead == true && m_gameState != 2)
 	{
 
 		//死んでからリザルトまでの処理
@@ -94,19 +94,19 @@ void Player::Update()
 
 
 	//登場シーンの間
-	if (game_state == 4)
+	if (m_gameState == 4)
 	{
 
 		//モデルのポジション更新
-		player_modelRender.SetPosition(player_position);
-		player_modelRender.Update(true);
+		m_playerModel.SetPosition(m_playerPosition);
+		m_playerModel.Update(true);
 
 		return;
 	}
 
 
 	//メインゲームのとき
-	if (game_state == 0) 
+	if (m_gameState == 0) 
 	{
 
 		//移動処理
@@ -125,21 +125,21 @@ void Player::Update()
 		PauseSelect();	
 
 	}
-	else if (game_state == 1) 
+	else if (m_gameState == 1) 
 	{
 
 		//ポーズ画面
 		pause();
 
 	}
-	else if (game_state == 2)
+	else if (m_gameState == 2)
 	{
 
 		//リザルト中は攻撃音も出さない
 		m_machineGunSE->Stop();
 
 	}
-	else if (game_state == 3)
+	else if (m_gameState == 3)
 	{
 
 		//カスタマイズ中は攻撃音も出さない
@@ -159,7 +159,7 @@ void  Player::InitSprite()
 {
 
 	//ポーズ画面のスプライトの初期化
-	pouse_spriteRender.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
+	m_pouseSprite.Init("Assets/sprite/pouse.DDS", 1920.0f, 1080.0f);
 
 
 	//プレイヤーが死んだときのスプライトの初期化
@@ -176,32 +176,32 @@ void  Player::InitModel()
 {
 
 	//カラー選択がランダムの場合
-	if (player_color_date == 6)
+	if (m_playerColorData == 6)
 	{
 
 		//プレイヤーモデルをランダムカラーで初期化
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<int> dis(0, 7);
-		player_color_random = dis(gen);
-		player_modelRender.Init(getPlayer_color(player_color_random));
+		m_playerColorRandom = dis(gen);
+		m_playerModel.Init(getPlayer_color(m_playerColorRandom));
 
 	}
 	else 
 	{
 
 		//プレイヤーモデルを指定されたカラーで初期化
-		player_modelRender.Init(getPlayer_color(player_color_date));
+		m_playerModel.Init(getPlayer_color(m_playerColorData));
 
 
 		//変数にタイトルで指定されたカラーを覚えさせておく
-		player_color_random = player_color_date;
+		m_playerColorRandom = m_playerColorData;
 
 	}
 
 
 	//キャラコンの初期化
-	characterController.Init(70.0f, 150.0f, player_position);
+	m_characterController.Init(70.0f, 150.0f, m_playerPosition);
 
 }
 
@@ -263,8 +263,8 @@ void Player::PlayerDeadtoResult()
 	{
 
 		//エフェクト発生
-		MakeEfe(enFeatherBall, player_rotation, { 20.0f,20.0f,20.0f }, player_position);
-		MakeEfe(enTyakudan, player_rotation, { 20.0f,20.0f,20.0f }, player_position);
+		MakeEfe(enFeatherBall, m_playerRotation, { 20.0f,20.0f,20.0f }, m_playerPosition);
+		MakeEfe(enTyakudan, m_playerRotation, { 20.0f,20.0f,20.0f }, m_playerPosition);
 
 
 		//死亡時のエフェクトを流したフラグを立てる
@@ -279,7 +279,7 @@ void Player::PlayerDeadtoResult()
 
 
 		//リザルトステートへ
-		game_state = 2;			
+		m_gameState = 2;			
 
 
 		//色付きに戻す
@@ -316,7 +316,7 @@ void Player::Move()
 {
 
 	//移動速度の初期化
-	player_moveSpeed = { 0.0f,0.0f,0.0f };
+	m_playerMoveSpeed = { 0.0f,0.0f,0.0f };
 
 
 	//スティックを倒した量の取得
@@ -325,15 +325,15 @@ void Player::Move()
 
 
 	//アクセルボタンの入力量の取得
-	throttle = 0.0f;
+	m_throttle = 0.0f;
 
 	//Rボタン
-	throttle = g_pad[0]->GetRTrigger();
+	m_throttle = g_pad[0]->GetRTrigger();
 
 	//Lボタン
-	if (throttle == 0.0f)
+	if (m_throttle == 0.0f)
 	{
-		throttle = g_pad[0]->GetLTrigger();
+		m_throttle = g_pad[0]->GetLTrigger();
 	}
 
 
@@ -344,7 +344,7 @@ void Player::Move()
 
 
 	//スピードが0じゃないなら
-	if (throttle != 0)
+	if (m_throttle != 0)
 	{
 		
 		//エフェクトを出す
@@ -354,7 +354,7 @@ void Player::Move()
 
 
 	//プレイヤーの正面ベクトルを正規化
-	playerForward.Normalize();
+	m_playerForward.Normalize();
 
 
 	//xかzの移動速度があったら(スティックの入力があったら)。
@@ -362,26 +362,26 @@ void Player::Move()
 	if (stickL.x != 0.0f)
 	{
 
-		playerForward.x = playerForward.x * cos(stickL.x * -0.05) - playerForward.z * sin(stickL.x * -0.05);
-		playerForward.z = playerForward.x * sin(stickL.x * -0.05) + playerForward.z * cos(stickL.x * -0.05);
+		m_playerForward.x = m_playerForward.x * cos(stickL.x * -0.05) - m_playerForward.z * sin(stickL.x * -0.05);
+		m_playerForward.z = m_playerForward.x * sin(stickL.x * -0.05) + m_playerForward.z * cos(stickL.x * -0.05);
 
-		player_rotation.SetRotationY(atan2(playerForward.x, playerForward.z));
+		m_playerRotation.SetRotationY(atan2(m_playerForward.x, m_playerForward.z));
 
 	}
 
 
 	//回転していないときの移動
-	if (throttle != 0.0f)
+	if (m_throttle != 0.0f)
 	{
 
 		//だんだん速くする
-		accelerator += 0.05;
+		m_accelerator += 0.05;
 
 
 		//最大値は2
-		if (accelerator >= 2)
+		if (m_accelerator >= 2)
 		{
-			accelerator = 2;
+			m_accelerator = 2;
 		}
 
 	}
@@ -389,35 +389,35 @@ void Player::Move()
 	{
 
 		//だんだん遅くする
-		accelerator -= 0.05;
+		m_accelerator -= 0.05;
 
 
 		//最小値は0
-		if (accelerator <= 0)
+		if (m_accelerator <= 0)
 		{
-			accelerator = 0;
+			m_accelerator = 0;
 		}
 
 	}
 
 
-	move_s = 4.0f * accelerator;
-	player_moveSpeed += playerForward * move_s * (throttle / 2.0f);
+	m_move = 4.0f * m_accelerator;
+	m_playerMoveSpeed += m_playerForward * m_move * (m_throttle / 2.0f);
 
 
 	//座標を教える。
-	player_position = characterController.Execute(player_moveSpeed, 1.0f / 60.0f);
-	characterController.SetPosition({ player_position.x ,0.0f,player_position.z });
+	m_playerPosition = m_characterController.Execute(m_playerMoveSpeed, 1.0f / 60.0f);
+	m_characterController.SetPosition({ m_playerPosition.x ,0.0f,m_playerPosition.z });
 
 
 	//プレイヤーのY座標は固定
-	player_position.y = 0.0f;
+	m_playerPosition.y = 0.0f;
 
 
 	//モデルの更新
-	player_modelRender.SetPosition(player_position);
-	player_modelRender.SetRotation(player_rotation);
-	player_modelRender.Update(true);
+	m_playerModel.SetPosition(m_playerPosition);
+	m_playerModel.SetRotation(m_playerRotation);
+	m_playerModel.Update(true);
 
 }
 
@@ -444,7 +444,7 @@ void Player::PlayerDead()
 
 
 		//エフェクト発生
-		MakeEfe(enSword, player_rotation, { 13.0f,13.0f,13.0f }, player_position);
+		MakeEfe(enSword, m_playerRotation, { 13.0f,13.0f,13.0f }, m_playerPosition);
 
 	}
 
@@ -456,36 +456,36 @@ void Player::MakeSunabokoriEfe()
 {
 
 	//プレイヤーのボタンを押している量によって砂ぼこりの量を変える
-	if (throttle < 126.0f)
+	if (m_throttle < 126.0f)
 	{
 
 		//動いている間20フレームごとに砂ぼこりを発生させる
-		if (effectCount > 20)
+		if (m_effectCount > 20)
 		{
 
 			//砂ぼこりエフェクトの初期化と再生
-			MakeEfe(enSunabokori, player_rotation, { 4.0f,4.0f,4.0f }, player_position);
+			MakeEfe(enSunabokori, m_playerRotation, { 4.0f,4.0f,4.0f }, m_playerPosition);
 
 			
 			//カウントリセット
-			effectCount = 0;	
+			m_effectCount = 0;	
 
 		}
 
 	}
-	else if (throttle > 127.0f)
+	else if (m_throttle > 127.0f)
 	{
 
 		//動いている間3フレームごとに砂ぼこりを発生させる
-		if (effectCount > 3)
+		if (m_effectCount > 3)
 		{
 
 			//砂ぼこりエフェクトの初期化と再生
-			MakeEfe(enSunabokori, player_rotation, { 4.0f,4.0f,4.0f }, player_position);
+			MakeEfe(enSunabokori, m_playerRotation, { 4.0f,4.0f,4.0f }, m_playerPosition);
 
 
 			//カウントリセット
-			effectCount = 0;	
+			m_effectCount = 0;	
 
 		}
 
@@ -493,7 +493,7 @@ void Player::MakeSunabokoriEfe()
 
 
 	//カウントアップ
-	effectCount++;
+	m_effectCount++;
 
 }
 
@@ -507,7 +507,7 @@ void Player::PauseSelect()
 	{
 
 		//ポーズ画面へ
-		game_state = 1;
+		m_gameState = 1;
 
 
 		//メニュー画面移動SE
@@ -529,7 +529,7 @@ void Player::pause()
 	{
 
 		//メインゲームに戻る
-		game_state = 0;	
+		m_gameState = 0;	
 
 
 		//メニュー画面移動SE
@@ -543,7 +543,7 @@ void Player::pause()
 	{
 
 		//ゲーム終了
-		game_end_state = 1;	
+		m_gameEndState = 1;	
 
 
 		//自分自身の削除
@@ -563,7 +563,7 @@ void Player::RunSE()
 {
 	
 	//動いてない時
-	if (throttle <= 0)	
+	if (m_throttle <= 0)	
 	{
 
 		//効果音停止
@@ -575,7 +575,7 @@ void Player::RunSE()
 
 
 	//ゆっくり動いている時
-	if (throttle > 0 && throttle <= 127 && m_runSE->IsPlaying() != true)	
+	if (m_throttle > 0 && m_throttle <= 127 && m_runSE->IsPlaying() != true)	
 	{
 
 		//歩く音再生
@@ -583,7 +583,7 @@ void Player::RunSE()
 
 	}
 	//速く動いている時
-	else if (throttle > 127 && m_walkSE->IsPlaying() != true)	
+	else if (m_throttle > 127 && m_walkSE->IsPlaying() != true)	
 	{
 
 		//走る音再生
@@ -593,7 +593,7 @@ void Player::RunSE()
 
 
 	//走っているとき
-	if (throttle > 127)
+	if (m_throttle > 127)
 	{
 		
 		//歩きの音は止める
@@ -603,7 +603,7 @@ void Player::RunSE()
 
 
 	//歩いているとき
-	if (throttle > 0 && throttle <= 127)
+	if (m_throttle > 0 && m_throttle <= 127)
 	{
 		
 		//走りの音は止める
@@ -678,15 +678,15 @@ void Player::Render(RenderContext& rc)
 
 
 	//プレイヤーモデル表示
-	player_modelRender.Draw(rc);
+	m_playerModel.Draw(rc);
 
 
 	//ポーズ中なら
-	if (game_state == 1)
+	if (m_gameState == 1)
 	{
 
 		//ポーズ画面を表示
-		pouse_spriteRender.Draw(rc);
+		m_pouseSprite.Draw(rc);
 
 	}
 

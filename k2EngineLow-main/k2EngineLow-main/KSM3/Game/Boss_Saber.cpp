@@ -35,11 +35,11 @@ void Boss_Saber::Update() {
 		Setup();
 	}
 	fast++;
-	if (b_w_player->game_state == 0 && fast != 0)
+	if (b_w_player->GetGameState() == 0 && fast != 0)
 	{
 		Move();
 	}
-	if (b_w_player->game_end_state == 1)
+	if (b_w_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}

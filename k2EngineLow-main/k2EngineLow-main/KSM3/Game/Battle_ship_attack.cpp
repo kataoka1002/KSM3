@@ -76,7 +76,7 @@ void Battle_ship_attack::Update()
 {
 
 	//メインゲーム中
-	if (m_player->game_state == 0)
+	if (m_player->GetGameState() == 0)
 	{
 	
 		//ダメージ処理
@@ -92,7 +92,7 @@ void Battle_ship_attack::Update()
 
 	}
 	//リザルト画面に行くと
-	else if (m_player->game_state == 2)
+	else if (m_player->GetGameState() == 2)
 	{
 
 		//自分自身の削除
@@ -102,7 +102,7 @@ void Battle_ship_attack::Update()
 
 
 	//プレイヤーがポーズ画面からゲームを終了させると
-	if (m_player->game_end_state == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 
 		//自分自身の削除
