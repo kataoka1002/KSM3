@@ -131,7 +131,7 @@ void Game_UI::Render(RenderContext& rc)
 	}
 
 	//for (int E = 0; E < 11; E++) {
-	//	if (u_player->game_state == 0) {
+	//	if (u_player->m_gameState == 0) {
 	//		Game* game = FindGO<Game>("game");
 	//		/*Enemy_count_render[0].Draw(rc);*/
 	//		/*switch (game->m_numDefeatedEnemy) {

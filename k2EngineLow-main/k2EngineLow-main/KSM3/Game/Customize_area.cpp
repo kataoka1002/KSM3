@@ -16,7 +16,7 @@ Customize_area::~Customize_area() {
 }
 
 void Customize_area::Render(RenderContext& rc) {
-	if (c_area_player->game_state == 3) {
+	if (c_area_player->GetGameState() == 3) {
 		customize_area_render.Draw(rc);
 	}
 }

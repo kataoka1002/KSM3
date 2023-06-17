@@ -212,7 +212,7 @@ void Title::Update()
 		//if (g_pad[0]->IsTrigger(enButtonA))
 		//{
 		//	Game* game = NewGO<Game>(0, "game");
-		//	//player->game_state = 0;
+		//	//player->GetGameState() = 0;
 		//	//gameCamera->CameraState = 0;
 		//	DeleteGO(this);
 		//}
@@ -660,7 +660,7 @@ void Title::Render(RenderContext& rc)
 	///system_Render.Draw(rc);
 	///nannka_Render.Draw(rc);
 	//yajirusi_Render.Draw(rc);
-	//player->player_modelRender.Draw(rc);
+	//player->m_playerModel.Draw(rc);
 	title_back.Draw(rc);
 	if (pattern == 0)
 	{

@@ -179,7 +179,7 @@ void EnemyBase::CalcDistance(float dist)
 {
 
 	//エネミーからプレイヤーへのベクトル
-	m_toPlayer = m_player->player_position - m_enemyPosition;
+	m_toPlayer = m_player->GetPlayerPosition() - m_enemyPosition;
 
 
 	//プレイヤーとの距離を計算する
@@ -334,7 +334,7 @@ void EnemyBase::ExecuteOnEnemyDefeated()
 
 
 	//殺した数を増やす
-	m_player->killEnemy++;	
+	m_player->AddKillEnemyAmount();
 
 
 	//画面を揺らす

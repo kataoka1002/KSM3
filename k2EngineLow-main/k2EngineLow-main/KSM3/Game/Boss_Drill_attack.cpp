@@ -123,19 +123,19 @@ void Boss_Drill_attack::Update()
 	m_BulletEffect2->SetRotation(efe_rot);
 	m_BulletEffect2->SetPosition(firing_position+efe_l_pos2);
 	Bullet_efe_count++;
-	if (b_a_player->game_state == 0)
+	if (b_a_player->GetGameState() == 0)
 	{
 		Damage();
 		Move();
 		b_a_Bullet.Update();
 		
 	}
-	else if (b_a_player->game_state == 2)
+	else if (b_a_player->GetGameState() == 2)
 	{
 		DeleteGO(this);	//リザルト画面に行くと消す
 	}
 
-	if (b_a_player->game_end_state == 1)
+	if (b_a_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
 	}
@@ -157,7 +157,7 @@ void Boss_Drill_attack::Move()
 		//	return_angle = Player_Search();
 		//}
 		if (drill_count == 209) {
-			Vector3 toPlayer = b_a_player->player_position - firing_position;
+			Vector3 toPlayer = b_a_player->GetPlayerPosition() - firing_position;
 
 			//プレイヤーとの距離を計算する。
 			float distToPlayer = toPlayer.Length();
@@ -167,7 +167,7 @@ void Boss_Drill_attack::Move()
 			b_a_Bullet_Fowrad = toPlayerDir;
 			m_rot.SetRotationY(atan2(b_a_Bullet_Fowrad.x, b_a_Bullet_Fowrad.z));
 			b_a_Bullet.SetRotation(m_rot);
-			lock_p_position = b_a_player->player_position;
+			lock_p_position = b_a_player->GetPlayerPosition();
 		}
 		if (drill_count == 210) {
 			Vector3 toPlayer = lock_p_position - firing_position;
@@ -184,7 +184,7 @@ void Boss_Drill_attack::Move()
 			efe_rot.SetRotationY(atan2(efe_fowrad.x, efe_fowrad.z));
 
 			b_a_Bullet.SetRotation(m_rot);
-			lock_p_position = b_a_player->player_position;
+			lock_p_position = b_a_player->GetPlayerPosition();
 			last_fowrad = toPlayerDir;
 		}
 		if (drill_count >= 210 && drill_count < 270) {
@@ -252,7 +252,7 @@ void Boss_Drill_attack::Move()
 }
 
 float Boss_Drill_attack::Player_Search() {
-	Vector3 toPlayer = b_a_player->player_position - firing_position;
+	Vector3 toPlayer = b_a_player->GetPlayerPosition() - firing_position;
 
 	//プレイヤーとの距離を計算する。
 	float distToPlayer = toPlayer.Length();
@@ -274,14 +274,14 @@ void Boss_Drill_attack::Damage() {
 	if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 	{
 		//弾とプレイヤーの距離を測る
-		Vector3 diffPlayer = firing_position - Vector3{ b_a_player->player_position.x, b_a_player->player_position.y + 50.0f, b_a_player->player_position.z };
+		Vector3 diffPlayer = firing_position - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 		//武器によってダメージを変える
 
 			//距離を測り一定以下なら体力減少
 		if (diffPlayer.Length() <= 500.0f) //ダメージが入る範囲
 		{
-			b_a_player->m_playerHP -= 50.0f;
+			b_a_player->ApplyDamage(50.0f);
 			Effect();
 
 		}

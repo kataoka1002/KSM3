@@ -79,7 +79,7 @@ void Boss_Shovel::Update()
 		
 	}
 	fast++;
-	if (b_w_player->game_state == 0 && fast != 0)
+	if (b_w_player->GetGameState() == 0 && fast != 0)
 	{
 		if (fast == 400) {
 			m_Shovel_roar_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
@@ -140,7 +140,7 @@ void Boss_Shovel::Update()
 		//	}
 		//}
 	}
-	if (b_w_player->game_end_state == 1)
+	if (b_w_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
@@ -183,14 +183,14 @@ void Boss_Shovel::Damage(int attack_Num) {
 		if (b_w_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = b_w_position + shock_efe_lpos - Vector3{ b_w_player->player_position.x, b_w_player->player_position.y + 50.0f, b_w_player->player_position.z };
+			Vector3 diffPlayer = b_w_position + shock_efe_lpos - Vector3{ b_w_player->GetPlayerPosition().x, b_w_player->GetPlayerPosition().y + 50.0f, b_w_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
 			{
-				b_w_player->m_playerHP -= 10.0f;
+				b_w_player->ApplyDamage(10.0f);
 				
 
 			}
@@ -300,7 +300,7 @@ void Boss_Shovel::Damage(int attack_Num) {
 void Boss_Shovel::PlayerSearch()
 {
 	////エネミーからプレイヤーが入ってきたら追いかける。
-	//Vector3 toPlayer = b_w_player->player_position - b_w_position;
+	//Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
 
 	////プレイヤーとの距離を計算する。
 	//float distToPlayer = toPlayer.Length();

@@ -163,7 +163,7 @@ protected:
 	/// <summary>
 	/// パス移動用の構造体
 	/// </summary>
-	virtual struct Point 
+	struct Point 
 	{
 		Vector3 m_position;	//ポイントの座標
 		int m_num;			//ポイントの番号

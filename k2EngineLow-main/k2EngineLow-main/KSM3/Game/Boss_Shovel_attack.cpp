@@ -41,7 +41,7 @@ void Boss_Shovel_attack::SetUp()
 
 void Boss_Shovel_attack::Update()
 {
-	if (b_a_player->game_state == 0)
+	if (b_a_player->GetGameState() == 0)
 	{
 		Move();
 		b_a_Bullet.Update();

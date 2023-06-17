@@ -33,13 +33,13 @@ void Core_weapons::Update() {
 
 	fast++;
 
-	if (cw_player->game_state == 4)
+	if (cw_player->GetGameState() == 4)
 	{
 		Move();
 	}
 
 	if(fast!=0) {
-		if (cw_player->game_state == 0) {
+		if (cw_player->GetGameState() == 0) {
 			Move();
 			if (g_pad[0]->IsPress(enButtonLB1)) {
 
@@ -54,7 +54,7 @@ void Core_weapons::Update() {
 			else {
 				firing_cound = 0;
 			}
-			if (cw_player->game_end_state == 1) {
+			if (cw_player->GetGameEndState() == 1) {
 				DeleteGO(this);
 			}
 			Core_Weapons_Render.Update();
@@ -64,8 +64,8 @@ void Core_weapons::Update() {
 }
 
 void Core_weapons::Move() {
-	Quaternion originRotation = cw_player->player_rotation;
-	cw_position = cw_player->player_position;
+	Quaternion originRotation = cw_player->GetPlayerRotation();
+	cw_position = cw_player->GetPlayerPosition();
 	Vector3 lp = cw_localPosition;
 	originRotation.Multiply(lp);
 	cw_position += lp;
@@ -77,7 +77,7 @@ void Core_weapons::Move() {
 
 void Core_weapons::Render(RenderContext& rc) 
 {
-	if (cw_player->m_deadBakuhaPlay == true)
+	if (cw_player->IsDeadBakuhaPlay() == true)
 	{
 		return;
 	}

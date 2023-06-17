@@ -64,7 +64,7 @@ bool Wave::Start()
 
 void Wave::Update()
 {
-	if (m_player->game_state == 1)
+	if (m_player->GetGameState() == 1)
 	{
 		return;
 	}
@@ -79,7 +79,7 @@ void Wave::Update()
 	}
 
 	//ボス戦に入る瞬間
-	if (m_player->player_position.z >= 9550.0f && m_boss == nullptr/*&& m_goBoss == true*/)
+	if (m_player->GetPlayerPosition().z >= 9550.0f && m_boss == nullptr/*&& m_goBoss == true*/)
 	{
 		if (Loading_count >= 0 && Loading_count < 10) {
 			Loading_color.w += 0.1f;
@@ -102,7 +102,7 @@ void Wave::Update()
 	}
 
 	//ゲーム中のみ時間経過
-	if (m_player->game_state == 0)
+	if (m_player->GetGameState() == 0)
 	{
 		//最終ウェーブじゃないとき
 		if (m_waveNum != 3)
@@ -117,11 +117,11 @@ void Wave::Update()
 		else if (m_waveNum == 3)
 		{
 			//エネミーを倒すか、ウェーブタイマーが0になるとボス戦へ行けるようになる
-			if (m_timer <= 0.0f || m_player->killEnemy == 30)
+			if (m_timer <= 0.0f || m_player->GetKillEnemyAmount() == 30)
 			{
 				m_goBoss = true;
 
-				if (m_player->bossState != 1)	//ボス戦じゃないなら
+				if (m_player->GetBossState() != 1)	//ボス戦じゃないなら
 				{
 					//30フレーム毎にガイドの光が発生
 					if (m_guideCount % 30 == 0)
@@ -133,7 +133,7 @@ void Wave::Update()
 						rotation.Apply(m_right);
 						m_guide->m_velocity = (m_right * 8);				//初速
 						m_guide->m_targetPosition = { 0.0f,0.0f,10000.0f };	//ターゲットの設定
-						m_guide->m_position = m_player->player_position;	//発生位置
+						m_guide->m_position = m_player->GetPlayerPosition();	//発生位置
 
 						m_guideCount = 0;
 					}
@@ -146,7 +146,7 @@ void Wave::Update()
 					m_missionSprite.Init("Assets/sprite/wave/mission1clear.dds", 1920.0f, 1080.0f);
 					m_missionSprite.Update();
 
-					if (m_player->killEnemy == 30)	//殺した数が３０体なら殲滅演出
+					if (m_player->GetKillEnemyAmount() == 30)	//殺した数が３０体なら殲滅演出
 					{
 						//ウェーブ3クリアの演出
 						m_waveClear = NewGO<Wave3Clear>(3, "wave3clear");
@@ -180,19 +180,19 @@ void Wave::Update()
 		//サイズを小さくする
 		GageSetScale();
 	}
-	else if (m_player->game_state == 1)
+	else if (m_player->GetGameState() == 1)
 	{
 
 	}
-	else if (m_player->game_state == 2)
+	else if (m_player->GetGameState() == 2)
 	{
 
 	}
-	else if (m_player->game_state == 3)
+	else if (m_player->GetGameState() == 3)
 	{
 
 	}
-	else if (m_player->game_state == 4)
+	else if (m_player->GetGameState() == 4)
 	{
 
 	}
@@ -245,7 +245,7 @@ void Wave::SpritePlay()
 		{
 			//演出が終わるとエネミーを追加生成
 			m_game->MakeEnemy();
-			//m_player->killEnemy -= 10;		//殺した数をリセット
+			//m_player->m_killEnemyAmount -= 10;		//殺した数をリセット
 			m_timer = TIME_LIMIT;			//タイマーをリセット
 		}
 
@@ -289,11 +289,11 @@ void Wave::GageSetScale()
 
 void Wave::TimerRotation()
 {
-	static float ROT_SPEED = 2.0f;		//回転する速さ
-	static float m_rotAmount = 0.0f;	//回転量
-	static int	m_stopCount = 0;		//回転の静止時間
-	static bool	m_halfRot = false;		//半分回転したかどうか
-	static bool	m_rotStopFlag = false;	//回転が止まっているかどうか
+	float ROT_SPEED = 2.0f;		//回転する速さ
+	float m_rotAmount = 0.0f;	//回転量
+	int	m_stopCount = 0;		//回転の静止時間
+	bool	m_halfRot = false;		//半分回転したかどうか
+	bool	m_rotStopFlag = false;	//回転が止まっているかどうか
 
 	float m_rotSpeed = ROT_SPEED;
 
@@ -332,9 +332,9 @@ void Wave::TimerRotation()
 
 void Wave::Render(RenderContext& rc)
 {
-	if (m_player->game_state == 0 || m_player->game_state == 1)
+	if (m_player->GetGameState() == 0 || m_player->GetGameState() == 1)
 	{
-		if (m_player->bossState != 1)	//ボス戦じゃないなら表示
+		if (m_player->GetBossState() != 1)	//ボス戦じゃないなら表示
 		{
 			if (m_playerUISet == true)	//プレイヤーUIがセットされる時に一緒に描画
 			{
@@ -356,7 +356,7 @@ void Wave::Render(RenderContext& rc)
 			}
 		}
 
-		if (m_player->m_playerDead != true && m_playerUISet == true)
+		if (m_player->GetPlayerDead() != true && m_playerUISet == true)
 		{
 			m_missionSprite.Draw(rc);	//プレイヤーが生きているならミッションを表示する
 		}

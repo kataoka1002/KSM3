@@ -201,14 +201,14 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 				if (b_player != nullptr)	//プレイヤーの情報が入っているなら
 				{
 					//弾とプレイヤーの距離を測る
-					Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->player_position.x, b_player->player_position.y + 50.0f, b_player->player_position.z };
+					Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->GetPlayerPosition().x, b_player->GetPlayerPosition().y + 50.0f, b_player->GetPlayerPosition().z };
 
 					//武器によってダメージを変える
 
 						//距離を測り一定以下なら体力減少
 					if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
 					{
-						b_player->m_playerHP -= 1.0f;
+						b_player->ApplyDamage(1.0f);
 
 					}
 
@@ -319,14 +319,14 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 			if (b_player != nullptr)	//プレイヤーの情報が入っているなら
 			{
 				//弾とプレイヤーの距離を測る
-				Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->player_position.x, b_player->player_position.y + 50.0f, b_player->player_position.z };
+				Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->GetPlayerPosition().x, b_player->GetPlayerPosition().y + 50.0f, b_player->GetPlayerPosition().z };
 
 				//武器によってダメージを変える
 
 					//距離を測り一定以下なら体力減少
 				if (diffPlayer.Length() <= 2500.0f) //ダメージが入る範囲
 				{
-					b_player->m_playerHP -= 100.0f;
+					b_player->ApplyDamage(100.0f);
 
 				}
 
@@ -434,7 +434,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 void Boss::PlayerSearch()
 {
 	//エネミーからプレイヤーが入ってきたら追いかける
-	Vector3 toPlayer = b_player->player_position - boss_position;
+	Vector3 toPlayer = b_player->GetPlayerPosition() - boss_position;
 
 	//プレイヤーとの距離を計算する
 	float distToPlayer = toPlayer.Length();
@@ -501,7 +501,7 @@ void Boss::PlayerSearch()
 void Boss::Move()
  {
 	//エネミーからプレイヤーに向かうベクトルを計算する
-	Vector3 toPlayer = b_player->player_position - boss_position;
+	Vector3 toPlayer = b_player->GetPlayerPosition() - boss_position;
 	//ベクトルを正規化する。
 	toPlayer.Normalize();
 	//移動速度を設定する。
@@ -523,7 +523,7 @@ void Boss::Damage()
 	if (boss_HP <= 0.0f)
 	{
 		
-		b_player->game_state = 7;
+		b_player->SetGameState(7);
 		boss_HP = 0.0f;
 		if (Death_count >= 0 && Death_count < 20) {
 			if (b_boss_riser != nullptr) {
@@ -636,14 +636,14 @@ void Boss::Damage()
 			Boss_Explosion->Play();
 		}
 		if (Death_count==440) {
-			b_player->game_state = 2;
+			b_player->SetGameState(2);
 			result = NewGO<Result>(1, "result");
 			result->SE_volume = boss_game->GetSEVol();
 			result->BGM_volume = boss_game->GetBGMVol();
 
 			result->minute = (int)boss_time / 60;
 			result->sec = (int)boss_time % 60;
-			b_player->boss_survival = false;	//ボスが生きているかをプレーヤーに教える
+			//b_player->m_bossSurvival = false;	//ボスが生きているかをプレーヤーに教える
 			//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
 			//ココもいらない?
 			if (defeat_state == true)
@@ -678,7 +678,7 @@ void Boss::Render(RenderContext& rc)
 {
 	//モデルの描画。
 	boss_modelRender.Draw(rc);
-	if (b_player->m_playerHP > 0) {
+	if (b_player->GetPlayerHP() > 0) {
 		m_bossHPSprite.Draw(rc);
 		m_bossHPWakuSprite.Draw(rc);
 		m_bossHPWakuSprite2.Draw(rc);

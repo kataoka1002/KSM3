@@ -50,7 +50,7 @@ void Boss_Cannon::Update()
 		Setup();
 	}
 	fast++;
-	if (b_w_player->game_state == 0 && fast != 0)
+	if (b_w_player->GetGameState() == 0 && fast != 0)
 	{
 		Move();
 		Rotation();
@@ -98,7 +98,7 @@ void Boss_Cannon::Update()
 			
 		}
 	}
-	if (b_w_player->game_end_state == 1)
+	if (b_w_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
@@ -124,7 +124,7 @@ void Boss_Cannon::Update()
 
 void Boss_Cannon::Rotation() {
 	//エネミーからプレイヤーが入ってきたら追いかける。
-	Vector3 toPlayer = b_w_player->player_position - b_w_position;
+	Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
 
 	//プレイヤーとの距離を計算する。
 	float distToPlayer = toPlayer.Length();
@@ -153,7 +153,7 @@ void Boss_Cannon::Move()
 void Boss_Cannon::PlayerSearch()
 {
 	////エネミーからプレイヤーが入ってきたら追いかける。
-	//Vector3 toPlayer = b_w_player->player_position - b_w_position;
+	//Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
 
 	////プレイヤーとの距離を計算する。
 	//float distToPlayer = toPlayer.Length();

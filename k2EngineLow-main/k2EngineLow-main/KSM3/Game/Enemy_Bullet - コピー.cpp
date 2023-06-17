@@ -22,7 +22,6 @@ Enemy_Bullet::Enemy_Bullet()
 
 Enemy_Bullet::~Enemy_Bullet() 
 {
-	
 }
 void Enemy_Bullet::DestroyWithImpactEffect()
 {
@@ -76,7 +75,7 @@ bool Enemy_Bullet::Start()
 {
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 	m_player = FindGO<Player>("player");
-	if (m_player->GetGameState() == 2)
+	if (m_player->game_state == 2)
 	{
 		DeleteGO(this);
 	}
@@ -91,7 +90,7 @@ bool Enemy_Bullet::Start()
 
 void Enemy_Bullet::FindWeapon()
 {
-	if (m_player->GetPlayerDead() == true)
+	if (m_player->m_playerDead == true)
 	{
 		return;
 	}
@@ -136,8 +135,9 @@ void Enemy_Bullet::Setup()
 		case 2:	//マシンガン
 
 			//モデルの初期化
-			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale(4.0f);
+			m_bulletModel = std::make_unique<ModelRender>();
+			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel->SetScale(4.0f);
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 
@@ -147,8 +147,8 @@ void Enemy_Bullet::Setup()
 			//バレットの前方向の設定
 			m_bulletFowrad = m_enemyMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyMama->GetRot());
-			m_bulletModel.SetPosition(m_position);
+			m_bulletModel->SetRotation(m_enemyMama->GetRot());
+			m_bulletModel->SetPosition(m_position);
 
 			//音はエネミー側で鳴らしている
 
@@ -170,8 +170,9 @@ void Enemy_Bullet::Setup()
 		case 4:	//ギガトンキャノン
 
 			//モデルの初期化
-			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale({ 15.0f ,15.0f,10.0f });
+			m_bulletModel = std::make_unique<ModelRender>();
+			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel->SetScale({ 15.0f ,15.0f,10.0f });
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 			//最終的な弾の回転を決定
@@ -180,8 +181,8 @@ void Enemy_Bullet::Setup()
 			//バレットの前方向の設定
 			m_bulletFowrad = m_enemyNearMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyNearMama->GetRot());
-			m_bulletModel.SetPosition(m_position);
+			m_bulletModel->SetRotation(m_enemyNearMama->GetRot());
+			m_bulletModel->SetPosition(m_position);
 
 			//爆発音はエネミー側で鳴らしている
 
@@ -208,8 +209,10 @@ void Enemy_Bullet::Setup()
 		case 6:	//戦艦砲
 
 			//モデルの初期化
-			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale(10.0f);
+			
+			m_bulletModel = std::make_unique<ModelRender>();
+			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel->SetScale(10.0f);
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 			//最終的な弾の回転を決定
@@ -218,8 +221,8 @@ void Enemy_Bullet::Setup()
 			//バレットの前方向の設定
 			m_bulletFowrad = m_enemyFarMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyFarMama->GetRot());
-			m_bulletModel.SetPosition(m_position);
+			m_bulletModel->SetRotation(m_enemyFarMama->GetRot());
+			m_bulletModel->SetPosition(m_position);
 
 			//エフェクトの再生
 			Effect(6);
@@ -234,7 +237,7 @@ void Enemy_Bullet::Setup()
 void Enemy_Bullet::Update() 
 {
 
-	if (m_player->GetGameState() == 0)
+	if (m_player->game_state == 0)
 	{
 		//位置が0以下になると消える(全ての弾共通)
 		if (m_position.y <= 0.0f)
@@ -259,12 +262,12 @@ void Enemy_Bullet::Update()
 			Damage(m_enemyFarMama->GetWeponKind());
 		}
 	}
-	else if (m_player->GetGameState() == 2)
+	else if (m_player->game_state == 2)
 	{
 		DeleteGO(this);	//リザルト画面に行くと消す
 	}
 
-	if (m_player->GetGameEndState() == 1)
+	if (m_player->game_end_state == 1)
 	{
 		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
 	}
@@ -291,9 +294,9 @@ void Enemy_Bullet::Move()
 		}
 
 		//バレットの更新
-		m_bulletModel.SetRotation(m_rot);
-		m_bulletModel.SetPosition(m_position);
-		m_bulletModel.Update();
+		m_bulletModel->SetRotation(m_rot);
+		m_bulletModel->SetPosition(m_position);
+		m_bulletModel->Update();
 	}
 	if (m_enemyMama->GetWeponKind() == 3)	//ヘルファイヤライフル
 	{
@@ -318,9 +321,9 @@ void Enemy_Bullet::MoveNear()
 		}
 
 		//バレットの更新
-		m_bulletModel.SetRotation(m_rot);
-		m_bulletModel.SetPosition(m_position);
-		m_bulletModel.Update();
+		m_bulletModel->SetRotation(m_rot);
+		m_bulletModel->SetPosition(m_position);
+		m_bulletModel->Update();
 	}
 }
 
@@ -338,9 +341,9 @@ void Enemy_Bullet::MoveFar()
 		m_position += m_bulletSpeed;
 
 		//バレットの更新
-		m_bulletModel.SetRotation(m_rot);
-		m_bulletModel.SetPosition(m_position);
-		m_bulletModel.Update();
+		m_bulletModel->SetRotation(m_rot);
+		m_bulletModel->SetPosition(m_position);
+		m_bulletModel->Update();
 	}
 }
 
@@ -392,7 +395,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 	if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 	{
 		//弾とプレイヤーの距離を測る
-		Vector3 diffPlayer = m_position - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
+		Vector3 diffPlayer = m_position - Vector3{ m_player->player_position.x, m_player->player_position.y + 50.0f, m_player->player_position.z };
 
 		//武器によってダメージを変える
 		if (weaponNum == 2)			//マシンガン
@@ -400,7 +403,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
 			{
-				m_player->ApplyDamage(0.5f);
+				m_player->m_playerHP -= 0.5f;
 				DestroyWithImpactEffect();
 			}
 		}
@@ -409,7 +412,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
 			{
-				m_player->ApplyDamage(0.5f);
+				m_player->m_playerHP -= 0.5f;
 				DestroyWithImpactEffect();
 			}
 		}
@@ -418,7 +421,7 @@ void Enemy_Bullet::Damage(int weaponNum)
 			//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 100.0f) //ダメージが入る範囲
 			{
-				m_player->ApplyDamage(0.5f);
+				m_player->m_playerHP -= 0.5f;
 				DestroyWithImpactEffect();
 			}
 		}
@@ -621,7 +624,7 @@ void Enemy_Bullet::Render(RenderContext& rc)
 		}
 		else if (m_enemyMama->GetWeponKind() == 2)	//マシンガン
 		{
-			m_bulletModel.Draw(rc);
+			m_bulletModel->Draw(rc);
 		}
 		else if (m_enemyMama->GetWeponKind() == 3)	//ヘイルファイヤーライフル
 		{
@@ -632,7 +635,7 @@ void Enemy_Bullet::Render(RenderContext& rc)
 	{
 		if (m_enemyNearMama->GetWeponKind() == 4)	//ギガトンキャノン
 		{
-			m_bulletModel.Draw(rc);
+			m_bulletModel->Draw(rc);
 		}
 	}
 	else if (m_enemyFarMama != nullptr)
@@ -643,7 +646,7 @@ void Enemy_Bullet::Render(RenderContext& rc)
 		}
 		else if (m_enemyFarMama->GetWeponKind() == 6)	//戦艦砲
 		{
-			m_bulletModel.Draw(rc);
+			m_bulletModel->Draw(rc);
 		}
 	}
 }

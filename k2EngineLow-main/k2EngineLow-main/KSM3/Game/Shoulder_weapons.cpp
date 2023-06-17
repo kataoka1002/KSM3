@@ -38,7 +38,7 @@ void Shoulder_weapons::InitWeapon()
 {
 
 	//付いている武器によって処理の変更
-	switch (m_player->p_custom_point[0][1])
+	switch (m_player->GetCustomPoint(0, 1))
 	{
 	case 2:	//マシンガンの時
 
@@ -97,7 +97,7 @@ void Shoulder_weapons::InitWeapon()
 
 
 	//武器の細かい設定を行う	
-	SetWeapon(m_player->p_custom_point[0][1]);
+	SetWeapon(m_player->GetCustomPoint(0, 1));
 
 }
 
@@ -105,7 +105,7 @@ void Shoulder_weapons::Update()
 {
 
 	//メインゲーム中
-	if (m_player->game_state == 0) 
+	if (m_player->GetGameState() == 0)
 	{
 
 		//動きの処理
@@ -121,15 +121,15 @@ void Shoulder_weapons::Update()
 
 
 		//攻撃処理(弾の1個め)
-		MakeBullet(m_player->p_custom_point[0][1]);
+		MakeBullet(m_player->GetCustomPoint(0, 1));
 
 
 		//攻撃処理(弾の2個め)
-		MakeBullet2(m_player->p_custom_point[0][1]);
+		MakeBullet2(m_player->GetCustomPoint(0, 1));
 
 
 		//プレイヤーが死亡したら
-		if (m_player->game_end_state == 1) 
+		if (m_player->GetGameEndState() == 1)
 		{
 
 			//UIの中身を空にする
@@ -149,7 +149,7 @@ void Shoulder_weapons::Move2()
 {
 
 	//武器がマシンガンなら
-	//if (m_player->p_custom_point[0][1] == 2)
+	//if (m_player->m_customPoint[0][1] == 2)
 	//{
 
 		//ローカルポジションを教える
@@ -157,11 +157,11 @@ void Shoulder_weapons::Move2()
 
 
 		//プレイヤーの回転量を教える
-		Quaternion originRotation = m_player->player_rotation;
+		Quaternion originRotation = m_player->GetPlayerRotation();
 
 
 		//プレイヤーのポジションを教える
-		m_position2 = m_player->player_position;
+		m_position2 = m_player->GetPlayerPosition();
 
 
 		//乗算
@@ -192,7 +192,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 	if (g_pad[0]->IsPress(enButtonLB1))
 	{
 		//武器がマシンガンの場合
-		if (m_player->p_custom_point[0][1] == 2 && m_firingCount2 % 5 == 0)
+		if (m_player->GetCustomPoint(0, 1) == 2 && m_firingCount2 % 5 == 0)
 		{
 
 			//弾2にポジションと回転を教えて生成する
@@ -203,7 +203,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 
 		}
 		//武器がギガトンキャノンの場合
-		else if (m_player->p_custom_point[0][1] == 4 && m_firingCount2 % 180 == 0)
+		else if (m_player->GetCustomPoint(0, 1) == 4 && m_firingCount2 % 180 == 0)
 		{
 
 			//弾2にポジションと回転を教えて生成する
@@ -214,7 +214,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 
 		}
 		//武器が戦艦砲の場合
-		else if (m_player->p_custom_point[0][1] == 6 && m_firingCount2 % 180 == 0)
+		else if (m_player->GetCustomPoint(0, 1) == 6 && m_firingCount2 % 180 == 0)
 		{
 
 			//弾2にポジションと回転を教えて生成する
@@ -244,7 +244,7 @@ void Shoulder_weapons::SetBulletLocalPosition()
 {
 
 	//武器がマシンガンの場合
-	if (m_player->p_custom_point[0][1] == 2)
+	if (m_player->GetCustomPoint(0, 1) == 2)
 	{
 
 		//弾1のローカルポジションの設定
@@ -252,7 +252,7 @@ void Shoulder_weapons::SetBulletLocalPosition()
 
 	}
 	//武器がギガトンキャノンの場合
-	else if (m_player->p_custom_point[0][1] == 4)
+	else if (m_player->GetCustomPoint(0, 1) == 4)
 	{
 
 		//弾1のローカルポジションの設定
@@ -260,7 +260,7 @@ void Shoulder_weapons::SetBulletLocalPosition()
 
 	}
 	//武器が戦艦砲の場合
-	else if (m_player->p_custom_point[0][1] == 6)
+	else if (m_player->GetCustomPoint(0, 1) == 6)
 	{
 
 		//弾1のローカルポジションの設定
@@ -278,7 +278,7 @@ void Shoulder_weapons::DestroyEvent()
 	{
 
 		//プレイヤーの設定武器を空にする
-		m_player->p_custom_point[0][1] = 0;
+		m_player->SetCustomPoint(0, 1, 0);
 
 
 		//UIの設定武器を空にする
@@ -304,7 +304,7 @@ void Shoulder_weapons::Render(RenderContext& rc)
 {
 
 	//プレイヤー死亡時のエフェクトを発生させたら
-	if (m_player->m_deadBakuhaPlay == true)
+	if (m_player->IsDeadBakuhaPlay() == true)
 	{
 		return;
 	}
@@ -315,7 +315,7 @@ void Shoulder_weapons::Render(RenderContext& rc)
 
 
 	//付けている武器がマシンガンなら
-	if (m_player->p_custom_point[0][1] == 2)
+	if (m_player->GetCustomPoint(0, 1) == 2)
 	{
 
 		//2個目の武器モデルの描画

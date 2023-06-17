@@ -95,7 +95,7 @@ bool Game::Start()
 	
 	
 	//プレイヤーにカラーの情報を渡す
-	player->player_color_date = player_color_date;	
+	player->SetPlayerColorData(player_color_date);
 
 
 	//コア武器の作成
@@ -199,7 +199,7 @@ void Game::Update()
 {
 
 	//最初のシーン中
-	if (player->game_state == 4)
+	if (player->GetGameState() == 4)
 	{
 
 		//タイトルからメインゲームへの遷移時の処理
@@ -209,7 +209,7 @@ void Game::Update()
 
 
 	//最初のシーンじゃなかったら
-	if (player->game_state != 4)
+	if (player->GetGameState() != 4)
 	{
 
 		//メインゲーム中の処理
@@ -255,7 +255,7 @@ void Game::MakeEnemy()
 {
 
 	//エネミーを複数体生成
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Enemy* enemy = NewGO<Enemy>(1, "enemy");
 		enemy->SetPosition(RandomPosition());
@@ -267,7 +267,7 @@ void Game::MakeEnemy()
 
 
 	//遠距離エネミーを複数体生成
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Enemy_Far* enemyFar = NewGO<Enemy_Far>(1, "enemy_far");
 		enemyFar->SetPosition(RandomPosition());
@@ -329,7 +329,7 @@ void Game::GameNow()
 
 
 	//3ウェーブ突破したらボス戦
-	if (player->player_position.z >= 9550.0f && boss == nullptr && m_wave->m_goBoss == true)
+	if (player->GetPlayerPosition().z >= 9550.0f && boss == nullptr && m_wave->m_goBoss == true)
 	{
 
 		//一定のカウントまでいったら
@@ -337,7 +337,7 @@ void Game::GameNow()
 		{
 
 			//ボス戦中に変更
-			player->bossState = 1;
+			player->SetBossState(1);
 
 		}
 
@@ -365,9 +365,9 @@ void Game::GameNow()
 
 
 			//プレイヤーの場所をボスの場所へ移動させる
-			player->player_position = { -19246.0f,0.0f,-130.0f };
-			player->player_modelRender.SetPosition(player->player_position);
-			player->characterController.SetPosition(player->player_position);
+			player->SetPosition({-19246.0f,0.0f,-130.0f});
+			//player->m_playerModel.SetPosition(player->GetPlayerPosition());
+			player->SetCharacterControllerPosition(player->GetPlayerPosition());
 
 
 			//ばねカメラを瞬間移動させる
@@ -375,7 +375,7 @@ void Game::GameNow()
 
 
 			//プレイヤーの更新
-			player->player_modelRender.Update(true);
+			//player->m_playerModel.Update(true);
 
 
 			//今いる雑魚敵を全部消す
@@ -386,7 +386,7 @@ void Game::GameNow()
 
 
 	//プレイヤーが死んだら
-	if (player->game_end_state == 1)
+	if (player->GetGameEndState() == 1)
 	{
 
 		//タイトルを作成

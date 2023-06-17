@@ -53,7 +53,7 @@ void Drop_item::Set_Drop_item()
 
 void Drop_item::Update() 
 {
-	if (drop_player->game_state == 0) 
+	if (drop_player->GetGameState() == 0)
 	{
 		//サイズの処理
 		SetSize();
@@ -62,7 +62,7 @@ void Drop_item::Update()
 		Float();
 
 		//取得処理
-		Vector3 diff = drop_player->player_position - Drop_position;
+		Vector3 diff = drop_player->GetPlayerPosition() - Drop_position;
 		
 		if (diff.Length() < 100.0f) 
 		{
@@ -82,7 +82,7 @@ void Drop_item::Update()
 			//全ての初期化
 			customize_UI_ver2->trance_setup();
 			//プレイヤーのステート変更(カスタム画面へ)
-			drop_player->game_state = 3;
+			drop_player->SetGameState(3);
 			
 			DeleteGO(this);
 			m_game->RemoveDropItemFromList(this);	//リストから消す

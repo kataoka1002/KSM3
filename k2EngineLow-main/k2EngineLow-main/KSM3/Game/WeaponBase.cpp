@@ -103,11 +103,11 @@ void WeaponBase::Move()
 
 
 	//プレイヤーの回転量を教える
-	Quaternion originRotation = m_player->player_rotation;
+	Quaternion originRotation = m_player->GetPlayerRotation();
 
 
 	//プレイヤーのポジションを教える
-	m_position = m_player->player_position;
+	m_position = m_player->GetPlayerPosition();
 
 
 	//乗算

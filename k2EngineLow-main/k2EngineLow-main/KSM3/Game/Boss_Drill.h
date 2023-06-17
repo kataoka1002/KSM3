@@ -1,5 +1,5 @@
 #pragma once
-#define HP 500.0f;
+#define HP 500.0f
 
 class Player;
 class Boss;

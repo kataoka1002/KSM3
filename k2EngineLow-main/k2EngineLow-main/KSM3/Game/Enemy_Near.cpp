@@ -83,7 +83,7 @@ void Enemy_Near::Update()
 {
 
 	//メインゲーム中
-	if (m_player->game_state == 0)
+	if (m_player->GetGameState() == 0)
 	{
 
 		//エネミーに共通する動き
@@ -94,7 +94,7 @@ void Enemy_Near::Update()
 		HPUnder0();
 
 	}
-	else if (m_player->game_state == 1 || m_player->game_state == 3)
+	else if (m_player->GetGameState() == 1 || m_player->GetGameState() == 3)
 	{
 
 		//足音停止
@@ -244,7 +244,7 @@ void Enemy_Near::Move()
 			{
 
 				//プレイヤーがさっきまでいた場所をターゲットの設定(1回のみ)
-				m_enemyTargetPos = m_player->player_position;
+				m_enemyTargetPos = m_player->GetPlayerPosition();
 
 				//ターゲットセットフラグを立てる
 				m_targetFlag = true;
