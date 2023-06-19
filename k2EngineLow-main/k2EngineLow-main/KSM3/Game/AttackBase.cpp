@@ -29,9 +29,11 @@ bool AttackBase::Start()
 void AttackBase::BulletSetUp(float scale)
 {
 
+	m_bulletModel = std::make_unique<ModelRender>();
+
 	//弾のモデルの初期化
-	m_bulletModel.Init("Assets/modelData/battleship_gun_bullet.tkm");
-	m_bulletModel.SetScale(scale);
+	m_bulletModel->Init("Assets/modelData/battleship_gun_bullet.tkm");
+	m_bulletModel->SetScale(scale);
 
 
 	//エネミーから見て正しい位置に弾を設定
@@ -51,9 +53,9 @@ void AttackBase::BulletSetUp(float scale)
 
 
 	//更新
-	m_bulletModel.SetRotation(m_rot);
-	m_bulletModel.SetPosition(m_position);
-	m_bulletModel.Update();
+	m_bulletModel->SetRotation(m_rot);
+	m_bulletModel->SetPosition(m_position);
+	m_bulletModel->Update();
 
 }
 
@@ -104,8 +106,8 @@ void AttackBase::Move(float deleteDir)
 
 
 	//バレットの更新
-	m_bulletModel.SetPosition(m_position);
-	m_bulletModel.Update();
+	m_bulletModel->SetPosition(m_position);
+	m_bulletModel->Update();
 
 }
 

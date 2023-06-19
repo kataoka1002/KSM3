@@ -44,7 +44,7 @@ void Left_leg_weapons::InitWeapon()
 	case 2:	//マシンガンの時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/machine_gun_drop.tkm");
+		m_weaponModel->Init("Assets/modelData/machine_gun_drop.tkm");
 
 
 		//ローカルポジションの設定
@@ -56,7 +56,7 @@ void Left_leg_weapons::InitWeapon()
 	case 4:	//ギガトンキャノンの時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/GIgaton_cannon.tkm");
+		m_weaponModel->Init("Assets/modelData/GIgaton_cannon.tkm");
 
 
 		//ローカルポジションの設定
@@ -68,7 +68,7 @@ void Left_leg_weapons::InitWeapon()
 	case 6:	//戦艦砲の時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/battleship_gun_Drop.tkm");
+		m_weaponModel->Init("Assets/modelData/battleship_gun_Drop.tkm");
 
 
 		//ローカルポジションの設定
@@ -196,6 +196,6 @@ void Left_leg_weapons::Render(RenderContext& rc)
 
 
 	//武器モデルの描画
-	m_weaponModel.Draw(rc);
+	m_weaponModel->Draw(rc);
 
 }

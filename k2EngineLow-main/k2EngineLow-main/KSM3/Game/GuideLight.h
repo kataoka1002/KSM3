@@ -12,7 +12,7 @@ private:
 	void CalcVelocity(const float speed, const float curvatureRadius, const float damping);
 
 public:
-	ModelRender m_modelRender;
+	std::unique_ptr<ModelRender> m_modelRender;
 	EffectEmitter* m_guideLightEffect = nullptr;
 	int count = 0;
 	Vector3 m_position = Vector3::Zero;

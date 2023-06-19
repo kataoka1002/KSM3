@@ -11,6 +11,10 @@
 bool WeaponBase::Start()
 {
 
+	//メモリの確保
+	m_weaponModel = std::make_unique<ModelRender>();
+
+
 	//プレイヤーを見つける
 	m_player = FindGO<Player>("player");
 
@@ -40,7 +44,7 @@ void WeaponBase::SetWeapon(int customPoint)
 
 
 		//大きさの設定
-		m_weaponModel.SetScale(MACHINEGUN_SCALE);
+		m_weaponModel->SetScale(MACHINEGUN_SCALE);
 
 
 		//武器の体力の設定
@@ -53,7 +57,7 @@ void WeaponBase::SetWeapon(int customPoint)
 
 
 		//大きさの設定
-		m_weaponModel.SetScale(GIGATON_SCALE);
+		m_weaponModel->SetScale(GIGATON_SCALE);
 
 
 		//武器の体力の設定
@@ -66,7 +70,7 @@ void WeaponBase::SetWeapon(int customPoint)
 
 
 		//大きさの設定
-		m_weaponModel.SetScale(BATTLESHIP_SCALE);
+		m_weaponModel->SetScale(BATTLESHIP_SCALE);
 
 
 		//武器の体力の設定
@@ -83,7 +87,7 @@ void WeaponBase::SetWeapon(int customPoint)
 
 
 	//モデルの更新
-	m_weaponModel.Update();
+	m_weaponModel->Update();
 
 
 	//武器の種類を覚えさせる
@@ -123,9 +127,9 @@ void WeaponBase::Move()
 
 
 	//更新
-	m_weaponModel.SetPosition(m_position);
-	m_weaponModel.SetRotation(m_rotation);
-	m_weaponModel.Update();
+	m_weaponModel->SetPosition(m_position);
+	m_weaponModel->SetRotation(m_rotation);
+	m_weaponModel->Update();
 
 }
 

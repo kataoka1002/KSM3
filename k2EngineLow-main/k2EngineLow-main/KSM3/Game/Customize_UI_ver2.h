@@ -64,14 +64,14 @@ public:
 	Player* m_player = nullptr;
 	Customize_area* m_customizeArea = nullptr;
 	
-	ModelRender custom_model_body;
-	ModelRender custom_model_Core;
-	ModelRender custom_model_shoulder;
-	ModelRender custom_model_shoulder2;	//肩のマシンガン用のモデル
-	ModelRender custom_model_Right_arm;
-	ModelRender custom_model_Right_leg;
-	ModelRender custom_model_Left_arm;
-	ModelRender custom_model_Left_leg;
+	std::unique_ptr<ModelRender> custom_model_body;
+	std::unique_ptr<ModelRender> custom_model_Core;
+	std::unique_ptr<ModelRender> custom_model_shoulder;
+	std::unique_ptr<ModelRender> custom_model_shoulder2;	//肩のマシンガン用のモデル
+	std::unique_ptr<ModelRender> custom_model_Right_arm;
+	std::unique_ptr<ModelRender> custom_model_Right_leg;
+	std::unique_ptr<ModelRender> custom_model_Left_arm;
+	std::unique_ptr<ModelRender> custom_model_Left_leg;
 
 	Quaternion custom_model_body_rotation;
 	Vector3 custom_model_body_position = { 10500.0f,0.0f,0.0f };//10000

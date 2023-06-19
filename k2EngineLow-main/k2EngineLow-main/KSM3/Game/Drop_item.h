@@ -19,7 +19,7 @@ public:
 	void SetSize();
 	Quaternion Drop_rotation;
 
-	ModelRender Drop_item_Render;
+	std::unique_ptr<ModelRender> Drop_item_Render;	//スマートポインタ
 
 	Player* drop_player = nullptr;
 	Left_arm_weapons* left_arm_weapons = nullptr;

@@ -52,12 +52,25 @@ bool Customize_UI_ver2::Start()
 	m_player = FindGO<Player>("player");
 	m_coreWeapon = FindGO<Core_weapons>("core_weapons");	//コア武器はGame.cppでNewGOしている
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
-	//m_dropItem = FindGO<Drop_item>("drop_item");
 	m_game = FindGO<Game>("game");
 
+
+	//メモリの確保
+	custom_model_body = std::make_unique<ModelRender>();
+	custom_model_Core = std::make_unique<ModelRender>();
+	custom_model_shoulder = std::make_unique<ModelRender>();
+	custom_model_shoulder2 = std::make_unique<ModelRender>();//肩のマシンガン用のモデル
+	custom_model_Right_arm = std::make_unique<ModelRender>();
+	custom_model_Right_leg = std::make_unique<ModelRender>();
+	custom_model_Left_arm = std::make_unique<ModelRender>();
+	custom_model_Left_leg = std::make_unique<ModelRender>();
+
+
+
+
 	//マシンガンモデルの初期化
-	custom_model_shoulder2.Init("Assets/modelData/machine_gun_drop.tkm");
-	custom_model_shoulder2.SetScale(scale2);
+	custom_model_shoulder2->Init("Assets/modelData/machine_gun_drop.tkm");
+	custom_model_shoulder2->SetScale(scale2);
 	sw2_lp = { -35.0f,119.0f,0.0f };
 
 
@@ -105,11 +118,11 @@ void Customize_UI_ver2::trance_setup()
 
 	m_selectSheet.SetPosition(m_selectSheetPosition);
 	m_parameterSheet.SetPosition(m_parameterSheetPosition);
-	custom_model_body.SetPosition(custom_model_body_position);
+	custom_model_body->SetPosition(custom_model_body_position);
 
 	m_selectSheet.Update();
 	m_parameterSheet.Update();
-	custom_model_body.Update();
+	custom_model_body->Update();
 	for (int i = 0; i < 4; i++) {
 		trance_sheet[i].SetMulColor(trance_sheet_color);
 		trance_sheet[i].Update();
@@ -124,7 +137,7 @@ void Customize_UI_ver2::Setup()
 	if (m_coreWeapon->set_weapons == 2)
 	{
 		//コア武器モデルの初期化
-		custom_model_Core.Init("Assets/modelData/Versatile_Perforator.tkm");
+		custom_model_Core->Init("Assets/modelData/Versatile_Perforator.tkm");
 	}
 
 	//取り付けている部位によって処理を変える
@@ -136,27 +149,27 @@ void Customize_UI_ver2::Setup()
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Right_arm.Init("Assets/modelData/machine_gun_drop.tkm");
+			custom_model_Right_arm->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_arm.SetScale(scale2);
+			custom_model_Right_arm->SetScale(scale2);
 			//ローカルポジションの設定
 			raw_lp = { 60.0f,100.0f,-10.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Right_arm.Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
+			custom_model_Right_arm->Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_arm.SetScale(0.8f);
+			custom_model_Right_arm->SetScale(0.8f);
 			//ローカルポジションの設定
 			raw_lp = { 60.0f,100.0f,-10.0f };
 
 			break;
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Right_arm.Init("Assets/modelData/battleship_gun_right_arm.tkm");
+			custom_model_Right_arm->Init("Assets/modelData/battleship_gun_right_arm.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_arm.SetScale(scale2);
+			custom_model_Right_arm->SetScale(scale2);
 			//ローカルポジションの設定
 			raw_lp = { 60.0f,70.0f,-10.0f };
 
@@ -173,27 +186,27 @@ void Customize_UI_ver2::Setup()
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Left_arm.Init("Assets/modelData/machine_gun_drop.tkm");
+			custom_model_Left_arm->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(scale2);
+			custom_model_Left_arm->SetScale(scale2);
 			//ローカルポジションの設定
 			law_lp = { -60.0f,100.0f,-10.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Left_arm.Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
+			custom_model_Left_arm->Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(0.8f);
+			custom_model_Left_arm->SetScale(0.8f);
 			//ローカルポジションの設定
 			law_lp = { -60.0f,100.0f,-10.0f };
 
 			break;
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
+			custom_model_Left_arm->Init("Assets/modelData/battleship_gun_left_arm.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(scale2);
+			custom_model_Left_arm->SetScale(scale2);
 			//ローカルポジションの設定
 			law_lp = { -60.0f,70.0f,-10.0f };
 
@@ -211,18 +224,18 @@ void Customize_UI_ver2::Setup()
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_shoulder.Init("Assets/modelData/machine_gun_drop.tkm");
+			custom_model_shoulder->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(scale2);
+			custom_model_shoulder->SetScale(scale2);
 			//ローカルポジションの設定
 			sw_lp = { 35.0f,119.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_shoulder.Init("Assets/modelData/GIgaton_shoulder.tkm");
+			custom_model_shoulder->Init("Assets/modelData/GIgaton_shoulder.tkm");
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(0.8f);
+			custom_model_shoulder->SetScale(0.8f);
 			//ローカルポジションの設定
 			sw_lp = { 0.0f,110.0f,0.0f };
 
@@ -230,9 +243,9 @@ void Customize_UI_ver2::Setup()
 			break;
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
+			custom_model_shoulder->Init("Assets/modelData/battleship_gun_shoulder.tkm");
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(scale2);
+			custom_model_shoulder->SetScale(scale2);
 			//ローカルポジションの設定
 			sw_lp = { 0.0f,110.0f,0.0f };
 
@@ -249,18 +262,18 @@ void Customize_UI_ver2::Setup()
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Right_leg.Init("Assets/modelData/machine_gun_drop.tkm");
+			custom_model_Right_leg->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(scale2);
+			custom_model_Right_leg->SetScale(scale2);
 			//ローカルポジションの設定
 			rlw_lp = { 90.0f,30.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Right_leg.Init("Assets/modelData/GIgaton_cannon.tkm");
+			custom_model_Right_leg->Init("Assets/modelData/GIgaton_cannon.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(0.8f);
+			custom_model_Right_leg->SetScale(0.8f);
 			//ローカルポジションの設定
 			rlw_lp = { 90.0f,30.0f,0.0f };
 
@@ -268,9 +281,9 @@ void Customize_UI_ver2::Setup()
 
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Right_leg.Init("Assets/modelData/battleship_gun_Drop.tkm");
+			custom_model_Right_leg->Init("Assets/modelData/battleship_gun_Drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(scale2);
+			custom_model_Right_leg->SetScale(scale2);
 			//ローカルポジションの設定
 			rlw_lp = { 90.0f,30.0f,55.0f };
 
@@ -288,18 +301,18 @@ void Customize_UI_ver2::Setup()
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Left_leg.Init("Assets/modelData/machine_gun_drop.tkm");
+			custom_model_Left_leg->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(scale2);
+			custom_model_Left_leg->SetScale(scale2);
 			//ローカルポジションの設定
 			llw_lp = { -90.0f,30.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Left_leg.Init("Assets/modelData/GIgaton_cannon.tkm");
+			custom_model_Left_leg->Init("Assets/modelData/GIgaton_cannon.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(0.8f);
+			custom_model_Left_leg->SetScale(0.8f);
 			//ローカルポジションの設定
 			llw_lp = { -90.0f,30.0f,0.0f };
 
@@ -307,9 +320,9 @@ void Customize_UI_ver2::Setup()
 
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Left_leg.Init("Assets/modelData/battleship_gun_Drop.tkm");
+			custom_model_Left_leg->Init("Assets/modelData/battleship_gun_Drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(scale2);
+			custom_model_Left_leg->SetScale(scale2);
 			//ローカルポジションの設定
 			llw_lp = { -90.0f,30.0f,55.0f };
 
@@ -363,7 +376,7 @@ void Customize_UI_ver2::Update()
 		//遷移終了
 		if (trance_state == 0) {
 			custom_model_body_rotation.AddRotationDegY(2.0f);
-			custom_model_body.SetRotation(custom_model_body_rotation);
+			custom_model_body->SetRotation(custom_model_body_rotation);
 			//カスタム画面へ   
 			Custom_UI();
 
@@ -374,7 +387,7 @@ void Customize_UI_ver2::Update()
 
 			//更新
 			fast_count++;
-			custom_model_body.Update();
+			custom_model_body->Update();
 		}
 	}
 }
@@ -559,8 +572,8 @@ void Customize_UI_ver2::Custom_UI()
 	{
 		Window();
 	}
-	custom_model_body.SetRotation(custom_model_body_rotation);
-	custom_model_body.Update();
+	custom_model_body->SetRotation(custom_model_body_rotation);
+	custom_model_body->Update();
 }
 
 void Customize_UI_ver2::init_parameter(int Drop, int line, int row) {//パラメータシート
@@ -693,7 +706,7 @@ void Customize_UI_ver2::trance()//遷移
 	{
 		custom_model_body_position.x -= 50.0f;
 
-		custom_model_body.SetPosition(custom_model_body_position);
+		custom_model_body->SetPosition(custom_model_body_position);
 	}
 
 	//遷移終了
@@ -702,7 +715,7 @@ void Customize_UI_ver2::trance()//遷移
 		trance_state = 0;
 	}
 
-	custom_model_body.Update();
+	custom_model_body->Update();
 	m_parameterSheet.Update();
 	m_selectSheet.Update();
 	trance_sheet[0].Update();
@@ -942,12 +955,12 @@ void Customize_UI_ver2::Window()
 void Customize_UI_ver2::Custom_model_body()
 {
 	//ボディのモデルの初期化
-	custom_model_body.Init(getPlayer_custom_color(m_player->GetRandomColor()));
+	custom_model_body->Init(getPlayer_custom_color(m_player->GetRandomColor()));
 
 	//回転と座標を教えて更新
-	custom_model_body.SetPosition(custom_model_body_position);
-	custom_model_body.SetRotation(custom_model_body_rotation);
-	custom_model_body.Update();
+	custom_model_body->SetPosition(custom_model_body_position);
+	custom_model_body->SetRotation(custom_model_body_rotation);
+	custom_model_body->Update();
 }
 
 void Customize_UI_ver2::Custom_model_Core()
@@ -963,9 +976,9 @@ void Customize_UI_ver2::Custom_model_Core()
 	Quaternion cw_Rotation = originRotation;
 
 	//更新
-	custom_model_Core.SetRotation(cw_Rotation);
-	custom_model_Core.SetPosition(cw_position);
-	custom_model_Core.Update();
+	custom_model_Core->SetRotation(cw_Rotation);
+	custom_model_Core->SetPosition(cw_position);
+	custom_model_Core->Update();
 }
 
 void Customize_UI_ver2::Custom_model_Right_arm()
@@ -977,21 +990,21 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
-		custom_model_Right_arm.SetScale(scale2);
+		custom_model_Right_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
 		raw_lp = { 60.0f,100.0f,0.0f };
 
 		break;
 	case 4:	//ギガトンキャノン
 		//モデルのサイズを設定	
-		custom_model_Right_arm.SetScale(0.8f);
+		custom_model_Right_arm->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		raw_lp = { 50.0f,100.0f,30.0f };
 
 		break;
 	case 6:	//戦艦砲
 		//モデルのサイズを設定	
-		custom_model_Right_arm.SetScale(scale2);
+		custom_model_Right_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
 		raw_lp = { 60.0f,80.0f,-10.0f };
 
@@ -1008,9 +1021,9 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 	Quaternion raw_Rotation = originRotation;
 
 	//更新
-	custom_model_Right_arm.SetRotation(raw_Rotation);
-	custom_model_Right_arm.SetPosition(raw_position);
-	custom_model_Right_arm.Update();
+	custom_model_Right_arm->SetRotation(raw_Rotation);
+	custom_model_Right_arm->SetPosition(raw_position);
+	custom_model_Right_arm->Update();
 }
 
 void Customize_UI_ver2::Custom_model_Left_arm()
@@ -1022,21 +1035,21 @@ void Customize_UI_ver2::Custom_model_Left_arm()
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
-		custom_model_Left_arm.SetScale(scale2);
+		custom_model_Left_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
 		law_lp = { -60.0f,100.0f,0.0f };
 
 		break;
 	case 4:	//ギガトンキャノン
 		//モデルのサイズを設定	
-		custom_model_Left_arm.SetScale(0.8f);
+		custom_model_Left_arm->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		law_lp = { -50.0f,100.0f,30.0f };
 
 		break;
 	case 6:	//戦艦砲
 		//モデルのサイズを設定	
-		custom_model_Left_arm.SetScale(scale2);
+		custom_model_Left_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
 		law_lp = { -60.0f,80.0f,-10.0f };
 
@@ -1053,9 +1066,9 @@ void Customize_UI_ver2::Custom_model_Left_arm()
 	Quaternion law_Rotation = originRotation;
 
 	//更新
-	custom_model_Left_arm.SetRotation(law_Rotation);
-	custom_model_Left_arm.SetPosition(law_position);
-	custom_model_Left_arm.Update();
+	custom_model_Left_arm->SetRotation(law_Rotation);
+	custom_model_Left_arm->SetPosition(law_position);
+	custom_model_Left_arm->Update();
 }
 
 void Customize_UI_ver2::Custom_model_Shoulder()
@@ -1067,26 +1080,26 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
-		custom_model_shoulder.SetScale(scale2);
+		custom_model_shoulder->SetScale(scale2);
 		//モデルのローカルポジション設定
 		sw_lp = { 35.0f,119.0f,0.0f };
 
 		//モデル2のサイズを設定	
-		custom_model_shoulder2.SetScale(scale2);
+		custom_model_shoulder2->SetScale(scale2);
 		//モデル2のローカルポジション設定
 		sw2_lp = { -35.0f,119.0f,0.0f };
 
 		break;
 	case 4:	//ギガトンキャノン
 		//モデルのサイズを設定	
-		custom_model_shoulder.SetScale(0.8f);
+		custom_model_shoulder->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		sw_lp = { 0.0f,120.0f,0.0f };
 
 		break;
 	case 6:	//戦艦砲
 		//モデルのサイズを設定	
-		custom_model_shoulder.SetScale(scale2);
+		custom_model_shoulder->SetScale(scale2);
 		//モデルのローカルポジション設定
 		sw_lp = { 0.0f,119.0f,0.0f };
 
@@ -1110,13 +1123,13 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 	Quaternion sw_Rotation2 = originRotation2;
 
 	//更新
-	custom_model_shoulder.SetRotation(sw_Rotation);
-	custom_model_shoulder.SetPosition(sw_position);
-	custom_model_shoulder.Update();
+	custom_model_shoulder->SetRotation(sw_Rotation);
+	custom_model_shoulder->SetPosition(sw_position);
+	custom_model_shoulder->Update();
 
-	custom_model_shoulder2.SetRotation(sw_Rotation2);
-	custom_model_shoulder2.SetPosition(sw_position2);
-	custom_model_shoulder2.Update();
+	custom_model_shoulder2->SetRotation(sw_Rotation2);
+	custom_model_shoulder2->SetPosition(sw_position2);
+	custom_model_shoulder2->Update();
 }
 
 void Customize_UI_ver2::Custom_model_Right_leg()
@@ -1128,21 +1141,21 @@ void Customize_UI_ver2::Custom_model_Right_leg()
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定	
-		custom_model_Right_leg.SetScale(scale2);
+		custom_model_Right_leg->SetScale(scale2);
 		//モデルのローカルポジション設定
 		rlw_lp = { 90.0f,30.0f,0.0f };
 
 		break;
 	case 4:	//ギガトンキャノン
 		//モデルのサイズを設定	
-		custom_model_Right_leg.SetScale(0.8f);
+		custom_model_Right_leg->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		rlw_lp = { 55.0f,40.0f,27.0f };
 
 		break;
 	case 6:	//戦艦砲
 		//モデルのサイズを設定	
-		custom_model_Right_leg.SetScale(scale2);
+		custom_model_Right_leg->SetScale(scale2);
 		//モデルのローカルポジション設定
 		rlw_lp = { 60.0f,40.0f,40.0f };
 
@@ -1160,9 +1173,9 @@ void Customize_UI_ver2::Custom_model_Right_leg()
 	Quaternion rlw_Rotation = originRotation;
 
 	//更新
-	custom_model_Right_leg.SetRotation(rlw_Rotation);
-	custom_model_Right_leg.SetPosition(rlw_position);
-	custom_model_Right_leg.Update();
+	custom_model_Right_leg->SetRotation(rlw_Rotation);
+	custom_model_Right_leg->SetPosition(rlw_position);
+	custom_model_Right_leg->Update();
 }
 
 void Customize_UI_ver2::Custom_model_Left_leg()
@@ -1174,21 +1187,21 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 	{
 	case 2:	//マシンガン
 		//モデルのサイズを設定			
-		custom_model_Left_leg.SetScale(scale2);
+		custom_model_Left_leg->SetScale(scale2);
 		//モデルのローカルポジション設定
 		llw_lp = { -90.0f,30.0f,0.0f };
 
 		break;
 	case 4:	//ギガトンキャノン
 		//モデルのサイズを設定			
-		custom_model_Left_leg.SetScale(0.8f);
+		custom_model_Left_leg->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		llw_lp = { -55.0f,40.0f,27.0f };
 
 		break;
 	case 6:	//戦艦砲
 		//モデルのサイズを設定	
-		custom_model_Left_leg.SetScale(scale2);
+		custom_model_Left_leg->SetScale(scale2);
 		//モデルのローカルポジション設定
 		llw_lp = { -60.0f,40.0f,40.0f };
 
@@ -1205,9 +1218,9 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 	Quaternion llw_Rotation = originRotation;
 
 	//更新
-	custom_model_Left_leg.SetRotation(llw_Rotation);
-	custom_model_Left_leg.SetPosition(llw_position);
-	custom_model_Left_leg.Update();
+	custom_model_Left_leg->SetRotation(llw_Rotation);
+	custom_model_Left_leg->SetPosition(llw_position);
+	custom_model_Left_leg->Update();
 }
 
 void Customize_UI_ver2::PlaySE(SoundName name, float vol)
@@ -1224,34 +1237,34 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 	if (m_player->GetGameState() == 3)
 	{
 		//各部位に装備されているならDrawする
-		custom_model_Core.Draw(rc);				//コア武器はずっと存在するので分岐なし
-		custom_model_body.Draw(rc);				//胴体はずっと存在するので分岐なし
+		custom_model_Core->Draw(rc);				//コア武器はずっと存在するので分岐なし
+		custom_model_body->Draw(rc);				//胴体はずっと存在するので分岐なし
 
 		if (Right_arm_weapon_set == true)
 		{
-			custom_model_Right_arm.Draw(rc);	//右腕
+			custom_model_Right_arm->Draw(rc);	//右腕
 		}
 		if (Left_arm_weapon_set == true)
 		{
-			custom_model_Left_arm.Draw(rc);		//左腕
+			custom_model_Left_arm->Draw(rc);		//左腕
 		}
 		if (Shoulder_weapon_set == true)
 		{
-			custom_model_shoulder.Draw(rc);		//肩
+			custom_model_shoulder->Draw(rc);		//肩
 
 			if (m_shoulderWeapon->GetWeaponKind() == 2)
 			{
 				//2個目のマシンガンをDraw
-				custom_model_shoulder2.Draw(rc);
+				custom_model_shoulder2->Draw(rc);
 			}
 		}
 		if (Right_leg_weapon_set == true)
 		{
-			custom_model_Right_leg.Draw(rc);	//右足
+			custom_model_Right_leg->Draw(rc);	//右足
 		}
 		if (Left_leg_weapon_set == true)
 		{
-			custom_model_Left_leg.Draw(rc);		//左足
+			custom_model_Left_leg->Draw(rc);		//左足
 		}
 
 

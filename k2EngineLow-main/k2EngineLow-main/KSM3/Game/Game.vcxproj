@@ -239,7 +239,6 @@
     <ClCompile Include="Boss_Shovel_attack.cpp" />
     <ClCompile Include="Boss_Turbo.cpp" />
     <ClCompile Include="Boss_Turbo_attack.cpp" />
-    <ClCompile Include="BoxMove.cpp" />
     <ClCompile Include="Combo.cpp" />
     <ClCompile Include="Core_weapons.cpp" />
     <ClCompile Include="Core_weapons_attack.cpp" />
@@ -298,7 +297,6 @@
     <ClInclude Include="Boss_Shovel_attack.h" />
     <ClInclude Include="Boss_Turbo.h" />
     <ClInclude Include="Boss_Turbo_attack.h" />
-    <ClInclude Include="BoxMove.h" />
     <ClInclude Include="Combo.h" />
     <ClInclude Include="Core_weapons.h" />
     <ClInclude Include="Core_weapons_attack.h" />

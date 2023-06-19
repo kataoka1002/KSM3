@@ -47,9 +47,17 @@ bool EnemyBase::Start()
 	GameSetUp();
 
 
-	//エネミーのモデル関係の初期化
-	InitEnemyModel();
+	//エネミーモデル関係
+	{
 
+		//エネミーモデルのメモリの確保
+		m_enemyModel = std::make_unique<ModelRender>();
+
+
+		//エネミーのモデル関係の初期化
+		InitEnemyModel();
+
+	}
 
 	return true;
 
@@ -57,6 +65,10 @@ bool EnemyBase::Start()
 
 void EnemyBase::WeaponSetUp()
 {
+
+	//メモリの確保
+	m_enemyWeaponModel = std::make_unique<ModelRender>();
+
 
 	//取り付ける武器の変更
 	if (m_setWeapon == 1)		//ギガプラズマ
@@ -67,11 +79,11 @@ void EnemyBase::WeaponSetUp()
 	{
 
 		//武器モデル設定
-		m_enemyWeaponModel.Init("Assets/modelData/machine_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale(2.0f);
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
+		m_enemyWeaponModel->Init("Assets/modelData/machine_gun_enemy.tkm");
+		m_enemyWeaponModel->SetScale(2.0f);
+		m_enemyWeaponModel->SetPosition(m_weaponPosition);
+		m_enemyWeaponModel->SetRotation(m_weaponRotation);
+		m_enemyWeaponModel->Update();
 
 	}
 	else if (m_setWeapon == 3)		 //ヘルファイヤ
@@ -82,11 +94,11 @@ void EnemyBase::WeaponSetUp()
 	{
 
 		//武器モデルの設定
-		m_enemyWeaponModel.Init("Assets/modelData/GIgaton_cannon.tkm");
-		m_enemyWeaponModel.SetScale(1.3f);
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
+		m_enemyWeaponModel->Init("Assets/modelData/GIgaton_cannon.tkm");
+		m_enemyWeaponModel->SetScale(1.3f);
+		m_enemyWeaponModel->SetPosition(m_weaponPosition);
+		m_enemyWeaponModel->SetRotation(m_weaponRotation);
+		m_enemyWeaponModel->Update();
 
 	}
 	else if (m_setWeapon == 5)		//ミサイル
@@ -97,11 +109,11 @@ void EnemyBase::WeaponSetUp()
 	{
 
 		//武器モデルの設定
-		m_enemyWeaponModel.Init("Assets/modelData/battleship_gun_enemy.tkm");
-		m_enemyWeaponModel.SetScale({ 3.0f ,5.0f,3.0f });
-		m_enemyWeaponModel.SetPosition(m_weaponPosition);
-		m_enemyWeaponModel.SetRotation(m_weaponRotation);
-		m_enemyWeaponModel.Update();
+		m_enemyWeaponModel->Init("Assets/modelData/battleship_gun_enemy.tkm");
+		m_enemyWeaponModel->SetScale({ 3.0f ,5.0f,3.0f });
+		m_enemyWeaponModel->SetPosition(m_weaponPosition);
+		m_enemyWeaponModel->SetRotation(m_weaponRotation);
+		m_enemyWeaponModel->Update();
 
 	}
 
@@ -154,9 +166,9 @@ void EnemyBase::NormalAction(float dist)
 
 
 	//エネミー更新
-	m_enemyModel.SetPosition(m_enemyPosition);
-	m_enemyModel.SetRotation(m_enemyRotation);
-	m_enemyModel.Update();
+	m_enemyModel->SetPosition(m_enemyPosition);
+	m_enemyModel->SetRotation(m_enemyRotation);
+	m_enemyModel->Update();
 
 }
 
@@ -391,9 +403,9 @@ void EnemyBase::WeaponMove()
 
 
 	//更新
-	m_enemyWeaponModel.SetPosition(m_weaponPosition);
-	m_enemyWeaponModel.SetRotation(m_weaponRotation);
-	m_enemyWeaponModel.Update();
+	m_enemyWeaponModel->SetPosition(m_weaponPosition);
+	m_enemyWeaponModel->SetRotation(m_weaponRotation);
+	m_enemyWeaponModel->Update();
 
 }
 

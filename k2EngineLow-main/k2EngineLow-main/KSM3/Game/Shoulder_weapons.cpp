@@ -42,8 +42,12 @@ void Shoulder_weapons::InitWeapon()
 	{
 	case 2:	//マシンガンの時
 
+		//メモリの確保
+		m_machineGunWeapon2 = std::make_unique<ModelRender>();
+
+
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/machine_gun_drop.tkm");
+		m_weaponModel->Init("Assets/modelData/machine_gun_drop.tkm");
 
 
 		//ローカルポジションの設定
@@ -51,7 +55,7 @@ void Shoulder_weapons::InitWeapon()
 
 
 		//マシンガン用のモデルの初期化
-		m_machineGunWeapon2.Init("Assets/modelData/machine_gun_drop.tkm");
+		m_machineGunWeapon2->Init("Assets/modelData/machine_gun_drop.tkm");
 
 
 		//ローカルポジションの設定
@@ -59,7 +63,7 @@ void Shoulder_weapons::InitWeapon()
 
 
 		//2個目のマシンガンの大きさ設定
-		m_machineGunWeapon2.SetScale(MACHINEGUN_SCALE);
+		m_machineGunWeapon2->SetScale(MACHINEGUN_SCALE);
 
 
 		break;
@@ -68,7 +72,7 @@ void Shoulder_weapons::InitWeapon()
 	case 4:	//ギガトンキャノンの時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/GIgaton_shoulder.tkm");
+		m_weaponModel->Init("Assets/modelData/GIgaton_shoulder.tkm");
 
 
 		//ローカルポジションの設定
@@ -80,7 +84,7 @@ void Shoulder_weapons::InitWeapon()
 	case 6:	//戦艦砲の時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/battleship_gun_shoulder.tkm");
+		m_weaponModel->Init("Assets/modelData/battleship_gun_shoulder.tkm");
 
 
 		//ローカルポジションの設定
@@ -149,8 +153,8 @@ void Shoulder_weapons::Move2()
 {
 
 	//武器がマシンガンなら
-	//if (m_player->m_customPoint[0][1] == 2)
-	//{
+	if (m_player->GetCustomPoint(0, 1) == 2)
+	{
 
 		//ローカルポジションを教える
 		Vector3 lp = m_localPosition2;
@@ -177,11 +181,11 @@ void Shoulder_weapons::Move2()
 
 
 		//更新
-		m_machineGunWeapon2.SetPosition(m_position2);
-		m_machineGunWeapon2.SetRotation(m_rotation2);
-		m_machineGunWeapon2.Update();
+		m_machineGunWeapon2->SetPosition(m_position2);
+		m_machineGunWeapon2->SetRotation(m_rotation2);
+		m_machineGunWeapon2->Update();
 
-	//}
+	}
 
 }
 
@@ -197,7 +201,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 
 			//弾2にポジションと回転を教えて生成する
 			m_machineGunAttack2 = NewGO<MachineGunAttack>(1, "machinegunattack");
-			m_machineGunAttack2->SetRotation(m_rotation2);
+			m_machineGunAttack2->SetRotation(m_rotation);
 			m_machineGunAttack2->SetPosition(m_position2);
 			m_machineGunAttack2->SetLocalPosition(Vector3{ 0.0f,-10.0f,170.0f });
 
@@ -208,7 +212,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 
 			//弾2にポジションと回転を教えて生成する
 			m_gigatonAttack2 = NewGO<GigatonCannonAttack>(1, "gigatoncannonattack");
-			m_gigatonAttack2->SetRotation(m_rotation2);
+			m_gigatonAttack2->SetRotation(m_rotation);
 			m_gigatonAttack2->SetPosition(m_position);
 			m_gigatonAttack2->SetLocalPosition(Vector3{ -40.0f,0.0f,100.0f });
 
@@ -219,7 +223,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 
 			//弾2にポジションと回転を教えて生成する
 			m_battleShipAttack2 = NewGO<Battle_ship_attack>(1, "battle_ship_attack");
-			m_battleShipAttack2->SetRotation(m_rotation2);
+			m_battleShipAttack2->SetRotation(m_rotation);
 			m_battleShipAttack2->SetPosition(m_position);
 			m_battleShipAttack2->SetLocalPosition(Vector3{ -40.0f,-40.0f,70.0f });
 
@@ -311,7 +315,7 @@ void Shoulder_weapons::Render(RenderContext& rc)
 
 
 	//武器モデルの描画
-	m_weaponModel.Draw(rc);
+	m_weaponModel->Draw(rc);
 
 
 	//付けている武器がマシンガンなら
@@ -319,7 +323,7 @@ void Shoulder_weapons::Render(RenderContext& rc)
 	{
 
 		//2個目の武器モデルの描画
-		m_machineGunWeapon2.Draw(rc);
+		m_machineGunWeapon2->Draw(rc);
 
 	}
 

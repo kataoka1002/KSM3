@@ -70,10 +70,10 @@ void Enemy::InitEnemyModel()
 {
 
 	//エネミーモデルの設定
-	m_enemyModel.Init("Assets/modelData/enemy_model.tkm");
-	m_enemyModel.SetScale(2.0f);
-	m_enemyModel.SetRotation(m_enemyRotation);
-	m_enemyModel.SetPosition(m_enemyPosition);
+	m_enemyModel->Init("Assets/modelData/enemy_model.tkm");
+	m_enemyModel->SetScale(2.0f);
+	m_enemyModel->SetRotation(m_enemyRotation);
+	m_enemyModel->SetPosition(m_enemyPosition);
 
 
 	//キャラクターコントローラーを初期化。
@@ -503,9 +503,9 @@ void Enemy::Render(RenderContext& rc)
 {
 
 	//敵モデルの描画
-	m_enemyModel.Draw(rc);
+	m_enemyModel->Draw(rc);
 
 	//武器モデルの描画
-	m_enemyWeaponModel.Draw(rc);
+	m_enemyWeaponModel->Draw(rc);
 
 }
