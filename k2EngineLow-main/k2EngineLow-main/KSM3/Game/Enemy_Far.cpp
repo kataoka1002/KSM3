@@ -379,7 +379,7 @@ void Enemy_Far::Attack()
 		//武器によっての分岐
 		switch (m_setWeapon)
 		{
-		case 5://ミサイル
+		case MISSILE_NUM://ミサイル
 
 
 			//一定のカウントになると
@@ -387,7 +387,7 @@ void Enemy_Far::Attack()
 			{
 
 				//発射
-				Fire(5);	
+				Fire(MISSILE_NUM);
 
 
 				//カウントリセット
@@ -398,7 +398,7 @@ void Enemy_Far::Attack()
 			break;
 
 
-		case 6://戦艦砲
+		case BATTLESHIPGUN_NUM://戦艦砲
 
 
 			//一定のカウントになると
@@ -406,7 +406,7 @@ void Enemy_Far::Attack()
 			{
 
 				//発射
-				Fire(6);	
+				Fire(BATTLESHIPGUN_NUM);
 							
 							
 				//カウントリセット
@@ -430,7 +430,7 @@ void Enemy_Far::Fire(int m_weaponNum)
 {
 	
 	//戦艦砲なら
-	if (m_weaponNum == 6)	
+	if (m_weaponNum == BATTLESHIPGUN_NUM)
 	{
 
 		//弾の生成

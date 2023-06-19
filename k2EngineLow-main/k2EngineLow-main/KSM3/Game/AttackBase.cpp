@@ -8,6 +8,14 @@
 #include "Boss.h"
 #include "Boss_Drill.h"
 
+namespace
+{
+	const float ENEMY_NEAR_RANGEDISTANCE = 150.0f;
+	const float ENEMY_RANGEDISTANCE = 150.0f;
+	const float ENEMY_FAR_RANGEDISTANCE = 300.0f;
+}
+
+
 bool AttackBase::Start()
 {
 
@@ -136,7 +144,7 @@ void AttackBase::DamageEvent(float damage)
 
 
 		//一定距離以下なら
-		if (diff.Length() <= 300.0f)
+		if (diff.Length() <= ENEMY_RANGEDISTANCE)
 		{
 
 			//ダメージを与える
@@ -160,7 +168,7 @@ void AttackBase::DamageEvent(float damage)
 
 
 		//一定距離以下なら
-		if (diff.Length() <= 400.0f)
+		if (diff.Length() <= ENEMY_FAR_RANGEDISTANCE)
 		{
 
 			//ダメージを与える
@@ -184,7 +192,7 @@ void AttackBase::DamageEvent(float damage)
 
 
 		//一定距離以下なら
-		if (diff.Length() <= 400.0f)
+		if (diff.Length() <= ENEMY_NEAR_RANGEDISTANCE)
 		{
 
 			//ダメージを与える

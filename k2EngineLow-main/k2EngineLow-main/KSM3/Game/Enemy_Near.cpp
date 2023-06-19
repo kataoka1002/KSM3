@@ -406,14 +406,14 @@ void Enemy_Near::Attack()
 		switch (m_setWeapon)
 		{
 
-		case 4://ギガトンキャノン
+		case GIGATONCANNON_NUM://ギガトンキャノン
 
 
 			if (m_attackCount >= 10)
 			{
 
 				//発射
-				Fire(4);	
+				Fire(GIGATONCANNON_NUM);
 
 
 				//カウントリセット
@@ -441,7 +441,7 @@ void Enemy_Near::Fire(int weaponNum)
 {
 
 	//ギガトンキャノンなら
-	if (weaponNum == 4)
+	if (weaponNum == GIGATONCANNON_NUM)
 	{
 
 		//弾の生成

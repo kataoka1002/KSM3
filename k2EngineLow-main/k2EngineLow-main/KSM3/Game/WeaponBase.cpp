@@ -40,7 +40,7 @@ void WeaponBase::SetWeapon(int customPoint)
 	//付いている武器によって処理を変更する
 	switch (customPoint)
 	{
-	case 2:	//マシンガンの時
+	case MACHINEGUN_NUM:	//マシンガンの時
 
 
 		//大きさの設定
@@ -53,7 +53,7 @@ void WeaponBase::SetWeapon(int customPoint)
 		break;
 
 
-	case 4:	//ギガトンキャノンの時
+	case GIGATONCANNON_NUM:	//ギガトンキャノンの時
 
 
 		//大きさの設定
@@ -66,7 +66,7 @@ void WeaponBase::SetWeapon(int customPoint)
 		break;
 
 
-	case 6:	//戦艦砲の時
+	case BATTLESHIPGUN_NUM:	//戦艦砲の時
 
 
 		//大きさの設定
@@ -141,7 +141,7 @@ void WeaponBase::MakeBullet(int customPoint)
 	{
 
 		//武器がマシンガンの場合
-		if (customPoint == 2 && m_firingCount % 5 == 0)
+		if (customPoint == MACHINEGUN_NUM && m_firingCount % 5 == 0)
 		{
 
 			//弾にポジションと回転を教えて生成する
@@ -151,7 +151,7 @@ void WeaponBase::MakeBullet(int customPoint)
 
 		}
 		//武器がギガトンキャノンの場合
-		else if (customPoint == 4 && m_firingCount % 180 == 0)
+		else if (customPoint == GIGATONCANNON_NUM && m_firingCount % 180 == 0)
 		{
 
 			//弾にポジションと回転を教えて生成する
@@ -161,7 +161,7 @@ void WeaponBase::MakeBullet(int customPoint)
 
 		}
 		//武器が戦艦砲の場合
-		else if (customPoint == 6 && m_firingCount % 180 == 0)
+		else if (customPoint == BATTLESHIPGUN_NUM && m_firingCount % 180 == 0)
 		{
 
 			//弾にポジションと回転を教えて生成する
