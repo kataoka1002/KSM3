@@ -21,7 +21,24 @@ class Title;
 class GuideLight;
 class Combo;
 
-//エフェクトの列挙
+
+/// <summary>
+/// 武器のナンバー
+/// </summary>
+namespace
+{
+	const int GIGAPLASMA_NUM = 1;
+	const int MACHINEGUN_NUM = 2;
+	const int HELLFIRE_NUM = 3;
+	const int GIGATONCANNON_NUM = 4;
+	const int MISSILE_NUM = 5;
+	const int BATTLESHIPGUN_NUM = 6;
+}
+
+
+/// <summary>
+/// エフェクトの名前
+/// </summary>
 enum EffectName 
 {
 	enSunabokori,				//砂ぼこり
@@ -57,7 +74,10 @@ enum EffectName
 	en_Boss_attack_Explosion	//ボス攻撃の爆発エフェ
 };
 
-//サウンドの列挙
+
+/// <summary>
+/// サウンドの名前
+/// </summary>
 enum SoundName 
 {
 	enRunning,					//移動中の音(プレイヤーもエネミーも)

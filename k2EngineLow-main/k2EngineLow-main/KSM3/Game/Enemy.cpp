@@ -339,7 +339,7 @@ void Enemy::Attack()
 		switch (m_setWeapon)
 		{
 
-		case 1://ギガプラズマ
+		case GIGAPLASMA_NUM://ギガプラズマ
 
 
 			//一定のカウントになると
@@ -347,7 +347,7 @@ void Enemy::Attack()
 			{
 
 				//発射
-				Fire(1);	
+				Fire(GIGAPLASMA_NUM);
 
 
 				//カウントリセット
@@ -357,7 +357,7 @@ void Enemy::Attack()
 			break;
 
 
-		case 2://マシンガン
+		case MACHINEGUN_NUM://マシンガン
 
 
 			//一定のカウントになると
@@ -365,7 +365,7 @@ void Enemy::Attack()
 			{
 
 				//発射
-				Fire(2);	
+				Fire(MACHINEGUN_NUM);
 
 
 				//カウントリセット
@@ -379,7 +379,7 @@ void Enemy::Attack()
 			break;
 
 
-		case 3://ヘルファイヤ
+		case HELLFIRE_NUM://ヘルファイヤ
 
 
 			//一定のカウントになると
@@ -387,7 +387,7 @@ void Enemy::Attack()
 			{
 
 				//発射
-				Fire(3);	
+				Fire(HELLFIRE_NUM);
 							
 							
 				//カウントリセット
@@ -410,7 +410,7 @@ void Enemy:: Fire(int m_weaponNum)
 {
 
 	//マシンガンの時
-	if (m_weaponNum == 2)
+	if (m_weaponNum == MACHINEGUN_NUM)
 	{
 
 		//弾の生成(1個目)
@@ -475,7 +475,7 @@ void Enemy::SE()
 {
 
 	//マシンガンの時
-	if (m_setWeapon == 2)	
+	if (m_setWeapon == MACHINEGUN_NUM)	
 	{
 
 		//攻撃中なら

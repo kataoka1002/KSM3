@@ -8,6 +8,7 @@
 #include "Enemy_HP_UI.h"
 
 
+
 bool EnemyBase::Start()
 {
 
@@ -71,11 +72,11 @@ void EnemyBase::WeaponSetUp()
 
 
 	//取り付ける武器の変更
-	if (m_setWeapon == 1)		//ギガプラズマ
+	if (m_setWeapon == GIGAPLASMA_NUM)		//ギガプラズマ
 	{
 
 	}
-	else if (m_setWeapon == 2)		//マシンガン
+	else if (m_setWeapon == MACHINEGUN_NUM)		//マシンガン
 	{
 
 		//武器モデル設定
@@ -86,11 +87,11 @@ void EnemyBase::WeaponSetUp()
 		m_enemyWeaponModel->Update();
 
 	}
-	else if (m_setWeapon == 3)		 //ヘルファイヤ
+	else if (m_setWeapon == HELLFIRE_NUM)		 //ヘルファイヤ
 	{
 
 	}
-	else if (m_setWeapon == 4)		//ギガトンキャノン
+	else if (m_setWeapon == GIGATONCANNON_NUM)		//ギガトンキャノン
 	{
 
 		//武器モデルの設定
@@ -101,11 +102,11 @@ void EnemyBase::WeaponSetUp()
 		m_enemyWeaponModel->Update();
 
 	}
-	else if (m_setWeapon == 5)		//ミサイル
+	else if (m_setWeapon == MISSILE_NUM)		//ミサイル
 	{
 
 	}
-	else if (m_setWeapon == 6)		//戦艦砲
+	else if (m_setWeapon == BATTLESHIPGUN_NUM)		//戦艦砲
 	{
 
 		//武器モデルの設定

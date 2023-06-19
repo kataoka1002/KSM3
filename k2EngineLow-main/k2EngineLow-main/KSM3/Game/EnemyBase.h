@@ -8,6 +8,8 @@ class GameCamera;
 class Combo;
 class Enemy_HP_UI;
 
+
+
 class EnemyBase : public IGameObject
 {
 public:
