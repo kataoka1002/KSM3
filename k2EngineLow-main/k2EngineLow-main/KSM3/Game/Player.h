@@ -307,7 +307,6 @@ private:
 
 	Title* m_title = nullptr;
 	Result* m_result = nullptr;
-	//Customize_UI_ver2* m_customizeUI = nullptr;
 	Game* m_game = nullptr;
 	SoundSource* m_machineGunSE = nullptr;			//マシンガンSE
 	SoundSource* m_runSE = nullptr;					//足音SE
@@ -315,10 +314,8 @@ private:
 	SoundSource* m_kettei = nullptr;
 	SoundSource* m_deadSE = nullptr;
 	GameCamera* m_gameCamera = nullptr;
-	//EffectEmitter* m_sunabokoriEffect = nullptr;
-	//EffectEmitter* m_deadEffect = nullptr;
 
-	ModelRender m_playerModel;					//モデルレンダー
+	std::unique_ptr<ModelRender> m_playerModel;					//モデルレンダー
 	SpriteRender m_pouseSprite;				//pause画面用のスプライトレンダー
 	SpriteRender m_playerDeadSprite;				//プレイヤーが死んだときのスプライトレンダー
 	CharacterController m_characterController;		//キャラクターコントローラー
@@ -344,8 +341,6 @@ private:
 	float m_playerHPMax = 500.0f;					//プレイヤーのHPの最大値
 	float m_deadSpriteColw = 0.0f;					//プレイヤー死亡時のスプライトの透明度
 	bool m_cameraMove = false;						//カメラ切り替え中かどうか
-	//bool m_enemySurvival = true;
-	//bool m_bossSurvival = true;
 	bool m_playerDead = false;						//プレイヤーが死んだかどうか
 	bool m_playDeadSE = false;						//死亡音を鳴らしたかどうか
 	bool m_deadBakuhaPlay = false;					//死亡時の爆破を発生させたか

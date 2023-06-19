@@ -10,7 +10,7 @@ public:
     void Update();
     void Render(RenderContext& rc);
 
-    ModelRender modelRender;
+    std::unique_ptr<ModelRender> modelRender;
     PhysicsStaticObject physicsStaticObject;//静的物理オブジェクト。
 };
 

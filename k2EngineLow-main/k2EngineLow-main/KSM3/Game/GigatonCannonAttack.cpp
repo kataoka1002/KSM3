@@ -96,6 +96,6 @@ void GigatonCannonAttack::Render(RenderContext& rc)
 {
 
 	//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“‚Ì’e‚ÍŒ©‚¹‚È‚¢
-	//m_bulletModel.Draw(rc);
+	//m_bulletModel->Draw(rc);
 
 }

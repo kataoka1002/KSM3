@@ -98,8 +98,8 @@ void Player::Update()
 	{
 
 		//モデルのポジション更新
-		m_playerModel.SetPosition(m_playerPosition);
-		m_playerModel.Update(true);
+		m_playerModel->SetPosition(m_playerPosition);
+		m_playerModel->Update(true);
 
 		return;
 	}
@@ -175,6 +175,10 @@ void  Player::InitSprite()
 void  Player::InitModel()
 {
 
+	//メモリの確保
+	m_playerModel = std::make_unique<ModelRender>();
+
+
 	//カラー選択がランダムの場合
 	if (m_playerColorData == 6)
 	{
@@ -184,14 +188,14 @@ void  Player::InitModel()
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<int> dis(0, 7);
 		m_playerColorRandom = dis(gen);
-		m_playerModel.Init(getPlayer_color(m_playerColorRandom));
+		m_playerModel->Init(getPlayer_color(m_playerColorRandom));
 
 	}
 	else 
 	{
 
 		//プレイヤーモデルを指定されたカラーで初期化
-		m_playerModel.Init(getPlayer_color(m_playerColorData));
+		m_playerModel->Init(getPlayer_color(m_playerColorData));
 
 
 		//変数にタイトルで指定されたカラーを覚えさせておく
@@ -415,9 +419,9 @@ void Player::Move()
 
 
 	//モデルの更新
-	m_playerModel.SetPosition(m_playerPosition);
-	m_playerModel.SetRotation(m_playerRotation);
-	m_playerModel.Update(true);
+	m_playerModel->SetPosition(m_playerPosition);
+	m_playerModel->SetRotation(m_playerRotation);
+	m_playerModel->Update(true);
 
 }
 
@@ -678,7 +682,7 @@ void Player::Render(RenderContext& rc)
 
 
 	//プレイヤーモデル表示
-	m_playerModel.Draw(rc);
+	m_playerModel->Draw(rc);
 
 
 	//ポーズ中なら

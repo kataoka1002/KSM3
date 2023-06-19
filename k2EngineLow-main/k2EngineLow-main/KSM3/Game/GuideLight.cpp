@@ -15,11 +15,16 @@ GuideLight::~GuideLight()
 
 bool GuideLight::Start()
 {
+
+	//メモリの確保
+	m_modelRender = std::make_unique<ModelRender>();
+
+
 	//モデルの初期化
-	m_modelRender.Init("Assets/modelData/V_P_Bullet.tkm");
-	m_modelRender.SetPosition(m_position);
-	m_modelRender.SetScale(SCALE);
-	m_modelRender.Update();
+	m_modelRender->Init("Assets/modelData/V_P_Bullet.tkm");
+	m_modelRender->SetPosition(m_position);
+	m_modelRender->SetScale(SCALE);
+	m_modelRender->Update();
 	
 	return true;
 }
@@ -33,8 +38,8 @@ void GuideLight::Update()
 
 	CalcVelocity(BULLET_SPPED, CURVATURE_RADIUS, DAMPING);
 	m_position += m_velocity;
-	m_modelRender.SetPosition(m_position);
-	m_modelRender.Update();
+	m_modelRender->SetPosition(m_position);
+	m_modelRender->Update();
 
 	//2フレーム毎に光発生
 	if (count % 2 == 0)
@@ -80,5 +85,5 @@ void GuideLight::CalcVelocity(const float speed, const float curvatureRadius,con
 void GuideLight::Render(RenderContext& rc)
 {
 	//弾は見えなくてよい
-	//m_modelRender.Draw(rc);
+	//m_modelRender->Draw(rc);
 }

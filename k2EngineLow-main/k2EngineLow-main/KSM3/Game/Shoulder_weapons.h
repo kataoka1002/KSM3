@@ -26,7 +26,7 @@ private:
 	MachineGunAttack* m_machineGunAttack2 = nullptr;
 	GigatonCannonAttack* m_gigatonAttack2 = nullptr;
 
-	ModelRender m_machineGunWeapon2;	//マシンガンの2個目
+	std::unique_ptr<ModelRender> m_machineGunWeapon2;	//マシンガンの2個目
 	Quaternion m_rotation2;
 	Vector3 m_position2 = Vector3::Zero;
 	Vector3 m_localPosition2 = Vector3::Zero;

@@ -43,7 +43,7 @@ void Right_arm_weapons::InitWeapon()
 	case 2:	//マシンガンの時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/machine_gun_drop.tkm");
+		m_weaponModel->Init("Assets/modelData/machine_gun_drop.tkm");
 
 
 		//ローカルポジションの設定
@@ -55,7 +55,7 @@ void Right_arm_weapons::InitWeapon()
 	case 4:	//ギガトンキャノンの時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
+		m_weaponModel->Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
 
 
 		//ローカルポジションの設定
@@ -67,7 +67,7 @@ void Right_arm_weapons::InitWeapon()
 	case 6:	//戦艦砲の時
 
 		//武器モデルの初期化
-		m_weaponModel.Init("Assets/modelData/battleship_gun_right_arm.tkm");
+		m_weaponModel->Init("Assets/modelData/battleship_gun_right_arm.tkm");
 
 
 		//ローカルポジションの設定
@@ -195,6 +195,6 @@ void Right_arm_weapons::Render(RenderContext& rc)
 
 
 	//武器モデルの描画
-	m_weaponModel.Draw(rc);
+	m_weaponModel->Draw(rc);
 
 }

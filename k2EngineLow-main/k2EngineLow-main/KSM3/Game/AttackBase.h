@@ -88,7 +88,7 @@ protected:
 	Game* m_game = nullptr;
 	Player* m_player = nullptr;
 
-	ModelRender m_bulletModel;						//弾のモデル
+	std::unique_ptr<ModelRender> m_bulletModel;						//弾のモデル
 	Vector3 m_position = Vector3::Zero;				//ポジション
 	Vector3 m_bulletForward = Vector3::Zero;		//前方向
 	Vector3 m_bulletLocalPosition = Vector3::Zero;	//弾のローカルポジション

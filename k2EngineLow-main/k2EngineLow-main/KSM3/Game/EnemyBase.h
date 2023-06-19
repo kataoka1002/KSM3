@@ -181,8 +181,8 @@ protected:
 	SoundSource* m_asiotoSE = nullptr;				//足音
 
 
-	ModelRender m_enemyModel;						//エネミーモデル
-	ModelRender m_enemyWeaponModel;					//武器モデル
+	std::unique_ptr<ModelRender> m_enemyModel;						//エネミーモデル
+	std::unique_ptr<ModelRender> m_enemyWeaponModel;					//武器モデル
 	CharacterController m_enemyCharacterController;	//エネミーキャラコン
 	Quaternion m_weaponRotation;					//武器クォータニオン
 	Vector3 m_weaponPosition = Vector3::Zero;		//武器ポジション

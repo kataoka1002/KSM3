@@ -91,6 +91,6 @@ void MachineGunAttack::Render(RenderContext& rc)
 {
 
 	//’eƒ‚ƒfƒ‹‚Ì•\Ž¦
-	m_bulletModel.Draw(rc);
+	m_bulletModel->Draw(rc);
 
 }

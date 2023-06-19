@@ -132,7 +132,7 @@ void Core_weapons_attack::Render(RenderContext& rc)
 {
 
 	//’eƒ‚ƒfƒ‹‚Ì‰Šú‰»
-	m_bulletModel.Draw(rc);
+	m_bulletModel->Draw(rc);
 
 }
 

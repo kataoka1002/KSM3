@@ -111,7 +111,7 @@ protected:
 	GigatonCannonAttack* m_gigatonAttack = nullptr;
 	Battle_ship_attack* m_battleShipAttack = nullptr;
 
-	ModelRender m_weaponModel;
+	std::unique_ptr<ModelRender> m_weaponModel;
 	Quaternion m_rotation;
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_moveSpeed = Vector3::Zero;

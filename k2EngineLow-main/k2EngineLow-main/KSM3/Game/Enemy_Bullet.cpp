@@ -125,6 +125,11 @@ void Enemy_Bullet::FindWeapon()
 
 void Enemy_Bullet::Setup() 
 {
+
+	//メモリの確保(make_unique関数内部でnewしている)
+	m_bulletModel = std::make_unique<ModelRender>();
+
+
 	//親によって初期情報を変える
 	if (m_enemyMama != nullptr)
 	{
@@ -136,8 +141,8 @@ void Enemy_Bullet::Setup()
 		case 2:	//マシンガン
 
 			//モデルの初期化
-			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale(4.0f);
+			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel->SetScale(4.0f);
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 
@@ -147,8 +152,8 @@ void Enemy_Bullet::Setup()
 			//バレットの前方向の設定
 			m_bulletFowrad = m_enemyMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyMama->GetRot());
-			m_bulletModel.SetPosition(m_position);
+			m_bulletModel->SetRotation(m_enemyMama->GetRot());
+			m_bulletModel->SetPosition(m_position);
 
 			//音はエネミー側で鳴らしている
 
@@ -170,8 +175,8 @@ void Enemy_Bullet::Setup()
 		case 4:	//ギガトンキャノン
 
 			//モデルの初期化
-			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale({ 15.0f ,15.0f,10.0f });
+			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel->SetScale({ 15.0f ,15.0f,10.0f });
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 			//最終的な弾の回転を決定
@@ -180,8 +185,8 @@ void Enemy_Bullet::Setup()
 			//バレットの前方向の設定
 			m_bulletFowrad = m_enemyNearMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyNearMama->GetRot());
-			m_bulletModel.SetPosition(m_position);
+			m_bulletModel->SetRotation(m_enemyNearMama->GetRot());
+			m_bulletModel->SetPosition(m_position);
 
 			//爆発音はエネミー側で鳴らしている
 
@@ -208,8 +213,8 @@ void Enemy_Bullet::Setup()
 		case 6:	//戦艦砲
 
 			//モデルの初期化
-			m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel.SetScale(10.0f);
+			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
+			m_bulletModel->SetScale(10.0f);
 			//エネミーから見て正しい位置に弾を設定
 			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
 			//最終的な弾の回転を決定
@@ -218,8 +223,8 @@ void Enemy_Bullet::Setup()
 			//バレットの前方向の設定
 			m_bulletFowrad = m_enemyFarMama->GetForward();
 			//更新
-			m_bulletModel.SetRotation(m_enemyFarMama->GetRot());
-			m_bulletModel.SetPosition(m_position);
+			m_bulletModel->SetRotation(m_enemyFarMama->GetRot());
+			m_bulletModel->SetPosition(m_position);
 
 			//エフェクトの再生
 			Effect(6);
@@ -291,9 +296,9 @@ void Enemy_Bullet::Move()
 		}
 
 		//バレットの更新
-		m_bulletModel.SetRotation(m_rot);
-		m_bulletModel.SetPosition(m_position);
-		m_bulletModel.Update();
+		m_bulletModel->SetRotation(m_rot);
+		m_bulletModel->SetPosition(m_position);
+		m_bulletModel->Update();
 	}
 	if (m_enemyMama->GetWeponKind() == 3)	//ヘルファイヤライフル
 	{
@@ -318,9 +323,9 @@ void Enemy_Bullet::MoveNear()
 		}
 
 		//バレットの更新
-		m_bulletModel.SetRotation(m_rot);
-		m_bulletModel.SetPosition(m_position);
-		m_bulletModel.Update();
+		m_bulletModel->SetRotation(m_rot);
+		m_bulletModel->SetPosition(m_position);
+		m_bulletModel->Update();
 	}
 }
 
@@ -338,9 +343,9 @@ void Enemy_Bullet::MoveFar()
 		m_position += m_bulletSpeed;
 
 		//バレットの更新
-		m_bulletModel.SetRotation(m_rot);
-		m_bulletModel.SetPosition(m_position);
-		m_bulletModel.Update();
+		m_bulletModel->SetRotation(m_rot);
+		m_bulletModel->SetPosition(m_position);
+		m_bulletModel->Update();
 	}
 }
 
@@ -621,7 +626,7 @@ void Enemy_Bullet::Render(RenderContext& rc)
 		}
 		else if (m_enemyMama->GetWeponKind() == 2)	//マシンガン
 		{
-			m_bulletModel.Draw(rc);
+			m_bulletModel->Draw(rc);
 		}
 		else if (m_enemyMama->GetWeponKind() == 3)	//ヘイルファイヤーライフル
 		{
@@ -632,7 +637,7 @@ void Enemy_Bullet::Render(RenderContext& rc)
 	{
 		if (m_enemyNearMama->GetWeponKind() == 4)	//ギガトンキャノン
 		{
-			m_bulletModel.Draw(rc);
+			m_bulletModel->Draw(rc);
 		}
 	}
 	else if (m_enemyFarMama != nullptr)
@@ -643,7 +648,7 @@ void Enemy_Bullet::Render(RenderContext& rc)
 		}
 		else if (m_enemyFarMama->GetWeponKind() == 6)	//戦艦砲
 		{
-			m_bulletModel.Draw(rc);
+			m_bulletModel->Draw(rc);
 		}
 	}
 }

@@ -138,6 +138,6 @@ void Battle_ship_attack::Render(RenderContext& rc)
 {
 
 	//弾モデルの描画
-	m_bulletModel.Draw(rc);
+	m_bulletModel->Draw(rc);
 
 }

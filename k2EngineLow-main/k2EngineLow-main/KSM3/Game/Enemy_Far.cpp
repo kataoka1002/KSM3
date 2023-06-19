@@ -67,10 +67,10 @@ void Enemy_Far::InitEnemyModel()
 {
 
 	//エネミーの設定
-	m_enemyModel.Init("Assets/modelData/Enemy_model_type2.tkm");
-	m_enemyModel.SetScale(m_enemySize);
-	m_enemyModel.SetRotation(m_enemyRotation);
-	m_enemyModel.SetPosition(m_enemyPosition);
+	m_enemyModel->Init("Assets/modelData/Enemy_model_type2.tkm");
+	m_enemyModel->SetScale(m_enemySize);
+	m_enemyModel->SetRotation(m_enemyRotation);
+	m_enemyModel->SetPosition(m_enemyPosition);
 
 
 	//キャラクターコントローラーを初期化。
@@ -149,8 +149,8 @@ void Enemy_Far::Update()
 
 
 			//モデルサイズの更新
-			m_enemyModel.SetScale(m_enemySize);
-			m_enemyModel.Update();
+			m_enemyModel->SetScale(m_enemySize);
+			m_enemyModel->Update();
 
 		}
 	}
@@ -502,7 +502,7 @@ void Enemy_Far::HPUnder0()
 		}
 		
 		//モデルを白くさせる
-		m_enemyModel.PlayFlash();	
+		m_enemyModel->PlayFlash();
 
 	}
 
@@ -531,13 +531,13 @@ void Enemy_Far::Render(RenderContext& rc)
 {
 
 	//モデルの描画。
-	m_enemyModel.Draw(rc);
+	m_enemyModel->Draw(rc);
 
 	//生きている間
 	if (m_defeatState == false)
 	{
 		//武器表示
-		m_enemyWeaponModel.Draw(rc);
+		m_enemyWeaponModel->Draw(rc);
 	}
 
 }

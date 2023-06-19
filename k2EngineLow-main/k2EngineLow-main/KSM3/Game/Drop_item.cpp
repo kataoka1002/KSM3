@@ -33,21 +33,26 @@ bool Drop_item::Start()
 
 void Drop_item::Set_Drop_item()
 {
+
+	//メモリの確保(make_unique関数内部でnewしている)
+	Drop_item_Render = std::make_unique<ModelRender>();
+
+
 	//落とした武器によって初期化情報を変更する
 	if (drop_kinds == 2)
 	{
-		Drop_item_Render.Init("Assets/modelData/machine_gun_drop.tkm");
-		Drop_item_Render.SetScale(modelSize);	//最初は小さめに設定
+		Drop_item_Render->Init("Assets/modelData/machine_gun_drop.tkm");
+		Drop_item_Render->SetScale(modelSize);	//最初は小さめに設定
 	}
 	else if (drop_kinds == 4)
 	{
-		Drop_item_Render.Init("Assets/modelData/GIgaton_cannon.tkm");
-		Drop_item_Render.SetScale(modelSize);	//最初は小さめに設定
+		Drop_item_Render->Init("Assets/modelData/GIgaton_cannon.tkm");
+		Drop_item_Render->SetScale(modelSize);	//最初は小さめに設定
 	}
 	else if (drop_kinds == 6)
 	{
-		Drop_item_Render.Init("Assets/modelData/battleship_gun_Drop.tkm");
-		Drop_item_Render.SetScale(modelSize);	//最初は小さめに設定
+		Drop_item_Render->Init("Assets/modelData/battleship_gun_Drop.tkm");
+		Drop_item_Render->SetScale(modelSize);	//最初は小さめに設定
 	}
 }
 
@@ -134,7 +139,7 @@ void Drop_item::SetSize()
 	}
 
 	//更新
-	Drop_item_Render.SetScale(modelSize);
+	Drop_item_Render->SetScale(modelSize);
 }
 
 void Drop_item::Float() 
@@ -147,12 +152,12 @@ void Drop_item::Float()
 	Drop_position.y += float_level;
 	Drop_rotation.AddRotationDegY(2.0f);
 	//アイテムの状態を更新
-	Drop_item_Render.SetPosition(Drop_position);
-	Drop_item_Render.SetRotation(Drop_rotation);
-	Drop_item_Render.Update();
+	Drop_item_Render->SetPosition(Drop_position);
+	Drop_item_Render->SetRotation(Drop_rotation);
+	Drop_item_Render->Update();
 }
 
 void Drop_item::Render(RenderContext& rc) 
 {
-	Drop_item_Render.Draw(rc);
+	Drop_item_Render->Draw(rc);
 }

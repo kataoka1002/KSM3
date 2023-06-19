@@ -47,9 +47,9 @@ public:
 	Shoulder_weapons* m_shoulder = nullptr;
 	EffectEmitter* m_weaponEffect = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;
-	SoundSource* m_battleShipGunTyakutiSE = nullptr;			//戦艦砲SE
+	SoundSource* m_battleShipGunTyakutiSE = nullptr;		//戦艦砲SE
+	std::unique_ptr<ModelRender> m_bulletModel;				//スマートポインタ
 
-	ModelRender m_bulletModel;	//マシンガンの弾のモデル
 	Quaternion m_aim;
 	Quaternion m_rot;
 	Quaternion originRotation;
