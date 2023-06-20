@@ -103,7 +103,7 @@ void Boss_Cannon_attack::DestroyWithImpactEffect() {
 		
 		//‰æ–Ê‚ğ—h‚ç‚·
 		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-		m_camera->VibBigFlag = true;
+		m_camera->SetBigVibFlag(true);
 		
 		fast = false;
 	}
@@ -123,7 +123,7 @@ void Boss_Cannon_attack::SetUp()
 	
 	//’eƒ‚ƒfƒ‹B
 	GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-	m_camera->VibFlag = true;
+	m_camera->SetVibFlag(true);
 	b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
 	b_a_aiming.Multiply(m_bulletLocalPosition);	//Š|‚¯Z
 	m_rot = b_a_aiming;

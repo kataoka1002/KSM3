@@ -553,7 +553,7 @@ void Boss::Damage()
 		}
 		if (Death_count == 0) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-			m_camera->VibFinalFlag = true;
+			m_camera->SetFinalVibFlag(true);
 			if (b_boss_riser != nullptr) {
 				
 				Explosion_Another = NewGO<EffectEmitter>(0);
@@ -625,7 +625,7 @@ void Boss::Damage()
 		}
 		if (Death_count == 120) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-			m_camera->VibBigFlag = true;
+			m_camera->SetBigVibFlag(true);
 			Boss_Explosion = NewGO<EffectEmitter>(0);
 			Boss_Explosion->Init(enBoss_Death2);
 			Boss_Explosion->SetScale({ 70.0f,70.0f,70.0f });

@@ -213,7 +213,7 @@ void Title::Update()
 		//{
 		//	Game* game = NewGO<Game>(0, "game");
 		//	//player->GetGameState() = 0;
-		//	//gameCamera->CameraState = 0;
+		//	//gameCamera->m_cameraState = 0;
 		//	DeleteGO(this);
 		//}
 	

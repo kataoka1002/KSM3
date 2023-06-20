@@ -352,7 +352,7 @@ void EnemyBase::ExecuteOnEnemyDefeated()
 
 	//‰æ–Ê‚ğ—h‚ç‚·
 	GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-	m_camera->VibFlag = true;
+	m_camera->SetVibFlag(true);
 
 
 	//ƒRƒ“ƒ{‚Ìˆ—

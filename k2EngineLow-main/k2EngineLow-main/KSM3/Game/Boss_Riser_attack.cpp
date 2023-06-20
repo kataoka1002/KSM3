@@ -86,7 +86,7 @@ void Boss_Riser_attack::DestroyWithImpactEffect() {
 
 		//‰æ–Ê‚ð—h‚ç‚·
 		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-		m_camera->VibBigFlag = true;
+		m_camera->SetBigVibFlag(true);
 		Damage(true);
 
 		fast = false;
@@ -103,7 +103,7 @@ void Boss_Riser_attack::DestroyWithImpactEffect() {
 void Boss_Riser_attack::SetUp()
 {
 	GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-	m_camera->VibFlag = true;
+	m_camera->SetVibFlag(true);
 	b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
 	b_a_aiming.Multiply(m_bulletLocalPosition);	//Š|‚¯ŽZ
 	m_rot = b_a_aiming;
