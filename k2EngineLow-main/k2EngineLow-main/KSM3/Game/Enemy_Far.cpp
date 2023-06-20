@@ -436,29 +436,29 @@ void Enemy_Far::Fire(int m_weaponNum)
 		//弾の生成
 		Enemy_Bullet* m_enemyBullet;
 		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
-		m_enemyBullet->m_enemyFarMama = this;
-		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet->m_bulletLocalPosition = { 105.0f,140.0f,290.0f };	//ローカルポジション設定
-		m_enemyBullet->m_bulletFowrad = m_enemyForward;						//弾の前方向の設定		
-		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+		m_enemyBullet->SetEnemyFarMama(this);
+		m_enemyBullet->SetPosition(m_enemyPosition);						//弾の位置を設定
+		m_enemyBullet->SetLocalPosition({105.0f,140.0f,290.0f});	//ローカルポジション設定
+		//m_enemyBullet->m_bulletFowrad = m_enemyForward;						//弾の前方向の設定		
+		m_enemyBullet->SetRotation(m_enemyRotation);					//回転はエネミーと同じ
 
 
 		//弾の生成
 		Enemy_Bullet* m_enemyBullet2;
 		m_enemyBullet2 = NewGO<Enemy_Bullet>(1, "enemy_bullet");
-		m_enemyBullet2->m_enemyFarMama = this;
-		m_enemyBullet2->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet2->m_bulletLocalPosition = { -105.0f,140.0f,290.0f };	//ローカルポジション設定
-		m_enemyBullet2->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+		m_enemyBullet2->SetEnemyFarMama(this);
+		m_enemyBullet2->SetPosition(m_enemyPosition);						//弾の位置を設定
+		m_enemyBullet2->SetLocalPosition({-105.0f,140.0f,290.0f});	//ローカルポジション設定
+		m_enemyBullet2->SetRotation(m_enemyRotation);					//回転はエネミーと同じ
 
 
 		//弾の生成
 		Enemy_Bullet* m_enemyBullet3;
 		m_enemyBullet3 = NewGO<Enemy_Bullet>(1, "enemy_bullet");
-		m_enemyBullet3->m_enemyFarMama = this;
-		m_enemyBullet3->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet3->m_bulletLocalPosition = { 0.0f,140.0f,290.0f };		//ローカルポジション設定
-		m_enemyBullet3->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+		m_enemyBullet3->SetEnemyFarMama(this);
+		m_enemyBullet3->SetPosition(m_enemyPosition);						//弾の位置を設定
+		m_enemyBullet3->SetLocalPosition({0.0f,140.0f,290.0f});		//ローカルポジション設定
+		m_enemyBullet3->SetRotation(m_enemyRotation);					//回転はエネミーと同じ
 
 
 		//発射音の設定と再生

@@ -447,10 +447,10 @@ void Enemy_Near::Fire(int weaponNum)
 		//弾の生成
 		Enemy_Bullet* m_enemyBullet;
 		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
-		m_enemyBullet->m_enemyNearMama = this;
-		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet->m_bulletLocalPosition = { 0.0f,100.0f,130.0f };		//ローカルポジション設定
-		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+		m_enemyBullet->SetEnemyNearMama(this);
+		m_enemyBullet->SetPosition(m_enemyPosition);						//弾の位置を設定
+		m_enemyBullet->SetLocalPosition({0.0f,100.0f,130.0f});		//ローカルポジション設定
+		m_enemyBullet->SetRotation(m_enemyRotation);					//回転はエネミーと同じ
 
 
 		//爆発音の設定と再生
