@@ -30,9 +30,28 @@ public:
 	void Effect(int num);
 	void Render(RenderContext& rc);
 	void FindWeapon();
-	void Damage(int weaponNum);
+	void MamaCheck(int weaponNum);
 	void DestroyWithImpactEffect();
 	void PlayEffect(EffectName name, Vector3 pos, Quaternion rot, Vector3 scale);
+
+	template<typename T>
+	/// <summary>
+	/// 対象のものと距離を測りつつダメージを与える
+	/// </summary>
+	/// <param name="mamaName">距離を測る対象の名前</param>
+	/// <param name="mamaPos">対象のポジション</param>
+	/// <param name="weaponNum">武器のナンバー</param>
+	void ApplyDamageWithDistanceCheck(T targetName, Vector3 targetPos, int weaponNum);
+
+
+	/// <summary>
+	/// 弾の初期化
+	/// </summary>
+	/// <param name="scale">スケール</param>
+	/// <param name="forward">前方向</param>
+	/// <param name="rot">回転量</param>
+	void InitBullet(const char* file,Vector3 scale, Vector3 forward, Quaternion rot);
+
 
 	/// <summary>
 	/// 弾の親を設定する
