@@ -35,6 +35,7 @@ Enemy_Bullet::~Enemy_Bullet()
 {
 	
 }
+
 void Enemy_Bullet::DestroyWithImpactEffect()
 {
 	//親によってエフェクトを変える
@@ -42,11 +43,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 	{
 		if (m_enemyMama->GetWeponKind() == MACHINEGUN_NUM)//マシンガンの弾の煙エフェ
 		{
-			m_tyakudanEffect = NewGO<EffectEmitter>(0);
-			m_tyakudanEffect->Init(enMasinganKemuri);
-			m_tyakudanEffect->SetScale({ 10.0f,10.0f,10.0f });
-			m_tyakudanEffect->SetPosition({ m_position.x,m_position.y,m_position.z });
-			m_tyakudanEffect->Play();
+			PlayEffect(enMasinganKemuri, m_position, m_rot, { 10.0f,10.0f,10.0f });
 		}
 	}
 	else if (m_enemyNearMama != nullptr)
@@ -63,11 +60,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 		if (m_enemyFarMama->GetWeponKind() == BATTLESHIPGUN_NUM)	//戦艦砲の煙エフェクト
 		{
 			//戦艦砲エフェクトの初期化と再生
-			m_weaponEffect = NewGO<EffectEmitter>(0);
-			m_weaponEffect->Init(enTyakudan);
-			m_weaponEffect->SetScale({ 5.7f,5.7f,5.7f });
-			m_weaponEffect->SetPosition(m_position);
-			m_weaponEffect->Play();
+			PlayEffect(enTyakudan, m_position, m_rot, { 5.7f,5.7f,5.7f });
 
 			//着弾したら効果音発生
 			m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
@@ -83,6 +76,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 	// 着弾したら死ぬ
 	DeleteGO(this);
 }
+
 bool Enemy_Bullet::Start()
 {
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
@@ -368,11 +362,7 @@ void Enemy_Bullet::Effect(int num)
 	else if (num == MACHINEGUN_NUM)
 	{
 		//エフェクトの初期化と再生
-		m_weaponEffect = NewGO<EffectEmitter>(0);
-		m_weaponEffect->Init(enMasinganHibana);
-		m_weaponEffect->SetScale({ 0.7f,0.7f,0.7f });
-		m_weaponEffect->SetPosition(m_position);
-		m_weaponEffect->Play();
+		PlayEffect(enMasinganHibana, m_position, m_rot, { 0.7f,0.7f,0.7f });
 	}
 	else if (num == HELLFIRE_NUM)
 	{
@@ -381,11 +371,7 @@ void Enemy_Bullet::Effect(int num)
 	else if (num == GIGATONCANNON_NUM)
 	{
 		//エフェクトの初期化と再生
-		m_weaponEffect = NewGO<EffectEmitter>(0);
-		m_weaponEffect->Init(enHidan);
-		m_weaponEffect->SetScale({ 1.5f,1.5f,1.5f });
-		m_weaponEffect->SetPosition(m_position);
-		m_weaponEffect->Play();
+		PlayEffect(enHidan, m_position, m_rot, { 1.5f,1.5f,1.5f });
 	}
 	else if (num == MISSILE_NUM)
 	{
@@ -394,11 +380,7 @@ void Enemy_Bullet::Effect(int num)
 	else if (num == BATTLESHIPGUN_NUM)
 	{
 		//エフェクトの初期化と再生
-		m_weaponEffect = NewGO<EffectEmitter>(0);
-		m_weaponEffect->Init(enMasinganHibana);
-		m_weaponEffect->SetScale({ 0.7f,0.7f,0.7f });
-		m_weaponEffect->SetPosition(m_position);
-		m_weaponEffect->Play();
+		PlayEffect(enMasinganHibana, m_position, m_rot, { 0.7f,0.7f,0.7f });
 	}
 }
 
@@ -625,6 +607,19 @@ void Enemy_Bullet::Damage(int weaponNum)
 		}
 	}
 	//---------------------------------------------------------------------------------------------------
+}
+
+void Enemy_Bullet::PlayEffect(EffectName name, Vector3 pos, Quaternion rot, Vector3 scale)
+{
+
+	//エフェクトの再生
+	EffectEmitter* m_effect = NewGO<EffectEmitter>(0);
+	m_effect->Init(name);
+	m_effect->SetPosition(pos);
+	m_effect->SetRotation(rot);
+	m_effect->SetScale(scale);
+	m_effect->Play();
+
 }
 
 void Enemy_Bullet::Render(RenderContext& rc)

@@ -15,7 +15,7 @@ class Right_leg_weapons;
 class Shoulder_weapons;
 
 
-class Enemy_Bullet:public IGameObject
+class Enemy_Bullet : public IGameObject
 {
 public:
 	Enemy_Bullet();
@@ -32,7 +32,70 @@ public:
 	void FindWeapon();
 	void Damage(int weaponNum);
 	void DestroyWithImpactEffect();
+	void PlayEffect(EffectName name, Vector3 pos, Quaternion rot, Vector3 scale);
 
+	/// <summary>
+	/// 弾の親を設定する
+	/// </summary>
+	/// <param name="enemy">エネミーのポインタ</param>
+	void SetEnemyMama(Enemy* enemy)
+	{
+		m_enemyMama = enemy;
+	}
+
+
+	/// <summary>
+	/// 弾の親を設定する
+	/// </summary>
+	/// <param name="enemy">エネミーのポインタ</param>
+	void SetEnemyFarMama(Enemy_Far* enemy)
+	{
+		m_enemyFarMama = enemy;
+	}
+
+
+	/// <summary>
+	/// 弾の親を設定する
+	/// </summary>
+	/// <param name="enemy">エネミーのポインタ</param>
+	void SetEnemyNearMama(Enemy_Near* enemy)
+	{
+		m_enemyNearMama = enemy;
+	}
+
+
+	/// <summary>
+	/// ポジションの設定
+	/// </summary>
+	/// <param name="pos">ポジション</param>
+	void SetPosition(Vector3 pos)
+	{
+		m_position = pos;
+	}
+
+
+	/// <summary>
+	/// 弾の回転を教える
+	/// </summary>
+	/// <param name="rot">回転量</param>
+	void SetRotation(Quaternion rot)
+	{
+		originRotation = rot;
+	}
+
+
+	/// <summary>
+	/// ローカルポジションの設定
+	/// </summary>
+	/// <param name="pos">ローカルポジション</param>
+	void SetLocalPosition(Vector3 pos)
+	{
+		m_bulletLocalPosition = pos;
+	}
+
+
+
+private:
 	Customize_UI_ver2* m_customizeUI = nullptr;
 	Core_weapons* m_coreWeapons = nullptr;
 	Enemy* m_enemyMama = nullptr;
@@ -45,8 +108,6 @@ public:
 	Right_arm_weapons* m_rightArm = nullptr;
 	Right_leg_weapons* m_rightLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
-	EffectEmitter* m_weaponEffect = nullptr;
-	EffectEmitter* m_tyakudanEffect = nullptr;
 	SoundSource* m_battleShipGunTyakutiSE = nullptr;		//戦艦砲SE
 	std::unique_ptr<ModelRender> m_bulletModel;				//スマートポインタ
 

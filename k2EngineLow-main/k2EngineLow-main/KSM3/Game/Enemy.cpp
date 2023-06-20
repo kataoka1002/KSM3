@@ -416,19 +416,19 @@ void Enemy:: Fire(int m_weaponNum)
 		//弾の生成(1個目)
 		Enemy_Bullet* m_enemyBullet;
 		m_enemyBullet = NewGO<Enemy_Bullet>(1, "enemy_bullet");
-		m_enemyBullet->m_enemyMama = this;									//弾に自分のポインタを教える
-		m_enemyBullet->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet->m_bulletLocalPosition = { 30.0f,50.0f,190.0f };		//ローカルポジション設定
-		m_enemyBullet->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+		m_enemyBullet->SetEnemyMama(this);									//弾に自分のポインタを教える
+		m_enemyBullet->SetPosition(m_enemyPosition);						//弾の位置を設定
+		m_enemyBullet->SetLocalPosition({30.0f,50.0f,190.0f});		//ローカルポジション設定
+		m_enemyBullet->SetRotation(m_enemyRotation);					//回転はエネミーと同じ
 
 
 		//弾の生成(2個目)
 		Enemy_Bullet* m_enemyBullet2;
 		m_enemyBullet2 = NewGO<Enemy_Bullet>(1, "enemy_bullet");
-		m_enemyBullet2->m_enemyMama = this;									//弾に自分のポインタを教える
-		m_enemyBullet2->m_position = m_enemyPosition;						//弾の位置を設定
-		m_enemyBullet2->m_bulletLocalPosition = { -30.0f,50.0f,190.0f };	//ローカルポジション設定
-		m_enemyBullet2->originRotation = m_enemyRotation;					//回転はエネミーと同じ
+		m_enemyBullet2->SetEnemyMama(this);									//弾に自分のポインタを教える
+		m_enemyBullet2->SetPosition(m_enemyPosition);						//弾の位置を設定
+		m_enemyBullet2->SetLocalPosition({-30.0f,50.0f,190.0f});	//ローカルポジション設定
+		m_enemyBullet2->SetRotation(m_enemyRotation);					//回転はエネミーと同じ
 
 	}
 
