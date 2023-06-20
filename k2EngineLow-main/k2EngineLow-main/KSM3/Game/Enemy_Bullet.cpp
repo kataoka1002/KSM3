@@ -79,7 +79,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 
 			//‰æ–Ê‚ð—h‚ç‚·
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-			m_camera->VibFlag = true;
+			m_camera->SetVibFlag(true);
 
 		}
 
@@ -105,7 +105,7 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 
 			//‰æ–Ê‚ð—h‚ç‚·
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-			m_camera->VibFlag = true;
+			m_camera->SetVibFlag(true);
 
 		}
 	}

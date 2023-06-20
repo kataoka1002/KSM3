@@ -658,12 +658,10 @@ void Customize_UI_ver2::trance()//遷移
 	//黒フェード終了したらカメラ移動
 	if (trance_sheet_count == 50)
 	{
-		m_gameCamera->trance_Finish = true;
-		m_gameCamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
-		m_gameCamera->fast_count = 0;
-		m_gameCamera->target = { 10000.0f,20.0f,0.0f };
-		m_gameCamera->CameraState = 3;
-		m_gameCamera->m_springCamera.Refresh();
+		m_gameCamera->SetToCameraPos({ 0.0f, -10.0f, -100.0f });
+		m_gameCamera->SetTarget({10000.0f,20.0f,0.0f});
+		m_gameCamera->SetCameraState(3);
+		m_gameCamera->GetSpringCamera().Refresh();
 	}
 
 	//黒フェード消滅
@@ -773,10 +771,9 @@ void Customize_UI_ver2::tranceOut()
 	if (trance_sheet_count == 50)
 	{
 		//カメラの初期化
-		m_gameCamera->trance_Finish = false;
-		m_gameCamera->CameraState = 0;
-		m_gameCamera->m_toCameraPos.Set(0.0f, 500.0f, -700.0f);
-		m_gameCamera->m_springCamera.Refresh();	//ばねカメラを瞬時に移動させる
+		m_gameCamera->SetCameraState(0);
+		m_gameCamera->SetToCameraPos({ 0.0f, 500.0f, -700.0f });
+		m_gameCamera->GetSpringCamera().Refresh();	//ばねカメラを瞬時に移動させる
 	}
 
 	//黒フェード消滅
@@ -1269,7 +1266,7 @@ void Customize_UI_ver2::Render(RenderContext& rc)
 
 
 		//カメラがカスタム画面ステートの時のみ表示
-		if (m_gameCamera->CameraState == 3)
+		if (m_gameCamera->GetCameraState() == 3)
 		{
 			m_selectSheet.Draw(rc);
 			m_parameterSheet.Draw(rc);

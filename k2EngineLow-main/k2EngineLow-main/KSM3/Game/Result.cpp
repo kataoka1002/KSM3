@@ -529,11 +529,11 @@ void Result::Back_set() { //モデルの読み込み
 	Box_render.Update();
 
 	//カメラの設定
-	gamecamera->m_toCameraPos.Set(0.0f, -10.0f, -100.0f);
-	gamecamera->fast_count = 0;
-	gamecamera->target = { 10000.0f,20.0f,0.0f };
-	gamecamera->m_springCamera.Refresh();
-	gamecamera->CameraState = 3;
+	gamecamera->SetToCameraPos({0.0f, -10.0f, -100.0f});
+	//gamecamera->fast_count = 0;
+	gamecamera->SetTarget({10000.0f,20.0f,0.0f});
+	gamecamera->GetSpringCamera().Refresh();
+	gamecamera->SetCameraState(3);
 
 	//コアウェポンの設定
 	custom_model_Core.Init("Assets/modelData/Versatile_Perforator.tkm");

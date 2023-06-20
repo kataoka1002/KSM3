@@ -127,10 +127,10 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 		if (m_enemyNear != nullptr)
 		{
 			//カメラからエネミーの位置へのベクトルを求める
-			Vector3 toEnemy = m_enemyNear->GetPos() - m_camera->pos;
+			Vector3 toEnemy = m_enemyNear->GetPos() - m_camera->GetCameraPos();
 			toEnemy.Normalize();
 			//カメラの前向きとカメラからエネミーへのベクトルの内積を求める
-			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			float angle = m_camera->GetCameraForward().Dot(toEnemy);
 			angle = acos(angle);	//内積の結果から角度を求める
 
 			//カメラから見てエネミーが一定角度以内のとき
@@ -148,10 +148,10 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 		if (m_enemy != nullptr)
 		{
 			//計算の方法は上と一緒
-			Vector3 toEnemy = m_enemy->GetPos() - m_camera->pos;
+			Vector3 toEnemy = m_enemy->GetPos() - m_camera->GetCameraPos();
 			toEnemy.Normalize();
 
-			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			float angle = m_camera->GetCameraForward().Dot(toEnemy);
 			angle = acos(angle);
 
 			if (fabsf(angle) <= Math::DegToRad(50.0f))
@@ -168,10 +168,10 @@ void Enemy_HP_UI::Render(RenderContext& rc)
 		if (m_enemyFar != nullptr)
 		{
 			//計算の方法は上と一緒
-			Vector3 toEnemy = m_enemyFar->GetPos() - m_camera->pos;
+			Vector3 toEnemy = m_enemyFar->GetPos() - m_camera->GetCameraPos();
 			toEnemy.Normalize();
 
-			float angle = m_camera->m_cameraForward.Dot(toEnemy);
+			float angle = m_camera->GetCameraForward().Dot(toEnemy);
 			angle = acos(angle);
 
 			if (fabsf(angle) <= Math::DegToRad(50.0f))

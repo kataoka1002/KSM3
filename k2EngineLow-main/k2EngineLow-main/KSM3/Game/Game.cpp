@@ -371,7 +371,7 @@ void Game::GameNow()
 
 
 			//ばねカメラを瞬間移動させる
-			gamecamera->m_springCamera.Refresh();
+			gamecamera->GetSpringCamera().Refresh();
 
 
 			//プレイヤーの更新

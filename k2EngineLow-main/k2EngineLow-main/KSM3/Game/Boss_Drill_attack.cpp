@@ -211,7 +211,7 @@ void Boss_Drill_attack::Move()
 		}
 		if (drill_count == 230) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-			m_camera->VibFlag = true;
+			m_camera->SetVibFlag(true);
 			b_attack_SE=NewGO<SoundSource>(0);
 			b_attack_SE->Init(en_Boss_Drill_sonic);		//èâä˙âª
 			b_attack_SE->SetVolume(2.0f * m_game->GetSEVol());	//âπó í≤êÆ
