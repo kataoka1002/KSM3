@@ -18,11 +18,27 @@
 
 namespace
 {
+	//対象物との当たり判定距離
 	const float RANGE_DISTANCE = 100.0f;
 
+	//ダメージ量
 	const float ENEMY_MACHINEGUN_DAMAGE = 0.5f;
 	const float ENEMY_GIGATONCANNON_DAMAGE = 50.0f;
 	const float ENEMY_BATTLESHIPGUN_DAMAGE = 25.0f;
+
+	//スピード
+	const float MACHINEGUN_BULLET_SPEED = 2.0f;
+	const float GIGATONCANNON_BULLET_SPEED = 2.0f;
+	const float BATTLESHIPGUN_BULLET_SPEED = 1.7f;
+
+	//弾のモデルの大きさ
+	const Vector3 MACHINEGUN_BULLET_SCALE = { 4.0f,4.0f,4.0f };
+	const Vector3 GIGATONCANNON_BULLET_SCALE = { 15.0f,15.0f,10.0f };
+	const Vector3 BATTLESHIPGUN_BULLET_SCALE = { 10.0f,10.0f,10.0f };
+
+	//エフェクトの大きさ
+	const Vector3 MACHINEGUNE_EFFECT_SCALE = { 10.0f,10.0f,10.0f };
+	const Vector3 BATTLESHIPGUN_EFFECT_SCALE = { 5.7f, 5.7f, 5.7f };
 }
 
 
@@ -38,29 +54,47 @@ Enemy_Bullet::~Enemy_Bullet()
 
 void Enemy_Bullet::DestroyWithImpactEffect()
 {
-	//親によってエフェクトを変える
+
+	//中距離エネミーのとき
 	if (m_enemyMama != nullptr)
 	{
-		if (m_enemyMama->GetWeponKind() == MACHINEGUN_NUM)//マシンガンの弾の煙エフェ
+
+		//マシンガンのとき
+		if (m_enemyMama->GetWeponKind() == MACHINEGUN_NUM)
 		{
-			PlayEffect(enMasinganKemuri, m_position, m_rot, { 10.0f,10.0f,10.0f });
+			
+			//マシンガンの弾の煙エフェ
+			PlayEffect(enMasinganKemuri, m_position, m_rot, MACHINEGUNE_EFFECT_SCALE);
+
 		}
+
 	}
+	//近距離エネミーのとき
 	else if (m_enemyNearMama != nullptr)
 	{
-		if (m_enemyNearMama->GetWeponKind() == GIGATONCANNON_NUM)//ギガトンキャノンの弾の煙エフェ
+
+		//ギガトンキャノンのとき
+		if (m_enemyNearMama->GetWeponKind() == GIGATONCANNON_NUM)
 		{
+
 			//画面を揺らす
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
 			m_camera->VibFlag = true;
+
 		}
+
 	}
+	//遠距離エネミーのとき
 	else if (m_enemyFarMama != nullptr)
 	{
-		if (m_enemyFarMama->GetWeponKind() == BATTLESHIPGUN_NUM)	//戦艦砲の煙エフェクト
+		
+		//戦艦砲のとき
+		if (m_enemyFarMama->GetWeponKind() == BATTLESHIPGUN_NUM)	
 		{
+
 			//戦艦砲エフェクトの初期化と再生
-			PlayEffect(enTyakudan, m_position, m_rot, { 5.7f,5.7f,5.7f });
+			PlayEffect(enTyakudan, m_position, m_rot, BATTLESHIPGUN_EFFECT_SCALE);
+
 
 			//着弾したら効果音発生
 			m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
@@ -68,64 +102,116 @@ void Enemy_Bullet::DestroyWithImpactEffect()
 			m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_battleShipGunTyakutiSE->Play(false);
 
+
 			//画面を揺らす
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
 			m_camera->VibFlag = true;
+
 		}
 	}
-	// 着弾したら死ぬ
+
+
+	//自分自身の削除
 	DeleteGO(this);
+
 }
 
 bool Enemy_Bullet::Start()
 {
-	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+
+	//プレイヤーを探す
 	m_player = FindGO<Player>("player");
+
+
+	//リザルト中なら
 	if (m_player->GetGameState() == 2)
 	{
+
+		//自分自身の削除
 		DeleteGO(this);
+
 	}
+
+
+	//カスタマイズUIを探す
+	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
+
+
+	//コア武器を探す
 	m_coreWeapons = FindGO<Core_weapons>("core_weapons");
+
+
+	//ゲームを探す
 	m_game = FindGO<Game>("game");
 
-	FindWeapon();	//プレイヤーの武器を検索する
-	Setup();		//武器やエフェクトの設定
+
+	//プレイヤーの武器を検索する
+	FindWeapon();	
+	
+	
+	//武器やエフェクトの設定
+	Setup();		
+
 		
 	return true;
+
 }
 
 void Enemy_Bullet::FindWeapon()
 {
+
+	//プレイヤーが死んでいたらリターン
 	if (m_player->GetPlayerDead() == true)
 	{
 		return;
 	}
 
-	//左腕
+
+	//左腕が存在したら
 	if (m_customizeUI->m_leftArmWeapon != nullptr)
 	{
-		m_leftArm = m_customizeUI->m_leftArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		
+		//カスタマイズUIにあるポインタを渡してやる
+		m_leftArm = m_customizeUI->m_leftArmWeapon;	
+
 	}
-	//左足
+
+	//左足が存在したら
 	if (m_customizeUI->m_leftLegWeapon != nullptr)
 	{
-		m_leftLeg = m_customizeUI->m_leftLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		
+		//カスタマイズUIにあるポインタを渡してやる
+		m_leftLeg = m_customizeUI->m_leftLegWeapon;	
+
 	}
-	//右腕
+
+	//右腕が存在したら
 	if (m_customizeUI->m_rightArmWeapon != nullptr)
 	{
-		m_rightArm = m_customizeUI->m_rightArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		
+		//カスタマイズUIにあるポインタを渡してやる
+		m_rightArm = m_customizeUI->m_rightArmWeapon;	
+
 	}
-	//右足
+
+	//右足が存在したら
 	if (m_customizeUI->m_rightLegWeapon != nullptr)
 	{
-		m_rightLeg = m_customizeUI->m_rightLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		
+		//カスタマイズUIにあるポインタを渡してやる
+		m_rightLeg = m_customizeUI->m_rightLegWeapon;	
+
 	}
-	//肩
+
+	//肩が存在したら
 	if (m_customizeUI->m_shoulderWeapon != nullptr)
 	{
-		m_shoulder = m_customizeUI->m_shoulderWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		
+		//カスタマイズUIにあるポインタを渡してやる
+		m_shoulder = m_customizeUI->m_shoulderWeapon;	
+
 	}
+
 }
 
 void Enemy_Bullet::Setup() 
@@ -135,234 +221,329 @@ void Enemy_Bullet::Setup()
 	m_bulletModel = std::make_unique<ModelRender>();
 
 
-	//親によって初期情報を変える
+	//親が中距離エネミーのとき
 	if (m_enemyMama != nullptr)
 	{
+
 		switch (m_enemyMama->GetWeponKind())
 		{
 		case GIGAPLASMA_NUM:	//ギガプラズマ
+
 			break;
 
 		case MACHINEGUN_NUM:	//マシンガン
 
 			//モデルの初期化
-			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel->SetScale(4.0f);
-			//エネミーから見て正しい位置に弾を設定
-			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
-
-			//最終的な弾の回転を決定
-			m_rot = originRotation;
-			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
-			//バレットの前方向の設定
-			m_bulletFowrad = m_enemyMama->GetForward();
-			//更新
-			m_bulletModel->SetRotation(m_enemyMama->GetRot());
-			m_bulletModel->SetPosition(m_position);
-
-			//音はエネミー側で鳴らしている
+			InitBullet("Assets/modelData/V_P_bullet.tkm", MACHINEGUN_BULLET_SCALE, m_enemyMama->GetForward(), m_enemyMama->GetRot());
+			
 
 			//エフェクトの再生
 			Effect(MACHINEGUN_NUM);
+			
+			//音はエネミー側で鳴らしている
+
 			break;
 
 		case HELLFIRE_NUM:	//ヘイルファイヤーライフル
+
 			break;
 
 		default:
+
 			break;
+
 		}
+
 	}
+	//親が近距離エネミーのとき
 	else if (m_enemyNearMama != nullptr)
 	{
+
 		switch (m_enemyNearMama->GetWeponKind())
 		{
 		case GIGATONCANNON_NUM:	//ギガトンキャノン
 
 			//モデルの初期化
-			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel->SetScale({ 15.0f ,15.0f,10.0f });
-			//エネミーから見て正しい位置に弾を設定
-			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
-			//最終的な弾の回転を決定
-			m_rot = originRotation;
-			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
-			//バレットの前方向の設定
-			m_bulletFowrad = m_enemyNearMama->GetForward();
-			//更新
-			m_bulletModel->SetRotation(m_enemyNearMama->GetRot());
-			m_bulletModel->SetPosition(m_position);
-
-			//爆発音はエネミー側で鳴らしている
+			InitBullet("Assets/modelData/V_P_bullet.tkm", GIGATONCANNON_BULLET_SCALE, m_enemyNearMama->GetForward(), m_enemyNearMama->GetRot());
+			
 
 			//エフェクトの再生
 			Effect(GIGATONCANNON_NUM);
 
-
+			//爆発音はエネミー側で鳴らしている
 
 			break;
 
 		default:
+
 			break;
+
 		}
+
 	}
+	//親距離エネミーのとき
 	else if (m_enemyFarMama != nullptr)
 	{
+
 		switch (m_enemyFarMama->GetWeponKind())
 		{
 		case MISSILE_NUM:	//ミサイル
 
-			//効果音の初期化
 			break;
 
 		case BATTLESHIPGUN_NUM:	//戦艦砲
 
 			//モデルの初期化
-			m_bulletModel->Init("Assets/modelData/V_P_bullet.tkm");
-			m_bulletModel->SetScale(10.0f);
-			//エネミーから見て正しい位置に弾を設定
-			originRotation.Multiply(m_bulletLocalPosition);	//掛け算
-			//最終的な弾の回転を決定
-			m_rot = originRotation;
-			m_position += m_bulletLocalPosition;				//それに親から見た位置を足して最終的な武器の位置を決定
-			//バレットの前方向の設定
-			m_bulletFowrad = m_enemyFarMama->GetForward();
-			//更新
-			m_bulletModel->SetRotation(m_enemyFarMama->GetRot());
-			m_bulletModel->SetPosition(m_position);
+			InitBullet("Assets/modelData/V_P_bullet.tkm", BATTLESHIPGUN_BULLET_SCALE, m_enemyFarMama->GetForward(), m_enemyFarMama->GetRot());
+
 
 			//エフェクトの再生
 			Effect(BATTLESHIPGUN_NUM);
+
 			break;
 
 		default:
+
 			break;
+
 		}
+
 	}
+
+}
+
+void Enemy_Bullet::InitBullet(const char* file, Vector3 scale, Vector3 forward, Quaternion rot)
+{
+
+	//モデルの初期化
+	m_bulletModel->Init(file);
+
+
+	//大きさ設定
+	m_bulletModel->SetScale(scale);
+
+
+	//エネミーから見て正しい位置に弾を設定
+	originRotation.Multiply(m_bulletLocalPosition);	
+
+
+	//回転量を教える
+	m_rot = originRotation;
+
+	
+	//それに親から見た位置を足して最終的な武器の位置を決定
+	m_position += m_bulletLocalPosition;	
+
+
+	//バレットの前方向の設定
+	m_bulletFowrad = forward;
+
+
+	//更新
+	m_bulletModel->SetRotation(rot);
+	m_bulletModel->SetPosition(m_position);
+
 }
 
 void Enemy_Bullet::Update() 
 {
 
+	//メインゲーム中
 	if (m_player->GetGameState() == 0)
 	{
-		//位置が0以下になると消える(全ての弾共通)
+
+		//位置Yが0以下になると
 		if (m_position.y <= 0.0f)
 		{
+
+			//削除しつつエフェクトを再生
 			DestroyWithImpactEffect();
+
 		}
+
 
 		//親によって関数を変える
 		if (m_enemyMama != nullptr)
 		{
+
+			//移動処理
 			Move();	
-			Damage(m_enemyMama->GetWeponKind());
+
+
+			//ターゲットを探す
+			MamaCheck(m_enemyMama->GetWeponKind());
+
 		}
 		else if (m_enemyNearMama != nullptr)
 		{
+
+			//移動処理
 			MoveNear();
-			Damage(m_enemyNearMama->GetWeponKind());
+
+
+			//ターゲットを探す
+			MamaCheck(m_enemyNearMama->GetWeponKind());
+
 		}
 		else if (m_enemyFarMama != nullptr)
 		{
+
+			//移動処理
 			MoveFar();
-			Damage(m_enemyFarMama->GetWeponKind());
+
+
+			//ターゲットを探す
+			MamaCheck(m_enemyFarMama->GetWeponKind());
+
 		}
-	}
+
+	}	
+	//リザルト中
 	else if (m_player->GetGameState() == 2)
 	{
-		DeleteGO(this);	//リザルト画面に行くと消す
+
+		//自分自身の削除
+		DeleteGO(this);
+
 	}
 
+	
+	//プレイヤーがポーズ画面からゲームを終了させると
 	if (m_player->GetGameEndState() == 1)
 	{
-		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
+
+		//自分自身の削除
+		DeleteGO(this);	
+
 	}
+
 }
 
 void Enemy_Bullet::Move()
 {
-	if (m_enemyMama->GetWeponKind() == GIGAPLASMA_NUM)	//ギガプラズマ
+	
+	//ギガプラズマ
+	if (m_enemyMama->GetWeponKind() == GIGAPLASMA_NUM)	
 	{
 
 	}
-	if (m_enemyMama->GetWeponKind() == MACHINEGUN_NUM)	//マシンガン
+	//マシンガン
+	else if (m_enemyMama->GetWeponKind() == MACHINEGUN_NUM)	
 	{
-		//弾を前に飛ばす処理
-		m_bulletSpeed += m_bulletFowrad * 2.0f;
+
+		//弾を前に飛ばす
+		m_bulletSpeed += m_bulletFowrad * MACHINEGUN_BULLET_SPEED;
 		m_position += m_bulletSpeed;
 
-		//弾とエネミー(親)の距離を計算して一定距離以上なら弾を消す
+
+		//弾とエネミー(親)の距離を計算
 		Vector3 m_toEnemy = m_enemyMama->GetPos() - m_position;
 		float m_dirToEnemy = m_toEnemy.Length();
+
+
+		//一定距離以上なら
 		if (m_dirToEnemy >= 1800.0f)
 		{
+
+			//弾を消す
 			DestroyWithImpactEffect();
+
 		}
+
 
 		//バレットの更新
 		m_bulletModel->SetRotation(m_rot);
 		m_bulletModel->SetPosition(m_position);
 		m_bulletModel->Update();
+
 	}
-	if (m_enemyMama->GetWeponKind() == HELLFIRE_NUM)	//ヘルファイヤライフル
+	//ヘルファイヤライフル
+	else if (m_enemyMama->GetWeponKind() == HELLFIRE_NUM)	
 	{
 
 	}
+
 }
 
 void Enemy_Bullet::MoveNear()
 {
-	if (m_enemyNearMama->GetWeponKind() == GIGATONCANNON_NUM)	//ギガトンキャノン
+	
+	//ギガトンキャノン
+	if (m_enemyNearMama->GetWeponKind() == GIGATONCANNON_NUM)	
 	{
-		//弾を前に飛ばす処理
-		m_bulletSpeed += m_bulletFowrad * 2.0f;
+
+		//弾を前に飛ばす
+		m_bulletSpeed += m_bulletFowrad * GIGATONCANNON_BULLET_SPEED;
 		m_position += m_bulletSpeed;
 
-		//弾とエネミー(親)の距離を計算して一定距離以上なら弾を消す
+
+		//弾とエネミー(親)の距離を計算
 		Vector3 m_toEnemy = m_enemyNearMama->GetPos() - m_position;
 		float m_dirToEnemy = m_toEnemy.Length();
+		
+		
+		//一定距離以上なら
 		if (m_dirToEnemy >= 100.0f)
 		{
+			
+			//弾を消す
 			DestroyWithImpactEffect();
+
 		}
+
 
 		//バレットの更新
 		m_bulletModel->SetRotation(m_rot);
 		m_bulletModel->SetPosition(m_position);
 		m_bulletModel->Update();
+
 	}
+
 }
 
 void Enemy_Bullet::MoveFar()
 {
-	if (m_enemyFarMama->GetWeponKind() == MISSILE_NUM)	//ミサイル
+	
+	//ミサイル
+	if (m_enemyFarMama->GetWeponKind() == MISSILE_NUM)	
 	{
 
 	}
-	else if (m_enemyFarMama->GetWeponKind() == BATTLESHIPGUN_NUM)	//戦艦砲
+	//戦艦砲
+	else if (m_enemyFarMama->GetWeponKind() == BATTLESHIPGUN_NUM)	
 	{
-		//弾を前に飛ばす処理
-		m_bulletSpeed += m_bulletFowrad * 1.7f;
+
+		//弾を前に飛ばす
+		m_bulletSpeed += m_bulletFowrad * BATTLESHIPGUN_BULLET_SPEED;
+
+
+		//少しづつ下に落とす
 		m_bulletSpeed.y -= 0.1f;
 		m_position += m_bulletSpeed;
+
 
 		//バレットの更新
 		m_bulletModel->SetRotation(m_rot);
 		m_bulletModel->SetPosition(m_position);
 		m_bulletModel->Update();
+
 	}
+
 }
 
 void Enemy_Bullet::Effect(int num)
 {
+
 	if (num == GIGAPLASMA_NUM)
 	{
+
 	}
 	else if (num == MACHINEGUN_NUM)
 	{
+
 		//エフェクトの初期化と再生
 		PlayEffect(enMasinganHibana, m_position, m_rot, { 0.7f,0.7f,0.7f });
+
 	}
 	else if (num == HELLFIRE_NUM)
 	{
@@ -370,8 +551,10 @@ void Enemy_Bullet::Effect(int num)
 	}
 	else if (num == GIGATONCANNON_NUM)
 	{
+
 		//エフェクトの初期化と再生
 		PlayEffect(enHidan, m_position, m_rot, { 1.5f,1.5f,1.5f });
+
 	}
 	else if (num == MISSILE_NUM)
 	{
@@ -379,234 +562,141 @@ void Enemy_Bullet::Effect(int num)
 	}
 	else if (num == BATTLESHIPGUN_NUM)
 	{
+
 		//エフェクトの初期化と再生
 		PlayEffect(enMasinganHibana, m_position, m_rot, { 0.7f,0.7f,0.7f });
+
 	}
+
 }
 
-void Enemy_Bullet::Damage(int weaponNum)
+void Enemy_Bullet::MamaCheck(int weaponNum)
 {
-	//---------------------------------------------------------------------------------------------------
-	if (m_player != nullptr)	//プレイヤーの情報が入っているなら
+	
+	//プレイヤーの情報が入っているなら
+	if (m_player != nullptr)	
 	{
-		//弾とプレイヤーの距離を測る
-		Vector3 diffPlayer = m_position - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
-		//武器によってダメージを変える
-		if (weaponNum == MACHINEGUN_NUM)			//マシンガン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffPlayer.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_player->ApplyDamage(ENEMY_MACHINEGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == GIGATONCANNON_NUM)		//ギガトンキャノン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffPlayer.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_player->ApplyDamage(ENEMY_GIGATONCANNON_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == BATTLESHIPGUN_NUM)	//戦艦砲
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffPlayer.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_player->ApplyDamage(ENEMY_BATTLESHIPGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
+		//距離を測りつつダメージを与える
+		ApplyDamageWithDistanceCheck(m_player, Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z }, weaponNum);
+	
 	}
-	//---------------------------------------------------------------------------------------------------
 
-	//---------------------------------------------------------------------------------------------------
-	if (m_leftArm != nullptr)	//左腕に情報が入っているなら
+	
+	//左腕に情報が入っているなら
+	if (m_leftArm != nullptr)	
 	{
-		//弾と左腕の距離を測る
-		Vector3 diffLeftArm = m_position - m_leftArm->GetPosition();
-		
-		//武器によってダメージを変える
-		if (weaponNum == MACHINEGUN_NUM)			//マシンガン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffLeftArm.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_leftArm->ApplyDamage(ENEMY_MACHINEGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == GIGATONCANNON_NUM)		//ギガトンキャノン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffLeftArm.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_leftArm->ApplyDamage(ENEMY_GIGATONCANNON_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == BATTLESHIPGUN_NUM)	//戦艦砲
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffLeftArm.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_leftArm->ApplyDamage(ENEMY_BATTLESHIPGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-	}
-	//---------------------------------------------------------------------------------------------------
 
-	//---------------------------------------------------------------------------------------------------
-	if (m_leftLeg != nullptr)	//左足に情報が入っているなら
+		//距離を測りつつダメージを与える
+		ApplyDamageWithDistanceCheck(m_leftArm, m_leftArm->GetPosition(), weaponNum);
+	
+	}
+
+	
+	//左足に情報が入っているなら
+	if (m_leftLeg != nullptr)	
 	{
-		//弾と左腕の距離を測る
-		Vector3 diffLeftLeg = m_position - m_leftLeg->GetPosition();
 
-		//武器によってダメージを変える
-		if (weaponNum == MACHINEGUN_NUM)			//マシンガン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffLeftLeg.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_leftLeg->ApplyDamage(ENEMY_MACHINEGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == GIGATONCANNON_NUM)		//ギガトンキャノン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffLeftLeg.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_leftLeg->ApplyDamage(ENEMY_GIGATONCANNON_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == BATTLESHIPGUN_NUM)	//戦艦砲
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffLeftLeg.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_leftLeg->ApplyDamage(ENEMY_BATTLESHIPGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
+		//距離を測りつつダメージを与える
+		ApplyDamageWithDistanceCheck(m_leftLeg, m_leftLeg->GetPosition(), weaponNum);
+
 	}
-	//---------------------------------------------------------------------------------------------------
 
-	//---------------------------------------------------------------------------------------------------
-	if (m_rightArm != nullptr)	//右手に情報が入っているなら
+	
+	//右手に情報が入っているなら
+	if (m_rightArm != nullptr)	
 	{
-		//弾と左腕の距離を測る
-		Vector3 diffRightArm = m_position - m_rightArm->GetPosition();
 
-		//武器によってダメージを変える
-		if (weaponNum == MACHINEGUN_NUM)			//マシンガン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffRightArm.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_rightArm->ApplyDamage(ENEMY_MACHINEGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == GIGATONCANNON_NUM)		//ギガトンキャノン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffRightArm.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_rightArm->ApplyDamage(ENEMY_GIGATONCANNON_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == BATTLESHIPGUN_NUM)	//戦艦砲
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffRightArm.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_rightArm->ApplyDamage(ENEMY_BATTLESHIPGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
+		//距離を測りつつダメージを与える
+		ApplyDamageWithDistanceCheck(m_rightArm, m_rightArm->GetPosition(), weaponNum);
+
 	}
-	//---------------------------------------------------------------------------------------------------
 
-	//---------------------------------------------------------------------------------------------------
-	if (m_rightLeg != nullptr)	//右足に情報が入っているなら
+	
+	//右足に情報が入っているなら
+	if (m_rightLeg != nullptr)	
 	{
-		//弾と左腕の距離を測る
-		Vector3 diffRightLeg = m_position - m_rightLeg->GetPosition();
 
-		//武器によってダメージを変える
-		if (weaponNum == MACHINEGUN_NUM)			//マシンガン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffRightLeg.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_rightLeg->ApplyDamage(ENEMY_MACHINEGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == GIGATONCANNON_NUM)		//ギガトンキャノン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffRightLeg.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_rightLeg->ApplyDamage(ENEMY_GIGATONCANNON_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == BATTLESHIPGUN_NUM)	//戦艦砲
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffRightLeg.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_rightLeg->ApplyDamage(ENEMY_BATTLESHIPGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
+		//距離を測りつつダメージを与える
+		ApplyDamageWithDistanceCheck(m_rightLeg, m_rightLeg->GetPosition(), weaponNum);
+
 	}
-	//---------------------------------------------------------------------------------------------------
 
-	//---------------------------------------------------------------------------------------------------
-	if (m_shoulder != nullptr)	//肩に情報が入っているなら
+	
+	//肩に情報が入っているなら
+	if (m_shoulder != nullptr)	
 	{
-		//弾と左腕の距離を測る
-		Vector3 diffShoulder = m_position - m_shoulder->GetPosition();
 
-		//武器によってダメージを変える
-		if (weaponNum == MACHINEGUN_NUM)			//マシンガン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffShoulder.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_shoulder->ApplyDamage(ENEMY_MACHINEGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == GIGATONCANNON_NUM)		//ギガトンキャノン
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffShoulder.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_shoulder->ApplyDamage(ENEMY_GIGATONCANNON_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
-		else if (weaponNum == BATTLESHIPGUN_NUM)	//戦艦砲
-		{
-			//距離を測り一定以下なら体力減少
-			if (diffShoulder.Length() <= RANGE_DISTANCE) //ダメージが入る範囲
-			{
-				m_shoulder->ApplyDamage(ENEMY_BATTLESHIPGUN_DAMAGE);
-				DestroyWithImpactEffect();
-			}
-		}
+		//距離を測りつつダメージを与える
+		ApplyDamageWithDistanceCheck(m_shoulder, m_shoulder->GetPosition(), weaponNum);
+
 	}
-	//---------------------------------------------------------------------------------------------------
+
+}
+
+template<typename T>
+void Enemy_Bullet::ApplyDamageWithDistanceCheck(T targetName, Vector3 targetPos, int weaponNum)
+{
+
+	//対象物までのベクトルを求める
+	Vector3 targetToBullet = m_position - targetPos;
+
+
+	//マシンガン
+	if (weaponNum == MACHINEGUN_NUM)			
+	{
+
+		//距離が一定以下なら
+		if (targetToBullet.Length() <= RANGE_DISTANCE) 
+		{
+
+			//ダメージを与える
+			targetName->ApplyDamage(ENEMY_MACHINEGUN_DAMAGE);
+
+
+			//壊れつつエフェクトを再生
+			DestroyWithImpactEffect();
+
+		}
+
+	}
+	//ギガトンキャノン
+	else if (weaponNum == GIGATONCANNON_NUM)		
+	{
+
+		//距離が一定以下なら
+		if (targetToBullet.Length() <= RANGE_DISTANCE) 
+		{
+			
+			//ダメージを与える
+			targetName->ApplyDamage(ENEMY_GIGATONCANNON_DAMAGE);
+			
+			
+			//壊れつつエフェクトを再生
+			DestroyWithImpactEffect();
+
+		}
+
+	}
+	//戦艦砲
+	else if (weaponNum == BATTLESHIPGUN_NUM)	
+	{
+
+		//距離が一定以下なら
+		if (targetToBullet.Length() <= RANGE_DISTANCE) 
+		{
+			
+			//ダメージを与える
+			targetName->ApplyDamage(ENEMY_BATTLESHIPGUN_DAMAGE);
+			
+			
+			//壊れつつエフェクトを再生
+			DestroyWithImpactEffect();
+
+		}
+
+	}
+
 }
 
 void Enemy_Bullet::PlayEffect(EffectName name, Vector3 pos, Quaternion rot, Vector3 scale)
@@ -624,37 +714,63 @@ void Enemy_Bullet::PlayEffect(EffectName name, Vector3 pos, Quaternion rot, Vect
 
 void Enemy_Bullet::Render(RenderContext& rc)
 {
+
+	//親が中距離
 	if (m_enemyMama != nullptr)
 	{
-		if (m_enemyMama->GetWeponKind() == GIGAPLASMA_NUM)	//ギガプラズマ
+		
+		//ギガプラズマ
+		if (m_enemyMama->GetWeponKind() == GIGAPLASMA_NUM)	
 		{
 
 		}
-		else if (m_enemyMama->GetWeponKind() == MACHINEGUN_NUM)	//マシンガン
+		//マシンガン
+		else if (m_enemyMama->GetWeponKind() == MACHINEGUN_NUM)	
 		{
+
+			//弾の描画
 			m_bulletModel->Draw(rc);
+
 		}
-		else if (m_enemyMama->GetWeponKind() == HELLFIRE_NUM)	//ヘイルファイヤーライフル
+		//ヘイルファイヤーライフル
+		else if (m_enemyMama->GetWeponKind() == HELLFIRE_NUM)	
 		{
 
 		}
+
 	}
+	//親が近距離
 	else if (m_enemyNearMama != nullptr)
 	{
-		if (m_enemyNearMama->GetWeponKind() == GIGATONCANNON_NUM)	//ギガトンキャノン
+
+		//ギガトンキャノン
+		if (m_enemyNearMama->GetWeponKind() == GIGATONCANNON_NUM)	
 		{
+			
+			//弾の描画
 			m_bulletModel->Draw(rc);
+
 		}
+
 	}
+	//親が遠距離
 	else if (m_enemyFarMama != nullptr)
 	{
-		if (m_enemyFarMama->GetWeponKind() == MISSILE_NUM)	//ミサイル
+		
+		//ミサイル
+		if (m_enemyFarMama->GetWeponKind() == MISSILE_NUM)	
 		{
 
 		}
-		else if (m_enemyFarMama->GetWeponKind() == BATTLESHIPGUN_NUM)	//戦艦砲
+		//戦艦砲
+		else if (m_enemyFarMama->GetWeponKind() == BATTLESHIPGUN_NUM)	
 		{
+			
+			//弾の描画
 			m_bulletModel->Draw(rc);
+
 		}
+
 	}
+
 }
