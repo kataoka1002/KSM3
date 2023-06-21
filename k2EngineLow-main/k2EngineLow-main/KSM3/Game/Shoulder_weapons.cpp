@@ -26,7 +26,7 @@ void Shoulder_weapons::SetUp()
 
 
 	//自分のポインタを教える
-	m_playerUI->m_shoulder = (this);
+	m_playerUI->SetShoulder(this);
 
 
 	//武器の初期化
@@ -137,7 +137,7 @@ void Shoulder_weapons::Update()
 		{
 
 			//UIの中身を空にする
-			m_playerUI->m_shoulder = nullptr;
+			m_playerUI->SetShoulder(nullptr);
 
 
 			//自分自身の削除
@@ -294,7 +294,7 @@ void Shoulder_weapons::DestroyEvent()
 
 
 		//カスタマイズ画面の設定していたポインタを空にする
-		m_playerUI->m_shoulder = nullptr;
+		m_playerUI->SetShoulder(nullptr);
 
 
 		//自分自身の削除

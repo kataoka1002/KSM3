@@ -26,7 +26,7 @@ void Left_arm_weapons::SetUp()
 	
 	
 	//自分のポインタを教える
-	m_playerUI->m_leftArm = (this);		
+	m_playerUI->SetLeftArm(this);
 	
 	
 	//武器の初期化
@@ -112,7 +112,7 @@ void Left_arm_weapons::Update()
 		{
 
 			//UIの中身を空にする
-			m_playerUI->m_leftArm = nullptr;
+			m_playerUI->SetLeftArm(nullptr);
 
 
 			//自分自身の削除
@@ -173,7 +173,7 @@ void Left_arm_weapons::DestroyEvent()
 
 
 		//カスタマイズ画面の設定していたポインタを空にする
-		m_playerUI->m_leftArm = nullptr;
+		m_playerUI->SetLeftArm(nullptr);
 		
 		
 		//自分自身の削除

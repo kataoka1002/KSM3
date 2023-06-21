@@ -26,7 +26,7 @@ void Right_leg_weapons::SetUp()
 	
 
 	//自分のポインタを教える
-	m_playerUI->m_rightLeg = (this);	
+	m_playerUI->SetRightLeg(this);	
 
 
 	//武器の初期化
@@ -113,7 +113,7 @@ void Right_leg_weapons::Update()
 		{
 
 			//UIの中身を空にする
-			m_playerUI->m_rightLeg = nullptr;
+			m_playerUI->SetRightLeg(nullptr);
 
 
 			//自分自身の削除
@@ -175,7 +175,7 @@ void Right_leg_weapons::DestroyEvent()
 
 
 		//UIの中身を空にする
-		m_playerUI->m_rightLeg = nullptr;
+		m_playerUI->SetRightLeg(nullptr);
 
 
 		//自分自身の削除
