@@ -15,9 +15,6 @@ private:
 	SpriteRender m_flashSprite;
 	SpriteRender m_yellowSprite;
 
-	float SPRITE_FIRST_SCALE = 3.5f;			//最初のサイズ
-	float SPRITE_LAST_SCALE = 1.3f;				//最終的なサイズ
-	float m_spriteScale = SPRITE_FIRST_SCALE;	//スプライトのサイズ
 	float m_flashSpriteScale = 1.0f;			//白フラッシュの大きさ
 	float m_yellowSpriteA = 0.0f;				//黄色フラッシュのα値
 	int m_count = 0;							//カウント
