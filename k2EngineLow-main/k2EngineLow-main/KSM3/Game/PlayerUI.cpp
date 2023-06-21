@@ -372,7 +372,7 @@ void PlayerUI::Render(RenderContext& rc)
 
 	
 	//ボス戦中とウェーブ３クリア演出中は表示しない
-	if (m_player->GetBossState() != 1 && m_wave->m_waveClear == nullptr)	
+	if (m_player->GetBossState() != 1 && m_wave->GetWaveClear() == nullptr)
 	{
 		//キル数の枠
 		m_enemyKillSprite.Draw(rc);

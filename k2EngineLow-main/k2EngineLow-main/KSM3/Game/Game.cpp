@@ -329,11 +329,11 @@ void Game::GameNow()
 
 
 	//3ウェーブ突破したらボス戦
-	if (player->GetPlayerPosition().z >= 9550.0f && boss == nullptr && m_wave->m_goBoss == true)
+	if (player->GetPlayerPosition().z >= 9550.0f && boss == nullptr && m_wave->GetGoBoss() == true)
 	{
 
 		//一定のカウントまでいったら
-		if (m_wave->Loading_count == 2)
+		if (m_wave->GetLoadCount() == 2)
 		{
 
 			//ボス戦中に変更
@@ -343,7 +343,7 @@ void Game::GameNow()
 
 
 		//ローディング画面が表示されたらボスを作り出す
-		if (m_wave->Loading_count == 10) 
+		if (m_wave->GetLoadCount() == 10)
 		{
 
 			//スカイキューブを作り直す
@@ -361,7 +361,7 @@ void Game::GameNow()
 
 
 			//ウェーブクラスのボスポインタに教えてやる
-			m_wave->m_boss = (boss);
+			m_wave->SetBoss(boss);
 
 
 			//プレイヤーの場所をボスの場所へ移動させる
