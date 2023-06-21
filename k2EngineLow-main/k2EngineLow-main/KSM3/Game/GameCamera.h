@@ -134,9 +134,9 @@ private:
 
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_cameraForward = { 0.0f,0.0f,1.0f };
-	Vector3 m_toCameraPos;			//注視点から視点に向かうベクトル
-	Vector3 m_target;
-	SpringCamera m_springCamera;	//ばねカメラ
+	Vector3 m_toCameraPos = Vector3::Zero;			//注視点から視点に向かうベクトル
+	Vector3 m_target = Vector3::Zero;
+	SpringCamera m_springCamera;					//ばねカメラ
 
 	int m_cameraState = 4;			//1バトル中,2空白,3カスタマイズ,4登場シーン
 	int m_opCount = 0;
@@ -145,6 +145,6 @@ private:
 	bool m_vibFlag = false;			//画面が揺れているかどうか
 	bool m_bigVibFlag = false;		//画面が揺れているかどうか(大)
 	bool m_finalVibFlag = false;	//画面が揺れているかどうか(最終)
-	float m_stickPowerX;
-	float m_stickPowerY;
+	float m_stickPowerX = 0;
+	float m_stickPowerY = 0;
 };
