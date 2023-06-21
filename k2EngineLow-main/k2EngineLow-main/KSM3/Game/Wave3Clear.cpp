@@ -185,7 +185,7 @@ void Wave3Clear::PlayFlash()
 
 			//自分自身のデータを空にする
 			Wave* m_wave = FindGO<Wave>("wave");
-			m_wave->m_waveClear = nullptr;
+			m_wave->SetWaveClear(nullptr);
 
 		}
 	}
