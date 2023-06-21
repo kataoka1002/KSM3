@@ -10,6 +10,7 @@ public:
 	void PlayFlash();
 	void Render(RenderContext& rc);
 
+private:
 	SpriteRender m_fontSprite;
 	SpriteRender m_flashSprite;
 	SpriteRender m_yellowSprite;
