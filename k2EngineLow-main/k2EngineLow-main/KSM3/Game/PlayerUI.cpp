@@ -9,6 +9,47 @@
 #include "Wave.h"
 #include "Game.h"
 
+namespace
+{
+	//•”ˆÊ‚Ìƒiƒ“ƒo[
+	const int RIGHT_ARM_NUM = 1;
+	const int RIGHT_LEG_NUM = 2;
+	const int LEFT_ARM_NUM = 3;
+	const int LEFT_LEG_NUM = 4;
+	const int SHOULDER_NUM = 5;
+
+	//•Ší‰æ‘œ‚ÌƒTƒCƒY
+	const Vector3 WEAPON_SPRITE_SCALE = { 0.1f,0.1f,0.1f };
+	const Vector3 WEAPON_REVERSAL_SPRITE_SCALE = { -0.1f,0.1f,0.1f };
+
+	//‰æ‘œ‚ÌÅ‰‚ÌF
+	const float UI_START_COLLAR_G = 1.0f;
+	const float UI_START_COLLAR_R = 0.0f;
+
+	//ƒLƒ‹”‚Ì˜g‚Ìƒ^[ƒQƒbƒgƒ|ƒWƒVƒ‡ƒ“
+	const float KILL_SPRITE_TARGET = 600.0f;
+	
+	//HP‚Ìƒ^[ƒQƒbƒgƒ|ƒWƒVƒ‡ƒ“
+	const float HP_SPRITE_TARGET = 610.0f;
+	
+	//HP‚Ì˜g‚Ìƒ^[ƒQƒbƒgƒ|ƒWƒVƒ‡ƒ“
+	const float HP_FRAME_SPRITE_TARGET = 730.0f;
+
+	//ƒ{ƒ^ƒ“à–¾UI‚Ìƒ^[ƒQƒbƒgƒ|ƒWƒVƒ‡ƒ“
+	const float L1_SPRITE_TARGET = -650.0f;
+	const float R2_SPRITE_TARGET = -470.0f;
+
+	//ƒLƒ‹”‚ÌƒtƒHƒ“ƒg‚Ìƒ^[ƒQƒbƒgƒ|ƒWƒVƒ‡ƒ“
+	const float KILL_FONT_TARGET = 580.0f;
+
+
+	const float HP_SPRITE_POS_Y = -300.0f;
+	const float HP_WAKU_SPRITE_POS_Y = -340.0f;
+	const float KILL_SPRITE_POS_Y = 350.0f;
+	const float L1_SPRITE_POS_Y = -330.0f;
+	const float R2_SPRITE_POS_Y = -330.0f;
+}
+
 PlayerUI::PlayerUI()
 {
 
@@ -21,23 +62,28 @@ PlayerUI::~PlayerUI()
 
 bool PlayerUI::Start()
 {
+
+	//’T‚·
 	m_player = FindGO<Player>("player");
 	m_wave = FindGO<Wave>("wave");
 	m_game = FindGO<Game>("game");
 
+
+	//ƒXƒvƒ‰ƒCƒg‚Ì‰Šú‰»---------------------------------------------------------------------
+
 	m_HPSprite.Init("Assets/sprite/player/playerUI.dds", 691.0f, 597.0f);
-	m_HPSprite.SetPosition({ 610.0f,-300.0f,0.0f });
+	m_HPSprite.SetPosition({ m_HPSpriteX,HP_SPRITE_POS_Y,0.0f });
 	m_HPSprite.SetScale({ 0.4f,0.4f,0.4f });
 	m_HPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 	m_HPSprite.Update();
 
 	m_HPBackSprite.Init("Assets/sprite/player/PlayerUIWaku.dds", 2220.0f, 1080.0f);
-	m_HPBackSprite.SetPosition({ 730.0f,-340.0f,0.0f });
+	m_HPBackSprite.SetPosition({ m_HPwakuSpriteX,HP_WAKU_SPRITE_POS_Y,0.0f });
 	m_HPBackSprite.SetScale({ 0.6f,0.6f,0.6f });
 	m_HPBackSprite.Update();
 
 	m_enemyKillSprite.Init("Assets/sprite/player/enemyKillAmount.dds", 1980.0f, 1020.0f);
-	m_enemyKillSprite.SetPosition({ 1000.0f,350.0f,0.0f });
+	m_enemyKillSprite.SetPosition({ m_killSpritePosX,KILL_SPRITE_POS_Y,0.0f });
 	m_enemyKillSprite.SetScale({ 0.7f,0.6f,0.6f });
 	m_enemyKillSprite.Update();
 
@@ -48,111 +94,158 @@ bool PlayerUI::Start()
 	m_redFrameSprite.Update();
 
 	m_L1Sprite.Init("Assets/sprite/player/buttonL1.dds", 1600.0f, 900.0f);
-	m_L1Sprite.SetPosition({ m_L1SpritePosX,-330.0f,0.0f });
+	m_L1Sprite.SetPosition({ m_L1SpritePosX,L1_SPRITE_POS_Y,0.0f });
 	m_L1Sprite.SetScale(0.2f);
 	m_L1Sprite.Update();
 
 	m_R2Sprite.Init("Assets/sprite/player/buttonR2.dds", 1600.0f, 900.0f);
-	m_R2Sprite.SetPosition({ m_R2SpritePosX,-330.0f,0.0f });
+	m_R2Sprite.SetPosition({ m_R2SpritePosX,R2_SPRITE_POS_Y,0.0f });
 	m_R2Sprite.SetScale(0.2f);
 	m_R2Sprite.Update();
+
+	//-----------------------------------------------------------------------------------------------
 
 	return true;
 }
 
 void PlayerUI::Update()
 {
-	if (m_setUI == false)
+	
+	//ˆÚ“®ˆ—
+	Move();
+
+
+	//‘Ì—ÍŒvZ
+	CalcHP();
+
+
+	//Ô‚¢ƒtƒŒ[ƒ€‚Ì¶¬
+	MakeRedFrame();
+
+
+	//“G‚ğE‚µ‚½”‚Ì•\¦
+	wchar_t text[256];
+	swprintf_s(text, 256, L"%02d@/%02d", m_game->GetDefeatedEnemyNum(), m_game->GetEnemyNum());
+	m_killEnemyAmountFont.SetPivot({ 0.0f,0.5f });
+	m_killEnemyAmountFont.SetText(text);
+	m_killEnemyAmountFont.SetPosition(Vector3(m_killFontPos, 465.0f, 0.0f));
+	m_killEnemyAmountFont.SetShadowParam(true, 1.0f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+	m_killEnemyAmountFont.SetScale(1.2f);
+	m_killEnemyAmountFont.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	
+}
+
+void PlayerUI::Move()
+{
+
+	//UI‚ªƒZƒbƒg‚³‚ê‚Ä‚é‚È‚ç
+	if (m_setUI == true)
 	{
-		//ƒXƒvƒ‰ƒCƒg‚Ì‰¡ˆÚ“®‚ğ‹‚ß‚é
-		m_killSpritePosX -= (m_killSpritePosX - m_killSpriteTargetPos  ) / 10.0f;
-		m_HPSpriteX		 -= (m_HPSpriteX      - m_HPSpriteTargetPos    ) / 10.0f;
-		m_HPwakuSpriteX	 -= (m_HPwakuSpriteX  - m_HPwakuSpriteTargetPos) / 10.0f;
-		m_L1SpritePosX	 -= (m_L1SpritePosX   - m_L1SpriteTargetPos    ) / 10.0f;
-		m_R2SpritePosX	 -= (m_R2SpritePosX   - m_R2SpriteTargetPos    ) / 10.0f;
-		m_killFontPos    -= (m_killFontPos    - m_killFontTargetPos    ) / 10.0f;
-
-		//‚»‚ê‚¼‚ê–Ú“I‚ÌˆÊ’u‚É‚½‚Ç‚è’…‚¢‚½‚ç‚»‚±‚ÅŒÅ’è
-		if (m_killSpritePosX - 0.05f <= m_killSpriteTargetPos)
-		{
-			m_killSpritePosX = m_killSpriteTargetPos;
-			setA = true;
-		}
-		if (m_HPSpriteX - 0.05f <= m_HPSpriteTargetPos)
-		{
-			m_HPSpriteX = m_HPSpriteTargetPos;
-			setB = true;
-		}
-		if (m_HPwakuSpriteX - 0.05f <= m_HPwakuSpriteTargetPos)
-		{
-			m_HPwakuSpriteX = m_HPwakuSpriteTargetPos;
-			setC = true;
-		}
-		if (m_L1SpritePosX + 0.05f >= m_L1SpriteTargetPos)
-		{
-			m_L1SpritePosX = m_L1SpriteTargetPos;
-			setD = true;
-		}
-		if (m_R2SpritePosX + 0.05f >= m_R2SpriteTargetPos)
-		{
-			m_R2SpritePosX = m_R2SpriteTargetPos;
-			setE = true;
-		}
-		if (m_killFontPos - 0.05f <= m_killFontTargetPos)
-		{
-			m_killFontPos = m_killFontTargetPos;
-			setF = true;
-		}
-
-		//‘S‚Ä‚ÌƒXƒvƒ‰ƒCƒg‚ªƒZƒbƒgo—ˆ‚½‚ç
-		if (setA == true && setB == true && setC == true && setD == true && setE == true && setF == true)
-		{
-			m_setUI = true;
-		}
-
-		//XV
-		m_enemyKillSprite.SetPosition({ m_killSpritePosX,350.0f,0.0f });
-		m_enemyKillSprite.Update();
-		m_HPSprite.SetPosition({ m_HPSpriteX,-300.0f,0.0f });
-		m_HPSprite.Update();
-		m_HPBackSprite.SetPosition({ m_HPwakuSpriteX,-340.0f,0.0f });
-		m_HPBackSprite.Update();
-		m_L1Sprite.SetPosition({ m_L1SpritePosX,-330.0f,0.0f });
-		m_L1Sprite.Update();
-		m_R2Sprite.SetPosition({ m_R2SpritePosX,-330.0f,0.0f });
-		m_R2Sprite.Update();
+		return;
 	}
+
+
+	//ƒXƒvƒ‰ƒCƒg‚Ì‰¡ˆÚ“®—Ê‚ğ‹‚ß‚é
+	m_killSpritePosX -= (m_killSpritePosX - KILL_SPRITE_TARGET) / 10.0f;
+	m_HPSpriteX -= (m_HPSpriteX - HP_SPRITE_TARGET) / 10.0f;
+	m_HPwakuSpriteX -= (m_HPwakuSpriteX - HP_FRAME_SPRITE_TARGET) / 10.0f;
+	m_L1SpritePosX -= (m_L1SpritePosX - L1_SPRITE_TARGET) / 10.0f;
+	m_R2SpritePosX -= (m_R2SpritePosX - R2_SPRITE_TARGET) / 10.0f;
+	m_killFontPos -= (m_killFontPos - KILL_FONT_TARGET) / 10.0f;
+
+
+	//‚»‚ê‚¼‚ê–Ú“I‚ÌˆÊ’u‚É‹ß‚Ã‚¢‚½‚ç,–Ú“I‚ÌˆÊ’u‚ÅŒÅ’è
+	if (m_killSpritePosX - 0.05f <= KILL_SPRITE_TARGET)
+	{
+		m_killSpritePosX = KILL_SPRITE_TARGET;
+		setA = true;
+	}
+	if (m_HPSpriteX - 0.05f <= HP_SPRITE_TARGET)
+	{
+		m_HPSpriteX = HP_SPRITE_TARGET;
+		setB = true;
+	}
+	if (m_HPwakuSpriteX - 0.05f <= HP_FRAME_SPRITE_TARGET)
+	{
+		m_HPwakuSpriteX = HP_FRAME_SPRITE_TARGET;
+		setC = true;
+	}
+	if (m_L1SpritePosX + 0.05f >= L1_SPRITE_TARGET)
+	{
+		m_L1SpritePosX = L1_SPRITE_TARGET;
+		setD = true;
+	}
+	if (m_R2SpritePosX + 0.05f >= R2_SPRITE_TARGET)
+	{
+		m_R2SpritePosX = R2_SPRITE_TARGET;
+		setE = true;
+	}
+	if (m_killFontPos - 0.05f <= KILL_FONT_TARGET)
+	{
+		m_killFontPos = KILL_FONT_TARGET;
+		setF = true;
+	}
+
+
+	//‘S‚Ä‚ÌƒXƒvƒ‰ƒCƒg‚ªƒZƒbƒgo—ˆ‚½‚ç
+	if (setA == true && setB == true && setC == true && setD == true && setE == true && setF == true)
+	{
+		m_setUI = true;
+	}
+
+
+	//XV
+	m_enemyKillSprite.SetPosition({ m_killSpritePosX,KILL_SPRITE_POS_Y,0.0f });
+	m_enemyKillSprite.Update();
+
+	m_HPSprite.SetPosition({ m_HPSpriteX,HP_SPRITE_POS_Y,0.0f });
+	m_HPSprite.Update();
+
+	m_HPBackSprite.SetPosition({ m_HPwakuSpriteX,HP_WAKU_SPRITE_POS_Y,0.0f });
+	m_HPBackSprite.Update();
+
+	m_L1Sprite.SetPosition({ m_L1SpritePosX,L1_SPRITE_POS_Y,0.0f });
+	m_L1Sprite.Update();
+
+	m_R2Sprite.SetPosition({ m_R2SpritePosX,R2_SPRITE_POS_Y,0.0f });
+	m_R2Sprite.Update();
+
+}
+
+void PlayerUI::MakeRedFrame()
+{
+
+	//‘Ì—Í‚ª”¼•ªˆÈ‰º‚Ì
+	if (m_player->GetPlayerHP() <= m_player->GetPlayerHPMax() / 2.0f)
+	{
+
+		//“§–¾“x‚ÌŒvZ
+		m_redFrame_A = 1.0f - (m_player->GetPlayerHP() * (1.0f / m_player->GetPlayerHPMax()));
+
+	}
+	//‘Ì—Í‚ª”¼•ªˆÈã‚Ì
+	else
+	{
+
+		//“§–¾“x‚ğ0‚É‚·‚é(Œ©‚¦‚È‚­‚·‚é)
+		m_redFrame_A = 0.0f;
+
+	}
+
+
+	//XV
+	m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
+	m_redFrameSprite.Update();
+
+}
+
+void PlayerUI::CalcHP()
+{
 
 	//ƒvƒŒƒCƒ„[‚Ì‘Ì—ÍŒvZ
 	m_HPSprite.SetMulColor(Damage(m_player->GetPlayerHP(), m_player->GetPlayerHPMax()));
 	m_HPSprite.Update();
 
-	//Ô‚¢ƒtƒŒ[ƒ€‚Ì¶¬
-	//‘Ì—Í‚ª”¼•ªˆÈ‰º‚Ì
-	if (m_player->GetPlayerHP() <= m_player->GetPlayerHPMax() / 2.0f)
-	{
-		m_redFrame_A = 1.0f - (m_player->GetPlayerHP() * (1.0f / m_player->GetPlayerHPMax()));
-		m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
-		m_redFrameSprite.Update();
-	}
-	//‘Ì—Í‚ª”¼•ªˆÈã‚Ì
-	else
-	{
-		//Ô‚¢ƒtƒŒ[ƒ€‚ÍŒ©‚¦‚È‚¢
-		m_redFrame_A = 0.0f;
-		m_redFrameSprite.SetMulColor({ 1.0f,1.0f,1.0f,m_redFrame_A });
-		m_redFrameSprite.Update();
-	}
-
-	//“G‚ğE‚µ‚½”‚Ì•\¦
-	wchar_t text[256];
-	swprintf_s(text, 256, L"%02d@/%02d", m_game->GetDefeatedEnemyNum(), m_game->GetEnemyNum());
-	m_killEnemyAmount.SetPivot({ 0.0f,0.5f });
-	m_killEnemyAmount.SetText(text);
-	m_killEnemyAmount.SetPosition(Vector3(m_killFontPos, 465, 0.0f));
-	m_killEnemyAmount.SetShadowParam(true, 1.0f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-	m_killEnemyAmount.SetScale(1.2f);
-	m_killEnemyAmount.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//Še•Ší‚Ì‘Ì—ÍŒvZ
 	if (m_rightArm != nullptr)
@@ -160,26 +253,31 @@ void PlayerUI::Update()
 		m_rightArmHPSprite.SetMulColor(Damage(m_rightArm->GetHP(), m_rightArm->GetHPMax()));
 		m_rightArmHPSprite.Update();
 	}
+
 	if (m_rightLeg != nullptr)
 	{
 		m_rightLegHPSprite.SetMulColor(Damage(m_rightLeg->GetHP(), m_rightLeg->GetHPMax()));
 		m_rightLegHPSprite.Update();
 	}
+
 	if (m_leftArm != nullptr)
 	{
 		m_leftArmHPSprite.SetMulColor(Damage(m_leftArm->GetHP(), m_leftArm->GetHPMax()));
 		m_leftArmHPSprite.Update();
 	}
+
 	if (m_leftLeg != nullptr)
 	{
 		m_leftLegHPSprite.SetMulColor(Damage(m_leftLeg->GetHP(), m_leftLeg->GetHPMax()));
 		m_leftLegHPSprite.Update();
 	}
+
 	if (m_shoulder != nullptr)
 	{
 		m_shoulderHPSprite.SetMulColor(Damage(m_shoulder->GetHP(), m_shoulder->GetHPMax()));
 		m_shoulderHPSprite.Update();
 	}
+
 }
 
 Vector4 PlayerUI::Damage(float nowHP, float maxHP)	//‘æˆêˆø”‚Í¡‚ÌHPA‘æ“ñˆø”‚ÍÅ‘åHP
@@ -201,6 +299,7 @@ Vector4 PlayerUI::Damage(float nowHP, float maxHP)	//‘æˆêˆø”‚Í¡‚ÌHPA‘æ“ñˆø”‚
 	}
 
 	Vector4 col;	//ÅI“I‚ÈƒJƒ‰[
+
 	return col = { m_collarR,m_collarG,0.0f,1.0f };
 }
 
@@ -208,38 +307,38 @@ void PlayerUI::WeaponUISetUp(int num)
 {
 	switch (num)
 	{
-	case 1:	//‰E˜r
+	case RIGHT_ARM_NUM:	//‰E˜r
 		m_rightArmHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
 		m_rightArmHPSprite.SetPosition({ 710.0f,-250.0f,0.0f });
-		m_rightArmHPSprite.SetScale({ 0.1f,0.1f,0.1f });
+		m_rightArmHPSprite.SetScale(WEAPON_SPRITE_SCALE);
 		m_rightArmHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_rightArmHPSprite.Update();
 		break;
-	case 2:	//‰E‘«
+	case RIGHT_LEG_NUM:	//‰E‘«
 		m_rightLegHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
 		m_rightLegHPSprite.SetPosition({ 730.0f,-330.0f,0.0f });
-		m_rightLegHPSprite.SetScale({ 0.1f,0.1f,0.1f });
+		m_rightLegHPSprite.SetScale(WEAPON_SPRITE_SCALE);
 		m_rightLegHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_rightLegHPSprite.Update();
 		break;
-	case 3:	//¶˜r
+	case LEFT_ARM_NUM:	//¶˜r
 		m_leftArmHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
 		m_leftArmHPSprite.SetPosition({ 510.0f,-250.0f,0.0f });
-		m_leftArmHPSprite.SetScale({ -0.1f,0.1f,0.1f });
+		m_leftArmHPSprite.SetScale(WEAPON_REVERSAL_SPRITE_SCALE);
 		m_leftArmHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_leftArmHPSprite.Update();
 		break;
-	case 4:	//¶‘«
+	case LEFT_LEG_NUM:	//¶‘«
 		m_leftLegHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
 		m_leftLegHPSprite.SetPosition({ 490.0f,-330.0f,0.0f });
-		m_leftLegHPSprite.SetScale({ -0.1f,0.1f,0.1f });
+		m_leftLegHPSprite.SetScale(WEAPON_REVERSAL_SPRITE_SCALE);
 		m_leftLegHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_leftLegHPSprite.Update();
 		break;
-	case 5:	//Œ¨
+	case SHOULDER_NUM:	//Œ¨
 		m_shoulderHPSprite.Init("Assets/sprite/player/weaponUI.dds", 700.0f, 700.0f);
 		m_shoulderHPSprite.SetPosition({ 615.0f,-150.0f,0.0f });
-		m_shoulderHPSprite.SetScale({ 0.1f,0.1f,0.1f });
+		m_shoulderHPSprite.SetScale(WEAPON_SPRITE_SCALE);
 		m_shoulderHPSprite.SetMulColor({ UI_START_COLLAR_R,UI_START_COLLAR_G,0.0f,1.0f });
 		m_shoulderHPSprite.Update();
 		break;
@@ -250,45 +349,58 @@ void PlayerUI::WeaponUISetUp(int num)
 
 void PlayerUI::Render(RenderContext& rc)
 {
-	if (m_player->GetGameState() == 0 && m_player->GetPlayerDead() == false)
+
+	//ƒƒCƒ“ƒQ[ƒ€’†‚¶‚á‚È‚¢ or ƒvƒŒƒCƒ„[‚ª€‚ñ‚Å‚¢‚é‚È‚ç
+	if (m_player->GetGameState() != 0 || m_player->GetPlayerDead() != false)
 	{
-		m_redFrameSprite.Draw(rc);
+		return;
+	}
 
-		m_HPBackSprite.Draw(rc);
-		m_HPSprite.Draw(rc);
 
-		m_L1Sprite.Draw(rc);
-		m_R2Sprite.Draw(rc);
+	//Ô˜g‚Ì•`‰æ
+	m_redFrameSprite.Draw(rc);
 
-		if (m_player->GetBossState() != 1 && m_wave->m_waveClear == nullptr)	//ƒEƒF[ƒu‚RƒNƒŠƒA‰‰o’†‚Í•\¦‚µ‚È‚¢
-		{
-			//ƒLƒ‹”‚Ì˜g
-			m_enemyKillSprite.Draw(rc);
 
-			//ƒLƒ‹”‚Ì•\¦
-			m_killEnemyAmount.Draw(rc);
-		}
+	//ƒvƒŒƒCƒ„[‚ÌHP‚Ì•`‰æ
+	m_HPBackSprite.Draw(rc);
+	m_HPSprite.Draw(rc);
 
-		//‚»‚ê‚¼‚ê‚ªƒkƒ‹‚¶‚á‚È‚¢‚È‚ç•`‰æ
-		if (m_rightArm != nullptr) 
-		{
-			m_rightArmHPSprite.Draw(rc);
-		}
-		if (m_rightLeg != nullptr) 
-		{
-			m_rightLegHPSprite.Draw(rc);
-		}
-		if (m_leftArm != nullptr) 
-		{
-			m_leftArmHPSprite.Draw(rc);
-		}
-		if (m_leftLeg != nullptr) 
-		{
-			m_leftLegHPSprite.Draw(rc);
-		}
-		if (m_shoulder != nullptr) 
-		{
-			m_shoulderHPSprite.Draw(rc);
-		}
+
+	//ƒ{ƒ^ƒ“‚ÌUI‚Ì•`‰æ
+	m_L1Sprite.Draw(rc);
+	m_R2Sprite.Draw(rc);
+
+	
+	//ƒ{ƒXí’†‚ÆƒEƒF[ƒu‚RƒNƒŠƒA‰‰o’†‚Í•\¦‚µ‚È‚¢
+	if (m_player->GetBossState() != 1 && m_wave->m_waveClear == nullptr)	
+	{
+		//ƒLƒ‹”‚Ì˜g
+		m_enemyKillSprite.Draw(rc);
+
+		//ƒLƒ‹”‚Ì•\¦
+		m_killEnemyAmountFont.Draw(rc);
+	}
+
+
+	//•ŠíUI‚Ì‚»‚ê‚¼‚ê‚ªƒkƒ‹‚¶‚á‚È‚¢‚È‚ç•`‰æ
+	if (m_rightArm != nullptr)
+	{
+		m_rightArmHPSprite.Draw(rc);
+	}
+	if (m_rightLeg != nullptr)
+	{
+		m_rightLegHPSprite.Draw(rc);
+	}
+	if (m_leftArm != nullptr)
+	{
+		m_leftArmHPSprite.Draw(rc);
+	}
+	if (m_leftLeg != nullptr)
+	{
+		m_leftLegHPSprite.Draw(rc);
+	}
+	if (m_shoulder != nullptr)
+	{
+		m_shoulderHPSprite.Draw(rc);
 	}
 }

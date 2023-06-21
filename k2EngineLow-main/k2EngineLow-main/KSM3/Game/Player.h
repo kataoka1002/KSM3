@@ -130,7 +130,7 @@ public:
 	/// <returns></returns>
 	int GetKillEnemyAmount()
 	{
-		return m_killEnemyAmount;
+		return m_killEnemyAmountFont;
 	}
 
 
@@ -299,7 +299,7 @@ public:
 	/// </summary>
 	void AddKillEnemyAmount()
 	{
-		m_killEnemyAmount++;
+		m_killEnemyAmountFont++;
 	}
 
 
@@ -329,7 +329,7 @@ private:
 	int m_gameEndState = 0;							//ゲームの終了判定
 	int m_bossState = 0;								//ボス戦かどうか
 	int m_effectCount = 0;							//エフェクト関係
-	int m_killEnemyAmount = 0;								//敵を殺した数(10になるとウェーブが進む)
+	int m_killEnemyAmountFont = 0;								//敵を殺した数(10になるとウェーブが進む)
 	int m_customPoint[2][3] = { {0,0,0},{0,0,0} };	//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足
 	int m_playerColorData = 0;
 	int m_playerColorRandom = 0;
