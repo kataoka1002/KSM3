@@ -83,7 +83,7 @@ void Enemy_Near::Update()
 {
 
 	//メインゲーム中
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		//エネミーに共通する動き
@@ -94,7 +94,7 @@ void Enemy_Near::Update()
 		HPUnder0();
 
 	}
-	else if (m_player->GetGameState() == 1 || m_player->GetGameState() == 3)
+	else if (m_player->GetGameState() == PAUSE_NUM || m_player->GetGameState() == CUSTOMIZE_NUM)
 	{
 
 		//足音停止

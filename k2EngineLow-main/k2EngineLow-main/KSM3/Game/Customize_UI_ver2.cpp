@@ -336,7 +336,7 @@ void Customize_UI_ver2::Setup()
 void Customize_UI_ver2::Update()
 {
 	//カスタマイズ画面の時のみ実行
-	if (m_player->GetGameState() == 3)
+	if (m_player->GetGameState() == CUSTOMIZE_NUM)
 	{
 		//それぞれのモデルがnullじゃないなら,モデルの移動回転を計算している関数を実行
 		Custom_model_Core();			//コア
@@ -1231,7 +1231,7 @@ void Customize_UI_ver2::PlaySE(SoundName name, float vol)
 void Customize_UI_ver2::Render(RenderContext& rc)
 {
 	//カスタマイズ画面の時のみDrawする
-	if (m_player->GetGameState() == 3)
+	if (m_player->GetGameState() == CUSTOMIZE_NUM)
 	{
 		//各部位に装備されているならDrawする
 		custom_model_Core->Draw(rc);				//コア武器はずっと存在するので分岐なし

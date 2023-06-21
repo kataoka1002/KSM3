@@ -96,7 +96,7 @@ void Core_weapons_attack::Update()
 {
 
 	//メインゲーム中
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		//ダメージ処理
@@ -108,7 +108,7 @@ void Core_weapons_attack::Update()
 
 	}
 	//リザルト画面に行くと
-	else if (m_player->GetGameState() == 2)
+	else if (m_player->GetGameState() == RESULT_NUM)
 	{
 		
 		//自分自身の削除

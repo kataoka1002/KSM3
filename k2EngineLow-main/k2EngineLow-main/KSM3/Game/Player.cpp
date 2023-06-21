@@ -83,7 +83,7 @@ void Player::Update()
 {
 
 	//プレイヤーが死んでいてリザルト中でないとき
-	if (m_playerDead == true && m_gameState != 2)
+	if (m_playerDead == true && m_gameState != RESULT_NUM)
 	{
 
 		//死んでからリザルトまでの処理
@@ -94,7 +94,7 @@ void Player::Update()
 
 
 	//登場シーンの間
-	if (m_gameState == 4)
+	if (m_gameState == OP_NUM)
 	{
 
 		//モデルのポジション更新
@@ -106,7 +106,7 @@ void Player::Update()
 
 
 	//メインゲームのとき
-	if (m_gameState == 0) 
+	if (m_gameState == MAIN_GAME_NUM) 
 	{
 
 		//移動処理
@@ -125,21 +125,21 @@ void Player::Update()
 		PauseSelect();	
 
 	}
-	else if (m_gameState == 1) 
+	else if (m_gameState == PAUSE_NUM) 
 	{
 
 		//ポーズ画面
 		pause();
 
 	}
-	else if (m_gameState == 2)
+	else if (m_gameState == RESULT_NUM)
 	{
 
 		//リザルト中は攻撃音も出さない
 		m_machineGunSE->Stop();
 
 	}
-	else if (m_gameState == 3)
+	else if (m_gameState == CUSTOMIZE_NUM)
 	{
 
 		//カスタマイズ中は攻撃音も出さない
@@ -283,7 +283,7 @@ void Player::PlayerDeadtoResult()
 
 
 		//リザルトステートへ
-		m_gameState = 2;			
+		m_gameState = RESULT_NUM;			
 
 
 		//色付きに戻す
@@ -511,7 +511,7 @@ void Player::PauseSelect()
 	{
 
 		//ポーズ画面へ
-		m_gameState = 1;
+		m_gameState = PAUSE_NUM;
 
 
 		//メニュー画面移動SE
@@ -533,7 +533,7 @@ void Player::pause()
 	{
 
 		//メインゲームに戻る
-		m_gameState = 0;	
+		m_gameState = MAIN_GAME_NUM;	
 
 
 		//メニュー画面移動SE
@@ -686,7 +686,7 @@ void Player::Render(RenderContext& rc)
 
 
 	//ポーズ中なら
-	if (m_gameState == 1)
+	if (m_gameState == PAUSE_NUM)
 	{
 
 		//ポーズ画面を表示

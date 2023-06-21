@@ -123,14 +123,14 @@ void Boss_Drill_attack::Update()
 	m_BulletEffect2->SetRotation(efe_rot);
 	m_BulletEffect2->SetPosition(firing_position+efe_l_pos2);
 	Bullet_efe_count++;
-	if (b_a_player->GetGameState() == 0)
+	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		Damage();
 		Move();
 		b_a_Bullet.Update();
 		
 	}
-	else if (b_a_player->GetGameState() == 2)
+	else if (b_a_player->GetGameState() == RESULT_NUM)
 	{
 		DeleteGO(this);	//ƒŠƒUƒ‹ƒg‰æ–Ê‚És‚­‚ÆÁ‚·
 	}

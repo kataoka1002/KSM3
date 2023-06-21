@@ -64,7 +64,7 @@ bool Wave::Start()
 
 void Wave::Update()
 {
-	if (m_player->GetGameState() == 1)
+	if (m_player->GetGameState() == PAUSE_NUM)
 	{
 		return;
 	}
@@ -102,7 +102,7 @@ void Wave::Update()
 	}
 
 	//ゲーム中のみ時間経過
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		//最終ウェーブじゃないとき
 		if (m_waveNum != 3)
@@ -180,19 +180,19 @@ void Wave::Update()
 		//サイズを小さくする
 		GageSetScale();
 	}
-	else if (m_player->GetGameState() == 1)
+	else if (m_player->GetGameState() == PAUSE_NUM)
 	{
 
 	}
-	else if (m_player->GetGameState() == 2)
+	else if (m_player->GetGameState() == RESULT_NUM)
 	{
 
 	}
-	else if (m_player->GetGameState() == 3)
+	else if (m_player->GetGameState() == CUSTOMIZE_NUM)
 	{
 
 	}
-	else if (m_player->GetGameState() == 4)
+	else if (m_player->GetGameState() == OP_NUM)
 	{
 
 	}
@@ -332,7 +332,7 @@ void Wave::TimerRotation()
 
 void Wave::Render(RenderContext& rc)
 {
-	if (m_player->GetGameState() == 0 || m_player->GetGameState() == 1)
+	if (m_player->GetGameState() == MAIN_GAME_NUM || m_player->GetGameState() == PAUSE_NUM)
 	{
 		if (m_player->GetBossState() != 1)	//ボス戦じゃないなら表示
 		{

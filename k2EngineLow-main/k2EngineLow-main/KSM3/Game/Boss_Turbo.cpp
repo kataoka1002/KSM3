@@ -57,7 +57,7 @@ void Boss_Turbo::Update()
 		Setup();
 	}
 	fast++;
-	if (b_w_player->GetGameState() == 0 && fast != 0)
+	if (b_w_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		Move();
 			Rotation();

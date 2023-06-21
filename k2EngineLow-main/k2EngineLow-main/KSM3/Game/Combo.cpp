@@ -36,7 +36,7 @@ bool Combo::Start()
 
 void Combo::Update()
 {
-	if (m_player->GetGameState() != 0)
+	if (m_player->GetGameState() != MAIN_GAME_NUM)
 	{
 		return;
 	}
@@ -77,7 +77,7 @@ void Combo::Update()
 
 void Combo::Render(RenderContext& rc)
 {
-	if (m_player->GetGameState() != 0)
+	if (m_player->GetGameState() != MAIN_GAME_NUM)
 	{
 		return;
 	}

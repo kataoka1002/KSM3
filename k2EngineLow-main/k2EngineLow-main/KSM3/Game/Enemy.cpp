@@ -93,7 +93,7 @@ void Enemy::Update()
 
 
 	//プレイヤーがメインゲーム中なら
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		//エネミーに共通する動き
@@ -107,7 +107,7 @@ void Enemy::Update()
 		
 	}
 	//プレイヤーがポーズ中またはカスタム中の時
-	else if (m_player->GetGameState() == 1 || m_player->GetGameState() == 3)
+	else if (m_player->GetGameState() == PAUSE_NUM || m_player->GetGameState() == CUSTOMIZE_NUM)
 	{
 
 		//足音停止

@@ -28,7 +28,7 @@ bool SoundManage::Start()
 
 void SoundManage::Update()
 {
-	if (m_player->GetGameState() == 1 || m_player->GetPlayerDead() == true)
+	if (m_player->GetGameState() == PAUSE_NUM || m_player->GetPlayerDead() == true)
 	{
 		m_gameBGM->Stop();
 		m_bossBGM->Stop();
@@ -47,7 +47,7 @@ void SoundManage::Update()
 	//ゲーム中のBGM再生
 	if (m_gameBGM->IsPlaying() != true && m_player->GetBossState() != 1) //ボス戦じゃないなら
 	{
-		if (m_player->GetGameState() == 0 || m_player->GetGameState() == 1)
+		if (m_player->GetGameState() == MAIN_GAME_NUM || m_player->GetGameState() == PAUSE_NUM)
 		{
 			m_gameBGM->Play(true);
 			m_customizeBGM->Stop();	//カスタムBGMは止める
@@ -55,7 +55,7 @@ void SoundManage::Update()
 	}
 
 	//カスタマイズ画面のBGM再生
-	if (m_player->GetGameState() == 3 && m_customizeBGM->IsPlaying() != true)
+	if (m_player->GetGameState() == CUSTOMIZE_NUM && m_customizeBGM->IsPlaying() != true)
 	{
 		m_customizeBGM->Play(true);
 		m_gameBGM->Stop();	//ゲームBGMは止める

@@ -189,7 +189,7 @@ void GameCamera::Update()
 
 
 	//カスタム画面とリザルト以外の時
-	if (m_cameraState != CAMERA_STATE_CUSTOMIZE && m_player->GetGameState() != 2)
+	if (m_cameraState != CAMERA_STATE_CUSTOMIZE && m_player->GetGameState() != RESULT_NUM)
 	{
 		//揺れの大きさを足す
 		m_target.x += BGX;

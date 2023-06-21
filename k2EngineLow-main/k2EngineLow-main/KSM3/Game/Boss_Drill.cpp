@@ -57,7 +57,7 @@ void Boss_Drill::Update()
 		Setup();
 	}
 	fast++;
-	if (b_a_player->GetGameState() == 0 && fast != 0)
+	if (b_a_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		Move();
 

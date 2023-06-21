@@ -212,7 +212,7 @@ void Title::Update()
 		//if (g_pad[0]->IsTrigger(enButtonA))
 		//{
 		//	Game* game = NewGO<Game>(0, "game");
-		//	//player->GetGameState() = 0;
+		//	//player->GetGameState() = MAIN_GAME_NUM;
 		//	//gameCamera->m_cameraState = 0;
 		//	DeleteGO(this);
 		//}

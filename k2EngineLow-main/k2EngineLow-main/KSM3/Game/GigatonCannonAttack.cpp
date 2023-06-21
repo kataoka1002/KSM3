@@ -62,7 +62,7 @@ void GigatonCannonAttack::Update()
 {
 
 	//メインゲーム中
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		//移動処理
@@ -74,7 +74,7 @@ void GigatonCannonAttack::Update()
 
 	}
 	//リザルト中
-	else if (m_player->GetGameState() == 2)
+	else if (m_player->GetGameState() == RESULT_NUM)
 	{
 
 		//自分自身の削除
