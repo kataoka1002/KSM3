@@ -11,7 +11,7 @@ public:
 	void Update();
 	void SetUp();
 
-
+private:
 	Game* m_game = nullptr;
 	Player* m_player = nullptr;
 	SoundSource* m_gameBGM = nullptr;			//ÉQÅ[ÉÄBGM

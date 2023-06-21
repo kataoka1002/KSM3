@@ -17,6 +17,7 @@ SoundManage::~SoundManage()
 
 bool SoundManage::Start()
 {
+	//探す
 	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 
@@ -28,37 +29,60 @@ bool SoundManage::Start()
 
 void SoundManage::Update()
 {
+	//ポーズ画面またはプレイヤーが死んでいるとき
 	if (m_player->GetGameState() == PAUSE_NUM || m_player->GetPlayerDead() == true)
 	{
+
+		//ゲームBGMストップ
 		m_gameBGM->Stop();
+
+		//ボスBGMストップ
 		m_bossBGM->Stop();
+
 		return;
 	}
 
-	//ボス戦のBGM再生
+	
 	if (m_player->GetBossState() == 1 && m_bossBGM->IsPlaying() != true)
 	{
+
+		//ボス戦のBGM再生
 		m_bossBGM->Play(true);
-		m_gameBGM->Stop();	//ゲームBGMは止める
+		
+		//ゲームBGMは止める
+		m_gameBGM->Stop();	
 
 		return;
 	}
 
-	//ゲーム中のBGM再生
-	if (m_gameBGM->IsPlaying() != true && m_player->GetBossState() != 1) //ボス戦じゃないなら
+
+	//ボス戦じゃないなら
+	if (m_gameBGM->IsPlaying() != true && m_player->GetBossState() != 1) 
 	{
+
+		//ゲーム中またはポーズ画面の時
 		if (m_player->GetGameState() == MAIN_GAME_NUM || m_player->GetGameState() == PAUSE_NUM)
 		{
+			
+			//ゲーム中のBGM再生
 			m_gameBGM->Play(true);
-			m_customizeBGM->Stop();	//カスタムBGMは止める
+			
+			//カスタムBGMは止める
+			m_customizeBGM->Stop();	
+
 		}
 	}
 
-	//カスタマイズ画面のBGM再生
+	//カスタマイズ画面中
 	if (m_player->GetGameState() == CUSTOMIZE_NUM && m_customizeBGM->IsPlaying() != true)
 	{
+		
+		//カスタマイズ画面のBGM再生
 		m_customizeBGM->Play(true);
-		m_gameBGM->Stop();	//ゲームBGMは止める
+		
+		//ゲームBGMは止める
+		m_gameBGM->Stop();	
+
 	}
 }
 
