@@ -86,7 +86,7 @@ void Enemy_Far::Update()
 {
 
 	//ƒƒCƒ“ƒQ[ƒ€’†
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		//¶‚«‚Ä‚¢‚éŠÔ
@@ -154,7 +154,7 @@ void Enemy_Far::Update()
 
 		}
 	}
-	else if (m_player->GetGameState() == 1 || m_player->GetGameState() == 3)
+	else if (m_player->GetGameState() == PAUSE_NUM || m_player->GetGameState() == CUSTOMIZE_NUM)
 	{
 
 		//‘«‰¹’âŽ~

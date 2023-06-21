@@ -351,7 +351,7 @@ void PlayerUI::Render(RenderContext& rc)
 {
 
 	//メインゲーム中じゃない or プレイヤーが死んでいるなら
-	if (m_player->GetGameState() != 0 || m_player->GetPlayerDead() != false)
+	if (m_player->GetGameState() != MAIN_GAME_NUM || m_player->GetPlayerDead() != false)
 	{
 		return;
 	}

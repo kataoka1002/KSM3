@@ -57,7 +57,7 @@ void Boss_Riser::Update()
 	}
 	fast++;
 	
-	if (b_w_player->GetGameState() == 0 && fast != 0)
+	if (b_w_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		if (fast >= 540 && fast < 810) {
 			boss_Riser_Render.PlayAnimation(enAnimationClip_attack,0.5f);

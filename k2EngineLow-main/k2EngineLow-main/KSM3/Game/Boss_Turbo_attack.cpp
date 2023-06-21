@@ -115,7 +115,7 @@ void Boss_Turbo_attack::SetUp()
 
 void Boss_Turbo_attack::Update()
 {	
-	if (b_a_player->GetGameState() == 0)
+	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		DestroyWithImpactEffect();
 		b_a_Bullet.Update();
@@ -123,7 +123,7 @@ void Boss_Turbo_attack::Update()
 		Move();
 		Rotation();
 	}
-	else if (b_a_player->GetGameState() == 2)
+	else if (b_a_player->GetGameState() == RESULT_NUM)
 	{
 		DeleteGO(this);	//ƒŠƒUƒ‹ƒg‰æ–Ê‚És‚­‚ÆÁ‚·
 	}

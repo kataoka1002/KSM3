@@ -37,6 +37,19 @@ namespace
 
 
 /// <summary>
+/// ゲームステートのナンバー
+/// </summary>
+namespace
+{
+	const int MAIN_GAME_NUM = 0;
+	const int PAUSE_NUM = 1;
+	const int RESULT_NUM = 2;
+	const int CUSTOMIZE_NUM = 3;
+	const int OP_NUM = 4;
+}
+
+
+/// <summary>
 /// エフェクトの名前
 /// </summary>
 enum EffectName 

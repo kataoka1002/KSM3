@@ -109,7 +109,7 @@ void Shoulder_weapons::Update()
 {
 
 	//メインゲーム中
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		//動きの処理

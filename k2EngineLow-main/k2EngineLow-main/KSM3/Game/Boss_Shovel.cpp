@@ -79,7 +79,7 @@ void Boss_Shovel::Update()
 		
 	}
 	fast++;
-	if (b_w_player->GetGameState() == 0 && fast != 0)
+	if (b_w_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		if (fast == 400) {
 			m_Shovel_roar_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする

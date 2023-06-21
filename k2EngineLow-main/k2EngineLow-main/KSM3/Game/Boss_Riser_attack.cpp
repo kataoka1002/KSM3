@@ -135,7 +135,7 @@ void Boss_Riser_attack::Update()
 	}
 	Bullet_efe_count++;
 
-	if (b_a_player->GetGameState() == 0)
+	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		fall_speed += 0.002;
@@ -152,7 +152,7 @@ void Boss_Riser_attack::Update()
 		Move();
 
 	}
-	else if (b_a_player->GetGameState() == 2)
+	else if (b_a_player->GetGameState() == RESULT_NUM)
 	{
 		DeleteGO(this);	//ƒŠƒUƒ‹ƒg‰æ–Ê‚És‚­‚ÆÁ‚·
 	}

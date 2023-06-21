@@ -124,7 +124,7 @@ bool Enemy_Bullet::Start()
 
 
 	//リザルト中なら
-	if (m_player->GetGameState() == 2)
+	if (m_player->GetGameState() == RESULT_NUM)
 	{
 
 		//自分自身の削除
@@ -349,7 +349,7 @@ void Enemy_Bullet::Update()
 {
 
 	//メインゲーム中
-	if (m_player->GetGameState() == 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		//位置Yが0以下になると
@@ -399,7 +399,7 @@ void Enemy_Bullet::Update()
 
 	}	
 	//リザルト中
-	else if (m_player->GetGameState() == 2)
+	else if (m_player->GetGameState() == RESULT_NUM)
 	{
 
 		//自分自身の削除

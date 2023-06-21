@@ -33,13 +33,13 @@ void Core_weapons::Update() {
 
 	fast++;
 
-	if (cw_player->GetGameState() == 4)
+	if (cw_player->GetGameState() == OP_NUM)
 	{
 		Move();
 	}
 
 	if(fast!=0) {
-		if (cw_player->GetGameState() == 0) {
+		if (cw_player->GetGameState() == MAIN_GAME_NUM) {
 			Move();
 			if (g_pad[0]->IsPress(enButtonLB1)) {
 

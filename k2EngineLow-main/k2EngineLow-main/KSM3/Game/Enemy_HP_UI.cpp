@@ -121,7 +121,7 @@ Vector3 Enemy_HP_UI::HPBerSend(Vector3 size, Vector3 scale)
 
 void Enemy_HP_UI::Render(RenderContext& rc)
 {
-	if (m_player->GetGameState() == 0 && m_player->GetPlayerDead() == false)
+	if (m_player->GetGameState() == MAIN_GAME_NUM && m_player->GetPlayerDead() == false)
 	{
 		//ˆê’è‹——£ˆÈ“à&ƒJƒƒ‰‚Ì‹–ì‚É“ü‚Á‚Ä‚¢‚é‚È‚ç‘Ì—Í•\¦
 		if (m_enemyNear != nullptr)

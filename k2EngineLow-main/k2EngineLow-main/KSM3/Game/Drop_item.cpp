@@ -58,7 +58,7 @@ void Drop_item::Set_Drop_item()
 
 void Drop_item::Update() 
 {
-	if (drop_player->GetGameState() == 0)
+	if (drop_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		//ƒTƒCƒY‚Ìˆ—
 		SetSize();
