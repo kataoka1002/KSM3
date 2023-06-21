@@ -8,16 +8,19 @@
 namespace
 {
 	//ステートナンバー
-	static int CAMERA_STATE_ZAKO = 0;
-	static int CAMERA_STATE_BOSS = 1;
-	static int NNNNN = 2;
-	static int CAMERA_STATE_CUSTOMIZE = 3;
-	static int CAMERA_STATE_OP = 4;
+	const int CAMERA_STATE_ZAKO = 0;
+	const int CAMERA_STATE_BOSS = 1;
+	const int NO = 2;
+	const int CAMERA_STATE_CUSTOMIZE = 3;
+	const int CAMERA_STATE_OP = 4;
+
+	//stickの入力量にかけられる数
+	const float MULTIPLYABLE_NUM = 1.3f;
 
 	//揺れの減少量
-	static int VIB_DECREASE_AMOUNT = 10;
-	static int BIGVIB_DECREASE_AMOUNT = 10;
-	static int FINALVIB_DECREASE_AMOUNT = 40;
+	const int VIB_DECREASE_AMOUNT = 10;
+	const int BIGVIB_DECREASE_AMOUNT = 10;
+	const int FINALVIB_DECREASE_AMOUNT = 40;
 
 	//揺れの最大値
 	const float VIBRATION_MAX = 640.0f;
@@ -25,8 +28,8 @@ namespace
 	const float VIBRATION_FINAL_MAX = 5120.0f;
 
 	//メインゲーム中のカメラポジション
-	static Vector3 MAIN_TO_CAMERA_POS = { 0.0f, 500.0f, -700.0f };
-	static Vector3 CUSTOMIZE_TO_CAMERA_POS = { 0.0f, 10.0f, -300.0f };
+	const Vector3 MAIN_TO_CAMERA_POS = { 0.0f, 500.0f, -700.0f };
+	const Vector3 CUSTOMIZE_TO_CAMERA_POS = { 0.0f, 10.0f, -300.0f };
 
 }
 
@@ -219,12 +222,13 @@ void GameCamera::CalcRotation()
 	{
 
 		//パッドの入力を使ってカメラを回す
-		m_stickPowerX = g_pad[0]->GetRStickXF();
-		m_stickPowerY = g_pad[0]->GetRStickYF();
+		m_stickPowerX = g_pad[0]->GetRStickXF() * MULTIPLYABLE_NUM;
+		m_stickPowerY = g_pad[0]->GetRStickYF() * MULTIPLYABLE_NUM;
 
 	}
 	else
 	{
+		//入力量は0にする
 		m_stickPowerX = 0;
 		m_stickPowerY = 0;
 	}
@@ -232,7 +236,7 @@ void GameCamera::CalcRotation()
 
 	//Y軸周りの回転
 	Quaternion qRot;
-	qRot.SetRotationDeg(Vector3::AxisY, 1.3f * m_stickPowerX);
+	qRot.SetRotationDeg(Vector3::AxisY, m_stickPowerX);
 	qRot.Apply(m_toCameraPos);
 
 
@@ -241,7 +245,7 @@ void GameCamera::CalcRotation()
 	axisX.Cross(Vector3::AxisY, m_toCameraPos);
 	axisX.Normalize();
 
-	qRot.SetRotationDeg(axisX, 1.3f * m_stickPowerY);
+	qRot.SetRotationDeg(axisX, m_stickPowerY);
 	qRot.Apply(m_toCameraPos);
 
 }
