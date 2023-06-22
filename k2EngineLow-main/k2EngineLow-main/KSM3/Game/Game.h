@@ -21,12 +21,38 @@ class Title;
 class GuideLight;
 class Combo;
 
+/// <summary>
+/// int型を2つ保存するクラス
+/// </summary>
+class IntPair {
+public:
+	int first;
+	int second;
+
+	// コンストラクタ（初期化リストを使用）
+	IntPair(int a = 0, int b = 0) : first(a), second(b) {}
+};
+
+
+/// <summary>
+/// カスタムポイントのナンバー
+/// </summary>
+namespace
+{
+	const IntPair RIGHT_ARM = { 0,0 };
+	const IntPair RIGHT_LEG = { 1,0 };
+	const IntPair LEFT_ARM = { 0,2 };
+	const IntPair LEFT_LEG = { 1,2 };
+	const IntPair SHOULDER = { 0,1 };
+}
+
 
 /// <summary>
 /// 武器のナンバー
 /// </summary>
 namespace
 {
+	const int NO_WEAPON_NUM = 0;
 	const int GIGAPLASMA_NUM = 1;
 	const int MACHINEGUN_NUM = 2;
 	const int HELLFIRE_NUM = 3;

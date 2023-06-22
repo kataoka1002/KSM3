@@ -38,9 +38,9 @@ void Left_arm_weapons::InitWeapon()
 {
 
 	//付いている武器によって処理の変更
-	switch (m_player->GetCustomPoint(0, 2))
+	switch (m_player->GetCustomPoint(LEFT_ARM))
 	{
-	case 2:	//マシンガンの時
+	case MACHINEGUN_NUM:	//マシンガンの時
 
 		//武器モデルの初期化
 		m_weaponModel->Init("Assets/modelData/machine_gun_drop.tkm");
@@ -52,7 +52,7 @@ void Left_arm_weapons::InitWeapon()
 		break;
 
 
-	case 4:	//ギガトンキャノンの時
+	case GIGATONCANNON_NUM:	//ギガトンキャノンの時
 
 		//武器モデルの初期化
 		m_weaponModel->Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
@@ -64,7 +64,7 @@ void Left_arm_weapons::InitWeapon()
 		break;
 
 
-	case 6:	//戦艦砲の時
+	case BATTLESHIPGUN_NUM:	//戦艦砲の時
 
 		//武器モデルの初期化
 		m_weaponModel->Init("Assets/modelData/battleship_gun_left_arm.tkm");
@@ -84,7 +84,7 @@ void Left_arm_weapons::InitWeapon()
 
 
 	//武器の細かい設定を行う	
-	SetWeapon(m_player->GetCustomPoint(0, 2));
+	SetWeapon(m_player->GetCustomPoint(LEFT_ARM));
 
 }
 
@@ -104,7 +104,7 @@ void Left_arm_weapons::Update()
 
 
 		//攻撃処理
-		MakeBullet(m_player->GetCustomPoint(0, 2));
+		MakeBullet(m_player->GetCustomPoint(LEFT_ARM));
 
 		
 		// プレイヤーが死亡したら
@@ -128,7 +128,7 @@ void Left_arm_weapons::SetBulletLocalPosition()
 {
 
 	//武器がマシンガンの場合
-	if (m_player->GetCustomPoint(0, 2) == 2)
+	if (m_player->GetCustomPoint(LEFT_ARM) == MACHINEGUN_NUM)
 	{
 
 		//弾のローカルポジションの設定
@@ -136,7 +136,7 @@ void Left_arm_weapons::SetBulletLocalPosition()
 
 	}
 	//武器がギガトンキャノンの場合
-	else if (m_player->GetCustomPoint(0, 2) == 4)
+	else if (m_player->GetCustomPoint(LEFT_ARM) == GIGATONCANNON_NUM)
 	{
 
 		//弾のローカルポジションの設定
@@ -144,7 +144,7 @@ void Left_arm_weapons::SetBulletLocalPosition()
 
 	}
 	//武器が戦艦砲の場合
-	else if (m_player->GetCustomPoint(0, 2) == 6)
+	else if (m_player->GetCustomPoint(LEFT_ARM) == BATTLESHIPGUN_NUM)
 	{
 
 		//弾のローカルポジションの設定
@@ -161,7 +161,7 @@ void Left_arm_weapons::DestroyEvent()
 	{
 
 		//プレイヤーの設定武器を空にする
-		m_player->SetCustomPoint(0, 2, 0);
+		m_player->SetCustomPoint(LEFT_ARM, NO_WEAPON_NUM);
 		
 		
 		//UIの設定武器を空にする

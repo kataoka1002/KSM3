@@ -49,10 +49,10 @@ Customize_UI_ver2::~Customize_UI_ver2()
 bool Customize_UI_ver2::Start()
 {
 	//まとめてFindGOする
+	m_game = FindGO<Game>("game");
 	m_player = FindGO<Player>("player");
 	m_coreWeapon = FindGO<Core_weapons>("core_weapons");	//コア武器はGame.cppでNewGOしている
 	m_gameCamera = FindGO<GameCamera>("gamecamera");
-	m_game = FindGO<Game>("game");
 
 
 	//メモリの確保
@@ -141,13 +141,13 @@ void Customize_UI_ver2::Setup()
 	}
 
 	//取り付けている部位によって処理を変える
-	if (m_player->GetCustomPoint(0, 0) != 0)	//右腕
+	if (m_player->GetCustomPoint(RIGHT_ARM) != 0)	//右腕
 	{
 		Custom_model_Right_arm();
 		//武器によってモデルを変える
 		switch (m_rightArmWeapon->GetWeaponKind())
 		{
-		case 2:	//マシンガン
+		case MACHINEGUN_NUM:	//マシンガン
 			//モデルの初期化
 			custom_model_Right_arm->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
@@ -156,7 +156,7 @@ void Customize_UI_ver2::Setup()
 			raw_lp = { 60.0f,100.0f,-10.0f };
 
 			break;
-		case 4:	//ギガトンキャノン
+		case GIGATONCANNON_NUM:	//ギガトンキャノン
 			//モデルの初期化
 			custom_model_Right_arm->Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
 			//モデルの大きさの設定
@@ -165,7 +165,7 @@ void Customize_UI_ver2::Setup()
 			raw_lp = { 60.0f,100.0f,-10.0f };
 
 			break;
-		case 6:	//戦艦砲
+		case BATTLESHIPGUN_NUM:	//戦艦砲
 			//モデルの初期化
 			custom_model_Right_arm->Init("Assets/modelData/battleship_gun_right_arm.tkm");
 			//モデルの大きさの設定
@@ -178,13 +178,13 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->GetCustomPoint(0, 2) != 0)	//左腕
+	if (m_player->GetCustomPoint(LEFT_ARM) != 0)	//左腕
 	{
 		Custom_model_Left_arm();
 		//武器によってモデルを変える
 		switch (m_leftArmWeapon->GetWeaponKind())
 		{
-		case 2:	//マシンガン
+		case MACHINEGUN_NUM:	//マシンガン
 			//モデルの初期化
 			custom_model_Left_arm->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
@@ -193,7 +193,7 @@ void Customize_UI_ver2::Setup()
 			law_lp = { -60.0f,100.0f,-10.0f };
 
 			break;
-		case 4:	//ギガトンキャノン
+		case GIGATONCANNON_NUM:	//ギガトンキャノン
 			//モデルの初期化
 			custom_model_Left_arm->Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
 			//モデルの大きさの設定
@@ -202,7 +202,7 @@ void Customize_UI_ver2::Setup()
 			law_lp = { -60.0f,100.0f,-10.0f };
 
 			break;
-		case 6:	//戦艦砲
+		case BATTLESHIPGUN_NUM:	//戦艦砲
 			//モデルの初期化
 			custom_model_Left_arm->Init("Assets/modelData/battleship_gun_left_arm.tkm");
 			//モデルの大きさの設定
@@ -216,13 +216,13 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->GetCustomPoint(0, 1) != 0)	//肩
+	if (m_player->GetCustomPoint(SHOULDER) != 0)	//肩
 	{
 		Custom_model_Shoulder();
 		//武器によってモデルを変える
 		switch (m_shoulderWeapon->GetWeaponKind())
 		{
-		case 2:	//マシンガン
+		case MACHINEGUN_NUM:	//マシンガン
 			//モデルの初期化
 			custom_model_shoulder->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
@@ -231,7 +231,7 @@ void Customize_UI_ver2::Setup()
 			sw_lp = { 35.0f,119.0f,0.0f };
 
 			break;
-		case 4:	//ギガトンキャノン
+		case GIGATONCANNON_NUM:	//ギガトンキャノン
 			//モデルの初期化
 			custom_model_shoulder->Init("Assets/modelData/GIgaton_shoulder.tkm");
 			//モデルの大きさの設定
@@ -241,7 +241,7 @@ void Customize_UI_ver2::Setup()
 
 
 			break;
-		case 6:	//戦艦砲
+		case BATTLESHIPGUN_NUM:	//戦艦砲
 			//モデルの初期化
 			custom_model_shoulder->Init("Assets/modelData/battleship_gun_shoulder.tkm");
 			//モデルの大きさの設定
@@ -254,13 +254,13 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->GetCustomPoint(1, 0) != 0)	//右足
+	if (m_player->GetCustomPoint(RIGHT_LEG) != 0)	//右足
 	{
 		Custom_model_Right_leg();
 		//武器によってモデルを変える
 		switch (m_rightLegWeapon->GetWeaponKind())
 		{
-		case 2:	//マシンガン
+		case MACHINEGUN_NUM:	//マシンガン
 			//モデルの初期化
 			custom_model_Right_leg->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
@@ -269,7 +269,7 @@ void Customize_UI_ver2::Setup()
 			rlw_lp = { 90.0f,30.0f,0.0f };
 
 			break;
-		case 4:	//ギガトンキャノン
+		case GIGATONCANNON_NUM:	//ギガトンキャノン
 			//モデルの初期化
 			custom_model_Right_leg->Init("Assets/modelData/GIgaton_cannon.tkm");
 			//モデルの大きさの設定
@@ -279,7 +279,7 @@ void Customize_UI_ver2::Setup()
 
 			break;
 
-		case 6:	//戦艦砲
+		case BATTLESHIPGUN_NUM:	//戦艦砲
 			//モデルの初期化
 			custom_model_Right_leg->Init("Assets/modelData/battleship_gun_Drop.tkm");
 			//モデルの大きさの設定
@@ -293,13 +293,13 @@ void Customize_UI_ver2::Setup()
 			break;
 		}
 	}
-	if (m_player->GetCustomPoint(1, 2) != 0)	//左足
+	if (m_player->GetCustomPoint(LEFT_LEG) != 0)	//左足
 	{
 		Custom_model_Left_leg();
 		//武器によってモデルを変える
 		switch (m_leftLegWeapon->GetWeaponKind())
 		{
-		case 2:	//マシンガン
+		case MACHINEGUN_NUM:	//マシンガン
 			//モデルの初期化
 			custom_model_Left_leg->Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
@@ -308,7 +308,7 @@ void Customize_UI_ver2::Setup()
 			llw_lp = { -90.0f,30.0f,0.0f };
 
 			break;
-		case 4:	//ギガトンキャノン
+		case GIGATONCANNON_NUM:	//ギガトンキャノン
 			//モデルの初期化
 			custom_model_Left_leg->Init("Assets/modelData/GIgaton_cannon.tkm");
 			//モデルの大きさの設定
@@ -318,7 +318,7 @@ void Customize_UI_ver2::Setup()
 
 			break;
 
-		case 6:	//戦艦砲
+		case BATTLESHIPGUN_NUM:	//戦艦砲
 			//モデルの初期化
 			custom_model_Left_leg->Init("Assets/modelData/battleship_gun_Drop.tkm");
 			//モデルの大きさの設定
@@ -453,7 +453,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 0, 1);
 			
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(0, 1) == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(SHOULDER) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -477,7 +477,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 0, 0);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(0, 0) == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(RIGHT_ARM) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -501,7 +501,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 0, 2);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(0, 2) == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(LEFT_ARM) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -525,7 +525,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 1, 0);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(1, 0) == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(RIGHT_LEG) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -548,7 +548,7 @@ void Customize_UI_ver2::Custom_UI()
 			init_parameter(0, 1, 2);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(1, 2) == 0 && window_count == 0)
+		if (g_pad[0]->IsTrigger(enButtonA) && m_player->GetCustomPoint(LEFT_LEG) == 0 && window_count == 0)
 		{
 			//注意書きウィンドウの表示
 			window_open = true;
@@ -585,17 +585,17 @@ void Customize_UI_ver2::init_parameter(int Drop, int line, int row) {//パラメ
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
 			break;
-		case 2:	//マシンガン
+		case MACHINEGUN_NUM:	//マシンガン
 			m_parameterSheet.Init("Assets/sprite/machine_gun_UI_parameter.DDS", 650.0f, 600.0f);
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
 			break;
-		case 4:	//ギガトンキャノン
+		case GIGATONCANNON_NUM:	//ギガトンキャノン
 			m_parameterSheet.Init("Assets/sprite/GigaTon_cannon_UI_parameter.DDS", 650.0f, 600.0f);
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
 			break;
-		case 6:	//戦艦砲
+		case BATTLESHIPGUN_NUM:	//戦艦砲
 			m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
@@ -613,17 +613,17 @@ void Customize_UI_ver2::init_parameter(int Drop, int line, int row) {//パラメ
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
 			break;
-		case 2:	//マシンガン
+		case MACHINEGUN_NUM:	//マシンガン
 			m_parameterSheet.Init("Assets/sprite/machine_gun_UI_parameter.DDS", 650.0f, 600.0f);
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
 			break;
-		case 4:	//ギガトンキャノン
+		case GIGATONCANNON_NUM:	//ギガトンキャノン
 			m_parameterSheet.Init("Assets/sprite/GigaTon_cannon_UI_parameter.DDS", 650.0f, 600.0f);
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
 			break;
-		case 6:	//戦艦砲
+		case BATTLESHIPGUN_NUM:	//戦艦砲
 			m_parameterSheet.Init("Assets/sprite/BattleShip_gun_UI_parameter.DDS", 650.0f, 600.0f);
 			m_parameterSheet.SetPosition(m_parameterSheetPosition);
 			m_parameterSheet.Update();
@@ -985,21 +985,21 @@ void Customize_UI_ver2::Custom_model_Right_arm()
 	//付けている武器によってカスタム画面のモデルを変更する
 	switch (m_rightArmWeapon->GetWeaponKind())
 	{
-	case 2:	//マシンガン
+	case MACHINEGUN_NUM:	//マシンガン
 		//モデルのサイズを設定	
 		custom_model_Right_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
 		raw_lp = { 60.0f,100.0f,0.0f };
 
 		break;
-	case 4:	//ギガトンキャノン
+	case GIGATONCANNON_NUM:	//ギガトンキャノン
 		//モデルのサイズを設定	
 		custom_model_Right_arm->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		raw_lp = { 50.0f,100.0f,30.0f };
 
 		break;
-	case 6:	//戦艦砲
+	case BATTLESHIPGUN_NUM:	//戦艦砲
 		//モデルのサイズを設定	
 		custom_model_Right_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
@@ -1030,21 +1030,21 @@ void Customize_UI_ver2::Custom_model_Left_arm()
 	//付けている武器によってカスタム画面のモデルを変更する
 	switch (m_leftArmWeapon->GetWeaponKind())
 	{
-	case 2:	//マシンガン
+	case MACHINEGUN_NUM:	//マシンガン
 		//モデルのサイズを設定	
 		custom_model_Left_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
 		law_lp = { -60.0f,100.0f,0.0f };
 
 		break;
-	case 4:	//ギガトンキャノン
+	case GIGATONCANNON_NUM:	//ギガトンキャノン
 		//モデルのサイズを設定	
 		custom_model_Left_arm->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		law_lp = { -50.0f,100.0f,30.0f };
 
 		break;
-	case 6:	//戦艦砲
+	case BATTLESHIPGUN_NUM:	//戦艦砲
 		//モデルのサイズを設定	
 		custom_model_Left_arm->SetScale(scale2);
 		//モデルのローカルポジション設定
@@ -1075,7 +1075,7 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 	//付けている武器によってカスタム画面のモデルを変更する
 	switch (m_shoulderWeapon->GetWeaponKind())
 	{
-	case 2:	//マシンガン
+	case MACHINEGUN_NUM:	//マシンガン
 		//モデルのサイズを設定	
 		custom_model_shoulder->SetScale(scale2);
 		//モデルのローカルポジション設定
@@ -1087,14 +1087,14 @@ void Customize_UI_ver2::Custom_model_Shoulder()
 		sw2_lp = { -35.0f,119.0f,0.0f };
 
 		break;
-	case 4:	//ギガトンキャノン
+	case GIGATONCANNON_NUM:	//ギガトンキャノン
 		//モデルのサイズを設定	
 		custom_model_shoulder->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		sw_lp = { 0.0f,120.0f,0.0f };
 
 		break;
-	case 6:	//戦艦砲
+	case BATTLESHIPGUN_NUM:	//戦艦砲
 		//モデルのサイズを設定	
 		custom_model_shoulder->SetScale(scale2);
 		//モデルのローカルポジション設定
@@ -1136,21 +1136,21 @@ void Customize_UI_ver2::Custom_model_Right_leg()
 	//付けている武器によってカスタム画面のモデルを変更する
 	switch (m_rightLegWeapon->GetWeaponKind())
 	{
-	case 2:	//マシンガン
+	case MACHINEGUN_NUM:	//マシンガン
 		//モデルのサイズを設定	
 		custom_model_Right_leg->SetScale(scale2);
 		//モデルのローカルポジション設定
 		rlw_lp = { 90.0f,30.0f,0.0f };
 
 		break;
-	case 4:	//ギガトンキャノン
+	case GIGATONCANNON_NUM:	//ギガトンキャノン
 		//モデルのサイズを設定	
 		custom_model_Right_leg->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		rlw_lp = { 55.0f,40.0f,27.0f };
 
 		break;
-	case 6:	//戦艦砲
+	case BATTLESHIPGUN_NUM:	//戦艦砲
 		//モデルのサイズを設定	
 		custom_model_Right_leg->SetScale(scale2);
 		//モデルのローカルポジション設定
@@ -1182,21 +1182,21 @@ void Customize_UI_ver2::Custom_model_Left_leg()
 	//付けている武器によってカスタム画面のモデルを変更する
 	switch (m_leftLegWeapon->GetWeaponKind())
 	{
-	case 2:	//マシンガン
+	case MACHINEGUN_NUM:	//マシンガン
 		//モデルのサイズを設定			
 		custom_model_Left_leg->SetScale(scale2);
 		//モデルのローカルポジション設定
 		llw_lp = { -90.0f,30.0f,0.0f };
 
 		break;
-	case 4:	//ギガトンキャノン
+	case GIGATONCANNON_NUM:	//ギガトンキャノン
 		//モデルのサイズを設定			
 		custom_model_Left_leg->SetScale(0.8f);
 		//モデルのローカルポジション設定
 		llw_lp = { -55.0f,40.0f,27.0f };
 
 		break;
-	case 6:	//戦艦砲
+	case BATTLESHIPGUN_NUM:	//戦艦砲
 		//モデルのサイズを設定	
 		custom_model_Left_leg->SetScale(scale2);
 		//モデルのローカルポジション設定

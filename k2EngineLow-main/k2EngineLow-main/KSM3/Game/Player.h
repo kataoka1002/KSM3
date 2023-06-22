@@ -77,10 +77,14 @@ public:
 	/// </summary>
 	/// <param name="line">s</param>
 	/// <param name="column">—ñ</param>
-	/// <returns>‘•”õ‚È‚µ : 0 , ‘•”õ‚ ‚è : 1</returns>
+	/// <returns>0 : ‘•”õ‚È‚µ </returns>
 	int GetCustomPoint(int line, int column)
 	{
 		return m_customPoint[line][column];
+	}
+	int GetCustomPoint(IntPair intPair)
+	{
+		return m_customPoint[intPair.first][intPair.second];
 	}
 
 
@@ -197,6 +201,10 @@ public:
 	void SetCustomPoint(int line, int column, int weaponKind)
 	{
 		m_customPoint[line][column] = weaponKind;
+	}
+	void SetCustomPoint(IntPair intPair, int weaponKind)
+	{
+		m_customPoint[intPair.first][intPair.second] = weaponKind;
 	}
 
 

@@ -38,9 +38,9 @@ void Shoulder_weapons::InitWeapon()
 {
 
 	//付いている武器によって処理の変更
-	switch (m_player->GetCustomPoint(0, 1))
+	switch (m_player->GetCustomPoint(SHOULDER))
 	{
-	case 2:	//マシンガンの時
+	case MACHINEGUN_NUM:	//マシンガンの時
 
 		//メモリの確保
 		m_machineGunWeapon2 = std::make_unique<ModelRender>();
@@ -69,7 +69,7 @@ void Shoulder_weapons::InitWeapon()
 		break;
 
 
-	case 4:	//ギガトンキャノンの時
+	case GIGATONCANNON_NUM:	//ギガトンキャノンの時
 
 		//武器モデルの初期化
 		m_weaponModel->Init("Assets/modelData/GIgaton_shoulder.tkm");
@@ -81,7 +81,7 @@ void Shoulder_weapons::InitWeapon()
 		break;
 
 
-	case 6:	//戦艦砲の時
+	case BATTLESHIPGUN_NUM:	//戦艦砲の時
 
 		//武器モデルの初期化
 		m_weaponModel->Init("Assets/modelData/battleship_gun_shoulder.tkm");
@@ -101,7 +101,7 @@ void Shoulder_weapons::InitWeapon()
 
 
 	//武器の細かい設定を行う	
-	SetWeapon(m_player->GetCustomPoint(0, 1));
+	SetWeapon(m_player->GetCustomPoint(SHOULDER));
 
 }
 
@@ -125,11 +125,11 @@ void Shoulder_weapons::Update()
 
 
 		//攻撃処理(弾の1個め)
-		MakeBullet(m_player->GetCustomPoint(0, 1));
+		MakeBullet(m_player->GetCustomPoint(SHOULDER));
 
 
 		//攻撃処理(弾の2個め)
-		MakeBullet2(m_player->GetCustomPoint(0, 1));
+		MakeBullet2(m_player->GetCustomPoint(SHOULDER));
 
 
 		//プレイヤーが死亡したら
@@ -153,7 +153,7 @@ void Shoulder_weapons::Move2()
 {
 
 	//武器がマシンガンなら
-	if (m_player->GetCustomPoint(0, 1) == 2)
+	if (m_player->GetCustomPoint(SHOULDER) == MACHINEGUN_NUM)
 	{
 
 		//ローカルポジションを教える
@@ -196,7 +196,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 	if (g_pad[0]->IsPress(enButtonLB1))
 	{
 		//武器がマシンガンの場合
-		if (m_player->GetCustomPoint(0, 1) == 2 && m_firingCount2 % 5 == 0)
+		if (m_player->GetCustomPoint(SHOULDER) == MACHINEGUN_NUM && m_firingCount2 % 5 == 0)
 		{
 
 			//弾2にポジションと回転を教えて生成する
@@ -207,7 +207,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 
 		}
 		//武器がギガトンキャノンの場合
-		else if (m_player->GetCustomPoint(0, 1) == 4 && m_firingCount2 % 180 == 0)
+		else if (m_player->GetCustomPoint(SHOULDER) == GIGATONCANNON_NUM && m_firingCount2 % 180 == 0)
 		{
 
 			//弾2にポジションと回転を教えて生成する
@@ -218,7 +218,7 @@ void Shoulder_weapons::MakeBullet2(int customPoint)
 
 		}
 		//武器が戦艦砲の場合
-		else if (m_player->GetCustomPoint(0, 1) == 6 && m_firingCount2 % 180 == 0)
+		else if (m_player->GetCustomPoint(SHOULDER) == BATTLESHIPGUN_NUM && m_firingCount2 % 180 == 0)
 		{
 
 			//弾2にポジションと回転を教えて生成する
@@ -248,7 +248,7 @@ void Shoulder_weapons::SetBulletLocalPosition()
 {
 
 	//武器がマシンガンの場合
-	if (m_player->GetCustomPoint(0, 1) == 2)
+	if (m_player->GetCustomPoint(SHOULDER) == MACHINEGUN_NUM)
 	{
 
 		//弾1のローカルポジションの設定
@@ -256,7 +256,7 @@ void Shoulder_weapons::SetBulletLocalPosition()
 
 	}
 	//武器がギガトンキャノンの場合
-	else if (m_player->GetCustomPoint(0, 1) == 4)
+	else if (m_player->GetCustomPoint(SHOULDER) == GIGATONCANNON_NUM)
 	{
 
 		//弾1のローカルポジションの設定
@@ -264,7 +264,7 @@ void Shoulder_weapons::SetBulletLocalPosition()
 
 	}
 	//武器が戦艦砲の場合
-	else if (m_player->GetCustomPoint(0, 1) == 6)
+	else if (m_player->GetCustomPoint(SHOULDER) == BATTLESHIPGUN_NUM)
 	{
 
 		//弾1のローカルポジションの設定
@@ -282,7 +282,7 @@ void Shoulder_weapons::DestroyEvent()
 	{
 
 		//プレイヤーの設定武器を空にする
-		m_player->SetCustomPoint(0, 1, 0);
+		m_player->SetCustomPoint(SHOULDER, NO_WEAPON_NUM);
 
 
 		//UIの設定武器を空にする
@@ -319,7 +319,7 @@ void Shoulder_weapons::Render(RenderContext& rc)
 
 
 	//付けている武器がマシンガンなら
-	if (m_player->GetCustomPoint(0, 1) == 2)
+	if (m_player->GetCustomPoint(SHOULDER) == MACHINEGUN_NUM)
 	{
 
 		//2個目の武器モデルの描画

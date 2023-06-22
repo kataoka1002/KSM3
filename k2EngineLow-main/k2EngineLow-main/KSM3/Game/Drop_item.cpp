@@ -39,17 +39,17 @@ void Drop_item::Set_Drop_item()
 
 
 	//—Ž‚Æ‚µ‚½•Ší‚É‚æ‚Á‚Ä‰Šú‰»î•ñ‚ð•ÏX‚·‚é
-	if (drop_kinds == 2)
+	if (drop_kinds == MACHINEGUN_NUM)
 	{
 		Drop_item_Render->Init("Assets/modelData/machine_gun_drop.tkm");
 		Drop_item_Render->SetScale(modelSize);	//Å‰‚Í¬‚³‚ß‚ÉÝ’è
 	}
-	else if (drop_kinds == 4)
+	else if (drop_kinds == GIGATONCANNON_NUM)
 	{
 		Drop_item_Render->Init("Assets/modelData/GIgaton_cannon.tkm");
 		Drop_item_Render->SetScale(modelSize);	//Å‰‚Í¬‚³‚ß‚ÉÝ’è
 	}
-	else if (drop_kinds == 6)
+	else if (drop_kinds == BATTLESHIPGUN_NUM)
 	{
 		Drop_item_Render->Init("Assets/modelData/battleship_gun_Drop.tkm");
 		Drop_item_Render->SetScale(modelSize);	//Å‰‚Í¬‚³‚ß‚ÉÝ’è
