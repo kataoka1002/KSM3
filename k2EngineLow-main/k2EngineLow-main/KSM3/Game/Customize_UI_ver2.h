@@ -37,6 +37,7 @@ public:
 	void tranceOutInit();
 
 	void init_parameter(int Drop,int line,int row);
+	void InitParameter(IntPair point, int itemNum);
 
 	void PlaySE(SoundName name,float vol);
 
