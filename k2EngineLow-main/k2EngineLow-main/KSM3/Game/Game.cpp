@@ -20,6 +20,7 @@
 #include "PlayerUI.h"
 #include "Wave.h"
 #include "Customize_UI_ver2.h"
+#include "Customize_area.h"
 #include "SkyCube.h"
 #include "GuideLight.h"
 #include "Combo.h"
@@ -35,6 +36,10 @@ Game::Game()
 
 	//ステージの作成
 	background = NewGO< BackGround>(1, "background");
+
+
+	//カスタマイズエリアの生成
+	m_customizeArea = NewGO<Customize_area>(1, "customize_area");
 
 
 	//ゲームカメラの作成
@@ -77,7 +82,7 @@ Game::~Game()
 	DeleteGO(core_weapons);
 	DeleteGO(m_playerUI);
 	DeleteGO(m_combo);
-
+	DeleteGO(m_customizeArea);
 
 	//ボスが存在するなら
 	if (boss != nullptr) 

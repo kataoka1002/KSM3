@@ -20,6 +20,7 @@ class Wave;
 class Title;
 class GuideLight;
 class Combo;
+class Customize_area;
 
 /// <summary>
 /// int型を2つ保存するクラス
@@ -39,6 +40,10 @@ public:
 /// </summary>
 namespace
 {
+	const IntPair NON = { -1,-1 };
+
+	const IntPair RECOVERY = { 9,9 };
+
 	const IntPair RIGHT_ARM = { 0,0 };
 	const IntPair RIGHT_LEG = { 1,0 };
 	const IntPair LEFT_ARM = { 0,2 };
@@ -46,6 +51,17 @@ namespace
 	const IntPair SHOULDER = { 0,1 };
 }
 
+/// <summary>
+/// //部位のナンバー
+/// </summary>
+namespace 
+{
+	const int RIGHT_ARM_NUM = 1;
+	const int RIGHT_LEG_NUM = 2;
+	const int LEFT_ARM_NUM = 3;
+	const int LEFT_LEG_NUM = 4;
+	const int SHOULDER_NUM = 5;
+}
 
 /// <summary>
 /// 武器のナンバー
@@ -413,6 +429,8 @@ private:
 	GuideLight* m_guide = nullptr;
 	Combo* m_combo = nullptr;
 	Customize_UI_ver2* m_customizeUI = nullptr;
+	Customize_area* m_customizeArea = nullptr;
+
 
 	std::vector<Enemy*>			m_enemyObject;
 	std::vector<Enemy_Far*>		m_enemyFarObject;

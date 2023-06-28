@@ -11,12 +11,12 @@
 
 namespace
 {
-	//部位のナンバー
-	const int RIGHT_ARM_NUM = 1;
-	const int RIGHT_LEG_NUM = 2;
-	const int LEFT_ARM_NUM = 3;
-	const int LEFT_LEG_NUM = 4;
-	const int SHOULDER_NUM = 5;
+	////部位のナンバー
+	//const int RIGHT_ARM_NUM = 1;
+	//const int RIGHT_LEG_NUM = 2;
+	//const int LEFT_ARM_NUM = 3;
+	//const int LEFT_LEG_NUM = 4;
+	//const int SHOULDER_NUM = 5;
 
 	//武器画像のサイズ
 	const Vector3 WEAPON_SPRITE_SCALE = { 0.1f,0.1f,0.1f };

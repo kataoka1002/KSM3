@@ -11,9 +11,9 @@ Customize_UI::Customize_UI() {
 	custom_player = FindGO<Player>("player");
 	c_ui_drop_item = FindGO<Drop_item>("drop_item");
 	custom_player->game_state = 2;
-	window_open = false;
+	m_isWindowOpen = false;
 
-	custom_kinds = c_ui_drop_item->drop_kinds;
+	m_customKinds = c_ui_drop_item->drop_kinds;
 
 	//武器の設定情報の取得
 	for (int i = 0; i < 2; i++) {
@@ -23,7 +23,7 @@ Customize_UI::Customize_UI() {
 	}
 	C_UI_Select_arrow.Init("Assets/sprite/C_UI_select_arrow.DDS", 33.0f, 54.0f);
 	C_UI_Render.Init("Assets/sprite/custom_screen.DDS", 1920.0f, 1080.0f);
-	custom_point[1][2] = custom_kinds;
+	custom_point[1][2] = m_customKinds;
 
 
 	switch (custom_point[0][0])
@@ -140,27 +140,27 @@ void Customize_UI::Update() {
 
 void Customize_UI::Custom_UI() {
 	
-	if (window_open == false&&delete_window_open == false&& error_window_open == false) {
+	if (m_isWindowOpen == false&&delete_window_open == false&& error_window_open == false) {
 		//セレクトアローのプログラム
 			//右腕
-		if (selection_position[0][0] == 1) {
+		if (m_selectPosition[0][0] == 1) {
 			s_a_position = { -300.0f,95.0f,0.0f };
 			if (g_pad[0]->IsTrigger(enButtonUp)) {
-				selection_position[0][1] = 1;
-				selection_position[0][0] = 0;
+				m_selectPosition[0][1] = 1;
+				m_selectPosition[0][0] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonRight)) {
-				selection_position[0][2] = 1;
-				selection_position[0][0] = 0;
+				m_selectPosition[0][2] = 1;
+				m_selectPosition[0][0] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonDown) || g_pad[0]->IsTrigger(enButtonLeft)) {
-				selection_position[1][0] = 1;
-				selection_position[0][0] = 0;
+				m_selectPosition[1][0] = 1;
+				m_selectPosition[0][0] = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA)) {
 				if (custom_point[0][0] == 0) {
 					change_slot_x = 0, change_slot_y = 0;
-					window_open = true;
+					m_isWindowOpen = true;
 					fast_push_state = 0;
 				}
 				else {
@@ -170,44 +170,44 @@ void Customize_UI::Custom_UI() {
 			}
 		}
 		//肩
-		else if (selection_position[0][1] == 1) {
+		else if (m_selectPosition[0][1] == 1) {
 			s_a_position = { 270.0f,230.0f,0.0f };
 			if (g_pad[0]->IsTrigger(enButtonRight)) {
-				selection_position[0][2] = 1;
-				selection_position[0][1] = 0;
+				m_selectPosition[0][2] = 1;
+				m_selectPosition[0][1] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonLeft)) {
-				selection_position[0][0] = 1;
-				selection_position[0][1] = 0;
+				m_selectPosition[0][0] = 1;
+				m_selectPosition[0][1] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonDown)) {
-				selection_position[0][2] = 1;
-				selection_position[0][1] = 0;
+				m_selectPosition[0][2] = 1;
+				m_selectPosition[0][1] = 0;
 			}
 		}
 		//左腕
-		else if (selection_position[0][2] == 1) {
+		else if (m_selectPosition[0][2] == 1) {
 			s_a_position = { 336.0f,110.0f,0.0f };
 			if (g_pad[0]->IsTrigger(enButtonRight)) {
-				selection_position[1][1] = 1;
-				selection_position[0][2] = 0;
+				m_selectPosition[1][1] = 1;
+				m_selectPosition[0][2] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonLeft)) {
-				selection_position[0][0] = 1;
-				selection_position[0][2] = 0;
+				m_selectPosition[0][0] = 1;
+				m_selectPosition[0][2] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonDown)) {
-				selection_position[1][1] = 1;
-				selection_position[0][2] = 0;
+				m_selectPosition[1][1] = 1;
+				m_selectPosition[0][2] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonUp)) {
-				selection_position[0][1] = 1;
-				selection_position[0][2] = 0;
+				m_selectPosition[0][1] = 1;
+				m_selectPosition[0][2] = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA)) {
 				if (custom_point[0][2] == 0) {
 					change_slot_x = 0, change_slot_y = 2;
-					window_open = true;
+					m_isWindowOpen = true;
 					fast_push_state = 0;
 				}
 				else {
@@ -217,35 +217,35 @@ void Customize_UI::Custom_UI() {
 			}
 		}
 		//右足
-		else if (selection_position[1][0] == 1) {
+		else if (m_selectPosition[1][0] == 1) {
 			s_a_position = { -420.0f,-60.0f,0.0f };
 			if (g_pad[0]->IsTrigger(enButtonUp)) {
-				selection_position[0][0] = 1;
-				selection_position[1][0] = 0;
+				m_selectPosition[0][0] = 1;
+				m_selectPosition[1][0] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonRight)) {
-				selection_position[1][1] = 1;
-				selection_position[1][0] = 0;
+				m_selectPosition[1][1] = 1;
+				m_selectPosition[1][0] = 0;
 			}
 		}
 		//左足
-		else if (selection_position[1][1] == 1) {
+		else if (m_selectPosition[1][1] == 1) {
 			s_a_position = { 480.0f,-56.0f,0.0f };
 			if (g_pad[0]->IsTrigger(enButtonUp)) {
-				selection_position[0][2] = 1;
-				selection_position[1][1] = 0;
+				m_selectPosition[0][2] = 1;
+				m_selectPosition[1][1] = 0;
 			}
 			else if (g_pad[0]->IsTrigger(enButtonLeft)) {
-				selection_position[1][0] = 1;
-				selection_position[1][1] = 0;
+				m_selectPosition[1][0] = 1;
+				m_selectPosition[1][1] = 0;
 			}
 		}
 		//戻る
-		else if (selection_position[1][2] == 1) {
+		else if (m_selectPosition[1][2] == 1) {
 			s_a_position = { 700.0f,-400.0f,0.0f };
 			if (g_pad[0]->IsTrigger(enButtonUp) || g_pad[0]->IsTrigger(enButtonLeft)) {
-				selection_position[1][1] = 1;
-				selection_position[1][2] = 0;
+				m_selectPosition[1][1] = 1;
+				m_selectPosition[1][2] = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA)) {
 				fast_push_state = 0;
@@ -255,25 +255,25 @@ void Customize_UI::Custom_UI() {
 		if (g_pad[0]->IsTrigger(enButtonB)) {
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 3; j++) {
-					selection_position[i][j] = 0;
+					m_selectPosition[i][j] = 0;
 				}
 			}
-			selection_position[1][2] = 1;
+			m_selectPosition[1][2] = 1;
 		}
 	}
 
 	//確認ウィンドウの表示
-	if (window_open == true) {
+	if (m_isWindowOpen == true) {
 		fast_push_state++;
-		if (window_select == true) {
+		if (m_windowSelect == true) {
 			if(fast_push_state==1)
 			C_UI_window.Init("Assets/sprite/change_window_yes.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonRight)) {
 				fast_push_state = 0;
-				window_select = false;
+				m_windowSelect = false;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA)&&fast_push_state!=1) {
-				custom_point[change_slot_x][change_slot_y] = custom_kinds;
+				custom_point[change_slot_x][change_slot_y] = m_customKinds;
 				if (change_slot_x == 0) {
 					if (change_slot_y == 0) {
 						right_arm_weapons = NewGO<Right_arm_weapons>(2, "right_arm_weapons");
@@ -288,15 +288,15 @@ void Customize_UI::Custom_UI() {
 				DeleteGO(this);
 			}
 		}
-		else if (window_select == false) {
+		else if (m_windowSelect == false) {
 			if(fast_push_state==1)
 			C_UI_window.Init("Assets/sprite/change_window_no.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonLeft)) {
-				window_select = true;
+				m_windowSelect = true;
 				fast_push_state = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 1) {
-				window_open = false;
+				m_isWindowOpen = false;
 			}
 			
 		}
@@ -307,22 +307,22 @@ void Customize_UI::Custom_UI() {
 
 	else if (delete_window_open == true) {
 		fast_push_state++;
-		if (window_select == true) {
+		if (m_windowSelect == true) {
 			if(fast_push_state==1)
 			C_UI_window.Init("Assets/sprite/back_window_yes.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonRight)) {
-				window_select = false;
+				m_windowSelect = false;
 				fast_push_state = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 1) {
 				DeleteGO(this);
 			}
 		}
-		else if (window_select == false) {
+		else if (m_windowSelect == false) {
 			if (fast_push_state == 0)
 				C_UI_window.Init("Assets/sprite/back_window_no.DDS", 512.0f, 256.0f);
 			if (g_pad[0]->IsTrigger(enButtonLeft)) {
-				window_select = true;
+				m_windowSelect = true;
 				fast_push_state = 0;
 			}
 			if (g_pad[0]->IsTrigger(enButtonA) && fast_push_state != 1) {
@@ -364,7 +364,7 @@ void Customize_UI::Render(RenderContext& rc) {
 
 	//一番最後にドロー
 	C_UI_Select_arrow.Draw(rc);
-	if (window_open == true || error_window_open == true || delete_window_open == true) {
+	if (m_isWindowOpen == true || error_window_open == true || delete_window_open == true) {
 		C_UI_window.Draw(rc);
 	}
 }

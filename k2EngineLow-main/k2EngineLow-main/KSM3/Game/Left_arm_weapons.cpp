@@ -165,11 +165,11 @@ void Left_arm_weapons::DestroyEvent()
 		
 		
 		//UIの設定武器を空にする
-		m_customizeUI->Left_arm_weapon_set = false;
+		m_customizeUI->SetIsSetLeftArm(false);
 		
 		
 		//UIの設定していたポインタを空にする
-		m_customizeUI->m_leftArmWeapon = nullptr;
+		m_customizeUI->SetLeftArmWeapon(nullptr);
 
 
 		//カスタマイズ画面の設定していたポインタを空にする

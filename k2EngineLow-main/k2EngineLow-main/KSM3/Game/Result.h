@@ -57,7 +57,7 @@ public:
 	Vector3 Box_scale = { 3.0f,3.0f,3.0f };
 
 	ModelRender custom_model_Core;
-	Quaternion custom_model_body_rotation;
+	Quaternion m_customModelRotation;
 	Vector3 cw_lp;
 
 	ModelRender custom_model_shoulder;

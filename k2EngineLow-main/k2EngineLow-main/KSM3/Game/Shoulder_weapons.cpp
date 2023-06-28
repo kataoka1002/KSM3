@@ -286,11 +286,11 @@ void Shoulder_weapons::DestroyEvent()
 
 
 		//UIの設定武器を空にする
-		m_customizeUI->Shoulder_weapon_set = false;
+		m_customizeUI->SetIsSetShoulder(false);
 
 
 		//UIの設定していたポインタを空にする
-		m_customizeUI->m_shoulderWeapon = nullptr;
+		m_customizeUI->SetShoulderWeapon(nullptr);
 
 
 		//カスタマイズ画面の設定していたポインタを空にする

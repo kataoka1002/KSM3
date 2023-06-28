@@ -166,7 +166,7 @@ void Right_arm_weapons::DestroyEvent()
 
 
 		//UIの設定武器を空にする
-		m_customizeUI->Right_arm_weapon_set = false;
+		m_customizeUI->SetIsSetRightArm(false);
 
 
 		//UIの設定していたポインタを空にする
@@ -174,7 +174,7 @@ void Right_arm_weapons::DestroyEvent()
 
 		
 		//カスタマイズ画面の設定していたポインタを空にする
-		m_customizeUI->m_rightArmWeapon = nullptr;
+		m_customizeUI->SetRightArmWeapon(nullptr);
 
 
 		//自分自身の削除

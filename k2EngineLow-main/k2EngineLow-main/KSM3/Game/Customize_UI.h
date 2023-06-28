@@ -14,7 +14,7 @@ public:
 	void Render(RenderContext& rc);
 	void Custom_UI();
 
-	int custom_kinds = 0;
+	int m_customKinds = 0;
 	SpriteRender C_UI_Render;
 	SpriteRender C_UI_Select_arrow;
 	SpriteRender C_UI_window;
@@ -34,7 +34,7 @@ public:
 	int custom_point[2][3] = { {0,0,0},
 						   {0,0,0} };
 
-	int selection_position[2][3] = { {1,0,0},
+	int m_selectPosition[2][3] = { {1,0,0},
 								  {0,0,0} };
 
 	Vector3 s_a_position = { -300.0f,95.0f,0.0f };
@@ -48,9 +48,9 @@ public:
 
 	int cr = 0,cg = 0;
 	int s_a_m_state = 0;
-	bool window_open = false;
+	bool m_isWindowOpen = false;
 	bool delete_window_open = false;
-	bool window_select = true;
+	bool m_windowSelect = true;
 	bool error_window_open = false;
 	int fast_push_state = 0;
 	int change_slot_x = 0, change_slot_y = 0;

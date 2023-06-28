@@ -167,7 +167,7 @@ void Left_leg_weapons::DestroyEvent()
 
 
 		//UIの設定武器を空にする
-		m_customizeUI->Left_leg_weapon_set = false;
+		m_customizeUI->SetIsSetLeftLeg(false);
 
 
 		//UIの設定していたポインタを空にする
@@ -175,7 +175,7 @@ void Left_leg_weapons::DestroyEvent()
 
 
 		//UIの設定していたポインタを空にする
-		m_customizeUI->m_leftLegWeapon = nullptr;
+		m_customizeUI->SetLeftlegWeapon(nullptr);
 
 
 		//自分自身の削除
