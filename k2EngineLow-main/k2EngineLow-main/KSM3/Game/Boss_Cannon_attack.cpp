@@ -18,29 +18,29 @@ Boss_Cannon_attack::Boss_Cannon_attack()
 {
 	m_customizeUI = FindGO<Customize_UI_ver2>("customize_ui_ver2");
 	//左腕
-	if (m_customizeUI->m_leftArmWeapon != nullptr)
+	if (m_customizeUI->GetLeftArmWeapon() != nullptr)
 	{
-		m_leftArm = m_customizeUI->m_leftArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		m_leftArm = m_customizeUI->GetLeftArmWeapon();	//カスタマイズUIにあるポインタを渡してやる
 	}
 	//左足
-	if (m_customizeUI->m_leftLegWeapon != nullptr)
+	if (m_customizeUI->GetLeftLegWeapon() != nullptr)
 	{
-		m_leftLeg = m_customizeUI->m_leftLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		m_leftLeg = m_customizeUI->GetLeftLegWeapon();	//カスタマイズUIにあるポインタを渡してやる
 	}
 	//右腕
-	if (m_customizeUI->m_rightArmWeapon != nullptr)
+	if (m_customizeUI->GetRightArmWeapon() != nullptr)
 	{
-		m_rightArm = m_customizeUI->m_rightArmWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		m_rightArm = m_customizeUI->GetRightArmWeapon();	//カスタマイズUIにあるポインタを渡してやる
 	}
 	//右足
-	if (m_customizeUI->m_rightLegWeapon != nullptr)
+	if (m_customizeUI->GetRightLegWeapon() != nullptr)
 	{
-		m_rightLeg = m_customizeUI->m_rightLegWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		m_rightLeg = m_customizeUI->GetRightLegWeapon();	//カスタマイズUIにあるポインタを渡してやる
 	}
 	//肩
-	if (m_customizeUI->m_shoulderWeapon != nullptr)
+	if (m_customizeUI->GetShoulderWeapon() != nullptr)
 	{
-		m_shoulder = m_customizeUI->m_shoulderWeapon;	//カスタマイズUIにあるポインタを渡してやる
+		m_shoulder = m_customizeUI->GetShoulderWeapon();	//カスタマイズUIにあるポインタを渡してやる
 	}
 }
 

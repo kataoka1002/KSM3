@@ -10,6 +10,6 @@ public:
 	Enumeration();
 	~Enumeration();
 
-	Custom_Kinds custom_kinds;
+	Custom_Kinds m_customKinds;
 };
 

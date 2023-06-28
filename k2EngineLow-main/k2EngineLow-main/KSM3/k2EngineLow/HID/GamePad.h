@@ -81,6 +81,15 @@ namespace nsK2EngineLow {
 		{
 			return m_trigger[button] != 0;
 		}
+
+		/// <summary>
+		/// ボタンのトリガー判定フラグを下げる
+		/// </summary>
+		/// <param name="button">判定したいボタン</param>
+		void SetTriggerFlagFalse(EnButton button)
+		{
+			m_trigger[button] = 0;
+		}
 		
 		/// <summary>
 		/// ボタンが押されているか判定

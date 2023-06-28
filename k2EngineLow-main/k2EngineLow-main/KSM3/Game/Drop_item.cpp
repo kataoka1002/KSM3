@@ -80,12 +80,12 @@ void Drop_item::Update()
 			
 			//アイテムを拾ったらカスタマイズ画面に飛ぶ
 			//拾った武器の種類を教えてやる
-			customize_UI_ver2->custom_kinds = drop_kinds;
+			customize_UI_ver2->SetDropItem(drop_kinds);
 			//カスタム画面のセットアップを行う
-			customize_UI_ver2->Setup();
+			customize_UI_ver2->SetUp();
 			
 			//全ての初期化
-			customize_UI_ver2->trance_setup();
+			customize_UI_ver2->TranceSetUp();
 			//プレイヤーのステート変更(カスタム画面へ)
 			drop_player->SetGameState(3);
 			

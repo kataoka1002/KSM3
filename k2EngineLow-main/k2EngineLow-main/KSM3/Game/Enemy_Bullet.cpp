@@ -168,47 +168,47 @@ void Enemy_Bullet::FindWeapon()
 
 
 	//左腕が存在したら
-	if (m_customizeUI->m_leftArmWeapon != nullptr)
+	if (m_customizeUI->GetLeftArmWeapon() != nullptr)
 	{
 		
 		//カスタマイズUIにあるポインタを渡してやる
-		m_leftArm = m_customizeUI->m_leftArmWeapon;	
+		m_leftArm = m_customizeUI->GetLeftArmWeapon();
 
 	}
 
 	//左足が存在したら
-	if (m_customizeUI->m_leftLegWeapon != nullptr)
+	if (m_customizeUI->GetLeftLegWeapon() != nullptr)
 	{
 		
 		//カスタマイズUIにあるポインタを渡してやる
-		m_leftLeg = m_customizeUI->m_leftLegWeapon;	
+		m_leftLeg = m_customizeUI->GetLeftLegWeapon();
 
 	}
 
 	//右腕が存在したら
-	if (m_customizeUI->m_rightArmWeapon != nullptr)
+	if (m_customizeUI->GetRightArmWeapon() != nullptr)
 	{
 		
 		//カスタマイズUIにあるポインタを渡してやる
-		m_rightArm = m_customizeUI->m_rightArmWeapon;	
+		m_rightArm = m_customizeUI->GetRightArmWeapon();
 
 	}
 
 	//右足が存在したら
-	if (m_customizeUI->m_rightLegWeapon != nullptr)
+	if (m_customizeUI->GetRightLegWeapon() != nullptr)
 	{
 		
 		//カスタマイズUIにあるポインタを渡してやる
-		m_rightLeg = m_customizeUI->m_rightLegWeapon;	
+		m_rightLeg = m_customizeUI->GetRightLegWeapon();
 
 	}
 
 	//肩が存在したら
-	if (m_customizeUI->m_shoulderWeapon != nullptr)
+	if (m_customizeUI->GetShoulderWeapon() != nullptr)
 	{
 		
 		//カスタマイズUIにあるポインタを渡してやる
-		m_shoulder = m_customizeUI->m_shoulderWeapon;	
+		m_shoulder = m_customizeUI->GetShoulderWeapon();
 
 	}
 
