@@ -233,7 +233,7 @@ void Customize_UI_ver2::InitTrance()
 void Customize_UI_ver2::SetUp()
 {
 
-	if (m_coreWeapon->set_weapons == 2)
+	if (m_coreWeapon->GetSetWeapon() == 2)
 	{
 		//コア武器モデルの初期化
 		m_coreModel->Init("Assets/modelData/Versatile_Perforator.tkm");

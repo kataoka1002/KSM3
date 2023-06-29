@@ -46,15 +46,15 @@ void Core_weapons_attack::SetUp()
 
 
 	//Œ³‚Ì‰ñ“]—Ê‚ð‹‚ß‚é
-	m_originRotation = m_coreWeapon->cw_Rotation;
+	m_originRotation = m_coreWeapon->GetRotation();
 
 
 	//”­¶‚·‚éêŠ‚ð‹‚ß‚é
-	m_position = m_coreWeapon->cw_position;
+	m_position = m_coreWeapon->GetPosition();
 
 
 	//•t‚¯‚Ä‚¢‚éƒRƒA•Ší‚É‚æ‚Á‚Ä•Ï‚¦‚é
-	switch (m_coreWeapon->set_weapons)
+	switch (m_coreWeapon->GetSetWeapon())
 	{
 
 	case 1:
