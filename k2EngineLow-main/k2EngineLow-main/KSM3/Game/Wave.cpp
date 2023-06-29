@@ -300,15 +300,15 @@ void Wave::MakeGuide()
 
 		
 		//初速
-		m_guide->m_velocity = (m_right * GUIDE_VELOCITY);
+		m_guide->SetVelocity(m_right * GUIDE_VELOCITY);
 		
 
 		//ターゲットの設定
-		m_guide->m_targetPosition = GUIDE_TARGET_POS;
+		m_guide->SetTargetPosition(GUIDE_TARGET_POS);
 		
 
 		//発生位置の設定
-		m_guide->m_position = m_player->GetPlayerPosition();	
+		m_guide->SetPosition(m_player->GetPlayerPosition());
 
 
 		//カウントリセット

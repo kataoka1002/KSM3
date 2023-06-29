@@ -19,7 +19,7 @@ Boss_Riser::~Boss_Riser()
 	DeleteGO(b_boss_weapons);	
 	if (defeatState == true)
 	{
-		drop_item->drop_kinds = set_weapons;
+		m_dropItem->drop_kinds = set_weapons;
 	}
 }
 
@@ -71,7 +71,7 @@ void Boss_Riser::Update()
 			fast = 1;
 		}
 		
-		if (attack_state == 0) {
+		if (m_attackState == 0) {
 
 		}
 		if (fast == 540) {
@@ -94,10 +94,10 @@ void Boss_Riser::Update()
 		if (fast == 665)
 		{
 			b_boss_weapons = NewGO<Boss_Riser_attack>(1, "boss_Riser_attack");
-			attack_state = true;
+			m_attackState = true;
 			b_boss_weapons->firing_position = b_w_position;
-			b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
-			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
+			b_boss_weapons->b_a_aiming = b_w_boss->GetRotation();
+			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->GetForward();
 		}
 		Move();
 	}
@@ -126,8 +126,8 @@ void Boss_Riser::Update()
 void Boss_Riser::Move()
 {
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
-	Quaternion originRotation = b_w_boss->boss_rotation;
-	b_w_position = b_w_boss->boss_position;
+	Quaternion originRotation = b_w_boss->GetRotation();
+	b_w_position = b_w_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
 	b_w_position += lp;

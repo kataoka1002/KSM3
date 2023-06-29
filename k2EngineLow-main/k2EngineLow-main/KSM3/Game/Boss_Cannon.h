@@ -23,9 +23,9 @@ public:
 
 	Player* b_w_player;
 	Boss* b_w_boss;
-	Boss_Saber* b_boss_saber;
+	Boss_Saber* m_bossSaber;
 	Boss_Cannon_attack* b_boss_weapons;
-	Drop_item* drop_item;
+	Drop_item* m_dropItem;
 	Game* m_game;
 	EffectEmitter* m_weaponEffect = nullptr;
 	SoundSource* m_Cannon_ChargeSE = nullptr;
@@ -41,7 +41,7 @@ public:
 	//いる。絶対。
 	Vector3 b_w_localposition = { 00.0f,00.0f,-0.0f };
 	Vector3 efeLP = { 0.0f,680.0f,-00.0f };
-	bool attack_state = false;
+	bool m_attackState = false;
 	bool attack_ok = false;
 	bool defeatState = false;//死んだかどうかのフラグ。
 	int set_weapons = 0;

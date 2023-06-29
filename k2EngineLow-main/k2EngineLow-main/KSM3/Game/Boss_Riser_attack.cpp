@@ -46,7 +46,7 @@ Boss_Riser_attack::Boss_Riser_attack()
 
 Boss_Riser_attack::~Boss_Riser_attack()
 {
-	b_a_weapons->attack_state = false;
+	b_a_weapons->m_attackState = false;
 }
 
 bool Boss_Riser_attack::Start() {

@@ -35,7 +35,7 @@ public:
 	Player* b_a_player;
 	Boss* b_w_boss;
 	Boss_Drill_attack* b_boss_weapons;
-	Drop_item* drop_item;
+	Drop_item* m_dropItem;
 	Game* m_game;
 	Left_arm_weapons* m_leftArm = nullptr;
 	Left_leg_weapons* m_leftLeg = nullptr;
@@ -50,7 +50,7 @@ public:
 	Vector3 b_w_moveSpeed;
 
 	EffectEmitter* Explosion_efe = nullptr;
-	EffectEmitter* Explosion_Another = nullptr;
+	EffectEmitter* m_explosionAnother = nullptr;
 	Vector3 b_w_Fowrad = { 0.0f,0.0f,1.0f };
 	int game_state = 0;
 	ModelRender boss_Drill_Render;
@@ -58,7 +58,7 @@ public:
 	//いる。絶対。
 	Vector3 b_w_localposition = { 0.0f,0.0f,900.0f };
 
-	bool attack_state = false;
+	bool m_attackState = false;
 	bool attack_ok = false;
 	bool defeatState = false;//死んだかどうかのフラグ。
 	int set_weapons = 0;

@@ -417,7 +417,7 @@ private:
 	Result* result = nullptr;			
 	Lighting* lighting = nullptr;		
 	SoundManage* m_soundManage = nullptr;
-	Drop_item* drop_item = nullptr;
+	Drop_item* m_dropItem = nullptr;
 	BackGround* background = nullptr;
 	Core_weapons* core_weapons = nullptr;
 	GameCamera* gamecamera = nullptr;

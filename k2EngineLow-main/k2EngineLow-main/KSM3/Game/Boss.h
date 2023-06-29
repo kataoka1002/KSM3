@@ -1,5 +1,5 @@
 #pragma once
-#define HP 2000.0f
+
 
 class Player;
 class Battle_ship_attack;
@@ -30,71 +30,102 @@ public:
 	void Player_Damage(int boss_damage_kind,bool Landing_state);
 	void Update();//更新処理
 	void Render(RenderContext& rc);//描画処理
-	void Move();//移動処理
 	void Damage();
 	void SetHPScale();
 	void PlayerSearch();//索敵
 
+	Quaternion GetRotation()
+	{
+		return m_rotation;
+	}
 
-	Player* b_player = nullptr;
-	Battle_ship_attack* b_battle_ship_attack;
-	Drop_item* drop_item;
-	Boss_Riser* b_boss_riser;
-	Boss_Shovel* b_boss_shovel;
-	Boss_Drill* b_boss_drill;
-	Boss_Cannon* b_boss_cannon;
+	Vector3 GetPosition()
+	{
+		return m_position;
+	}
+
+	Vector3 GetForward()
+	{
+		return m_forward;
+	}
+
+	Boss_Saber* GetSaber()
+	{
+		return m_bossSaber;
+	}
+
+	Boss_Shovel* GetShovel()
+	{
+		return m_bossShovel;
+	}
+
+	Boss_Drill* GetDrill()
+	{
+		return m_bossDrill;
+	}
+
+	void ApplyDamage(float damage)
+	{
+		m_HP -= damage;
+
+		m_HP = max(0.0f, m_HP);
+	}
+
+	void SetPosition(Vector3 pos)
+	{
+		m_position = pos;
+	}
+
+private:
+	Player* m_player = nullptr;
+	Drop_item* m_dropItem;
+	Boss_Riser* m_bossRiser;
+	Boss_Shovel* m_bossShovel;
+	Boss_Drill* m_bossDrill;
+	Boss_Cannon* m_bossCannon;
 	Customize_UI_ver2* m_customizeUI = nullptr;
-	Boss_Turbo* b_boss_turbo;
-	Result* result;
-	Game* boss_game;
+	Boss_Turbo* m_bossTurbo;
+	Result* m_result;
+	Game* m_game;
 	Left_arm_weapons* m_leftArm = nullptr;
 	Left_leg_weapons* m_leftLeg = nullptr;
 	Right_arm_weapons* m_rightArm = nullptr;
 	Right_leg_weapons* m_rightLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
 	SoundSource* m_battleShipGunTyakutiSE;
-	Boss_Saber* b_boss_saber;
+	Boss_Saber* m_bossSaber;
+	EffectEmitter* m_BossEffect = nullptr;
+	EffectEmitter* m_bossExplosion;
+	EffectEmitter* m_explosionAnother;
+	EffectEmitter* m_bossAttackEfe;
+	EffectEmitter* m_bossAttackExplosionEfe;
 
-	//std::vector<Boss_Riser*>m_riserObject;
-
-	ModelRender boss_modelRender;//モデルレンダー
 	SpriteRender m_bossHPSprite;
 	SpriteRender m_bossHPWakuSprite;
 	SpriteRender m_bossHPWakuSprite2;
-	EffectEmitter* m_BossEffect = nullptr;
-	EffectEmitter* Boss_Explosion;
-	EffectEmitter* Explosion_Another;
-	EffectEmitter* Boss_attack_efe;
-	EffectEmitter* Boss_attack_Explosion_efe;
-	Vector3 boss_position;//座標
-	CharacterController boss_characterController;//キャラクターコントローラー
-	Quaternion boss_rotation;//クォータニオン
+	ModelRender m_modelRender;//モデルレンダー
+	CharacterController m_characterController;//キャラクターコントローラー
+	Quaternion m_rotation;//クォータニオン
 	
-	Vector3 boss_moveSpeed;//移動速度
-	Vector3 boss_forward{ 0.0f,0.0f,-1.0f };//エネミーの正面ベクトル
-	Vector3 riser_pos;
+	Vector3 m_position;//座標
+	Vector3 m_forward={ 0.0f,0.0f,-1.0f };//エネミーの正面ベクトル
+	Vector3 m_moveSpeed = { 0.0f,0.0f,0.0f };
+	Vector3 m_attackEfeLP = { 0.0f,1000.0f,0.0f };
 
-	int boss_weapons = 1;
-	int boss_game_state = 0;   
-	int attack_state = 0;		//攻撃中かどいうか。0が攻撃中じゃ無い。
-	int time_score = 10000;
-	float boss_HP = HP;
-	float BOSS_HP_MAX = HP;
-	float boss_time = 0.0f;
-	float boss_time_score = 0.0f;
-	bool defeat_state = false;
+	int m_attackState = 0;		//攻撃中かどいうか。0が攻撃中じゃ無い。
+	int m_timeScore = 10000;
+	int m_rotationCount = 0;
+	int m_bossEfeCount = 0;
+	int m_bossAttackCount = 0;
+	int m_bossAttackKind = 1;
+	int m_deathCount = 0;
+	float BOSS_HP_MAX = 2000.0f;
+	float m_HP = BOSS_HP_MAX;
+	float m_bossTime = 0.0f;
+	float m_bossTimeScore = 0.0f;
+	float m_scale = 15.0f;
+	float m_efectScale = 70.0f;
+	bool m_attack = false;
 
-	bool Boss_attack = false;
-	int Boss_Rotation_count = 0;
-
-	int Boss_efecount = 0;
-	Vector3 movespeed = { 0.0f,0.0f,0.0f };
-
-	int Death_count = 0;
-	float Scale = 15.0f;
-	float Efect_scale = 70.0f;
-	int boss_attack_count = 0;
-	int Boss_attack_kind = 1;
-	Vector3 attack_efe_LP = { 0.0f,1000.0f,0.0f };
 };
 

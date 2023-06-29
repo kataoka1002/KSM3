@@ -362,7 +362,7 @@ void Game::GameNow()
 
 			//ボスを発生させる
 			boss = NewGO<Boss>(1, "boss");
-			boss->boss_position = { -19800.0f,0.0f,7800.0f };
+			boss->SetPosition({ -19800.0f,0.0f,7800.0f });
 
 
 			//ウェーブクラスのボスポインタに教えてやる

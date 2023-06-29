@@ -93,7 +93,7 @@ public:
 	Right_leg_weapons* right_leg_weapons;
 	Left_arm_weapons* left_arm_weapons;
 	Left_leg_weapons* left_leg_weapons;
-	Drop_item* drop_item;
+	Drop_item* m_dropItem;
 	GameCamera* gamecamera;
 	SoundSource* m_BGM = nullptr;
 

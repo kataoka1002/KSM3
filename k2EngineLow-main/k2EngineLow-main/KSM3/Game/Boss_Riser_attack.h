@@ -58,7 +58,7 @@ public:
 	bool Landing_state = false;
 	float move_speed = 30.0f;
 	float fall_speed = 0.0f;
-	bool attack_state = true;
+	bool m_attackState = true;
 	bool fast_count = true;
 
 	int Landing_count = 0;

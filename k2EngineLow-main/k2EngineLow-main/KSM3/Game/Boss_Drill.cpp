@@ -70,10 +70,10 @@ void Boss_Drill::Update()
 		if (fast == 20)
 		{
 			b_boss_weapons = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
-			attack_state = true;
+			m_attackState = true;
 			b_boss_weapons->firing_position = b_w_position;
-			b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
-			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
+			b_boss_weapons->b_a_aiming = b_w_boss->GetRotation();
+			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->GetForward();
 		}
 		//攻撃終了時リセット
 		if (fast >=21) {
@@ -123,14 +123,14 @@ void Boss_Drill::Update()
 		
 		//自分が死ぬと同時にショベルも消す
 		if (Death_count == 0){
-			Explosion_Another = NewGO<EffectEmitter>(0);
-			Explosion_Another->Init(enBoss_Explosion_Another);
-			Explosion_Another->SetScale({ 25.0f,25.0f,25.0f });
+			m_explosionAnother = NewGO<EffectEmitter>(0);
+			m_explosionAnother->Init(enBoss_Explosion_Another);
+			m_explosionAnother->SetScale({ 25.0f,25.0f,25.0f });
 			
 			//efeLP += b_w_position;
-			Explosion_Another->SetPosition(efeLP + b_w_position);
-			Explosion_Another->SetRotation(b_w_rotation);
-			Explosion_Another->Play();
+			m_explosionAnother->SetPosition(efeLP + b_w_position);
+			m_explosionAnother->SetRotation(b_w_rotation);
+			m_explosionAnother->Play();
 		}
 		if (Death_count == 140) {
 			Damage();
@@ -150,7 +150,7 @@ void Boss_Drill::Update()
 			Explosion_efe->Play();
 		}
 		if (Death_count == 340) {
-			DeleteGO(b_w_boss->b_boss_shovel);
+			DeleteGO(b_w_boss->GetShovel());
 			DeleteGO(this);
 		}
 		
@@ -162,8 +162,8 @@ void Boss_Drill::Update()
 void Boss_Drill::Move()
 {
 	//ここは丸パクリでOK
-	Quaternion originRotation = b_w_boss->boss_rotation;
-	b_w_position = b_w_boss->boss_position;
+	Quaternion originRotation = b_w_boss->GetRotation();
+	b_w_position = b_w_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
 	b_w_position += lp;

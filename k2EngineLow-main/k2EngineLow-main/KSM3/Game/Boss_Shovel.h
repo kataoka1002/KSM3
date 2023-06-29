@@ -44,7 +44,7 @@ public:
 	SoundSource* m_Shovel_shock_SE = nullptr;
 	Boss* b_w_boss;
 	Boss_Shovel_attack* b_boss_weapons;
-	Drop_item* drop_item;
+	Drop_item* m_dropItem;
 	Game* m_game;
 
 	//CharacterController boss_riser_characterContller;
@@ -60,7 +60,7 @@ public:
 	//Ç¢ÇÈÅBê‚ëŒÅB
 	Vector3 b_w_localposition = { 00.0f,230.0f,950.0f };
 
-	bool attack_state = false;
+	bool m_attackState = false;
 	bool attack_ok = false;
 	bool defeatState = false;
 	int set_weapons = 0;

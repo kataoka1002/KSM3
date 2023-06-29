@@ -28,7 +28,7 @@ public:
 	Player* b_w_player;
 	Boss* b_w_boss;
 	Boss_Turbo_attack* b_boss_weapons;
-	Drop_item* drop_item;
+	Drop_item* m_dropItem;
 	EffectEmitter* m_weaponEffect = nullptr;
 	SoundSource*TatumakiSE=nullptr;
 	AnimationClip m_animationClip[enAnimationClip_Num];
@@ -45,7 +45,7 @@ public:
 	//Ç¢ÇÈÅBê‚ëŒÅB
 	Vector3 b_w_localposition = { -630.0f,20.0f,-100.0f };
 
-	bool attack_state = false;
+	bool m_attackState = false;
 	bool attack_ok = false;
 	bool defeatState = false;
 	bool Rote = false;
