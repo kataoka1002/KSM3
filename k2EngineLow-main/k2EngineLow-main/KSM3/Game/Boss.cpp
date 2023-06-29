@@ -56,27 +56,27 @@ Boss::Boss()
 		m_shoulder = m_customizeUI->GetShoulderWeapon();	//カスタマイズUIにあるポインタを渡してやる
 	}
 
-	boss_game = FindGO<Game>("game");
-	b_player = FindGO<Player>("player");
+	m_game = FindGO<Game>("game");
+	m_player = FindGO<Player>("player");
 	//b_boss_riser = FindGO<Boss_Riser>("boss_riser");
-	b_boss_riser = NewGO<Boss_Riser>(2, "boss_riser");
-	b_boss_shovel = NewGO<Boss_Shovel>(2, "boss_shovel");
-	b_boss_drill = NewGO<Boss_Drill>(2, "boss_drill");
-	b_boss_cannon = NewGO<Boss_Cannon>(2, "boss_cannon");
-	b_boss_turbo = NewGO<Boss_Turbo>(2, "boss_turbo");
-	b_boss_saber = NewGO<Boss_Saber>(2, "boss_saber");
+	m_bossRiser = NewGO<Boss_Riser>(2, "boss_riser");
+	m_bossShovel = NewGO<Boss_Shovel>(2, "boss_shovel");
+	m_bossDrill = NewGO<Boss_Drill>(2, "boss_drill");
+	m_bossCannon = NewGO<Boss_Cannon>(2, "boss_cannon");
+	m_bossTurbo = NewGO<Boss_Turbo>(2, "boss_turbo");
+	m_bossSaber = NewGO<Boss_Saber>(2, "boss_saber");
 }
 
 Boss::~Boss() 
 {
-	DeleteGO(boss_game);
-	DeleteGO(b_boss_riser);//ライザーの武器削除。
-	DeleteGO(b_boss_shovel);//ショベルの武器削除。
-	DeleteGO(b_boss_drill);//ドリルの武器削除。
-	DeleteGO(b_boss_cannon);//キャノンの武器削除。
-	DeleteGO(b_boss_turbo);//ターボの武器削除。
-	if (b_boss_saber != nullptr) {
-		DeleteGO(b_boss_saber);
+	DeleteGO(m_game);
+	DeleteGO(m_bossRiser);//ライザーの武器削除。
+	DeleteGO(m_bossShovel);//ショベルの武器削除。
+	DeleteGO(m_bossDrill);//ドリルの武器削除。
+	DeleteGO(m_bossCannon);//キャノンの武器削除。
+	DeleteGO(m_bossTurbo);//ターボの武器削除。
+	if (m_bossSaber != nullptr) {
+		DeleteGO(m_bossSaber);
 	}
 }
 
@@ -96,18 +96,18 @@ bool Boss::Start()
 	m_bossHPWakuSprite2.Update();
 
 
-	boss_modelRender.Init("Assets/modelData/Boss_core.tkm");
-	boss_rotation.SetRotationDegY(180.0f);
-	boss_modelRender.SetRotation(boss_rotation);
-	boss_modelRender.SetPosition(boss_position);
+	m_modelRender.Init("Assets/modelData/Boss_core.tkm");
+	m_rotation.SetRotationDegY(180.0f);
+	m_modelRender.SetRotation(m_rotation);
+	m_modelRender.SetPosition(m_position);
 	//キャラクターコントローラーを初期化。
-	boss_characterController.Init(
+	m_characterController.Init(
 		750.0f,			//半径。
 		40.0f,			//高さ。
-		boss_position	//座標。
+		m_position	//座標。
 	);
-	boss_modelRender.SetScale(Scale);
-	boss_modelRender.Update();
+	m_modelRender.SetScale(m_scale);
+	m_modelRender.Update();
 	return true;
 }
 
@@ -115,25 +115,25 @@ void Boss::Update()
 {
 	Damage();
 	SetHPScale();
-	if (Boss_efecount % 1000 == 0) {
+	if (m_bossEfeCount % 1000 == 0) {
 		m_BossEffect = NewGO<EffectEmitter>(0);
 		m_BossEffect->Init(enBoss_Magic_Circle);
-		m_BossEffect->SetScale({ Efect_scale,Efect_scale,Efect_scale });
+		m_BossEffect->SetScale({ m_efectScale,m_efectScale,m_efectScale });
 		Vector3 efeLP = { 0.0f,680.0f,2000.0f };
-		efeLP += boss_position;
+		efeLP += m_position;
 		m_BossEffect->SetPosition(efeLP);
 		m_BossEffect->Play();
 	}
-	if (boss_attack_count == 500) {
-		switch (Boss_attack_kind)
+	if (m_bossAttackCount == 500) {
+		switch (m_bossAttackKind)
 		{
 		case 1:
-			Boss_attack_efe = NewGO<EffectEmitter>(0);
-			Boss_attack_efe->Init(en_Boss_attack);
-			Boss_attack_efe->SetScale({ 35.0f, 35.0f, 35.0f });
-			attack_efe_LP += boss_position;
-			Boss_attack_efe->SetPosition(attack_efe_LP);
-			Boss_attack_efe->Play();
+			m_bossAttackEfe = NewGO<EffectEmitter>(0);
+			m_bossAttackEfe->Init(en_Boss_attack);
+			m_bossAttackEfe->SetScale({ 35.0f, 35.0f, 35.0f });
+			m_attackEfeLP += m_position;
+			m_bossAttackEfe->SetPosition(m_attackEfeLP);
+			m_bossAttackEfe->Play();
 			break;
 		default:
 			break;
@@ -141,55 +141,55 @@ void Boss::Update()
 			
 		
 	}
-	if (boss_attack_count >= 500 && boss_attack_count < 520) {
-		switch (Boss_attack_kind)
+	if (m_bossAttackCount >= 500 && m_bossAttackCount < 520) {
+		switch (m_bossAttackKind)
 		{
 		case 1:
-			attack_efe_LP.y -= 200.0f;
-			Boss_attack_efe->SetPosition(attack_efe_LP);
+			m_attackEfeLP.y -= 200.0f;
+			m_bossAttackEfe->SetPosition(m_attackEfeLP);
 			Player_Damage(1, false);
 			break;
 		default:
 			break;
 		}
 	}
-	switch (Boss_attack_kind)
+	switch (m_bossAttackKind)
 	{
 	case 1:
-		if (boss_attack_count == 520) {
+		if (m_bossAttackCount == 520) {
 			Player_Damage(1, true);
-			attack_efe_LP = { 0.0f,1000.0f,0.0f };
-			boss_attack_count = 0;
+			m_attackEfeLP = { 0.0f,1000.0f,0.0f };
+			m_bossAttackCount = 0;
 		}
 	default:
 		break;
 	}
-	if (boss_attack_count == 400&&Boss_attack_kind==1) {
-		Boss_attack_Explosion_efe = NewGO<EffectEmitter>(0);
-		Boss_attack_Explosion_efe->Init(en_Boss_attack_Explosion);
-		Boss_attack_Explosion_efe->SetScale({ 50.0f, 50.0f, 50.0f });
-		Boss_attack_Explosion_efe->SetPosition(boss_position);
-		Boss_attack_Explosion_efe->Play();
+	if (m_bossAttackCount == 400&&m_bossAttackKind==1) {
+		m_bossAttackExplosionEfe = NewGO<EffectEmitter>(0);
+		m_bossAttackExplosionEfe->Init(en_Boss_attack_Explosion);
+		m_bossAttackExplosionEfe->SetScale({ 50.0f, 50.0f, 50.0f });
+		m_bossAttackExplosionEfe->SetPosition(m_position);
+		m_bossAttackExplosionEfe->Play();
 		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_battleShipGunTyakutiSE->Init(enButtleShipTyakudan);		//初期化
-		m_battleShipGunTyakutiSE->SetVolume(2.0f * boss_game->GetSEVol());	//音量調整
+		m_battleShipGunTyakutiSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 		m_battleShipGunTyakutiSE->Play(false);
 	}
 
 
 
-	Boss_efecount++;
-	boss_attack_count++;
-	boss_time += g_gameTime->GetFrameDeltaTime();
-	boss_time_score += g_gameTime->GetFrameDeltaTime();
-	if (boss_time_score >= 1.0f)
+	m_bossEfeCount++;
+	m_bossAttackCount++;
+	m_bossTime += g_gameTime->GetFrameDeltaTime();
+	m_bossTimeScore += g_gameTime->GetFrameDeltaTime();
+	if (m_bossTimeScore >= 1.0f)
 	{
-		time_score -= 150;
-		boss_time_score = 0.0f;
+		m_timeScore -= 150;
+		m_bossTimeScore = 0.0f;
 	}
 
 	
-	boss_modelRender.Update();
+	m_modelRender.Update();
 }
 
 void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
@@ -198,17 +198,17 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 		{
 			case 1:
 				//---------------------------------------------------------------------------------------------------
-				if (b_player != nullptr)	//プレイヤーの情報が入っているなら
+				if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 				{
 					//弾とプレイヤーの距離を測る
-					Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->GetPlayerPosition().x, b_player->GetPlayerPosition().y + 50.0f, b_player->GetPlayerPosition().z };
+					Vector3 diffPlayer = m_attackEfeLP - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
 					//武器によってダメージを変える
 
 						//距離を測り一定以下なら体力減少
 					if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
 					{
-						b_player->ApplyDamage(1.0f);
+						m_player->ApplyDamage(1.0f);
 
 					}
 
@@ -222,7 +222,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 				if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 				{
 					//弾と左腕の距離を測る
-					Vector3 diffLeftArm = attack_efe_LP - m_leftArm->GetPosition();
+					Vector3 diffLeftArm = m_attackEfeLP - m_leftArm->GetPosition();
 
 					//武器によってダメージを変える
 
@@ -239,7 +239,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 				if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 				{
 					//弾と左腕の距離を測る
-					Vector3 diffLeftLeg = attack_efe_LP - m_leftLeg->GetPosition();
+					Vector3 diffLeftLeg = m_attackEfeLP - m_leftLeg->GetPosition();
 
 					//武器によってダメージを変える
 
@@ -257,7 +257,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 				if (m_rightArm != nullptr)	//右手に情報が入っているなら
 				{
 					//弾と左腕の距離を測る
-					Vector3 diffRightArm = attack_efe_LP - m_rightArm->GetPosition();
+					Vector3 diffRightArm = m_attackEfeLP - m_rightArm->GetPosition();
 
 					//武器によってダメージを変える
 
@@ -275,7 +275,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 				if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 				{
 					//弾と左腕の距離を測る
-					Vector3 diffRightLeg = attack_efe_LP - m_rightLeg->GetPosition();
+					Vector3 diffRightLeg = m_attackEfeLP - m_rightLeg->GetPosition();
 
 					//武器によってダメージを変える
 
@@ -293,7 +293,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 				if (m_shoulder != nullptr)	//肩に情報が入っているなら
 				{
 					//弾と左腕の距離を測る
-					Vector3 diffShoulder = attack_efe_LP - m_shoulder->GetPosition();
+					Vector3 diffShoulder = m_attackEfeLP - m_shoulder->GetPosition();
 
 					//武器によってダメージを変える
 
@@ -316,17 +316,17 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 		{
 		case 1:
 			//---------------------------------------------------------------------------------------------------
-			if (b_player != nullptr)	//プレイヤーの情報が入っているなら
+			if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 			{
 				//弾とプレイヤーの距離を測る
-				Vector3 diffPlayer = attack_efe_LP - Vector3{ b_player->GetPlayerPosition().x, b_player->GetPlayerPosition().y + 50.0f, b_player->GetPlayerPosition().z };
+				Vector3 diffPlayer = m_attackEfeLP - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
 				//武器によってダメージを変える
 
 					//距離を測り一定以下なら体力減少
 				if (diffPlayer.Length() <= 2500.0f) //ダメージが入る範囲
 				{
-					b_player->ApplyDamage(100.0f);
+					m_player->ApplyDamage(100.0f);
 
 				}
 
@@ -340,7 +340,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 			if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 			{
 				//弾と左腕の距離を測る
-				Vector3 diffLeftArm = attack_efe_LP - m_leftArm->GetPosition();
+				Vector3 diffLeftArm = m_attackEfeLP - m_leftArm->GetPosition();
 
 				//武器によってダメージを変える
 
@@ -357,7 +357,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 			if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 			{
 				//弾と左腕の距離を測る
-				Vector3 diffLeftLeg = attack_efe_LP - m_leftLeg->GetPosition();
+				Vector3 diffLeftLeg = m_attackEfeLP - m_leftLeg->GetPosition();
 
 				//武器によってダメージを変える
 
@@ -375,7 +375,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 			if (m_rightArm != nullptr)	//右手に情報が入っているなら
 			{
 				//弾と左腕の距離を測る
-				Vector3 diffRightArm = attack_efe_LP - m_rightArm->GetPosition();
+				Vector3 diffRightArm = m_attackEfeLP - m_rightArm->GetPosition();
 
 				//武器によってダメージを変える
 
@@ -393,7 +393,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 			if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 			{
 				//弾と左腕の距離を測る
-				Vector3 diffRightLeg = attack_efe_LP - m_rightLeg->GetPosition();
+				Vector3 diffRightLeg = m_attackEfeLP - m_rightLeg->GetPosition();
 
 				//武器によってダメージを変える
 
@@ -411,7 +411,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 			if (m_shoulder != nullptr)	//肩に情報が入っているなら
 			{
 				//弾と左腕の距離を測る
-				Vector3 diffShoulder = attack_efe_LP - m_shoulder->GetPosition();
+				Vector3 diffShoulder = m_attackEfeLP - m_shoulder->GetPosition();
 
 				//武器によってダメージを変える
 
@@ -434,7 +434,7 @@ void Boss::Player_Damage(int boss_damage_kind, bool Landing_state) {
 void Boss::PlayerSearch()
 {
 	//エネミーからプレイヤーが入ってきたら追いかける
-	Vector3 toPlayer = b_player->GetPlayerPosition() - boss_position;
+	Vector3 toPlayer = m_player->GetPlayerPosition() - m_position;
 
 	//プレイヤーとの距離を計算する
 	float distToPlayer = toPlayer.Length();
@@ -442,73 +442,60 @@ void Boss::PlayerSearch()
 	Vector3 toPlayerDir = toPlayer;
 	toPlayerDir.Normalize();
 	//エネミーの前方方向とtoPlayerDirとの内積を計算する
-	float t = toPlayerDir.Dot(boss_forward);
+	float t = toPlayerDir.Dot(m_forward);
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
 
 	if (fabsf(angle) > Math::DegToRad(45.0f))
 	{
-		boss_rotation.SetRotationY(atan2(boss_forward.x, boss_forward.z));
-		boss_modelRender.SetPosition(boss_position);
-		boss_modelRender.SetRotation(boss_rotation);
-		boss_modelRender.Update();
+		m_rotation.SetRotationY(atan2(m_forward.x, m_forward.z));
+		m_modelRender.SetPosition(m_position);
+		m_modelRender.SetRotation(m_rotation);
+		m_modelRender.Update();
 	}
 	if (g_pad[0]->IsTrigger(enButtonA)) {
-		Boss_attack = true;
+		m_attack = true;
 	}
 
 
-	if (Boss_attack == true) {
+	if (m_attack == true) {
 
-		if (Boss_Rotation_count < 10) {
-			boss_rotation.AddRotationDegY((angle * M_PI / 180.0)/10);
+		if (m_rotationCount < 10) {
+			m_rotation.AddRotationDegY((angle * M_PI / 180.0)/10);
 		}
-		if (Boss_Rotation_count >= 10 && Boss_Rotation_count < 15) {
-			movespeed += toPlayerDir *100.0f;
+		if (m_rotationCount >= 10 && m_rotationCount < 15) {
+			m_moveSpeed += toPlayerDir *100.0f;
 
-			boss_position = boss_characterController.Execute(movespeed, 1.0f / 60.0f);
+			m_position = m_characterController.Execute(m_moveSpeed, 1.0f / 60.0f);
 		}
-		if (Boss_Rotation_count == 15) {
-			Boss_attack = false;
+		if (m_rotationCount == 15) {
+			m_attack = false;
 		}
-		Boss_Rotation_count++;
+		m_rotationCount++;
 	}
 
 	if (fabsf(angle) < Math::DegToRad(45.0f)) {
-		b_boss_riser->attack_ok = true;
-		b_boss_cannon->attack_ok = true;
-		b_boss_drill->attack_ok = true;
-		b_boss_shovel->attack_ok = true;
-		b_boss_turbo->attack_ok = true;
+		m_bossRiser->attack_ok = true;
+		m_bossCannon->attack_ok = true;
+		m_bossDrill->attack_ok = true;
+		m_bossShovel->attack_ok = true;
+		m_bossTurbo->attack_ok = true;
 	}
 	else {
-		b_boss_riser->attack_ok = false;
-		b_boss_cannon->attack_ok = false;
-		b_boss_drill->attack_ok = false;
-		b_boss_shovel->attack_ok = false;
-		b_boss_turbo->attack_ok = false;
+		m_bossRiser->attack_ok = false;
+		m_bossCannon->attack_ok = false;
+		m_bossDrill->attack_ok = false;
+		m_bossShovel->attack_ok = false;
+		m_bossTurbo->attack_ok = false;
 	}
 
 	//敵キャラの前方方向を更新する
-	boss_forward = toPlayerDir;
+	m_forward = toPlayerDir;
 	// 敵の前方方向を使って、回転クォータニオンを計算する。
-	boss_rotation.SetRotationY(atan2(boss_forward.x, boss_forward.z));
-	boss_modelRender.SetPosition(boss_position);
-	boss_modelRender.SetRotation(boss_rotation);
-	boss_modelRender.Update();
-}
-
-void Boss::Move()
- {
-	//エネミーからプレイヤーに向かうベクトルを計算する
-	Vector3 toPlayer = b_player->GetPlayerPosition() - boss_position;
-	//ベクトルを正規化する。
-	toPlayer.Normalize();
-	//移動速度を設定する。
-	boss_moveSpeed = toPlayer * 200.0f;
-	//エネミーを移動させる
-	boss_position = boss_characterController.Execute(boss_moveSpeed, g_gameTime->GetFrameDeltaTime());
-	Vector3 modelPosition = boss_position;
+	m_rotation.SetRotationY(atan2(m_forward.x, m_forward.z));
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.SetRotation(m_rotation);
+	m_modelRender.Update();
 }
 
 void Boss::Damage()
@@ -516,157 +503,146 @@ void Boss::Damage()
 	//ボス即死コード。
 	if (g_pad[0]->IsPress(enButtonY))
 	{
-		boss_HP = 0.0f;
+		m_HP = 0.0f;
 	}
 	
 	//やっつけたらリザルト画面へGO!!
-	if (boss_HP <= 0.0f)
+	if (m_HP <= 0.0f)
 	{
 		
-		b_player->SetGameState(7);
-		boss_HP = 0.0f;
-		if (Death_count >= 0 && Death_count < 20) {
-			if (b_boss_riser != nullptr) {
-				b_boss_riser->scale -= 0.6f;
-				b_boss_riser->boss_Riser_Render.SetScale(b_boss_riser->scale);
+		m_player->SetGameState(7);
+		m_HP = 0.0f;
+		if (m_deathCount >= 0 && m_deathCount < 20) {
+			if (m_bossRiser != nullptr) {
+				m_bossRiser->scale -= 0.6f;
+				m_bossRiser->boss_Riser_Render.SetScale(m_bossRiser->scale);
 			}
-			if (b_boss_drill != nullptr) {
-				b_boss_drill->Drill_scale -= 1.02f;
-				b_boss_drill->boss_Drill_Render.SetScale(b_boss_drill->Drill_scale);
+			if (m_bossDrill != nullptr) {
+				m_bossDrill->Drill_scale -= 1.02f;
+				m_bossDrill->boss_Drill_Render.SetScale(m_bossDrill->Drill_scale);
 			}
-			if (b_boss_cannon != nullptr) {
-				b_boss_cannon->scale -= 0.75f;
-				b_boss_cannon->boss_Cannon_Render.SetScale(b_boss_cannon->scale);
+			if (m_bossCannon != nullptr) {
+				m_bossCannon->scale -= 0.75f;
+				m_bossCannon->boss_Cannon_Render.SetScale(m_bossCannon->scale);
 			}
-			if (b_boss_saber != nullptr) {
-				b_boss_saber->scale -= 0.75f;
-				b_boss_saber->boss_Cannon_Render.SetScale(b_boss_saber->scale);
+			if (m_bossSaber != nullptr) {
+				m_bossSaber->scale -= 0.75f;
+				m_bossSaber->boss_Cannon_Render.SetScale(m_bossSaber->scale);
 			}
-			if (b_boss_shovel != nullptr) {
-				b_boss_shovel->scale -= 0.75f;
-				b_boss_shovel->boss_Shovel_Render.SetScale(b_boss_shovel->scale);
+			if (m_bossShovel != nullptr) {
+				m_bossShovel->scale -= 0.75f;
+				m_bossShovel->boss_Shovel_Render.SetScale(m_bossShovel->scale);
 			}
-			if (b_boss_turbo != nullptr) {
-				b_boss_turbo->scale -= 0.651f;
-				b_boss_turbo->boss_Turbo_Render.SetScale(b_boss_riser->scale);
+			if (m_bossTurbo != nullptr) {
+				m_bossTurbo->scale -= 0.651f;
+				m_bossTurbo->boss_Turbo_Render.SetScale(m_bossRiser->scale);
 			}
 		}
-		if (Death_count == 0) {
+		if (m_deathCount == 0) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
 			m_camera->SetFinalVibFlag(true);
-			if (b_boss_riser != nullptr) {
+			if (m_bossRiser != nullptr) {
 				
-				Explosion_Another = NewGO<EffectEmitter>(0);
-				Explosion_Another->Init(enBoss_Explosion);
-				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+				m_explosionAnother = NewGO<EffectEmitter>(0);
+				m_explosionAnother->Init(enBoss_Explosion);
+				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				Explosion_Another->SetPosition(b_boss_riser->b_w_position);
-				Explosion_Another->SetRotation(b_boss_riser->b_w_rotation);
-				Explosion_Another->Play();
+				m_explosionAnother->SetPosition(m_bossRiser->b_w_position);
+				m_explosionAnother->SetRotation(m_bossRiser->b_w_rotation);
+				m_explosionAnother->Play();
 			}
-			if (b_boss_drill != nullptr) {
-				Explosion_Another = NewGO<EffectEmitter>(0);
-				Explosion_Another->Init(enBoss_Explosion);
-				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+			if (m_bossDrill != nullptr) {
+				m_explosionAnother = NewGO<EffectEmitter>(0);
+				m_explosionAnother->Init(enBoss_Explosion);
+				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				Explosion_Another->SetPosition(b_boss_drill->b_w_position);
-				Explosion_Another->SetRotation(b_boss_drill->b_w_rotation);
-				Explosion_Another->Play();
+				m_explosionAnother->SetPosition(m_bossDrill->b_w_position);
+				m_explosionAnother->SetRotation(m_bossDrill->b_w_rotation);
+				m_explosionAnother->Play();
 			}
-			if (b_boss_saber != nullptr) {
-				Explosion_Another = NewGO<EffectEmitter>(0);
-				Explosion_Another->Init(enBoss_Explosion);
-				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+			if (m_bossSaber != nullptr) {
+				m_explosionAnother = NewGO<EffectEmitter>(0);
+				m_explosionAnother->Init(enBoss_Explosion);
+				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				Explosion_Another->SetPosition(b_boss_saber->b_w_position);
-				Explosion_Another->SetRotation(b_boss_saber->b_w_rotation);
-				Explosion_Another->Play();
+				m_explosionAnother->SetPosition(m_bossSaber->b_w_position);
+				m_explosionAnother->SetRotation(m_bossSaber->b_w_rotation);
+				m_explosionAnother->Play();
 			}
-			if (b_boss_shovel != nullptr) {
-				Explosion_Another = NewGO<EffectEmitter>(0);
-				Explosion_Another->Init(enBoss_Explosion);
-				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+			if (m_bossShovel != nullptr) {
+				m_explosionAnother = NewGO<EffectEmitter>(0);
+				m_explosionAnother->Init(enBoss_Explosion);
+				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				Explosion_Another->SetPosition(b_boss_shovel->b_w_position);
-				Explosion_Another->SetRotation(b_boss_shovel->b_w_rotation);
-				Explosion_Another->Play();
+				m_explosionAnother->SetPosition(m_bossShovel->b_w_position);
+				m_explosionAnother->SetRotation(m_bossShovel->b_w_rotation);
+				m_explosionAnother->Play();
 			}
-			if (b_boss_turbo != nullptr) {
-				Explosion_Another = NewGO<EffectEmitter>(0);
-				Explosion_Another->Init(enBoss_Explosion);
-				Explosion_Another->SetScale({ 70.0f,70.0f,70.0f });
+			if (m_bossTurbo != nullptr) {
+				m_explosionAnother = NewGO<EffectEmitter>(0);
+				m_explosionAnother->Init(enBoss_Explosion);
+				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				Explosion_Another->SetPosition(b_boss_turbo->b_w_position);
-				Explosion_Another->SetRotation(b_boss_turbo->b_w_rotation);
-				Explosion_Another->Play();
+				m_explosionAnother->SetPosition(m_bossTurbo->b_w_position);
+				m_explosionAnother->SetRotation(m_bossTurbo->b_w_rotation);
+				m_explosionAnother->Play();
 			}
 			
 		}
-		if (Death_count == 60) {
-			Boss_Explosion = NewGO<EffectEmitter>(0);
-			Boss_Explosion->Init(enBoss_Death);
-			Boss_Explosion->SetScale({ 70.0f,70.0f,70.0f });
+		if (m_deathCount == 60) {
+			m_bossExplosion = NewGO<EffectEmitter>(0);
+			m_bossExplosion->Init(enBoss_Death);
+			m_bossExplosion->SetScale({ 70.0f,70.0f,70.0f });
 			
 			//efeLP += b_w_position;
-			Boss_Explosion->SetPosition(boss_position);
-			Boss_Explosion->SetRotation(boss_rotation);
-			Boss_Explosion->Play();
+			m_bossExplosion->SetPosition(m_position);
+			m_bossExplosion->SetRotation(m_rotation);
+			m_bossExplosion->Play();
 		}
-		if (Death_count >= 60 && Death_count < 120) {
+		if (m_deathCount >= 60 && m_deathCount < 120) {
 			
-			Scale -= 0.25f;
-			boss_modelRender.SetScale(Scale);
+			m_scale -= 0.25f;
+			m_modelRender.SetScale(m_scale);
 			
 		}
-		if (Death_count == 120) {
+		if (m_deathCount == 120) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
 			m_camera->SetBigVibFlag(true);
-			Boss_Explosion = NewGO<EffectEmitter>(0);
-			Boss_Explosion->Init(enBoss_Death2);
-			Boss_Explosion->SetScale({ 70.0f,70.0f,70.0f });
+			m_bossExplosion = NewGO<EffectEmitter>(0);
+			m_bossExplosion->Init(enBoss_Death2);
+			m_bossExplosion->SetScale({ 70.0f,70.0f,70.0f });
 			
 			//efeLP += b_w_position;
-			Boss_Explosion->SetPosition(boss_position);
-			Boss_Explosion->SetRotation(boss_rotation);
-			Boss_Explosion->Play();
+			m_bossExplosion->SetPosition(m_position);
+			m_bossExplosion->SetRotation(m_rotation);
+			m_bossExplosion->Play();
 		}
-		if (Death_count==440) {
-			b_player->SetGameState(2);
-			result = NewGO<Result>(1, "result");
-			result->SE_volume = boss_game->GetSEVol();
-			result->BGM_volume = boss_game->GetBGMVol();
+		if (m_deathCount==440) {
+			m_player->SetGameState(2);
+			m_result = NewGO<Result>(1, "result");
+			m_result->SE_volume = m_game->GetSEVol();
+			m_result->BGM_volume = m_game->GetBGMVol();
 
-			result->minute = (int)boss_time / 60;
-			result->sec = (int)boss_time % 60;
-			//b_player->m_bossSurvival = false;	//ボスが生きているかをプレーヤーに教える
-			//エネミーがどの武器を持っていたか取得し、ドロップするアイテムを決める
-			//ココもいらない?
-			if (defeat_state == true)
-			{
-				drop_item->drop_kinds = b_boss_riser->set_weapons;
-				drop_item->drop_kinds = b_boss_shovel->set_weapons;
-				drop_item->drop_kinds = b_boss_drill->set_weapons;
-				drop_item->drop_kinds = b_boss_cannon->set_weapons;
-				drop_item->drop_kinds = b_boss_turbo->set_weapons;
-			}
+			m_result->minute = (int)m_bossTime / 60;
+			m_result->sec = (int)m_bossTime % 60;
 
 
 			DeleteGO(this);
 
 		}
-		Death_count++;
+		m_deathCount++;
 		
 	}
 }
 
 void Boss::SetHPScale()
 {
-	float m_scaleX = boss_HP * (1.0f / BOSS_HP_MAX);	//時間が減るほどゲージが減っていく
+	float m_scaleX = m_HP * (1.0f / BOSS_HP_MAX);	//時間が減るほどゲージが減っていく
 
 	max(0, m_scaleX);	//スケールは0以下にならない
 
@@ -677,8 +653,8 @@ void Boss::SetHPScale()
 void Boss::Render(RenderContext& rc)
 {
 	//モデルの描画。
-	boss_modelRender.Draw(rc);
-	if (b_player->GetPlayerHP() > 0) {
+	m_modelRender.Draw(rc);
+	if (m_player->GetPlayerHP() > 0) {
 		m_bossHPSprite.Draw(rc);
 		m_bossHPWakuSprite.Draw(rc);
 		m_bossHPWakuSprite2.Draw(rc);

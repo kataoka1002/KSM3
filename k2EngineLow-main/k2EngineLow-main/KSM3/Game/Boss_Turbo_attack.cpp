@@ -45,7 +45,7 @@ Boss_Turbo_attack::Boss_Turbo_attack()
 
 Boss_Turbo_attack::~Boss_Turbo_attack()
 {
-	b_a_weapons->attack_state = false;
+	b_a_weapons->m_attackState = false;
 }
 
 bool Boss_Turbo_attack::Start()

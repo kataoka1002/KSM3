@@ -212,7 +212,7 @@ void AttackBase::DamageEvent(float damage)
 	{
 
 		//弾とボスの距離を測る
-		Vector3 diff = m_position - m_game->GetBoss()->boss_position;
+		Vector3 diff = m_position - m_game->GetBoss()->GetPosition();
 
 
 		//一定距離以下なら
@@ -220,7 +220,7 @@ void AttackBase::DamageEvent(float damage)
 		{
 
 			//ダメージを与える
-			m_game->GetBoss()->boss_HP -= damage;
+			m_game->GetBoss()->ApplyDamage(damage);
 
 
 			//弾が消えるときの処理
@@ -236,11 +236,11 @@ void AttackBase::DamageEvent(float damage)
 	{
 
 		//ドリルがヌルじゃないとき
-		if (m_game->GetBoss()->b_boss_drill != nullptr)
+		if (m_game->GetBoss()->GetDrill() != nullptr)
 		{
 
 			//弾とドリルの距離を測る
-			Vector3 diff = m_position - m_game->GetBoss()->b_boss_drill->b_w_position;
+			Vector3 diff = m_position - m_game->GetBoss()->GetDrill()->b_w_position;
 
 
 			//一定距離以下なら
@@ -248,7 +248,7 @@ void AttackBase::DamageEvent(float damage)
 			{
 
 				//ダメージを与える
-				m_game->GetBoss()->b_boss_drill->drill_HP -= damage;
+				m_game->GetBoss()->GetDrill()->drill_HP -= damage;
 
 
 				//弾が消えるときの処理

@@ -24,7 +24,7 @@ Boss_Turbo::~Boss_Turbo()
 	DeleteGO(TatumakiSE);
 	if (defeatState == true)
 	{
-		drop_item->drop_kinds = set_weapons;
+		m_dropItem->drop_kinds = set_weapons;
 	}
 }
 
@@ -111,10 +111,10 @@ void Boss_Turbo::Update()
 
 		if (firing_cound > 700) {
 			b_boss_weapons = NewGO<Boss_Turbo_attack>(1, "boss_Turbo_attack");
-			attack_state = true;
+			m_attackState = true;
 			b_boss_weapons->firing_position = b_w_position;
 			b_boss_weapons->b_a_aiming = b_w_rotation;
-			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
+			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->GetForward();
 			if (firing_cound == 900) {
 				firing_cound = 0;
 				Rote = false;
@@ -178,8 +178,8 @@ void Boss_Turbo::Rotation() {
 void Boss_Turbo::Move()
 {
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
-	Quaternion originRotation = b_w_boss->boss_rotation;
-	b_w_position = b_w_boss->boss_position;
+	Quaternion originRotation = b_w_boss->GetRotation();
+	b_w_position = b_w_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
 	b_w_position += lp;

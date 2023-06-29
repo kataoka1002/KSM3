@@ -48,9 +48,9 @@ void Boss_Saber::Update() {
 
 	if (connon_HP <= 0.0f)
 	{
-		drop_item = NewGO<Drop_item>(1, "drop_item");
-		drop_item->Drop_position = b_w_position;
-		drop_item->Drop_position.y += 50.0f;
+		m_dropItem = NewGO<Drop_item>(1, "drop_item");
+		m_dropItem->Drop_position = b_w_position;
+		m_dropItem->Drop_position.y += 50.0f;
 		defeatState = true;
 		DeleteGO(this);
 	}
@@ -58,8 +58,8 @@ void Boss_Saber::Update() {
 
 void Boss_Saber::Move() {
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
-	Quaternion originRotation = b_w_boss->boss_rotation;
-	b_w_position = b_w_boss->boss_position;
+	Quaternion originRotation = b_w_boss->GetRotation();
+	b_w_position = b_w_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
 	b_w_position += lp;

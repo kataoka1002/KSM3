@@ -56,7 +56,7 @@ Boss_Drill_attack::~Boss_Drill_attack()
 		m_BulletEffect = nullptr;
 		m_BulletEffect2 = nullptr;
 	}
-	b_a_weapons->attack_state = false;
+	b_a_weapons->m_attackState = false;
 }
 
 bool Boss_Drill_attack::Start() {
@@ -387,14 +387,14 @@ void Boss_Drill_attack::Damage() {
 	//---------------------------------------------------------------------------------------------------
 	if (b_a_boss != nullptr) {
 		//弾とボスの距離を測る
-		Vector3 diffShoulder = firing_position - Vector3{ b_a_boss->boss_position.x, b_a_boss->boss_position.y, b_a_boss->boss_position.z };
+		Vector3 diffShoulder = firing_position - b_a_boss->GetPosition();
 
 		//武器によってダメージを変える
 
 			//距離を測り一定以下なら体力減少
 		if (diffShoulder.Length() <= 500.0f) //ダメージが入る範囲
 		{
-			b_a_boss->boss_HP -= 50.0f;
+			b_a_boss->ApplyDamage(50.0f);
 			Effect();
 
 		}

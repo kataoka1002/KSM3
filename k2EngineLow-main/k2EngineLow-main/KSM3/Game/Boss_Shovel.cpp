@@ -41,7 +41,7 @@ bool Boss_Shovel::Start()
 	//boss_Shovel_Render.Init("Assets/modelData/unityChan.tkm", true,true,m_animationClip, enAnimationClip_Num, enModelUpAxisY);
 	if (defeatState == true)
 	{
-		drop_item->drop_kinds = set_weapons;
+		m_dropItem->drop_kinds = set_weapons;
 	}
 	
 	return true;
@@ -167,8 +167,8 @@ void Boss_Shovel::Update()
 void Boss_Shovel::Move()
 {
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
-	Quaternion originRotation = b_w_boss->boss_rotation;
-	b_w_position = b_w_boss->boss_position;
+	Quaternion originRotation = b_w_boss->GetRotation();
+	b_w_position = b_w_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
 	b_w_position += lp;
