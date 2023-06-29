@@ -55,7 +55,7 @@ void Boss_Shovel_attack::Update()
 void Boss_Shovel_attack::Move()
 {
 	firing_position += b_a_Bullet_Fowrad * move_speed;
-	if (firing_position.y <= b_a_core_weapons->cw_position.y && fast_count == true)
+	if (firing_position.y <= b_a_core_weapons->GetPosition().y && fast_count == true)
 	{
 		firing_position.y += 10.0f;
 	}
