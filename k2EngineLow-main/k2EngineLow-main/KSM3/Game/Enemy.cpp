@@ -62,7 +62,7 @@ void Enemy::GameSetUp()
 	
 	
 	//作成したUIクラスに自分のポインタを教える
-	m_HPUI->m_enemy = (this);	
+	m_HPUI->SetEnemy(this);	
 
 }
 
