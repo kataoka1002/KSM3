@@ -22,10 +22,6 @@ Boss_Turbo::~Boss_Turbo()
 {
 	DeleteGO(b_boss_weapons);
 	DeleteGO(TatumakiSE);
-	if (defeatState == true)
-	{
-		m_dropItem->drop_kinds = set_weapons;
-	}
 }
 
 void Boss_Turbo::Setup()

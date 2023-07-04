@@ -6,7 +6,7 @@ class Left_arm_weapons;
 class GameCamera;
 class Game;
 
-class Drop_item:public IGameObject
+class Drop_item : public IGameObject
 {
 public:
 	Drop_item();
@@ -15,41 +15,65 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 	void Float();
-	void Set_Drop_item();
-	void SetSize();
-	Quaternion Drop_rotation;
+	void InitDropItem();
+	void CalcModelScale();
+	void ExecuteGetItem();
+	void ExecuteDelete();
 
-	std::unique_ptr<ModelRender> Drop_item_Render;	//スマートポインタ
+	/// <summary>
+	/// 座標の設定
+	/// </summary>
+	/// <param name="pos">ポジション</param>
+	void SetPosition(Vector3 pos)
+	{
+		m_position = pos;
+	}
 
-	Player* drop_player = nullptr;
-	Left_arm_weapons* left_arm_weapons = nullptr;
-	Customize_UI* customize_UI = nullptr;
-	Customize_UI_ver2* customize_UI_ver2 = nullptr;
-	GameCamera* m_gameCamera = nullptr;
+	/// <summary>
+	/// 座標の増加処理
+	/// </summary>
+	/// <param name="pos">増加量</param>
+	void AddPosition(Vector3 pos)
+	{
+		m_position += pos;
+	}
+	void AddPositionX(float pos)
+	{
+		m_position.x += pos;
+	}
+	void AddPositionY(float pos)
+	{
+		m_position.y += pos;
+	}
+	void AddPositionZ(float pos)
+	{
+		m_position.z += pos;
+	}
+
+	/// <summary>
+	/// アイテムの種類を教える
+	/// </summary>
+	/// <param name="kinds">アイテムの種類</param>
+	void SetItemKinds(int kinds)
+	{
+		m_dropKinds = kinds;
+	}
+
+private:
+	std::unique_ptr<ModelRender> m_dropItemModel;	//スマートポインタ
+
 	Game* m_game = nullptr;
+	Player* m_player = nullptr;
+	GameCamera* m_gameCamera = nullptr;
+	Customize_UI_ver2* m_customizeUI = nullptr;
 
-	Vector3 Drop_position;//Drop位置
+	Vector3 m_position = Vector3::Zero;
+	Quaternion m_rotation;
 
-	bool GetState = false;
-	int float_counter = 0;
-	float float_level = 0.25;
-	int touch_flag = 0;
-	int dropCount = 0;
+	int m_floatCount = 0;
 	int m_deleteCount = 1800;	//アイテムが消えるまでの時間
-	float modelSize = 0.01f;
-
-	int drop_weapons[12] = {  0,	//non
-							  0,	//Battleship_gun
-							  0,
-							  0,
-							  0,
-							  0,
-							  0,
-							  0,
-							  0,
-							  0,
-							  0,
-							  0 };
-	int drop_kinds = 0;
+	int m_dropKinds = 0;
+	float m_floatLevel = 0.25;
+	float m_modelSize = 0.01f;
 };
 

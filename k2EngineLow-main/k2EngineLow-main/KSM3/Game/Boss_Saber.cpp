@@ -48,9 +48,9 @@ void Boss_Saber::Update() {
 
 	if (connon_HP <= 0.0f)
 	{
-		m_dropItem = NewGO<Drop_item>(1, "drop_item");
-		m_dropItem->Drop_position = b_w_position;
-		m_dropItem->Drop_position.y += 50.0f;
+		/*m_dropItem = NewGO<Drop_item>(1, "drop_item");
+		m_dropItem->m_position = b_w_position;
+		m_dropItem->m_position.y += 50.0f;*/
 		defeatState = true;
 		DeleteGO(this);
 	}
