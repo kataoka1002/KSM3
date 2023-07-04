@@ -369,12 +369,15 @@ void EnemyBase::ItemDrop()
 
 
 	//ドロップアイテムの場所の決定
-	m_dropItem->Drop_position = m_enemyPosition;
-	m_dropItem->Drop_position.y += 50.0f;
+	m_dropItem->SetPosition(m_enemyPosition);
+
+
+	//Y座標を少し上げる
+	m_dropItem->AddPositionY(50.0f);
 
 
 	//エネミーがどの武器を持っていたか取得
-	m_dropItem->drop_kinds = m_setWeapon;
+	m_dropItem->SetItemKinds(m_setWeapon);
 
 
 	//作成したアイテムをコンテナにくっつける

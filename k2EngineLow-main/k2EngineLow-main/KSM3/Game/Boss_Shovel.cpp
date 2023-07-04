@@ -22,10 +22,6 @@ Boss_Shovel::Boss_Shovel()
 Boss_Shovel::~Boss_Shovel()
 {
 	DeleteGO(b_boss_weapons);
-	/*if (defeatState == true)
-	{
-		drop_item->drop_kinds = set_weapons;
-	}*/
 }
 
 bool Boss_Shovel::Start()
@@ -38,11 +34,6 @@ bool Boss_Shovel::Start()
 	m_animationClip[enAnimationClip_Shock_Ground].SetLoopFlag(true);
 	//‰Šú‰»
 	boss_Shovel_Render.Init("Assets/modelData/Boss_shovel4.tkm", true, true , m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
-	//boss_Shovel_Render.Init("Assets/modelData/unityChan.tkm", true,true,m_animationClip, enAnimationClip_Num, enModelUpAxisY);
-	if (defeatState == true)
-	{
-		m_dropItem->drop_kinds = set_weapons;
-	}
 	
 	return true;
 }

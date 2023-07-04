@@ -17,10 +17,6 @@ Boss_Riser::Boss_Riser()
 Boss_Riser::~Boss_Riser()
 {
 	DeleteGO(b_boss_weapons);	
-	if (defeatState == true)
-	{
-		m_dropItem->drop_kinds = set_weapons;
-	}
 }
 
 void Boss_Riser::Setup()
