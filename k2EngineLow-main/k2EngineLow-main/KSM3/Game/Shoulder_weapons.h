@@ -32,6 +32,5 @@ private:
 	Vector3 m_localPosition2 = Vector3::Zero;
 	int m_firingCount2 = 0;
 
-
 };
 
