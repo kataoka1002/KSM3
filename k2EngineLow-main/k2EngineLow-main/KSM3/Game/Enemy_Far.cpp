@@ -59,7 +59,7 @@ void Enemy_Far::GameSetUp()
 {
 
 	//作成したUIクラスに自分のポインタを教える
-	m_HPUI->m_enemyFar = (this);	
+	m_HPUI->SetEnemyFar(this);	
 
 }
 

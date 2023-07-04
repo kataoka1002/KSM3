@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Shoulder_weapons.h"
 #include "Player.h"
-#include "Enumeration.h"
 #include "Battle_ship_attack.h"
 #include "MachineGunAttack.h"
 #include "GigatonCannonAttack.h"

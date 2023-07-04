@@ -56,7 +56,7 @@ void Enemy_Near::GameSetUp()
 {
 
 	//作成したUIクラスに自分のポインタを教える
-	m_HPUI->m_enemyNear = (this);
+	m_HPUI->SetEnemyNear(this);
 
 }
 

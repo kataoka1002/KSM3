@@ -20,7 +20,6 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Drop_item.cpp" />
     <ClCompile Include="Left_arm_weapons.cpp" />
-    <ClCompile Include="Enumeration.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Battle_ship_attack.cpp" />
     <ClCompile Include="Right_arm_weapons.cpp" />
@@ -75,7 +74,6 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Drop_item.h" />
     <ClInclude Include="Left_arm_weapons.h" />
-    <ClInclude Include="Enumeration.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Battle_ship_attack.h" />
     <ClInclude Include="Right_arm_weapons.h" />
