@@ -37,7 +37,7 @@ private:
 	Quaternion m_rotation;
 	ModelRender m_coreWeaponModel;
 
-	Vector3 m_position;
+	Vector3 m_position = Vector3::Zero;
 	Vector3 m_localPosition = { 0.0f,80.0f,10.0f };
 	Vector3 m_scale = { 1.0f,1.0f,1.5f };
 	int m_setWeapon = 2;	//0:空オブジェクト 1:ギガプラズマ  2:Versatile_Perforator

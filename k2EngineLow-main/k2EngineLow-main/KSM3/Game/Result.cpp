@@ -1,23 +1,14 @@
 ﻿#include "stdafx.h"
 #include "Result.h"
 #include "Title.h"
-#include "Game.h"
 #include "Player.h"
-#include "Boss.h"
-#include <time.h>
-#include <stdlib.h>
-#include "Core_weapons.h"
-#include "Shoulder_weapons.h"
-#include "Right_arm_weapons.h"
-#include "Right_leg_weapons.h"
-#include "Left_arm_weapons.h"
-#include "Left_leg_weapons.h"
-#include "Drop_item.h"
 #include "GameCamera.h"
-#include <map>
-#include <tuple>
 #include "Result_Macro.h"
 #include "Array"
+#include <time.h>
+#include <stdlib.h>
+#include <map>
+#include <tuple>
 
 
 using namespace std;
@@ -25,32 +16,32 @@ using namespace std;
 
 Result::Result() 
 {
-	player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 3; j++) {
-				p_custom_point[i][j] = player->GetCustomPoint(i, j);
+				m_customPoint[i][j] = m_player->GetCustomPoint(i, j);
 			}
 		}
-	gamecamera=FindGO<GameCamera>("gamecamera");
+	m_gameCamera=FindGO<GameCamera>("gamecamera");
 
 }
 
 Result::~Result()
 {	
-	DeleteGO(gamecamera);
-	DeleteGO(player);
-	DeleteGO(m_BGM);
+	DeleteGO(m_gameCamera);
+	DeleteGO(m_player);
+	DeleteGO(m_sound);
 }
 
 bool Result::Start()
 {
-	Font_set();
-	Back_set();
+	FontSet();
+	BackSet();
 
-	m_BGM = NewGO<SoundSource>(0);		
-	m_BGM->Init(21);									//初期化
-	m_BGM->SetVolume(1.0f * BGM_volume);				//音量調整
-	m_BGM->Play(true);
+	m_sound = NewGO<SoundSource>(0);		
+	m_sound->Init(21);									//初期化
+	m_sound->SetVolume(1.0f * m_BGMVolume);				//音量調整
+	m_sound->Play(true);
 
 	return true;
 }
@@ -61,504 +52,504 @@ void Result::Update()
 	
 
 	//タイトルへの遷移(フェードあり)
-	if (g_pad[0]->IsTrigger(enButtonA)&&fast_count!=1) {
-		if (Neo_result_state == 0) {
-			Neo_result_state = 1;
+	if (g_pad[0]->IsTrigger(enButtonA)&&m_count!=1) {
+		if (m_resultState == 0) {
+			m_resultState = 1;
 		}
-		else if (Neo_result_state == 1) {
-			Neo_result_state = 2;
+		else if (m_resultState == 1) {
+			m_resultState = 2;
 		}
-		else if (Neo_result_state == 2) {
+		else if (m_resultState == 2) {
 			Title* title = NewGO<Title>(0, "title");
 			DeleteGO(this);
 		}
 
 		SoundSource* m_SE = NewGO<SoundSource>(0);		//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_SE->Init(17);									//初期化
-		m_SE->SetVolume(1.0f * SE_volume);				//音量調整
+		m_SE->SetVolume(1.0f * m_SEVolume);				//音量調整
 		m_SE->Play(false);
 
-		fast_count = 0;
+		m_count = 0;
 	}
-	if (Neo_result_state == 0) {
+	if (m_resultState == 0) {
 		//タイマーの初期化
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 10; j++) {
-				Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+				m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 			}
 		}
-		Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+		m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 
 		//timeの文字の移動(出現）
-		if (fast_count <= 49) {
-			Time_color.w += 0.02f;
-			Time_position.x += 0.5f;
-			time_Render.SetPosition(Time_position);
-			time_Render.SetMulColor(Time_color);
-			time_Render.Update();
+		if (m_count <= 49) {
+			m_timeColor.w += 0.02f;
+			m_timePosition.x += 0.5f;
+			m_timeSprite.SetPosition(m_timePosition);
+			m_timeSprite.SetMulColor(m_timeColor);
+			m_timeSprite.Update();
 		}
 
 		//タイムの出現
-		if (fast_count >= 50 && fast_count < 55) {
+		if (m_count >= 50 && m_count < 55) {
 			for (int i = 0; i < 4; i++) {
-				a[i][0] += 0.2f;
+				m_timeColonSpriteAlpha[i][0] += 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetMulColor(Vector4(1.0f,1.0f,1.0f,a[i][0]));
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f,1.0f,1.0f,m_timeColonSpriteAlpha[i][0]));
 				}
 			}
-			Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 		}
-		if (fast_count >= 55 && fast_count < 60) {
+		if (m_count >= 55 && m_count < 60) {
 			for (int i = 0; i < 4; i++) {
-				a[i][0] -= 0.2f;
+				m_timeColonSpriteAlpha[i][0] -= 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
-			Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 		}
-		if (fast_count >= 60 && fast_count < 65) {
+		if (m_count >= 60 && m_count < 65) {
 			for (int i = 0; i < 4; i++) {
-				a[i][0] += 0.2f;
+				m_timeColonSpriteAlpha[i][0] += 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
-			Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 		}
-		if (fast_count >= 65 && fast_count < 70) {
+		if (m_count >= 65 && m_count < 70) {
 			for (int i = 0; i < 4; i++) {
-				a[i][0] -= 0.2f;
+				m_timeColonSpriteAlpha[i][0] -= 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
-			Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 		}
-		if (fast_count >=70 && fast_count < 110) {
+		if (m_count >=70 && m_count < 110) {
 			for (int i = 0; i < 4; i++) {
-				a[i][0] += 0.025f;
+				m_timeColonSpriteAlpha[i][0] += 0.025f;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
-			Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 		}
 	}
 
 	//SCORE
-	if (Neo_result_state == 1) {
+	if (m_resultState == 1) {
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 10; j++) {
-				Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+				m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 			}
 		}
-		Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[1][0]));
-		if (fast_count <= 10) {
-			Box_Rotation.AddRotationDegY(33.0f);
-			Player_rotation.AddRotationDegY(33.0f);
-			Box_render.SetRotation(Box_Rotation);
-			Player_modelrender.SetRotation(Player_rotation);
+		m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[1][0]));
+		if (m_count <= 10) {
+			m_boxRotation.AddRotationDegY(33.0f);
+			m_playerRotation.AddRotationDegY(33.0f);
+			m_boxModel.SetRotation(m_boxRotation);
+			m_playerModel.SetRotation(m_playerRotation);
 		}
 
 		//Scoreの文字の移動(出現）
-		if (fast_count <= 49) {
-			Score_color.w += 0.02f;
-			Score_position.x += 0.5f;
-			Score_Render.SetPosition(Score_position);
-			Score_Render.SetMulColor(Score_color);
-			Score_Render.Update();
+		if (m_count <= 49) {
+			m_scoreColor.w += 0.02f;
+			m_scorePosition.x += 0.5f;
+			m_scoreSprite.SetPosition(m_scorePosition);
+			m_scoreSprite.SetMulColor(m_scoreColor);
+			m_scoreSprite.Update();
 		}
 
 		//SCOREの出現
-		if (fast_count >= 50 && fast_count < 55) {
+		if (m_count >= 50 && m_count < 55) {
 			for (int i = 0; i < 5; i++) {
-				b[i][0] += 0.2f;
+				m_scoreCommaSpriteAlpha[i][0] += 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
-			Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[1][0]));
+			m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[1][0]));
 		}
-		if (fast_count >= 55 && fast_count < 60) {
+		if (m_count >= 55 && m_count < 60) {
 			for (int i = 0; i < 5; i++) {
-				b[i][0] -= 0.2f;
+				m_scoreCommaSpriteAlpha[i][0] -= 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
-			Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[1][0]));
+			m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[1][0]));
 		}
-		if (fast_count >= 60 && fast_count < 65) {
+		if (m_count >= 60 && m_count < 65) {
 			for (int i = 0; i < 5; i++) {
-				b[i][0] += 0.2f;
+				m_scoreCommaSpriteAlpha[i][0] += 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
-			Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[1][0]));
+			m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[1][0]));
 		}
-		if (fast_count >= 65 && fast_count < 70) {
+		if (m_count >= 65 && m_count < 70) {
 			for (int i = 0; i < 5; i++) {
-				b[i][0] -= 0.2f;
+				m_scoreCommaSpriteAlpha[i][0] -= 0.2f;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
-			Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[1][0]));
+			m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[1][0]));
 		}
-		if (fast_count >= 70 && fast_count < 110) {
+		if (m_count >= 70 && m_count < 110) {
 			for (int i = 0; i < 5; i++) {
-				b[i][0] += 0.025f;
+				m_scoreCommaSpriteAlpha[i][0] += 0.025f;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
-			Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[1][0]));
+			m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[1][0]));
 		}
 
 		
 	}
 
 	//ランク
-	if (Neo_result_state == 2) {
-		if (fast_count <= 10) {
-			Box_Rotation.AddRotationDegY(33.0f);
-			Player_rotation.AddRotationDegY(33.0f);
-			Box_render.SetRotation(Box_Rotation);
-			Player_modelrender.SetRotation(Player_rotation);
+	if (m_resultState == 2) {
+		if (m_count <= 10) {
+			m_boxRotation.AddRotationDegY(33.0f);
+			m_playerRotation.AddRotationDegY(33.0f);
+			m_boxModel.SetRotation(m_boxRotation);
+			m_playerModel.SetRotation(m_playerRotation);
 		}
 
-		if (fast_count >= 30 && fast_count < 35) {
-			Rank_color.w += 0.2f;
+		if (m_count >= 30 && m_count < 35) {
+			m_rankColor.w += 0.2f;
 			
 		}
-		if (fast_count >= 30 && fast_count < 80) {
-			Rank_Scale.x -= 0.02f;
-			Rank_Scale.y -= 0.02f;
-			Rank_sheet.SetScale(Rank_Scale);
+		if (m_count >= 30 && m_count < 80) {
+			m_rankScale.x -= 0.02f;
+			m_rankScale.y -= 0.02f;
+			m_rankSheetSprite.SetScale(m_rankScale);
 		}
-		if (fast_count >= 80 && fast_count < 100) {
-			Rank_Sheet_color.w += 0.05f;
-			Rank_position.x -= 2.5f;
-			Rank_sheet.SetPosition(Rank_position);
-			Rank_sheet.SetMulColor(Rank_Sheet_color);
+		if (m_count >= 80 && m_count < 100) {
+			m_rankSheetColor.w += 0.05f;
+			m_rankPosition.x -= 2.5f;
+			m_rankSheetSprite.SetPosition(m_rankPosition);
+			m_rankSheetSprite.SetMulColor(m_rankSheetColor);
 		}
-		if (fast_count == 1) {
+		if (m_count == 1) {
 			//タイムとスコアの初期化(ランク用)
 			//タイム関係
 			
-			Rank_Time_Render.SetMulColor(Rank_Time_color);
-			Rank_Time_Render.SetPosition(Rank_Time_position);
+			m_rankTimeSprite.SetMulColor(m_rankTimeColor);
+			m_rankTimeSprite.SetPosition(m_rankTimePosition);
 			for (int i = 0; i < 2; i++) {
-				a[i][0] =0;
+				m_timeColonSpriteAlpha[i][0] =0;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
-					Time_Num[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * i)),13.0f,0.0f });
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
+					m_timeNum[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * i)),13.0f,0.0f });
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
 			for (int i = 2; i < 4; i++) {
-				a[i][0] = 0;
+				m_timeColonSpriteAlpha[i][0] = 0;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
-					Time_Num[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * i+1)),13.0f,0.0f });
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
+					m_timeNum[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * i+1)),13.0f,0.0f });
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
-			Time_colon.SetScale(Vector3{ 0.55f,0.55f,0.55f });
-			Time_colon.SetPosition(Vector3{ -490.0f,13.0f,0.0f });
-			Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_timeColonSprite.SetScale(Vector3{ 0.55f,0.55f,0.55f });
+			m_timeColonSprite.SetPosition(Vector3{ -490.0f,13.0f,0.0f });
+			m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].Update();
+					m_timeNum[i][j].Update();
 				}
 			}
-			Time_colon.Update();
-			Rank_Time_Render.Update();
+			m_timeColonSprite.Update();
+			m_rankTimeSprite.Update();
 
 			//SCORE関係
-			Rank_Score_Render.SetMulColor(Rank_Score_color);
-			Rank_Score_Render.SetPosition(Rank_Score_position);
+			m_rankScoreSprite.SetMulColor(m_rankScoreColor);
+			m_rankScoreSprite.SetPosition(m_rankScorePosition);
 			for (int i = 0; i < 2; i++) {
-				b[i][0] = 0;
+				m_scoreCommaSpriteAlpha[i][0] = 0;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
-					Score_Num[i][j].SetPosition(Vector3{ (340.0f + (50.0f * i)),13.0f,0.0f });
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
+					m_scoreNum[i][j].SetPosition(Vector3{ (340.0f + (50.0f * i)),13.0f,0.0f });
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
 			for (int i = 2; i < 5; i++) {
-				b[i][0] = 0;
+				m_scoreCommaSpriteAlpha[i][0] = 0;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
-					Score_Num[i][j].SetPosition(Vector3{ (340.0f + (50.0f * i + 1)),13.0f,0.0f });
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetScale(Vector3{ 0.55f,0.55f,0.55f });
+					m_scoreNum[i][j].SetPosition(Vector3{ (340.0f + (50.0f * i + 1)),13.0f,0.0f });
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
-			Score_comma.SetScale(Vector3{ 0.55f,0.55f,0.55f });
-			Score_comma.SetPosition(Vector3{ 440.0f,13.0f,0.0f });
-			Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_scoreCommaSprite.SetScale(Vector3{ 0.55f,0.55f,0.55f });
+			m_scoreCommaSprite.SetPosition(Vector3{ 440.0f,13.0f,0.0f });
+			m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 			for (int i = 0; i < 5; i++) {
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].Update();
+					m_scoreNum[i][j].Update();
 				}
 			}
-			Score_comma.Update();
-			Rank_Score_Render.Update();
+			m_scoreCommaSprite.Update();
+			m_rankScoreSprite.Update();
 		}
-		if (fast_count >= 80 && fast_count < 100) {
+		if (m_count >= 80 && m_count < 100) {
 
-			Rank_Time_color.w += 0.05f;
-			Rank_Time_position.x += 1.25f;
-			Rank_Time_Render.SetMulColor(Rank_Time_color);
-			Rank_Time_Render.SetPosition(Rank_Time_position);
+			m_rankTimeColor.w += 0.05f;
+			m_rankTimePosition.x += 1.25f;
+			m_rankTimeSprite.SetMulColor(m_rankTimeColor);
+			m_rankTimeSprite.SetPosition(m_rankTimePosition);
 			for (int i = 0; i < 2; i++) {
-				a[i][0] +=0.05f;
+				m_timeColonSpriteAlpha[i][0] +=0.05f;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * i)),13.0f,0.0f });
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * i)),13.0f,0.0f });
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
 			for (int i = 2; i < 4; i++) {
-				a[i][0] += 0.05f;
+				m_timeColonSpriteAlpha[i][0] += 0.05f;
 				for (int j = 0; j < 10; j++) {
-					Time_Num[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * (i + 1))),13.0f,0.0f });
-					Time_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[i][0]));
+					m_timeNum[i][j].SetPosition(Vector3{ (-590.0f + (50.0f * (i + 1))),13.0f,0.0f });
+					m_timeNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[i][0]));
 				}
 			}
-			Rank_Time_Render.Update();
-			Time_colon.SetPosition(Vector3{ -490.0f,13.0f,0.0f });
-			Time_colon.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, a[1][0]));
+			m_rankTimeSprite.Update();
+			m_timeColonSprite.SetPosition(Vector3{ -490.0f,13.0f,0.0f });
+			m_timeColonSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_timeColonSpriteAlpha[1][0]));
 
 			//SCORE
-			Rank_Score_color.w += 0.05f;
-			Rank_Score_position.x -= 1.25f;
-			Rank_Score_Render.SetMulColor(Rank_Score_color);
-			Rank_Score_Render.SetPosition(Rank_Score_position);
+			m_rankScoreColor.w += 0.05f;
+			m_rankScorePosition.x -= 1.25f;
+			m_rankScoreSprite.SetMulColor(m_rankScoreColor);
+			m_rankScoreSprite.SetPosition(m_rankScorePosition);
 			for (int i = 0; i < 2; i++) {
-				b[i][0] += 0.05f;
+				m_scoreCommaSpriteAlpha[i][0] += 0.05f;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetPosition(Vector3{ (340.0f + (50.0f * i)),13.0f,0.0f });
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetPosition(Vector3{ (340.0f + (50.0f * i)),13.0f,0.0f });
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
 			for (int i = 2; i < 5; i++) {
-				b[i][0] += 0.05f;
+				m_scoreCommaSpriteAlpha[i][0] += 0.05f;
 				for (int j = 0; j < 10; j++) {
-					Score_Num[i][j].SetPosition(Vector3{ (340.0f + (50.0f * (i + 1))),13.0f,0.0f });
-					Score_Num[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[i][0]));
+					m_scoreNum[i][j].SetPosition(Vector3{ (340.0f + (50.0f * (i + 1))),13.0f,0.0f });
+					m_scoreNum[i][j].SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[i][0]));
 				}
 			}
-			Rank_Score_Render.Update();
-			Score_comma.SetPosition(Vector3{ 440.0f,13.0f,0.0f });
-			Score_comma.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, b[1][0]));
+			m_rankScoreSprite.Update();
+			m_scoreCommaSprite.SetPosition(Vector3{ 440.0f,13.0f,0.0f });
+			m_scoreCommaSprite.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_scoreCommaSpriteAlpha[1][0]));
 		}
 		
 		
 	}
-	fast_count++;
+	m_count++;
 
 	//更新
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 10; j++) {
-			Time_Num[i][j].Update();
+			m_timeNum[i][j].Update();
 		}
 	}
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 10; j++) {
-			Score_Num[i][j].Update();
+			m_scoreNum[i][j].Update();
 		}
 	}
 	for (int i = 1; i <= 4; i++) {
-		Rank_Render[i - 1].SetScale(Rank_Scale);
-		Rank_Render[i - 1].SetMulColor(Rank_color);
-		Rank_Render[i - 1].Update();
+		m_rankSprite[i - 1].SetScale(m_rankScale);
+		m_rankSprite[i - 1].SetMulColor(m_rankColor);
+		m_rankSprite[i - 1].Update();
 	}
-	Rank_sheet.Update();
+	m_rankSheetSprite.Update();
 	
-	Box_render.Update();
-	Player_modelrender.Update();
+	m_boxModel.Update();
+	m_playerModel.Update();
 }
 
-void Result::Font_set() {
+void Result::FontSet() {
 
 	//タイム関連の初期化
-	time_Render.Init("Assets/sprite/time.DDS", 1632.0f, 918.0f);//タイムの文字の読み込み
-	Time_colon.Init("Assets/sprite/colon.DDS", 73.1f, 136.85f);//タイムの:の読み込み
+	m_timeSprite.Init("Assets/sprite/time.DDS", 1632.0f, 918.0f);//タイムの文字の読み込み
+	m_timeColonSprite.Init("Assets/sprite/colon.DDS", 73.1f, 136.85f);//タイムの:の読み込み
 	//タイムの数字の読み込み
 	for (int i = 0; i < 4; i++) {
-		a[i][0] = 0;
+		m_timeColonSpriteAlpha[i][0] = 0;
 		for (int j = 0; j < 10; j++) {
-			Time_Num[i][j].Init(getString(j), 86.0f, 161.0f);
+			m_timeNum[i][j].Init(getString(j), 86.0f, 161.0f);
 		}
 	}
 	//ポジションの設定
 	for (int i = 0; i < 10; i++) {
-		Time_Num[0][i].SetPosition(Time_0_position);
-		Time_Num[1][i].SetPosition(Time_1_position);
-		Time_Num[2][i].SetPosition(Time_3_position);
-		Time_Num[3][i].SetPosition(Time_4_position);
+		m_timeNum[0][i].SetPosition(m_timePosition0);
+		m_timeNum[1][i].SetPosition(m_timePosition1);
+		m_timeNum[2][i].SetPosition(m_timePosition3);
+		m_timeNum[3][i].SetPosition(m_timePosition4);
 	}
-	Time_colon.SetPosition(Time_2_position);
+	m_timeColonSprite.SetPosition(m_timePosition2);
 	//更新
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 10; j++) {
-			Time_Num[i][j].Update();
+			m_timeNum[i][j].Update();
 		}
 	}
 
 
 	//SCOREの設定
-	if (player->GetPlayerDead() == false) {
-		time_set[0] = minute / 10;//分10の位
-		time_set[1] = minute % 10;//分1の位
-		time_set[2] = sec / 10;//秒10の位
-		time_set[3] = sec % 10;//秒1の位
-		SCORE = (10 - minute) * 1000 + (60 - sec) * 10;//SCOREの計算
-		MAX_SCORE = 10 * 1000 + 60 * 10;//マックスSCOREの計算
+	if (m_player->GetPlayerDead() == false) {
+		m_timeSet[0] = m_minute / 10;//分10の位
+		m_timeSet[1] = m_minute % 10;//分1の位
+		m_timeSet[2] = m_seconds / 10;//秒10の位
+		m_timeSet[3] = m_seconds % 10;//秒1の位
+		m_score = (10 - m_minute) * 1000 + (60 - m_seconds) * 10;//SCOREの計算
+		m_maxScore = 10 * 1000 + 60 * 10;//マックスSCOREの計算
 		//SCOREの各桁がどれだけあるかの計算
-		while (SCORE >= 10000) {
-			score_set[0]++;
-			SCORE -= 10000;
-			Total += 10000;
+		while (m_score >= 10000) {
+			m_scoreSet[0]++;
+			m_score -= 10000;
+			m_total += 10000;
 		}
-		while (SCORE >= 1000) {
-			score_set[1]++;
-			SCORE -= 1000;
-			Total += 1000;
+		while (m_score >= 1000) {
+			m_scoreSet[1]++;
+			m_score -= 1000;
+			m_total += 1000;
 		}
-		while (SCORE >= 100) {
-			score_set[2]++;
-			SCORE -= 100;
-			Total += 100;
+		while (m_score >= 100) {
+			m_scoreSet[2]++;
+			m_score -= 100;
+			m_total += 100;
 		}
-		while (SCORE >= 10) {
-			score_set[3]++;
-			SCORE -= 10;
-			Total += 10;
+		while (m_score >= 10) {
+			m_scoreSet[3]++;
+			m_score -= 10;
+			m_total += 10;
 		}
-		while (SCORE >= 1) {
-			score_set[4]++;
-			SCORE -= 1;
-			Total += 1;
+		while (m_score >= 1) {
+			m_scoreSet[4]++;
+			m_score -= 1;
+			m_total += 1;
 		}
 	}
 	else {
 		for (int i = 0; i < 5; i++) {
-			score_set[i] = 0;
+			m_scoreSet[i] = 0;
 		}
 	}
 
-	Score_Render.Init("Assets/sprite/score.DDS", 1632.0f, 918.0f);//SCOREの文字の読み込み
-	Score_comma.Init("Assets/sprite/,.DDS", 73.1f, 136.85f);//SCOREの、の読み込み
+	m_scoreSprite.Init("Assets/sprite/score.DDS", 1632.0f, 918.0f);//SCOREの文字の読み込み
+	m_scoreCommaSprite.Init("Assets/sprite/,.DDS", 73.1f, 136.85f);//SCOREの、の読み込み
 	//SCOREの数字の読み込み
 	for (int i = 0; i < 5; i++) {
-		b[i][0] = 0;
+		m_scoreCommaSpriteAlpha[i][0] = 0;
 		for (int j = 0; j < 10; j++) {
-			Score_Num[i][j].Init(getString(j), 86.0f, 161.0f);
+			m_scoreNum[i][j].Init(getString(j), 86.0f, 161.0f);
 		}
 	}
 	//ポジション設定
 	for (int i = 0; i < 10; i++) {
-		Score_Num[0][i].SetPosition(Score_0_position);
-		Score_Num[1][i].SetPosition(Score_1_position);
-		Score_Num[2][i].SetPosition(Score_3_position);
-		Score_Num[3][i].SetPosition(Score_4_position);
-		Score_Num[4][i].SetPosition(Score_5_position);
+		m_scoreNum[0][i].SetPosition(m_scorePosition0);
+		m_scoreNum[1][i].SetPosition(m_scorePosition1);
+		m_scoreNum[2][i].SetPosition(m_scorePosition3);
+		m_scoreNum[3][i].SetPosition(m_scorePosition4);
+		m_scoreNum[4][i].SetPosition(m_scorePosition5);
 	}
-	Score_comma.SetPosition(Score_2_position);
+	m_scoreCommaSprite.SetPosition(m_scorePosition2);
 	//更新
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 10; j++) {
-			Score_Num[i][j].Update();
+			m_scoreNum[i][j].Update();
 		}
 	}
-	Score_comma.Update();
-	Time_colon.Update();
+	m_scoreCommaSprite.Update();
+	m_timeColonSprite.Update();
 
 	//ランクの設定
-	Rank_Time_Render.Init("Assets/sprite/time_rank.DDS", 1632.0f, 918.0f);
-	Rank_Time_Render.SetMulColor(Rank_Time_color);
-	Rank_Score_Render.Init("Assets/sprite/SCORE_rank.DDS", 1632.0f, 918.0f);
-	Rank_Score_Render.SetMulColor(Rank_Score_color);
-	Rank_sheet.Init("Assets/sprite/Rank.DDS", 1632.0f, 918.0f);//ランクの文字の読み込み
-	Rank_sheet.SetPosition(Rank_position);
-	Rank_sheet.SetMulColor(Rank_Sheet_color);
-	MAX_SCORE /= 4;//ランクが四段階のため
+	m_rankTimeSprite.Init("Assets/sprite/time_rank.DDS", 1632.0f, 918.0f);
+	m_rankTimeSprite.SetMulColor(m_rankTimeColor);
+	m_rankScoreSprite.Init("Assets/sprite/SCORE_rank.DDS", 1632.0f, 918.0f);
+	m_rankScoreSprite.SetMulColor(m_rankScoreColor);
+	m_rankSheetSprite.Init("Assets/sprite/Rank.DDS", 1632.0f, 918.0f);//ランクの文字の読み込み
+	m_rankSheetSprite.SetPosition(m_rankPosition);
+	m_rankSheetSprite.SetMulColor(m_rankSheetColor);
+	m_maxScore /= 4;//ランクが四段階のため
 	//今回何ランクだったかの計算
-	if (player->GetPlayerDead() == false) {
+	if (m_player->GetPlayerDead() == false) {
 		for (int i = 1; i <= 4; i++) {
-			Rank_Render[i - 1].Init(getRank(i - 1), 1632.0f, 918.0f);
-			Rank_Render[i - 1].SetScale(Rank_Scale);
-			Rank_Render[i - 1].SetMulColor(Rank_color);
-			if (Total > MAX_SCORE * i) {
-				Rank_set++;
+			m_rankSprite[i - 1].Init(getRank(i - 1), 1632.0f, 918.0f);
+			m_rankSprite[i - 1].SetScale(m_rankScale);
+			m_rankSprite[i - 1].SetMulColor(m_rankColor);
+			if (m_total > m_maxScore * i) {
+				m_rankSet++;
 			}
-			Rank_Render[i - 1].Update();
+			m_rankSprite[i - 1].Update();
 		}
 	}
 	else {
 		for (int i = 1; i <= 4; i++) {
-			Rank_Render[i - 1].Init(getRank(i - 1), 1632.0f, 918.0f);
-			Rank_Render[i - 1].SetScale(Rank_Scale);
-			Rank_Render[i - 1].SetMulColor(Rank_color);
-			Rank_set = 0;
-			Rank_Render[i - 1].Update();
+			m_rankSprite[i - 1].Init(getRank(i - 1), 1632.0f, 918.0f);
+			m_rankSprite[i - 1].SetScale(m_rankScale);
+			m_rankSprite[i - 1].SetMulColor(m_rankColor);
+			m_rankSet = 0;
+			m_rankSprite[i - 1].Update();
 		}
 	}
 
-	Rank_Score_Render.Update();
-	Rank_Time_Render.Update();
-	Rank_sheet.Update();
+	m_rankScoreSprite.Update();
+	m_rankTimeSprite.Update();
+	m_rankSheetSprite.Update();
 }
 
 
-void Result::Back_set() { //モデルの読み込み
+void Result::BackSet() { //モデルの読み込み
 	//プレイヤー
-	Player_modelrender.Init(getPlayer_result_color(player->GetRandomColor()));
-	Player_modelrender.SetPosition(Player_position);
-	Player_rotation.SetRotationDegY(-135.0f);
-	Player_modelrender.SetRotation(Player_rotation);
-	Player_modelrender.Update();
+	m_playerModel.Init(getPlayer_result_color(m_player->GetRandomColor()));
+	m_playerModel.SetPosition(m_playerPosition);
+	m_playerRotation.SetRotationDegY(-135.0f);
+	m_playerModel.SetRotation(m_playerRotation);
+	m_playerModel.Update();
 
 	//背景
-	Box_render.Init("Assets/modelData/Customize_area.tkm");
-	Box_render.SetPosition(Box_position);
-	Box_render.SetScale(Box_scale);
-	Box_render.Update();
+	m_boxModel.Init("Assets/modelData/Customize_area.tkm");
+	m_boxModel.SetPosition(m_boxPosition);
+	m_boxModel.SetScale(m_boxScale);
+	m_boxModel.Update();
 
 	//カメラの設定
-	gamecamera->SetToCameraPos({0.0f, -10.0f, -100.0f});
+	m_gameCamera->SetToCameraPos({0.0f, -10.0f, -100.0f});
 	//gamecamera->fast_count = 0;
-	gamecamera->SetTarget({10000.0f,20.0f,0.0f});
-	gamecamera->GetSpringCamera().Refresh();
-	gamecamera->SetCameraState(3);
+	m_gameCamera->SetTarget({10000.0f,20.0f,0.0f});
+	m_gameCamera->GetSpringCamera().Refresh();
+	m_gameCamera->SetCameraState(3);
 
 	//コアウェポンの設定
-	custom_model_Core.Init("Assets/modelData/Versatile_Perforator.tkm");
+	m_coreModel.Init("Assets/modelData/Versatile_Perforator.tkm");
 	
 
 	//肩
-	if (p_custom_point[0][1] != 0)	
+	if (m_customPoint[0][1] != 0)	
 	{
 		//武器によってモデルを変える
-		switch (p_custom_point[0][1])
+		switch (m_customPoint[0][1])
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_shoulder.Init("Assets/modelData/machine_gun_drop.tkm");
+			m_shoulderModel.Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(scale2);
+			m_shoulderModel.SetScale(m_machinegunScale);
 
 
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_shoulder.Init("Assets/modelData/GIgaton_shoulder.tkm");
+			m_shoulderModel.Init("Assets/modelData/GIgaton_shoulder.tkm");
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(0.8f);
+			m_shoulderModel.SetScale(0.8f);
 
 
 
@@ -566,9 +557,9 @@ void Result::Back_set() { //モデルの読み込み
 
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_shoulder.Init("Assets/modelData/battleship_gun_shoulder.tkm");
+			m_shoulderModel.Init("Assets/modelData/battleship_gun_shoulder.tkm");
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(scale2);
+			m_shoulderModel.SetScale(m_battleshipgunScale);
 
 
 			break;
@@ -579,99 +570,99 @@ void Result::Back_set() { //モデルの読み込み
 	}
 
 	//右腕
-	if (p_custom_point[0][0] != 0)	
+	if (m_customPoint[0][0] != 0)	
 	{
 		//武器によってモデルを変える
-		switch (p_custom_point[0][0])
+		switch (m_customPoint[0][0])
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Right_arm.Init("Assets/modelData/machine_gun_drop.tkm");
+			m_rightArmModel.Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_arm.SetScale(scale2);
+			m_rightArmModel.SetScale(m_machinegunScale);
 			
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Right_arm.Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
-			custom_model_Right_arm.SetScale(0.8f);
+			m_rightArmModel.Init("Assets/modelData/GIgaton_cannon_Right_arm.tkm");
+			m_rightArmModel.SetScale(0.8f);
 
 			break;
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Right_arm.Init("Assets/modelData/battleship_gun_right_arm.tkm");
-			custom_model_Right_arm.SetScale(scale2);
+			m_rightArmModel.Init("Assets/modelData/battleship_gun_right_arm.tkm");
+			m_rightArmModel.SetScale(m_battleshipgunScale);
 
 			break;
 		default:
 			break;
 		}
-		custom_model_Right_arm.Update();
+		m_rightArmModel.Update();
 	}
 
 	//右足
-	if (p_custom_point[1][0] != 0)	
+	if (m_customPoint[1][0] != 0)	
 	{
 
 		//武器によってモデルを変える
-		switch (p_custom_point[1][0])
+		switch (m_customPoint[1][0])
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Right_leg.Init("Assets/modelData/machine_gun_drop.tkm");
+			m_rightLeg.Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(scale2);
+			m_rightLeg.SetScale(m_machinegunScale);
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Right_leg.Init("Assets/modelData/GIgaton_cannon.tkm");
+			m_rightLeg.Init("Assets/modelData/GIgaton_cannon.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(0.8f);
+			m_rightLeg.SetScale(0.8f);
 
 			break;
 
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Right_leg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
+			m_rightLeg.Init("Assets/modelData/battleship_gun_right_leg01.tkm");
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(scale2);
+			m_rightLeg.SetScale(m_battleshipgunScale);
 
 
 			break;
 		default:
 			break;
 		}
-		custom_model_Right_leg.Update();
+		m_rightLeg.Update();
 	}
 
 	//左腕
-	if (p_custom_point[0][2] != 0)	
+	if (m_customPoint[0][2] != 0)	
 	{
-		switch (p_custom_point[0][2]) {
+		switch (m_customPoint[0][2]) {
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Left_arm.Init("Assets/modelData/machine_gun_drop.tkm");
+			m_leftArm.Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(scale2);
+			m_leftArm.SetScale(m_machinegunScale);
 			
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Left_arm.Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
+			m_leftArm.Init("Assets/modelData/GIgaton_cannon_Left_arm.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(0.8f);
+			m_leftArm.SetScale(0.8f);
 			
 
 			break;
 
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Left_arm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
+			m_leftArm.Init("Assets/modelData/battleship_gun_left_arm.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(scale2);
+			m_leftArm.SetScale(m_battleshipgunScale);
 			
 
 
@@ -679,83 +670,83 @@ void Result::Back_set() { //モデルの読み込み
 		default:
 			break;
 		}
-		custom_model_Left_arm.Update();
+		m_leftArm.Update();
 	}
 
 	//左足
-	if (p_custom_point[1][2] != 0)	
+	if (m_customPoint[1][2] != 0)	
 	{
 		//武器によってモデルを変える
-		switch (p_custom_point[1][2])
+		switch (m_customPoint[1][2])
 		{
 		case 2:	//マシンガン
 			//モデルの初期化
-			custom_model_Left_leg.Init("Assets/modelData/machine_gun_drop.tkm");
+			m_leftLeg.Init("Assets/modelData/machine_gun_drop.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(scale2);
+			m_leftLeg.SetScale(m_machinegunScale);
 			
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの初期化
-			custom_model_Left_leg.Init("Assets/modelData/GIgaton_cannon.tkm");
+			m_leftLeg.Init("Assets/modelData/GIgaton_cannon.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(0.8f);
+			m_leftLeg.SetScale(0.8f);
 			
 
 			break;
 
 		case 6:	//戦艦砲
 			//モデルの初期化
-			custom_model_Left_leg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
+			m_leftLeg.Init("Assets/modelData/battleship_gun_left_leg01.tkm");
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(scale2);
+			m_leftLeg.SetScale(m_battleshipgunScale);
 			
 
 			break;
 		default:
 			break;
 		}
-		custom_model_Left_leg.Update();
+		m_leftLeg.Update();
 	}
 }
 void Result::BackGround()
 {
 	//コアウェポンの動き
-	cw_lp = { 0.0f,80.0f,10.0f };
-	Quaternion originRotation = Player_rotation;
-	Vector3 cw_position = Player_position;
+	m_coreLocalPos = { 0.0f,80.0f,10.0f };
+	Quaternion originRotation = m_playerRotation;
+	Vector3 cw_position = m_playerPosition;
 
 
-	originRotation.Multiply(cw_lp);
-	cw_position += cw_lp;
+	originRotation.Multiply(m_coreLocalPos);
+	cw_position += m_coreLocalPos;
 	Quaternion cw_Rotation = originRotation;
 
-	custom_model_Core.SetRotation(cw_Rotation);
-	custom_model_Core.SetPosition(cw_position);
-	custom_model_Core.Update();
+	m_coreModel.SetRotation(cw_Rotation);
+	m_coreModel.SetPosition(cw_position);
+	m_coreModel.Update();
 		
 	//肩
-	if (p_custom_point[0][1] != 0)
+	if (m_customPoint[0][1] != 0)
 	{
 		//武器によってモデルを変える
-		switch (p_custom_point[0][1])
+		switch (m_customPoint[0][1])
 		{
 		case 2:	//マシンガン
 
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(scale2);
+			m_shoulderModel.SetScale(m_machinegunScale);
 			//ローカルポジションの設定
-			sw_lp = { 35.0f,119.0f,0.0f };
+			m_shoulderLocalPos = { 35.0f,119.0f,0.0f };
 
 
 			break;
 		case 4:	//ギガトンキャノン
 
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(0.8f);
+			m_shoulderModel.SetScale(0.8f);
 			//ローカルポジションの設定
-			sw_lp = { 0.0f,120.0f,0.0f };
+			m_shoulderLocalPos = { 0.0f,120.0f,0.0f };
 
 
 			break;
@@ -763,9 +754,9 @@ void Result::BackGround()
 		case 6:	//戦艦砲
 
 			//モデルの大きさの設定
-			custom_model_shoulder.SetScale(scale2);
+			m_shoulderModel.SetScale(m_battleshipgunScale);
 			//ローカルポジションの設定
-			sw_lp = { 0.0f,119.0f,0.0f };
+			m_shoulderLocalPos = { 0.0f,119.0f,0.0f };
 
 			break;
 		default:
@@ -773,47 +764,47 @@ void Result::BackGround()
 		}
 
 		//移動の処理
-		Quaternion originRotation = Player_rotation;
-		Vector3 sw_position = Player_position;
-		originRotation.Multiply(sw_lp);
-		sw_position += sw_lp;
+		Quaternion originRotation = m_playerRotation;
+		Vector3 sw_position = m_playerPosition;
+		originRotation.Multiply(m_shoulderLocalPos);
+		sw_position += m_shoulderLocalPos;
 		Quaternion sw_Rotation = originRotation;
 
 		//更新
-		custom_model_shoulder.SetRotation(sw_Rotation);
-		custom_model_shoulder.SetPosition(sw_position);
+		m_shoulderModel.SetRotation(sw_Rotation);
+		m_shoulderModel.SetPosition(sw_position);
 
 		
-		custom_model_shoulder.Update();
+		m_shoulderModel.Update();
 	}
 		
 	//右腕
-	if (p_custom_point[0][0] != 0)
+	if (m_customPoint[0][0] != 0)
 	{
 		//武器によってモデルを変える
-		switch (p_custom_point[0][0])
+		switch (m_customPoint[0][0])
 		{
 		case 2:	//マシンガン
 			//モデルの大きさの設定
-			custom_model_Right_arm.SetScale(scale2);
+			m_rightArmModel.SetScale(m_machinegunScale);
 			//ローカルポジションの設定
-			raw_lp = { 60.0f,100.0f,0.0f };
+			m_rightArmLocalPos = { 60.0f,100.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 
 			//モデルの大きさの設定
-			custom_model_Right_arm.SetScale(0.8f);
+			m_rightArmModel.SetScale(0.8f);
 			//ローカルポジションの設定
-			raw_lp = { 50.0f,100.0f,30.0f };
+			m_rightArmLocalPos = { 50.0f,100.0f,30.0f };
 
 			break;
 		case 6:	//戦艦砲
 
 			//モデルの大きさの設定
-			custom_model_Right_arm.SetScale(scale2);
+			m_rightArmModel.SetScale(m_battleshipgunScale);
 			//ローカルポジションの設定
-			raw_lp = { 60.0f,80.0f,-10.0f };
+			m_rightArmLocalPos = { 60.0f,80.0f,-10.0f };
 
 			break;
 		default:
@@ -821,46 +812,46 @@ void Result::BackGround()
 		}
 
 		//移動の処理
-		Quaternion originRotation = Player_rotation;
-		Vector3 raw_position = Player_position;
-		originRotation.Multiply(raw_lp);
-		raw_position += raw_lp;
+		Quaternion originRotation = m_playerRotation;
+		Vector3 raw_position = m_playerPosition;
+		originRotation.Multiply(m_rightArmLocalPos);
+		raw_position += m_rightArmLocalPos;
 		Quaternion raw_Rotation = originRotation;
 
 		//更新
-		custom_model_Right_arm.SetRotation(raw_Rotation);
-		custom_model_Right_arm.SetPosition(raw_position);
+		m_rightArmModel.SetRotation(raw_Rotation);
+		m_rightArmModel.SetPosition(raw_position);
 
 		
-		custom_model_Right_arm.Update();
+		m_rightArmModel.Update();
 	}
 		
 	//右足
-	if (p_custom_point[1][0] != 0)
+	if (m_customPoint[1][0] != 0)
 	{
 		//武器によってモデルを変える
-		switch (p_custom_point[1][0])
+		switch (m_customPoint[1][0])
 		{
 		case 2:	//マシンガン
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(scale2);
+			m_rightLeg.SetScale(m_machinegunScale);
 			//ローカルポジションの設定
-			rlw_lp = { 90.0f,30.0f,0.0f };
+			m_rightLegLocalPos = { 90.0f,30.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(0.8f);
+			m_rightLeg.SetScale(0.8f);
 			//ローカルポジションの設定
-			rlw_lp = { 55.0f,40.0f,27.0f };
+			m_rightLegLocalPos = { 55.0f,40.0f,27.0f };
 
 			break;
 
 		case 6:	//戦艦砲
 			//モデルの大きさの設定
-			custom_model_Right_leg.SetScale(scale2);
+			m_rightLeg.SetScale(m_battleshipgunScale);
 			//ローカルポジションの設定
-			rlw_lp = { 60.0f,40.0f,40.0f };
+			m_rightLegLocalPos = { 60.0f,40.0f,40.0f };
 
 
 			break;
@@ -869,45 +860,45 @@ void Result::BackGround()
 		}
 
 		//移動の処理
-		Quaternion originRotation = Player_rotation;
-		Vector3 rlw_position = Player_position;
-		originRotation.Multiply(rlw_lp);
-		rlw_position += rlw_lp;
+		Quaternion originRotation = m_playerRotation;
+		Vector3 rlw_position = m_playerPosition;
+		originRotation.Multiply(m_rightLegLocalPos);
+		rlw_position += m_rightLegLocalPos;
 		Quaternion rlw_Rotation = originRotation;
 
 		//更新
-		custom_model_Right_leg.SetRotation(rlw_Rotation);
-		custom_model_Right_leg.SetPosition(rlw_position);
+		m_rightLeg.SetRotation(rlw_Rotation);
+		m_rightLeg.SetPosition(rlw_position);
 
 		
-		custom_model_Right_leg.Update();
+		m_rightLeg.Update();
 	}
 	
 	//左腕
-	if (p_custom_point[0][2] != 0)
+	if (m_customPoint[0][2] != 0)
 	{
 		
-		switch (p_custom_point[0][2]) {
+		switch (m_customPoint[0][2]) {
 		case 2:	//マシンガン
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(scale2);
+			m_leftArm.SetScale(m_machinegunScale);
 			//ローカルポジションの設定
-			law_lp = { -60.0f,100.0f,0.0f };
+			m_leftArmLocalPos = { -60.0f,100.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(0.8f);
+			m_leftArm.SetScale(0.8f);
 			//ローカルポジションの設定
-			law_lp = { -50.0f,100.0f,30.0f };
+			m_leftArmLocalPos = { -50.0f,100.0f,30.0f };
 
 			break;
 
 		case 6:	//戦艦砲
 			//モデルの大きさの設定
-			custom_model_Left_arm.SetScale(scale2);
+			m_leftArm.SetScale(m_battleshipgunScale);
 			//ローカルポジションの設定
-			law_lp = { -60.0f,80.0f,-10.0f };
+			m_leftArmLocalPos = { -60.0f,80.0f,-10.0f };
 
 
 			break;
@@ -916,46 +907,46 @@ void Result::BackGround()
 		}
 
 		//移動の処理
-		Quaternion originRotation = Player_rotation;
-		Vector3 law_position = Player_position;
-		originRotation.Multiply(law_lp);
-		law_position += law_lp;
+		Quaternion originRotation = m_playerRotation;
+		Vector3 law_position = m_playerPosition;
+		originRotation.Multiply(m_leftArmLocalPos);
+		law_position += m_leftArmLocalPos;
 		Quaternion law_Rotation = originRotation;
 
 		//更新
-		custom_model_Left_arm.SetRotation(law_Rotation);
-		custom_model_Left_arm.SetPosition(law_position);
-		custom_model_Left_arm.Update();
+		m_leftArm.SetRotation(law_Rotation);
+		m_leftArm.SetPosition(law_position);
+		m_leftArm.Update();
 	}
 
 	//左足
-	if (p_custom_point[1][2] != 0)
+	if (m_customPoint[1][2] != 0)
 	{
 		//武器によってモデルを変える
-		switch (p_custom_point[1][2])
+		switch (m_customPoint[1][2])
 		{
 		case 2:	//マシンガン
 
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(scale2);
+			m_leftLeg.SetScale(m_machinegunScale);
 			//ローカルポジションの設定
-			llw_lp = { -90.0f,30.0f,0.0f };
+			m_leftLegLocalPos = { -90.0f,30.0f,0.0f };
 
 			break;
 		case 4:	//ギガトンキャノン
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(0.8f);
+			m_leftLeg.SetScale(0.8f);
 			//ローカルポジションの設定
-			llw_lp = { -55.0f,40.0f,27.0f };
+			m_leftLegLocalPos = { -55.0f,40.0f,27.0f };
 
 			break;
 
 		case 6:	//戦艦砲
 
 			//モデルの大きさの設定
-			custom_model_Left_leg.SetScale(scale2);
+			m_leftLeg.SetScale(m_battleshipgunScale);
 			//ローカルポジションの設定
-			llw_lp = { -60.0f,40.0f,40.0f };
+			m_leftLegLocalPos = { -60.0f,40.0f,40.0f };
 
 			break;
 		default:
@@ -963,22 +954,22 @@ void Result::BackGround()
 		}
 
 		//移動の処理
-		Quaternion originRotation = Player_rotation;
-		Vector3 llw_position = Player_position;
-		originRotation.Multiply(llw_lp);
-		llw_position += llw_lp;
+		Quaternion originRotation = m_playerRotation;
+		Vector3 llw_position = m_playerPosition;
+		originRotation.Multiply(m_leftLegLocalPos);
+		llw_position += m_leftLegLocalPos;
 		Quaternion llw_Rotation = originRotation;
 
 		//更新
-		custom_model_Left_leg.SetRotation(llw_Rotation);
-		custom_model_Left_leg.SetPosition(llw_position);
+		m_leftLeg.SetRotation(llw_Rotation);
+		m_leftLeg.SetPosition(llw_position);
 
 		
-		custom_model_Left_leg.Update();
+		m_leftLeg.Update();
 	}
 }
 
-void Result::Enemy_count()
+void Result::EnemyCount()
 {
 
 }
@@ -986,59 +977,59 @@ void Result::Enemy_count()
 void Result::Render(RenderContext& rc)
 {	
 	//各部位に装備されているならDrawする
-	custom_model_Core.Draw(rc);				//コア武器はずっと存在するので分岐なし
-	Player_modelrender.Draw(rc);				//胴体はずっと存在するので分岐なし
-	if (p_custom_point[0][0] !=0)
+	m_coreModel.Draw(rc);				//コア武器はずっと存在するので分岐なし
+	m_playerModel.Draw(rc);				//胴体はずっと存在するので分岐なし
+	if (m_customPoint[0][0] !=0)
 	{
-		custom_model_Right_arm.Draw(rc);	//右腕
+		m_rightArmModel.Draw(rc);	//右腕
 	}
-	if (p_custom_point[0][2] != 0)
+	if (m_customPoint[0][2] != 0)
 	{
-		custom_model_Left_arm.Draw(rc);		//左腕
+		m_leftArm.Draw(rc);		//左腕
 	}
-	if (p_custom_point[0][1] != 0)
+	if (m_customPoint[0][1] != 0)
 	{
-		custom_model_shoulder.Draw(rc);		//肩
+		m_shoulderModel.Draw(rc);		//肩
 	}
-	if (p_custom_point[1][0] != 0)
+	if (m_customPoint[1][0] != 0)
 	{
-		custom_model_Right_leg.Draw(rc);	//右足
+		m_rightLeg.Draw(rc);	//右足
 	}
-	if (p_custom_point[1][2] != 0)
+	if (m_customPoint[1][2] != 0)
 	{
-		custom_model_Left_leg.Draw(rc);		//左足
+		m_leftLeg.Draw(rc);		//左足
 	}
 
-	Box_render.Draw(rc);
+	m_boxModel.Draw(rc);
 
-	if (Neo_result_state == 0) {
-		time_Render.Draw(rc);
+	if (m_resultState == 0) {
+		m_timeSprite.Draw(rc);
 		for (int i = 0; i < 4; i++) {
-			Time_Num[i][time_set[i]].Draw(rc);
+			m_timeNum[i][m_timeSet[i]].Draw(rc);
 		}
-		Time_colon.Draw(rc);
+		m_timeColonSprite.Draw(rc);
 	}
-	if (Neo_result_state == 1) {
-		Score_Render.Draw(rc);
+	if (m_resultState == 1) {
+		m_scoreSprite.Draw(rc);
 		for (int i = 0; i < 5; i++) {
-			Score_Num[i][score_set[i]].Draw(rc);
+			m_scoreNum[i][m_scoreSet[i]].Draw(rc);
 		}
-		Score_comma.Draw(rc);
+		m_scoreCommaSprite.Draw(rc);
 	}
-	if (Neo_result_state == 2) {
-		Rank_Render[Rank_set].Draw(rc);
-		Rank_sheet.Draw(rc);
+	if (m_resultState == 2) {
+		m_rankSprite[m_rankSet].Draw(rc);
+		m_rankSheetSprite.Draw(rc);
 
-		Rank_Time_Render.Draw(rc);
+		m_rankTimeSprite.Draw(rc);
 		for (int i = 0; i < 4; i++) {
-			Time_Num[i][time_set[i]].Draw(rc);
+			m_timeNum[i][m_timeSet[i]].Draw(rc);
 		}
-		Time_colon.Draw(rc);
+		m_timeColonSprite.Draw(rc);
 
-		Rank_Score_Render.Draw(rc);
+		m_rankScoreSprite.Draw(rc);
 		for (int i = 0; i < 5; i++) {
-			Score_Num[i][score_set[i]].Draw(rc);
+			m_scoreNum[i][m_scoreSet[i]].Draw(rc);
 		}
-		Score_comma.Draw(rc);
+		m_scoreCommaSprite.Draw(rc);
 	}
 }
