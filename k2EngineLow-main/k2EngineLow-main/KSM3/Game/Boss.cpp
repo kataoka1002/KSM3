@@ -625,11 +625,9 @@ void Boss::Damage()
 		if (m_deathCount==440) {
 			m_player->SetGameState(2);
 			m_result = NewGO<Result>(1, "result");
-			m_result->SE_volume = m_game->GetSEVol();
-			m_result->BGM_volume = m_game->GetBGMVol();
+			m_result->SetVolume(m_game->GetBGMVol(), m_game->GetSEVol());
 
-			m_result->minute = (int)m_bossTime / 60;
-			m_result->sec = (int)m_bossTime % 60;
+			m_result->SetTime((int)m_bossTime / 60, (int)m_bossTime % 60);
 
 
 			DeleteGO(this);

@@ -295,8 +295,7 @@ void Player::PlayerDeadtoResult()
 
 
 		//リザルトにそのデータを送る
-		m_result->SE_volume = m_game->GetSEVol();
-		m_result->BGM_volume = m_game->GetBGMVol();
+		m_result->SetVolume(m_game->GetBGMVol(), m_game->GetSEVol());
 
 
 		//YOU LOSEの透明度を0に戻す

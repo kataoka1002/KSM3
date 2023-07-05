@@ -1,15 +1,5 @@
 #pragma once
-class Enemy;
 class Player;
-class Boss;
-class Customize_UI_ver2;
-class Core_weapons;
-class Shoulder_weapons;
-class Right_arm_weapons;
-class Right_leg_weapons;
-class Left_arm_weapons;
-class Left_leg_weapons;
-class Drop_item;
 class GameCamera;
 using namespace std;
 
@@ -21,136 +11,110 @@ public:
 	bool Start();
 	void Update();
 	void BackGround();
-	void Enemy_count();
-	void Set_count();
-	void Font();
-	void Back_set();
-	void Font_set();
-	void Rank();
-	void Score_OFF();
+	void EnemyCount();
+	void BackSet();
+	void FontSet();
 	void Render(RenderContext& rc);
 
-	int set = 0;					//装備した数
-	int enemy_count = 0;		//敵を倒した数
-	int set_score = 0;			//装備した数に応じたスコア
-	int enemy_count_score = 0;	//敵を倒した数に応じたスコア
-	int total_score = 0;		//トータルスコア
-	int rank = 0;				//ランク
-	int result_state = 0;			//スコア表示　0:ON 1:OFF
-	int Neo_result_state = 0;   //リザルト画面の変化 0:タイムの表示 1:SCOREの表示 2:ランクの表示
+	/// <summary>
+	/// 音量のセット
+	/// </summary>
+	/// <param name="bgm">BGMの音量</param>
+	/// <param name="se">SEの音量</param>
+	void SetVolume(float bgm, float se)
+	{
+		m_BGMVolume = bgm;
+		m_SEVolume = se;
+	}
 
-	float draw_time = 0.0f;	//リザルト画面に遷移して表示するまでの時間
-	float SE_volume = 0.0f;
-	float BGM_volume = 0.0f;
-	int fast_count = 1;
+	/// <summary>
+	/// タイムをセット
+	/// </summary>
+	/// <param name="min">分</param>
+	/// <param name="sec">秒</param>
+	void SetTime(float min, float sec)
+	{
+		m_minute = min;
+		m_seconds = sec;
+	}
 
-	bool m_isWaitFadeout = false;
-	bool time_count = false;
+private:
+	Player* m_player = nullptr;
+	GameCamera* m_gameCamera = nullptr;
+	SoundSource* m_sound = nullptr;
 
-	ModelRender Player_modelrender;			//プレイヤーのモデルレンダー
-	Vector3 Player_position = { 10000.0f,0.0f,0.0f };
-	Quaternion Player_rotation;
+	ModelRender m_playerModel;
+	ModelRender m_boxModel;
+	ModelRender m_coreModel;
+	ModelRender m_shoulderModel;
+	ModelRender m_rightArmModel;
+	ModelRender m_rightLeg;
+	ModelRender m_leftArm;
+	ModelRender m_leftLeg;
+	SpriteRender m_timeSprite;
+	SpriteRender m_timeColonSprite;
+	SpriteRender m_scoreSprite;
+	SpriteRender m_scoreCommaSprite;
+	SpriteRender m_rankSheetSprite;
+	SpriteRender m_rankTimeSprite;
+	SpriteRender m_rankScoreSprite;
 
-	ModelRender Box_render;
-	Quaternion Box_Rotation;
-	Vector3 Box_position = { 10000.0f,0.0f,0.0f };
-	Vector3 Box_scale = { 3.0f,3.0f,3.0f };
-
-	ModelRender custom_model_Core;
+	Vector3 m_playerPosition = { 10000.0f,0.0f,0.0f };
+	Vector3 m_boxPosition = { 10000.0f,0.0f,0.0f };
+	Vector3 m_boxScale = { 3.0f,3.0f,3.0f };
+	Vector3 m_coreLocalPos;
+	Vector3 m_shoulderLocalPos;
+	Vector3 m_rightArmLocalPos;
+	Vector3 m_rightLegLocalPos;
+	Vector3 m_leftArmLocalPos;
+	Vector3 m_leftLegLocalPos;
+	Vector3 m_machinegunScale = { 2.0f, 2.0f, 2.0f };
+	Vector3 m_battleshipgunScale = { 2.0f, 2.0f, 2.0f };//2倍のscale
+	Vector3 m_timePosition = { -25.0f,0.0f,0.0f };
+	Vector3 m_timePosition0 = { -162.0f,-335.0f,0.0f };//分10の位
+	Vector3 m_timePosition1 = { -75.0f,-335.0f,0.0f };//分1の位
+	Vector3 m_timePosition2 = { 0.0f,-335.0f,0.0f };//:
+	Vector3 m_timePosition3 = { 75.0f,-335.0f,0.0f };//秒10の位
+	Vector3 m_timePosition4 = { 162.0f,-335.0f,0.0f };//秒1の位
+	Vector3 m_scorePosition = { -25.0f,0.0f,0.0f };
+	Vector3 m_scorePosition0 = { -200.0f,-335.0f,0.0f };//10000の位
+	Vector3 m_scorePosition1 = { -105.0f,-335.0f,0.0f };//1000の位
+	Vector3 m_scorePosition2 = { -30.0f,-335.0f,0.0f };//,
+	Vector3 m_scorePosition3 = { 30.0f,-335.0f,0.0f };//100の位
+	Vector3 m_scorePosition4 = { 125.0f,-335.0f,0.0f };//10の位
+	Vector3 m_scorePosition5 = { 220.0f,-335.0f,0.0f };//1の位
+	Vector3 m_rankPosition = { 25.0f,0.0f,0.0f };
+	Vector3 m_rankScale = { 2.0f,2.0f,2.0f };
+	Vector3 m_rankTimePosition = { -25.0f, 0.0f,0.0f };
+	Vector3 m_rankScorePosition = { -225.0f, 0.0f,0.0f };
+	Vector4 m_timeColor = { 1.0f,1.0f,1.0f,0.0f };
+	Vector4 m_scoreColor = { 1.0f,1.0f,1.0f,0.0f };
+	Vector4 m_rankSheetColor = { 1.0f,1.0f,1.0f,0.0f };
+	Vector4 m_rankColor = { 1.0f,1.0f,1.0f,0.0f };
+	Vector4 m_rankTimeColor = { 1.0f,1.0f,1.0f,0.0f };
+	Vector4 m_rankScoreColor = { 1.0f,1.0f,1.0f,0.0f };
+	Quaternion m_playerRotation;
+	Quaternion m_boxRotation;
 	Quaternion m_customModelRotation;
-	Vector3 cw_lp;
 
-	ModelRender custom_model_shoulder;
-	Vector3 sw_lp;
+	array<array <SpriteRender, 10>, 4> m_timeNum;
+	array<int, 4 > m_timeSet;
+	array<array < float, 2>,4> m_timeColonSpriteAlpha;
+	array<array <SpriteRender, 10>, 5> m_scoreNum;
+	array<int, 5 > m_scoreSet;
+	array<array < float, 2>, 5> m_scoreCommaSpriteAlpha;
+	array <SpriteRender, 4> m_rankSprite;
 
-	ModelRender custom_model_Right_arm;
-	Vector3 raw_lp;
+	int m_resultState = 0;   //リザルト画面の変化 0:タイムの表示 1:SCOREの表示 2:ランクの表示
+	int m_count = 1;
+	int m_customPoint[2][3] = { {0,0,0},{0,0,0} };	//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足	
+	int m_minute = 0;
+	int m_seconds = 0;
+	int m_score = 0;
+	int m_total = 0;
+	int m_maxScore = 0;
+	int m_rankSet = 0;
+	float m_SEVolume = 0.0f;
+	float m_BGMVolume = 0.0f;
 
-	ModelRender custom_model_Right_leg;
-	Vector3 rlw_lp;
-
-	ModelRender custom_model_Left_arm;
-	Vector3 law_lp;
-
-	ModelRender custom_model_Left_leg;
-	Vector3 llw_lp;
-
-	Vector3 scale2 = { 2.0f, 2.0f, 2.0f };//2倍のscale
-
-
-	SpriteRender result_SpriteRender;		//リザルトのスプライトレンダー
-	FontRender Boss_time_font;				//ボス戦の経過時間
-	FontRender Score_font;					//トータルスコア
-	FontRender Time_font;					//時間
-
-	Enemy* enemy;
-	Player* player;
-	Boss* boss;
-	Customize_UI_ver2* customize_UI_ver2;
-	Core_weapons* core_weapons;
-	Shoulder_weapons* shoulder_weapons;
-	Right_arm_weapons* right_arm_weapons;
-	Right_leg_weapons* right_leg_weapons;
-	Left_arm_weapons* left_arm_weapons;
-	Left_leg_weapons* left_leg_weapons;
-	Drop_item* m_dropItem;
-	GameCamera* gamecamera;
-	SoundSource* m_BGM = nullptr;
-
-	int p_custom_point[2][3] = { {0,0,0},{0,0,0} };	//[0][0]右腕,[0][1]肩,[0][2]左腕,[1][0]右足,[1][2]左足	
-
-	SpriteRender time_Render;
-	Vector4 Time_color = { 1.0f,1.0f,1.0f,0.0f };
-	Vector3 Time_position = { -25.0f,0.0f,0.0f };
-
-	//SpriteRender Time_Num[4][10];
-	array<array <SpriteRender, 10>, 4>Time_Num;
-	SpriteRender Time_colon;
-	Vector3 Time_0_position = { -162.0f,-335.0f,0.0f };//分10の位
-	Vector3 Time_1_position = { -75.0f,-335.0f,0.0f };//分1の位
-	Vector3 Time_2_position = { 0.0f,-335.0f,0.0f };//:
-	Vector3 Time_3_position = { 75.0f,-335.0f,0.0f };//秒10の位
-	Vector3 Time_4_position = { 162.0f,-335.0f,0.0f };//秒1の位
-
-	int minute = 0;
-	int sec = 0;
-	array<int, 4 >time_set;
-	array<array < float, 2>,4>a;
-
-	SpriteRender Score_Render;
-	Vector4 Score_color = { 1.0f,1.0f,1.0f,0.0f };
-	Vector3 Score_position = { -25.0f,0.0f,0.0f };
-
-	//SpriteRender Score_Num[5][10];
-	array<array <SpriteRender, 10>, 5>Score_Num;
-	SpriteRender Score_comma;
-	Vector3 Score_0_position = { -200.0f,-335.0f,0.0f };//10000の位
-	Vector3 Score_1_position = { -105.0f,-335.0f,0.0f };//1000の位
-	Vector3 Score_2_position = { -30.0f,-335.0f,0.0f };//,
-	Vector3 Score_3_position = { 30.0f,-335.0f,0.0f };//100の位
-	Vector3 Score_4_position = { 125.0f,-335.0f,0.0f };//10の位
-	Vector3 Score_5_position = { 220.0f,-335.0f,0.0f };//1の位
-	int SCORE=0;
-	int Total = 0;
-	int MAX_SCORE = 0;
-	array<int, 5 >score_set;
-	array<array < float, 2>, 5>b;
-
-	SpriteRender Rank_sheet;
-	Vector4 Rank_Sheet_color = { 1.0f,1.0f,1.0f,0.0f };
-	Vector3 Rank_position = { 25.0f,0.0f,0.0f };
-
-	//SpriteRender Rank_Render[4];
-	array <SpriteRender, 4>Rank_Render;
-	Vector4 Rank_color = { 1.0f,1.0f,1.0f,0.0f };
-	Vector3 Rank_Scale = { 2.0f,2.0f,2.0f };
-	int Rank_set = 0;
-
-	SpriteRender Rank_Time_Render;
-	Vector3 Rank_Time_position = { -25.0f, 0.0f,0.0f };
-	Vector4 Rank_Time_color = { 1.0f,1.0f,1.0f,0.0f };
-
-	SpriteRender Rank_Score_Render;
-	Vector3 Rank_Score_position = { -225.0f, 0.0f,0.0f };
-	Vector4 Rank_Score_color = { 1.0f,1.0f,1.0f,0.0f };
 };
