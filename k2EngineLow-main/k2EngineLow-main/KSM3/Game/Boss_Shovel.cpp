@@ -16,7 +16,7 @@
 Boss_Shovel::Boss_Shovel()
 {
 	m_game = FindGO<Game>("game");
-	b_w_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 }
 
 Boss_Shovel::~Boss_Shovel()
@@ -39,7 +39,7 @@ bool Boss_Shovel::Start()
 }
 
 void Boss_Shovel::Setup()
-{b_w_boss = FindGO<Boss>("boss");
+{m_boss = FindGO<Boss>("boss");
 	set_weapons = 1;
 	
 	if (set_weapons == 1)
@@ -70,7 +70,7 @@ void Boss_Shovel::Update()
 		
 	}
 	fast++;
-	if (b_w_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		if (fast == 400) {
 			m_Shovel_roar_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
@@ -100,8 +100,8 @@ void Boss_Shovel::Update()
 				shovel_shock->Init(enBoss_Shovel_shock);
 				shovel_shock->SetScale({ 70.0f,70.0f,70.0f });
 				//efeLP += b_w_position;
-				shovel_shock->SetPosition(b_w_position+ shock_efe_lpos);
-				shovel_shock->SetRotation(b_w_rotation);
+				shovel_shock->SetPosition(m_position+ shock_efe_lpos);
+				shovel_shock->SetRotation(m_rotation);
 				shovel_shock->Play();
 				Damage(0);
 			}
@@ -131,7 +131,7 @@ void Boss_Shovel::Update()
 		//	}
 		//}
 	}
-	if (b_w_player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
@@ -158,30 +158,30 @@ void Boss_Shovel::Update()
 void Boss_Shovel::Move()
 {
 	//ここは丸パクリでOK
-	Quaternion originRotation = b_w_boss->GetRotation();
-	b_w_position = b_w_boss->GetPosition();
+	Quaternion originRotation = m_boss->GetRotation();
+	m_position = m_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
-	b_w_position += lp;
-	b_w_rotation = originRotation;
-	boss_Shovel_Render.SetPosition(b_w_position);
-	boss_Shovel_Render.SetRotation(b_w_rotation);
+	m_position += lp;
+	m_rotation = originRotation;
+	boss_Shovel_Render.SetPosition(m_position);
+	boss_Shovel_Render.SetRotation(m_rotation);
 }
 
 void Boss_Shovel::Damage(int attack_Num) {
 	if (attack_Num == 0) {
 		//---------------------------------------------------------------------------------------------------
-		if (b_w_player != nullptr)	//プレイヤーの情報が入っているなら
+		if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = b_w_position + shock_efe_lpos - Vector3{ b_w_player->GetPlayerPosition().x, b_w_player->GetPlayerPosition().y + 50.0f, b_w_player->GetPlayerPosition().z };
+			Vector3 diffPlayer = m_position + shock_efe_lpos - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
 			{
-				b_w_player->ApplyDamage(10.0f);
+				m_player->ApplyDamage(10.0f);
 				
 
 			}
@@ -196,7 +196,7 @@ void Boss_Shovel::Damage(int attack_Num) {
 		if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftArm = b_w_position + shock_efe_lpos - m_leftArm->GetPosition();
+			Vector3 diffLeftArm = m_position + shock_efe_lpos - m_leftArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -214,7 +214,7 @@ void Boss_Shovel::Damage(int attack_Num) {
 		if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftLeg = b_w_position + shock_efe_lpos - m_leftLeg->GetPosition();
+			Vector3 diffLeftLeg = m_position + shock_efe_lpos - m_leftLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -233,7 +233,7 @@ void Boss_Shovel::Damage(int attack_Num) {
 		if (m_rightArm != nullptr)	//右手に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightArm = b_w_position + shock_efe_lpos - m_rightArm->GetPosition();
+			Vector3 diffRightArm = m_position + shock_efe_lpos - m_rightArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -252,7 +252,7 @@ void Boss_Shovel::Damage(int attack_Num) {
 		if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightLeg = b_w_position + shock_efe_lpos - m_rightLeg->GetPosition();
+			Vector3 diffRightLeg = m_position + shock_efe_lpos - m_rightLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -271,7 +271,7 @@ void Boss_Shovel::Damage(int attack_Num) {
 		if (m_shoulder != nullptr)	//肩に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffShoulder = b_w_position + shock_efe_lpos - m_shoulder->GetPosition();
+			Vector3 diffShoulder = m_position + shock_efe_lpos - m_shoulder->GetPosition();
 
 			//武器によってダメージを変える
 

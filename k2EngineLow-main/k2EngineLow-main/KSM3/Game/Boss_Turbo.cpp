@@ -15,7 +15,7 @@ Boss_Turbo::Boss_Turbo()
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_Attack].Load("Assets/animData/Boss_turbo_attack.tka");
 	m_animationClip[enAnimationClip_Attack].SetLoopFlag(true);
-	b_w_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 }
 
 Boss_Turbo::~Boss_Turbo()
@@ -27,7 +27,7 @@ Boss_Turbo::~Boss_Turbo()
 void Boss_Turbo::Setup()
 {
 	set_weapons = 1;
-	b_w_boss = FindGO<Boss>("boss");
+	m_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
 		boss_Turbo_Render.Init("Assets/modelData/Boss_turbo2.tkm", true, true, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
@@ -53,7 +53,7 @@ void Boss_Turbo::Update()
 		Setup();
 	}
 	fast++;
-	if (b_w_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		Move();
 			Rotation();
@@ -83,8 +83,8 @@ void Boss_Turbo::Update()
 				m_weaponEffect = NewGO<EffectEmitter>(0);
 				m_weaponEffect->Init(enTatumaki_fire);
 				m_weaponEffect->SetScale({ 40.0f,40.0f,30.0f });
-				m_weaponEffect->SetPosition(efeLP + b_w_position);
-				m_weaponEffect->SetRotation(b_w_rotation);
+				m_weaponEffect->SetPosition(efeLP + m_position);
+				m_weaponEffect->SetRotation(m_rotation);
 				m_weaponEffect->Play();
 				
 				TatumakiSE = NewGO<SoundSource>(0);
@@ -108,9 +108,9 @@ void Boss_Turbo::Update()
 		if (firing_cound > 700) {
 			b_boss_weapons = NewGO<Boss_Turbo_attack>(1, "boss_Turbo_attack");
 			m_attackState = true;
-			b_boss_weapons->firing_position = b_w_position;
-			b_boss_weapons->b_a_aiming = b_w_rotation;
-			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->GetForward();
+			b_boss_weapons->firing_position = m_position;
+			b_boss_weapons->b_a_aiming = m_rotation;
+			b_boss_weapons->b_a_Bullet_Fowrad = m_boss->GetForward();
 			if (firing_cound == 900) {
 				firing_cound = 0;
 				Rote = false;
@@ -123,14 +123,14 @@ void Boss_Turbo::Update()
 
 		}
 	}
-	if (b_w_player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
 	boss_Turbo_Render.Update();
 
 	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
-	boss_Turbo_Render.SetPosition(b_w_position);
+	boss_Turbo_Render.SetPosition(m_position);
 	/*boss_Turbo_Render.SetRotation(b_w_rotation);*/
 	boss_Turbo_Render.Update();
 	/*PlayerSearch();*/
@@ -150,17 +150,17 @@ void Boss_Turbo::Rotation() {
 	
 	if (Rote == false) {
 		//エネミーからプレイヤーが入ってきたら追いかける。
-		Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
+		Vector3 toPlayer = m_player->GetPlayerPosition() - m_position;
 
 		//プレイヤーとの距離を計算する。
 		float distToPlayer = toPlayer.Length();
 		//プレイヤーに向かって伸びるベクトルを正規化する。
 		Vector3 toPlayerDir = toPlayer;
 		toPlayerDir.Normalize();
-		b_w_Fowrad = toPlayerDir;
+		m_forward = toPlayerDir;
 
-		b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
-		boss_Turbo_Render.SetRotation(b_w_rotation);
+		m_rotation.SetRotationY(atan2(m_forward.x, m_forward.z));
+		boss_Turbo_Render.SetRotation(m_rotation);
 	}
 	else
 	{
@@ -174,13 +174,13 @@ void Boss_Turbo::Rotation() {
 void Boss_Turbo::Move()
 {
 	//ここは丸パクリでOK
-	Quaternion originRotation = b_w_boss->GetRotation();
-	b_w_position = b_w_boss->GetPosition();
+	Quaternion originRotation = m_boss->GetRotation();
+	m_position = m_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
-	b_w_position += lp;
-	b_w_rotation = originRotation;
-	boss_Turbo_Render.SetPosition(b_w_position);
+	m_position += lp;
+	m_rotation = originRotation;
+	boss_Turbo_Render.SetPosition(m_position);
 	//boss_Turbo_Render.SetRotation(b_w_rotation);
 }
 

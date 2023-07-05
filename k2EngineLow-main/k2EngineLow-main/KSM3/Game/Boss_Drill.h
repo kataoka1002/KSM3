@@ -33,7 +33,7 @@ public:
 
 	AnimationClip m_animationClip[enAnimationClip_Num];
 	Player* b_a_player;
-	Boss* b_w_boss;
+	Boss* m_boss;
 	Boss_Drill_attack* b_boss_weapons;
 	Drop_item* m_dropItem;
 	Game* m_game;
@@ -45,13 +45,13 @@ public:
 	
 
 	//CharacterController boss_riser_characterContller;
-	Quaternion b_w_rotation;
-	Vector3 b_w_position;
+	Quaternion m_rotation;
+	Vector3 m_position;
 	Vector3 b_w_moveSpeed;
 
 	EffectEmitter* Explosion_efe = nullptr;
 	EffectEmitter* m_explosionAnother = nullptr;
-	Vector3 b_w_Fowrad = { 0.0f,0.0f,1.0f };
+	Vector3 m_forward = { 0.0f,0.0f,1.0f };
 	int game_state = 0;
 	ModelRender boss_Drill_Render;
 

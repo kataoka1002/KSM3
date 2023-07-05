@@ -196,7 +196,7 @@ void Boss_Drill_attack::Move()
 
 			if (b_a_weapons != nullptr) {
 				//弾とボスの距離を測る
-				Vector3 diffShoulder = firing_position - Vector3{ b_a_weapons->b_w_position.x, b_a_weapons->b_w_position.y, b_a_weapons->b_w_position.z };
+				Vector3 diffShoulder = firing_position - Vector3{ b_a_weapons->m_position.x, b_a_weapons->m_position.y, b_a_weapons->m_position.z };
 
 				//武器によってダメージを変える
 

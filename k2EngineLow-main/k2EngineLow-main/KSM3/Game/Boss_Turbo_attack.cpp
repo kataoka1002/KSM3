@@ -105,8 +105,8 @@ void Boss_Turbo_attack::SetUp()
 		b_a_aiming.Multiply(m_bulletLocalPosition);	//Š|‚¯ŽZ
 		//m_rot = b_a_weapons->b_w_rotation;
 		firing_position += m_bulletLocalPosition;
-		firing_position = b_a_weapons->b_w_position;
-		b_a_Bullet_Fowrad = b_a_weapons->b_w_Fowrad;
+		firing_position = b_a_weapons->m_position;
+		b_a_Bullet_Fowrad = b_a_weapons->m_forward;
 		b_a_Bullet.SetScale(30);
 		b_a_Bullet.SetPosition(firing_position);
 		//b_a_Bullet.SetRotation(m_rot);

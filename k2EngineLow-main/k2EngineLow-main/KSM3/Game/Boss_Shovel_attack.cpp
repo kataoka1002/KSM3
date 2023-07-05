@@ -32,7 +32,7 @@ Boss_Shovel_attack::~Boss_Shovel_attack()
 
 void Boss_Shovel_attack::SetUp()
 {
-	b_a_Bullet_Fowrad = b_a_weapons->b_w_Fowrad;
+	b_a_Bullet_Fowrad = b_a_weapons->m_forward;
 	firing_position.y += 100.0f;
 	firing_position.x -= 600.0f;
 	b_a_Bullet.SetRotation(b_a_boss->GetRotation());
