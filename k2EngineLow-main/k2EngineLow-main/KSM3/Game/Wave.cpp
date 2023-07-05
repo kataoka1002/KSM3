@@ -84,9 +84,9 @@ Wave::Wave()
 	
 
 	//Bossへの遷移のLoading画面の読み込み
-	Loading_Render.Init("Assets/sprite/NOW_LOADING.DDS", 1632.0f, 918.0f);
-	Loading_Render.SetMulColor(Loading_color);
-	Loading_Render.Update();
+	m_loadingSprite.Init("Assets/sprite/NOW_LOADING.DDS", 1632.0f, 918.0f);
+	m_loadingSprite.SetMulColor(Loading_color);
+	m_loadingSprite.Update();
 
 }
 
@@ -448,8 +448,8 @@ void Wave::ExecuteBossBattle()
 
 			//だんだん透明度を上げる
 			Loading_color.w += LOADING_SPRITE_DELTA_A;
-			Loading_Render.SetMulColor(Loading_color);
-			Loading_Render.Update();
+			m_loadingSprite.SetMulColor(Loading_color);
+			m_loadingSprite.Update();
 
 		}
 
@@ -470,8 +470,8 @@ void Wave::ExecuteBossBattle()
 
 			//だんだん透明度を下げる
 			Loading_color.w -= LOADING_SPRITE_DELTA_A;
-			Loading_Render.SetMulColor(Loading_color);
-			Loading_Render.Update();
+			m_loadingSprite.SetMulColor(Loading_color);
+			m_loadingSprite.Update();
 
 		}
 
@@ -530,7 +530,7 @@ void Wave::Render(RenderContext& rc)
 {
 
 	//ロード画面の表示
-	Loading_Render.Draw(rc);
+	m_loadingSprite.Draw(rc);
 
 
 	//ゲーム中でもポーズ画面でもない
