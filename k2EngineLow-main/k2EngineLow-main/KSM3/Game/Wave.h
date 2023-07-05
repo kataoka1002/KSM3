@@ -107,12 +107,16 @@ private:
 	int				m_ensyutuCount = 0;
 	int				m_guideCount = 0;
 	int				Loading_count = 0;
+	int				m_stopCount = 0;							//‰ñ“]‚ÌÃ~ŠÔ
 	float			m_timer = 0.0f;								//ƒ^ƒCƒ}[
 	float			m_wakuA = 0.0f;								//˜g‚Ìƒ¿’l
+	float			m_rotAmount = 0.0f;							//‰ñ“]—Ê
 	bool			m_ensyutuNow = false;						//‰‰o’†‚©‚Ç‚¤‚©
 	bool			m_goBoss = false;							//ƒ{ƒXí‚Ös‚¯‚é‚©‚Ç‚¤‚©
 	bool			m_spriteChangeFlag = false;
 	bool			m_playerUISet = false;
+	bool			m_rotStopFlag = false;						//‰ñ“]‚ª~‚Ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	bool			m_halfRot = false;							//”¼•ª‰ñ“]‚µ‚½‚©‚Ç‚¤‚©
 
 };
 
