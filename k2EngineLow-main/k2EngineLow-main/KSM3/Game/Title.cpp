@@ -7,9 +7,7 @@
 
 Title::Title()
 {
-	
-	lighting = NewGO<Lighting>(1, "lighting");
-	title_Render.SetScale(title_scale);
+	m_lighting = NewGO<Lighting>(1, "lighting");
 
 	g_soundEngine->ResistWaveFileBank(17, "Assets/audio/ketteion.wav");
 	g_soundEngine->ResistWaveFileBank(18, "Assets/audio/cancelon.wav");
@@ -19,13 +17,13 @@ Title::Title()
 
 Title::~Title()
 {
-	DeleteGO(lighting);
+	DeleteGO(m_lighting);
 }
 void Title::PlaySE(int track_number, float vol)
 {
 	SoundSource* m_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 	m_SE->Init(track_number);									//初期化
-	m_SE->SetVolume(vol * BGM_volume);				//音量調整
+	m_SE->SetVolume(vol * m_BGMVolume);				//音量調整
 	m_SE->Play(false);
 }
 bool Title::Start() {
@@ -35,687 +33,620 @@ bool Title::Start() {
 void Title::SetUp()
 {
 	//モデルの読み込み
-	model_batt.Init("Assets/modelData/battleship_gun_Drop.tkm");
-	model_batt.SetScale(scale);
-	model_mac.Init("Assets/modelData/machine_gun_drop.tkm");
-	model_mac.SetScale(scale);
-	model_giga.Init("Assets/modelData/Giga_Plasma.tkm");
-	model_giga.SetScale(scale);
+	m_battleshipgunModel.Init("Assets/modelData/battleship_gun_Drop.tkm");
+	m_battleshipgunModel.SetScale(m_modelScale);
+	m_machinegunModel.Init("Assets/modelData/machine_gun_drop.tkm");
+	m_machinegunModel.SetScale(m_modelScale);
+	m_gigaplasmaModel.Init("Assets/modelData/Giga_Plasma.tkm");
+	m_gigaplasmaModel.SetScale(m_modelScale);
 
-	title_back.Init("Assets/modelData/title_back.tkm");
+	m_backGroundModel.Init("Assets/modelData/title_back.tkm");
 	
 	//画像の読み込み
-	MAIN_MENU_Render.Init("Assets/sprite/MAIN_MENU.DDS", 1632.0f, 918.0f);
-	Title_Render.Init("Assets/sprite/title.DDS", 1632.0f, 918.0f);
-	Press_Render.Init("Assets/sprite/Press_any_button.DDS", 1632.0f, 918.0f);
-	Whiteout.Init("Assets/sprite/whiteout.DDS", 1632.0f, 918.0f);
-	Whiteout.SetMulColor(Vector4{ 1.0f,1.0f,1.0f,0.0f });
-	Whiteout.Update();
-	Side_line_Render.Init("Assets/sprite/side_line.DDS", 1632.0f, 918.0f);
-	OK_BACK_Render.Init("Assets/sprite/OK_BACK.DDS", 1632.0f, 918.0f);
-	Main_menu_foundation_Render.Init("Assets/sprite/brack_back.DDS", 1632.0f, 918.0f);
-	Select_point_Render.Init("Assets/sprite/select_point.DDS", 1632.0f, 918.0f);
-	Select_point_pow_Render.Init("Assets/sprite/select_point_pow.DDS", 1632.0f, 918.0f);
-	Loading_Render.Init("Assets/sprite/NOW_LOADING.DDS", 1632.0f, 918.0f);
+	m_mainMenuSprite.Init("Assets/sprite/MAIN_MENU.DDS", 1632.0f, 918.0f);
+	m_titleSprite.Init("Assets/sprite/title.DDS", 1632.0f, 918.0f);
+	m_pressSprite.Init("Assets/sprite/Press_any_button.DDS", 1632.0f, 918.0f);
+	m_whiteOutSprite.Init("Assets/sprite/whiteout.DDS", 1632.0f, 918.0f);
+	m_whiteOutSprite.SetMulColor(Vector4{ 1.0f,1.0f,1.0f,0.0f });
+	m_whiteOutSprite.Update();
+	m_sideLineSprite.Init("Assets/sprite/side_line.DDS", 1632.0f, 918.0f);
+	m_backOKSprite.Init("Assets/sprite/OK_BACK.DDS", 1632.0f, 918.0f);
+	m_mainMenuBaseSprite.Init("Assets/sprite/brack_back.DDS", 1632.0f, 918.0f);
+	m_selectPointSprite.Init("Assets/sprite/select_point.DDS", 1632.0f, 918.0f);
+	m_selectPointPowSprite.Init("Assets/sprite/select_point_pow.DDS", 1632.0f, 918.0f);
+	m_loadingSprite.Init("Assets/sprite/NOW_LOADING.DDS", 1632.0f, 918.0f);
 
-	Option_Render.Init("Assets/sprite/OPTION.DDS", 1632.0f, 918.0f);
-	Sound_Render.Init("Assets/sprite/SOUND.DDS", 1632.0f, 918.0f);
-	Sound_Render2.Init("Assets/sprite/SOUND2.DDS", 1632.0f, 918.0f);
-	Sound_Render3.Init("Assets/sprite/SOUND3.DDS", 1632.0f, 918.0f);
-	BGM_Sound_ber.Init("Assets/sprite/gage.DDS", 400.0f, 50.0f);
-	BGM_Sound_ber.SetPivot(BGM_ber_pivot);
-	BGM_Sound_ber.SetPosition(BGM_ber_position);
-	SE_Sound_ber.Init("Assets/sprite/gage.DDS", 400.0f, 50.0f);
-	SE_Sound_ber.SetPivot(SE_ber_pivot);
-	SE_Sound_ber.SetPosition(SE_ber_position);
+	m_optionSprite.Init("Assets/sprite/OPTION.DDS", 1632.0f, 918.0f);
+	m_soundSprite.Init("Assets/sprite/SOUND.DDS", 1632.0f, 918.0f);
+	m_soundSprite2.Init("Assets/sprite/SOUND2.DDS", 1632.0f, 918.0f);
+	m_soundSpriet3.Init("Assets/sprite/SOUND3.DDS", 1632.0f, 918.0f);
+	m_BGMSoundBerSprite.Init("Assets/sprite/gage.DDS", 400.0f, 50.0f);
+	m_BGMSoundBerSprite.SetPivot(m_BGMBerPivot);
+	m_BGMSoundBerSprite.SetPosition(m_BGMBerPosition);
+	m_SESoundBerSprite.Init("Assets/sprite/gage.DDS", 400.0f, 50.0f);
+	m_SESoundBerSprite.SetPivot(m_SEBerPivot);
+	m_SESoundBerSprite.SetPosition(m_SEBerPosition);
 
-	CONTROLES_Render.Init("Assets/sprite/CONTROLES.DDS", 1632.0f, 918.0f);
-	Player_Color_Render.Init("Assets/sprite/Player_color.DDS", 1632.0f, 918.0f);
+	m_controlesSprite.Init("Assets/sprite/CONTROLES.DDS", 1632.0f, 918.0f);
+	m_playerColorSprite.Init("Assets/sprite/Player_color.DDS", 1632.0f, 918.0f);
 
-	Menu_trance[0].Init("Assets/sprite/MENU_TITLE_TRANCE.DDS", 430.0f, 100.0f);
+	m_menuTranceSprite[0].Init("Assets/sprite/MENU_TITLE_TRANCE.DDS", 430.0f, 100.0f);
 	for (int i = 1; i < 9; i++) {
-		Menu_trance[i].Init("Assets/sprite/MENU_contents_TRANCE.DDS", 670.0f, 63.0f);
+		m_menuTranceSprite[i].Init("Assets/sprite/MENU_contents_TRANCE.DDS", 670.0f, 63.0f);
 	}
 
-	Menu_trance[0].SetPosition(Menu_trance_position0);
-	Menu_trance[1].SetPosition(Menu_trance_position1);
-	Menu_trance[2].SetPosition(Menu_trance_position2);
-	Menu_trance[3].SetPosition(Menu_trance_position3);
-	Menu_trance[4].SetPosition(Menu_trance_position4);
-	Menu_trance[5].SetPosition(Menu_trance_position5);
-	Menu_trance[6].SetPosition(Menu_trance_position6);
-	Menu_trance[7].SetPosition(Menu_trance_position7);
-	Menu_trance[8].SetPosition(Menu_trance_position8);
+	m_menuTranceSprite[0].SetPosition(m_menuTranceTitlePos);
+	m_menuTranceSprite[1].SetPosition(m_menuTrancePos1);
+	m_menuTranceSprite[2].SetPosition(m_menuTrancePos2);
+	m_menuTranceSprite[3].SetPosition(m_menuTrancePos3);
+	m_menuTranceSprite[4].SetPosition(m_menuTrancePos4);
+	m_menuTranceSprite[5].SetPosition(m_menuTrancePos5);
+	m_menuTranceSprite[6].SetPosition(m_menuTrancePos6);
+	m_menuTranceSprite[7].SetPosition(m_menuTrancePos7);
+	m_menuTranceSprite[8].SetPosition(m_menuTranceOKBackPos);
 
-	Menu_trance[0].SetPivot(Menu_trance_pivot0);
-	Menu_trance[1].SetPivot(Menu_trance_pivot1);
-	Menu_trance[2].SetPivot(Menu_trance_pivot2);
-	Menu_trance[3].SetPivot(Menu_trance_pivot3);
-	Menu_trance[4].SetPivot(Menu_trance_pivot4);
-	Menu_trance[5].SetPivot(Menu_trance_pivot5);
-	Menu_trance[6].SetPivot(Menu_trance_pivot6);
-	Menu_trance[7].SetPivot(Menu_trance_pivot7);
-	Menu_trance[8].SetPivot(Menu_trance_pivot8);
 
 	for (int i = 0; i < 9;i++ ) {
-		Menu_trance[i].SetScale(Trance_sheet_scale);
-		Menu_trance[i].Update();
+		m_menuTranceSprite[i].SetPivot(m_menuTrancePivot);
+		m_menuTranceSprite[i].SetScale(m_tranceSheetScale);
+		m_menuTranceSprite[i].Update();
 	}
-	BGM_Sound_ber.Update();
-	SE_Sound_ber.Update();
-	Loading_Render.SetMulColor(Loading_color);
-	Loading_Render.Update();
+	m_BGMSoundBerSprite.Update();
+	m_SESoundBerSprite.Update();
+	m_loadingSprite.SetMulColor(m_loadingSpriteColor);
+	m_loadingSprite.Update();
 
 }
 
 void Title::Update()
 {
-	if (title_state == 0|| title_state == 1) {
-		Title_Move();
+	if (m_titleState == 0|| m_titleState == 1) {
+		TitleMove();
 	}
-	if (title_state >= 2) {
+	if (m_titleState >= 2) {
 		Menu();
 	}
 
-	if (pattern == 0)//迫ってくるbattをその場で眼だけで追う。
+	if (m_titlePattern == 0)//迫ってくるbattをその場で眼だけで追う。
 	{
-		model_position.x += 0.6f;
-		model_batt.SetPosition(model_position);
+		m_modelPosition.x += 0.6f;
+		m_battleshipgunModel.SetPosition(m_modelPosition);
 
-		y_Rot.SetRotationDegY(120.0f);
-		x_Rot.SetRotationDegX(-25.0f);
-		m_Rot = x_Rot * y_Rot;
-		model_batt.SetRotation(m_Rot);
+		m_modelRotarionY.SetRotationDegY(120.0f);
+		m_modelRotarionX.SetRotationDegX(-25.0f);
+		m_rotation = m_modelRotarionX * m_modelRotarionY;
+		m_battleshipgunModel.SetRotation(m_rotation);
 
-		target = model_position;
-		target.x += 50.0f;
-		g_camera3D->SetTarget(target);
-		pos = { 0.0f,-50.0f,-00.0f };
-		g_camera3D->SetPosition(pos);
+		m_targetPosition = m_modelPosition;
+		m_targetPosition.x += 50.0f;
+		g_camera3D->SetTarget(m_targetPosition);
+		m_cameraPosition = { 0.0f,-50.0f,-00.0f };
+		g_camera3D->SetPosition(m_cameraPosition);
 	}
-	else if (pattern == 1)//上前からmacを後ろまで追っていく感じ。
+	else if (m_titlePattern == 1)//上前からmacを後ろまで追っていく感じ。
 	{
-		model_mac.SetPosition(model_position);
+		m_machinegunModel.SetPosition(m_modelPosition);
 
-		y_Rot.SetRotationDegY(100.0f);
-		model_mac.SetRotation(y_Rot);
+		m_modelRotarionY.SetRotationDegY(100.0f);
+		m_machinegunModel.SetRotation(m_modelRotarionY);
 
-		pos.x -= 1.2f;
-		target.x -= 1.20f;
-		g_camera3D->SetTarget(target);
-		g_camera3D->SetPosition(pos);
+		m_cameraPosition.x -= 1.2f;
+		m_targetPosition.x -= 1.20f;
+		g_camera3D->SetTarget(m_targetPosition);
+		g_camera3D->SetPosition(m_cameraPosition);
 	}
-	else if (pattern == 2)//ローアングルからgigaを見上げる感じで。
+	else if (m_titlePattern == 2)//ローアングルからgigaを見上げる感じで。
 	{
-		model_position.z -= 0.5f;
-		//model_batt.SetPosition(model_position);
-		//model_mac.SetPosition(model_position);
-		model_giga.SetPosition(model_position);
+		m_modelPosition.z -= 0.5f;
+		m_gigaplasmaModel.SetPosition(m_modelPosition);
 
-		y_Rot.SetRotationDegY(180.0f);
-		x_Rot.SetRotationDegX(-15.0f);
-		m_Rot = x_Rot * y_Rot;
-		//model_batt.SetRotation(m_Rot);
-		//model_mac.SetRotation(m_Rot);
-		model_giga.SetRotation(m_Rot);
+		m_modelRotarionY.SetRotationDegY(180.0f);
+		m_modelRotarionX.SetRotationDegX(-15.0f);
+		m_rotation = m_modelRotarionX * m_modelRotarionY;
+		m_gigaplasmaModel.SetRotation(m_rotation);
 
-		g_camera3D->SetTarget(model_position);
-		pos = { 0.0f,-50.0f,-00.0f };
-		g_camera3D->SetPosition(pos);
+		g_camera3D->SetTarget(m_modelPosition);
+		m_cameraPosition = { 0.0f,-50.0f,-00.0f };
+		g_camera3D->SetPosition(m_cameraPosition);
 	}
 
-	model_batt.Update();
-	model_mac.Update();
-	model_giga.Update();
-	title_back.SetPosition(titel_back);
+	m_battleshipgunModel.Update();
+	m_machinegunModel.Update();
+	m_gigaplasmaModel.Update();
+	m_backGroundModel.SetPosition(m_backGroundModelPosition);
 
-	title_back.Update();
+	m_backGroundModel.Update();
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
-	switch (time)
+	switch (m_modelChangeState)
 	{
 	case 0:
 		if (m_timer >=10.0f)
 		{
-			time = 1;
-			model_position = { -300.0f,00.0f,200.0f };
-			target = { -300.0f,-50.0f,500.0f };
-			pos = { 600.0f,100.0f,100.0f };
-			pattern = 1;
+			m_modelChangeState = 1;
+			m_modelPosition = { -300.0f,00.0f,200.0f };
+			m_targetPosition = { -300.0f,-50.0f,500.0f };
+			m_cameraPosition = { 600.0f,100.0f,100.0f };
+			m_titlePattern = 1;
 			m_timer = 0.0f;
 		}
 		break;
 	case 1:
 		if (m_timer >= 10.0f)
 		{
-			time = 2;
-			model_position = { 0.0f,00.0f,200.0f };
-			pattern = 2;
+			m_modelChangeState = 2;
+			m_modelPosition = { 0.0f,00.0f,200.0f };
+			m_titlePattern = 2;
 			m_timer = 0.0f;
 		}
 		break;
 	case 2:
 		if (m_timer >= 10.0f)
 		{
-			time = 0;
-			model_position= { -300.0f,50.0f,200.0f };
-			pattern = 0;
+			m_modelChangeState = 0;
+			m_modelPosition= { -300.0f,50.0f,200.0f };
+			m_titlePattern = 0;
 			m_timer = 0.0f;
 		}
 		break;
 	}
 	
-	if (State == 0/*&& g_pad[0]->IsTrigger(enButtonA)*/ )
-	{
-		
-		//ゲーム本編への遷移
-		//if (g_pad[0]->IsTrigger(enButtonA))
-		//{
-		//	Game* game = NewGO<Game>(0, "game");
-		//	//player->GetGameState() = MAIN_GAME_NUM;
-		//	//gameCamera->m_cameraState = 0;
-		//	DeleteGO(this);
-		//}
-	
-	}
 	
 }
 
-void Title::Title_Move() {
-	Whiteout.SetMulColor(whiteout_color);
-	if (Press_count % 100 == 0) {
-		Press_direction *= -1;
+void Title::TitleMove() {
+	m_whiteOutSprite.SetMulColor(m_whiteOutColor);
+	if (m_pressCount % 100 == 0) {
+		m_pressDirection *= -1;
 	}
-	Press_Render_coler.w -= 0.01*Press_direction;
-	Press_Render.SetMulColor(Press_Render_coler);
+	m_pressSpriteColor.w -= 0.01 * m_pressDirection;
+	m_pressSprite.SetMulColor(m_pressSpriteColor);
 
 	if (g_pad[0]->IsTrigger(enButtonA)) {
 		PlaySE(20, 2.0f);
-		title_state = 1;
+		m_titleState = 1;
 	}
-	if (title_state == 1) {
-		whiteout_color.w += 0.1;
-		if (whiteout_count == 9) {
-			title_state = 2;
+	if (m_titleState == 1) {
+		m_whiteOutColor.w += 0.1;
+		if (m_whiteOutCount == 9) {
+			m_titleState = 2;
 		}
-		whiteout_count++;
-		Whiteout.SetMulColor(whiteout_color);
+		m_whiteOutCount++;
+		m_whiteOutSprite.SetMulColor(m_whiteOutColor);
 	}
 	
 
-	Press_count++;
-	Press_Render.Update();
-	Whiteout.Update();
+	m_pressCount++;
+	m_pressSprite.Update();
+	m_whiteOutSprite.Update();
 }
 
 void Title::Menu() {
 	//遷移
-	if (title_state == 2) {
-		whiteout_color.w -= 0.1;
-		if (whiteout_count == 19) {
-			title_state = 3;
-			select_point = 0;
-			fast_count = 0;
+	if (m_titleState == 2) {
+		m_whiteOutColor.w -= 0.1;
+		if (m_whiteOutCount == 19) {
+			m_titleState = 3;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
-		whiteout_count++;
+		m_whiteOutCount++;
 	}
 
-	if (Select_point_pow_count % 100 == 0) {
-		Select_point_pow_direction *= -1;
+	if (m_selectPointPowCount % 100 == 0) {
+		m_selectPointPowDirection *= -1;
 	}
-	Select_point_pow_color.w -= 0.02 * Select_point_pow_direction;
-	Select_point_pow_Render.SetMulColor(Select_point_pow_color);
-	Select_point_pow_count++;
+	m_selectPointPowColor.w -= 0.02 * m_selectPointPowDirection;
+	m_selectPointPowSprite.SetMulColor(m_selectPointPowColor);
+	m_selectPointPowCount++;
 
 	//メインメニュー
-	if (title_state == 3) {
-		if (fast_count >= 1 && fast_count < 11) {
-			Trance_sheet_scale.x += 0.085f;
+	if (m_titleState == 3) {
+		if (m_fastCount >= 1 && m_fastCount < 11) {
+			m_tranceSheetScale.x += 0.085f;
 		}
-		else if (fast_count >= 11 && fast_count < 21) {
-			Trance_sheet_scale.x -= 0.085f;
+		else if (m_fastCount >= 11 && m_fastCount < 21) {
+			m_tranceSheetScale.x -= 0.085f;
 		}
 
 
-		if (select_point >= 0 &&select_point<=1&& g_pad[0]->IsTrigger(enButtonDown)) {
-			select_point++;
+		if (m_selectPoint >= 0 &&m_selectPoint<=1&& g_pad[0]->IsTrigger(enButtonDown)) {
+			m_selectPoint++;
 			PlaySE(19, 2.0f);
 		}
-		if (select_point <= 2 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+		if (m_selectPoint <= 2 && m_selectPoint >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
 			PlaySE(19, 2.0f);
-			select_point--;
+			m_selectPoint--;
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1&&select_point==0) {
-			title_state = 4;
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1&&m_selectPoint==0) {
+			m_titleState = 4;
 			PlaySE(17, 2.0f);
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 2) {
-			title_state = 8;
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1 && m_selectPoint == 2) {
+			m_titleState = 8;
 			PlaySE(17, 2.0f);
-			select_point = 0;
-			fast_count = 0;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point== 1) {
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1 && m_selectPoint== 1) {
 			PlaySE(17, 2.0f);
-			select_point = 0;
-			fast_count = 0;
-			title_state = 5;
+			m_selectPoint = 0;
+			m_fastCount = 0;
+			m_titleState = 5;
 			
 		}
 		if (g_pad[0]->IsTrigger(enButtonB)) {
 			PlaySE(18, 2.0f);
-			title_state = 0;
-			whiteout_count = 0;
-			select_point = 0;
-			fast_count = 0;
+			m_titleState = 0;
+			m_whiteOutCount = 0;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
-		fast_count++;
+		m_fastCount++;
 
 
 		for (int i = 0; i < 9; i++) {
-			Menu_trance[i].SetScale(Trance_sheet_scale);
+			m_menuTranceSprite[i].SetScale(m_tranceSheetScale);
 		}
-		Menu_trance[0].Update();
-		Menu_trance[8].Update();
+		m_menuTranceSprite[0].Update();
+		m_menuTranceSprite[8].Update();
 		for (int i = 1; i < 4; i++) {
-			Menu_trance[i].Update();
+			m_menuTranceSprite[i].Update();
 		}
 	}
-	if (title_state == 4) {
-		Loading_color.w += 0.1;
-		Loading_Render.SetMulColor(Loading_color);
-		Loading_Render.Update();
-		if (Loading_color.w >= 1.1f) 
+	if (m_titleState == 4) {
+		m_loadingSpriteColor.w += 0.1;
+		m_loadingSprite.SetMulColor(m_loadingSpriteColor);
+		m_loadingSprite.Update();
+		if (m_loadingSpriteColor.w >= 1.1f) 
 		{
 			//ゲームを始めると同時に音量のデータも送る
 			Game* game = NewGO<Game>(0, "game");
-			game->SetPlayerColorData(player_color_date);
-			game->SetSEVol(BGM_volume);
-			game->SetBGM(SE_volume);
+			game->SetPlayerColorData(m_playerColorData);
+			game->SetSEVol(m_BGMVolume);
+			game->SetBGM(m_SEVolume);
 			DeleteGO(this);
 		}
 	}
 
-	if (title_state == 5) {
-		if (fast_count >= 1 && fast_count < 11) {
-			Trance_sheet_scale.x += 0.085f;
+	if (m_titleState == 5) {
+		if (m_fastCount >= 1 && m_fastCount < 11) {
+			m_tranceSheetScale.x += 0.085f;
 		}
-		else if (fast_count >= 11 && fast_count < 21) {
-			Trance_sheet_scale.x -= 0.085f;
+		else if (m_fastCount >= 11 && m_fastCount < 21) {
+			m_tranceSheetScale.x -= 0.085f;
 		}
 
-		if (select_point >= 0 && select_point <= 0 && g_pad[0]->IsTrigger(enButtonDown)) {
+		if (m_selectPoint >= 0 && m_selectPoint <= 0 && g_pad[0]->IsTrigger(enButtonDown)) {
 			PlaySE(19, 2.0f);
-			select_point++;
+			m_selectPoint++;
 		}
-		if (select_point <= 1 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+		if (m_selectPoint <= 1 && m_selectPoint >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
 			PlaySE(19, 2.0f);
-			select_point--;
+			m_selectPoint--;
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1&& select_point==0) {
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1&& m_selectPoint==0) {
 			PlaySE(17, 2.0f);
-			title_state = 6;
-			select_point = 0;
-			fast_count = 0;
+			m_titleState = 6;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 1) {
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1 && m_selectPoint == 1) {
 			PlaySE(17, 2.0f);
-			title_state = 7;
-			select_point = 0;
-			fast_count = 0;
+			m_titleState = 7;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
 		if (g_pad[0]->IsTrigger(enButtonB)) {
 			PlaySE(18, 2.0f);
-			title_state = 3;
-			select_point = 0;
-			fast_count = 0;
+			m_titleState = 3;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
-		fast_count++;
+		m_fastCount++;
 
 		for (int i = 0; i < 9; i++) {
-			Menu_trance[i].SetScale(Trance_sheet_scale);
+			m_menuTranceSprite[i].SetScale(m_tranceSheetScale);
 		}
-		Menu_trance[0].Update();
-		Menu_trance[8].Update();
+		m_menuTranceSprite[0].Update();
+		m_menuTranceSprite[8].Update();
 		for (int i = 1; i < 3; i++) {
-			Menu_trance[i].Update();
+			m_menuTranceSprite[i].Update();
 		}
 	}
 
-	if (title_state == 6) {
-		if (fast_count >= 1 && fast_count < 11) {
-			Trance_sheet_scale.x += 0.085f;
+	if (m_titleState == 6) {
+		if (m_fastCount >= 1 && m_fastCount < 11) {
+			m_tranceSheetScale.x += 0.085f;
 		}
-		else if (fast_count >= 11 && fast_count < 21) {
-			Trance_sheet_scale.x -= 0.085f;
+		else if (m_fastCount >= 11 && m_fastCount < 21) {
+			m_tranceSheetScale.x -= 0.085f;
 		}
 
-		if (select_point >= 0 && select_point <= 0 && g_pad[0]->IsTrigger(enButtonDown) && sound_set_state == 0) {
+		if (m_selectPoint >= 0 && m_selectPoint <= 0 && g_pad[0]->IsTrigger(enButtonDown) && m_soundSetState == 0) {
 			PlaySE(19, 2.0f);
-			select_point++;
+			m_selectPoint++;
 		}
-		if (select_point <= 1 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp) && sound_set_state == 0) {
+		if (m_selectPoint <= 1 && m_selectPoint >= 1 && g_pad[0]->IsTrigger(enButtonUp) && m_soundSetState == 0) {
 			PlaySE(19, 2.0f);
-			select_point--;
+			m_selectPoint--;
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 0&&sound_set_state==0) {
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1 && m_selectPoint == 0&&m_soundSetState==0) {
 			PlaySE(17, 2.0f);
-			sound_set_state = 1;
-			SOUND_color.w = 0.5f;
-			Sound_Render2.SetMulColor(SOUND_color);
-			SE_Sound_ber.SetMulColor(SOUND_color);
+			m_soundSetState = 1;
+			m_soundSpriteColor.w = 0.5f;
+			m_soundSprite2.SetMulColor(m_soundSpriteColor);
+			m_SESoundBerSprite.SetMulColor(m_soundSpriteColor);
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1 && select_point == 1 && sound_set_state == 0) {
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1 && m_selectPoint == 1 && m_soundSetState == 0) {
 			PlaySE(17, 2.0f);
-			sound_set_state = 2;
-			SOUND_color.w = 0.5f;
-			Sound_Render.SetMulColor(SOUND_color);
-			BGM_Sound_ber.SetMulColor(SOUND_color);
+			m_soundSetState = 2;
+			m_soundSpriteColor.w = 0.5f;
+			m_soundSprite.SetMulColor(m_soundSpriteColor);
+			m_BGMSoundBerSprite.SetMulColor(m_soundSpriteColor);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonB) && sound_set_state == 0) {
+		if (g_pad[0]->IsTrigger(enButtonB) && m_soundSetState == 0) {
 			PlaySE(18, 2.0f);
-			title_state = 5;
-			select_point = 0;
-			fast_count = 0;
+			m_titleState = 5;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
 
-		if (g_pad[0]->IsPress(enButtonRight) && sound_set_state == 1) {
+		if (g_pad[0]->IsPress(enButtonRight) && m_soundSetState == 1) {
 			
-			BGM_volume += 0.01;
-			BGM_ber_scale.x += 0.0085;
-			if (BGM_volume >= 1.0f) {
-				BGM_volume = 1.0f;
-				BGM_ber_scale.x = 0.85f;
+			m_BGMVolume += 0.01;
+			m_BGMBerScale.x += 0.0085;
+			if (m_BGMVolume >= 1.0f) {
+				m_BGMVolume = 1.0f;
+				m_BGMBerScale.x = 0.85f;
 			}
 			PlaySE(19, 2.0f);
 		}
-		else if (g_pad[0]->IsPress(enButtonLeft) && sound_set_state == 1) {
+		else if (g_pad[0]->IsPress(enButtonLeft) && m_soundSetState == 1) {
 			
-			BGM_volume -= 0.01;
-			BGM_ber_scale.x -= 0.0085;
-			if (BGM_volume <= 0.0f) {
-				BGM_volume = 0.0f;
-				BGM_ber_scale.x = 0.0f;
-			}
-			PlaySE(19, 2.0f);
-		}
-
-		if (g_pad[0]->IsPress(enButtonRight) && sound_set_state == 2) {
-			
-			SE_volume += 0.01;
-			SE_ber_scale.x += 0.0085;
-			if (SE_volume >= 1.0f) {
-				SE_volume = 1.0f;
-				SE_ber_scale.x = 0.85f;
-			}
-			PlaySE(19, 2.0f);
-		}
-		else if (g_pad[0]->IsPress(enButtonLeft) && sound_set_state == 2) {
-			
-			SE_volume -= 0.01;
-			SE_ber_scale.x -= 0.0085;
-			if (SE_volume <= 0.0f) {
-				SE_volume = 0.0f;
-				SE_ber_scale.x = 0.0f;
+			m_BGMVolume -= 0.01;
+			m_BGMBerScale.x -= 0.0085;
+			if (m_BGMVolume <= 0.0f) {
+				m_BGMVolume = 0.0f;
+				m_BGMBerScale.x = 0.0f;
 			}
 			PlaySE(19, 2.0f);
 		}
 
-		if (g_pad[0]->IsTrigger(enButtonB) && fast_count != 1 && select_point == 0 && sound_set_state == 1) {
+		if (g_pad[0]->IsPress(enButtonRight) && m_soundSetState == 2) {
+			
+			m_SEVolume += 0.01;
+			m_SEBerScale.x += 0.0085;
+			if (m_SEVolume >= 1.0f) {
+				m_SEVolume = 1.0f;
+				m_SEBerScale.x = 0.85f;
+			}
+			PlaySE(19, 2.0f);
+		}
+		else if (g_pad[0]->IsPress(enButtonLeft) && m_soundSetState == 2) {
+			
+			m_SEVolume -= 0.01;
+			m_SEBerScale.x -= 0.0085;
+			if (m_SEVolume <= 0.0f) {
+				m_SEVolume = 0.0f;
+				m_SEBerScale.x = 0.0f;
+			}
+			PlaySE(19, 2.0f);
+		}
+
+		if (g_pad[0]->IsTrigger(enButtonB) && m_fastCount != 1 && m_selectPoint == 0 && m_soundSetState == 1) {
 			PlaySE(18, 2.0f);
-			sound_set_state = 0;
-			SOUND_color.w = 1.0f;
-			Sound_Render2.SetMulColor(SOUND_color);
-			SE_Sound_ber.SetMulColor(SOUND_color);
+			m_soundSetState = 0;
+			m_soundSpriteColor.w = 1.0f;
+			m_soundSprite2.SetMulColor(m_soundSpriteColor);
+			m_SESoundBerSprite.SetMulColor(m_soundSpriteColor);
 		}
-		if (g_pad[0]->IsTrigger(enButtonB) && fast_count != 1 && select_point == 1 && sound_set_state == 2) {
+		if (g_pad[0]->IsTrigger(enButtonB) && m_fastCount != 1 && m_selectPoint == 1 && m_soundSetState == 2) {
 			PlaySE(18, 2.0f);
-			sound_set_state = 0;
-			SOUND_color.w = 1.0f;
-			Sound_Render.SetMulColor(SOUND_color);
-			BGM_Sound_ber.SetMulColor(SOUND_color);
+			m_soundSetState = 0;
+			m_soundSpriteColor.w = 1.0f;
+			m_soundSprite.SetMulColor(m_soundSpriteColor);
+			m_BGMSoundBerSprite.SetMulColor(m_soundSpriteColor);
 		}
-		fast_count++;
+		m_fastCount++;
 
-		BGM_Sound_ber.SetScale(BGM_ber_scale);
-		SE_Sound_ber.SetScale(SE_ber_scale);
+		m_BGMSoundBerSprite.SetScale(m_BGMBerScale);
+		m_SESoundBerSprite.SetScale(m_SEBerScale);
 
-		BGM_Sound_ber.Update();
-		SE_Sound_ber.Update();
+		m_BGMSoundBerSprite.Update();
+		m_SESoundBerSprite.Update();
 
 		for (int i = 0; i < 9; i++) {
-			Menu_trance[i].SetScale(Trance_sheet_scale);
+			m_menuTranceSprite[i].SetScale(m_tranceSheetScale);
 		}
-		Menu_trance[0].Update();
-		Menu_trance[8].Update();
+		m_menuTranceSprite[0].Update();
+		m_menuTranceSprite[8].Update();
 		for (int i = 1; i < 3; i++) {
-			Menu_trance[i].Update();
+			m_menuTranceSprite[i].Update();
 		}
 	}
 
-	if (title_state == 7) {
-		if (fast_count >= 1 && fast_count < 11) {
-			Trance_sheet_scale.x += 0.085f;
+	if (m_titleState == 7) {
+		if (m_fastCount >= 1 && m_fastCount < 11) {
+			m_tranceSheetScale.x += 0.085f;
 		}
-		else if (fast_count >= 11 && fast_count < 21) {
-			Trance_sheet_scale.x -= 0.085f;
+		else if (m_fastCount >= 11 && m_fastCount < 21) {
+			m_tranceSheetScale.x -= 0.085f;
 		}
 
-		if (select_point >= 0 && select_point <= 6 && g_pad[0]->IsTrigger(enButtonDown)) {
+		if (m_selectPoint >= 0 && m_selectPoint <= 6 && g_pad[0]->IsTrigger(enButtonDown)) {
 			PlaySE(19, 2.0f);
-			select_point++;
+			m_selectPoint++;
 		}
-		if (select_point <= 7 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+		if (m_selectPoint <= 7 && m_selectPoint >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
 			PlaySE(19, 2.0f);
-			select_point--;
+			m_selectPoint--;
 		}
 		
 		if (g_pad[0]->IsTrigger(enButtonB)) {
 			PlaySE(18, 2.0f);
-			title_state = 5;
-			select_point = 0;
-			fast_count = 0;
+			m_titleState = 5;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
 		for (int i = 0; i < 9; i++) {
-			Menu_trance[i].SetScale(Trance_sheet_scale);
+			m_menuTranceSprite[i].SetScale(m_tranceSheetScale);
 		}
-		fast_count++;
-		Menu_trance[0].Update();
-		Menu_trance[8].Update();
+		m_fastCount++;
+		m_menuTranceSprite[0].Update();
+		m_menuTranceSprite[8].Update();
 		for (int i = 1; i < 9; i++) {
-			Menu_trance[i].Update();
+			m_menuTranceSprite[i].Update();
 		}
 	}
 
-	if (title_state == 8) {
-		if (fast_count >= 1 && fast_count < 11) {
-			Trance_sheet_scale.x += 0.085f;
+	if (m_titleState == 8) {
+		if (m_fastCount >= 1 && m_fastCount < 11) {
+			m_tranceSheetScale.x += 0.085f;
 		}
-		else if (fast_count >= 11 && fast_count < 21) {
-			Trance_sheet_scale.x -= 0.085f;
+		else if (m_fastCount >= 11 && m_fastCount < 21) {
+			m_tranceSheetScale.x -= 0.085f;
 		}
 
-		if (select_point >= 0 && select_point <= 6 && g_pad[0]->IsTrigger(enButtonDown)) {
+		if (m_selectPoint >= 0 && m_selectPoint <= 6 && g_pad[0]->IsTrigger(enButtonDown)) {
 			PlaySE(19, 2.0f);
-			select_point++;
+			m_selectPoint++;
 		}
-		if (select_point <= 7 && select_point >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
+		if (m_selectPoint <= 7 && m_selectPoint >= 1 && g_pad[0]->IsTrigger(enButtonUp)) {
 			PlaySE(19, 2.0f);
-			select_point--;
+			m_selectPoint--;
 		}
 
 		if (g_pad[0]->IsTrigger(enButtonB)) {
 			PlaySE(18, 2.0f);
-			title_state = 3;
-			select_point = 0;
-			fast_count = 0;
+			m_titleState = 3;
+			m_selectPoint = 0;
+			m_fastCount = 0;
 		}
-		if (g_pad[0]->IsTrigger(enButtonA) && fast_count != 1) {
+		if (g_pad[0]->IsTrigger(enButtonA) && m_fastCount != 1) {
 			PlaySE(17, 2.0f);
-			player_color_date = select_point;
+			m_playerColorData = m_selectPoint;
 		}
 		for (int i = 0; i < 9; i++) {
-			Menu_trance[i].SetScale(Trance_sheet_scale);
+			m_menuTranceSprite[i].SetScale(m_tranceSheetScale);
 		}
-		fast_count++;
-		Menu_trance[0].Update();
-		Menu_trance[8].Update();
+		m_fastCount++;
+		m_menuTranceSprite[0].Update();
+		m_menuTranceSprite[8].Update();
 		for (int i = 1; i < 9; i++) {
-			Menu_trance[i].Update();
+			m_menuTranceSprite[i].Update();
 		}
 	}
 	//セレクトポイントの処理
-	if (title_state >= 3) {
-		switch (select_point)
+	if (m_titleState >= 3) {
+		switch (m_selectPoint)
 		{
 		case 0:
-			Select_position = { 0.0f,0.0f,0.0f };
-			Select_point_Render.SetPosition(Select_position);
-			Select_point_pow_Render.SetPosition(Select_position);
+			m_selectSpritePosition = { 0.0f,0.0f,0.0f };
+			m_selectPointSprite.SetPosition(m_selectSpritePosition);
+			m_selectPointPowSprite.SetPosition(m_selectSpritePosition);
 			break;
 		case 1:
-			Select_position = { 0.0f,-67.5f,0.0f };
-			Select_point_Render.SetPosition(Select_position);
-			Select_point_pow_Render.SetPosition(Select_position);
+			m_selectSpritePosition = { 0.0f,-67.5f,0.0f };
+			m_selectPointSprite.SetPosition(m_selectSpritePosition);
+			m_selectPointPowSprite.SetPosition(m_selectSpritePosition);
 			break;
 		case 2:
-			Select_position = { 0.0f,-135.0f,0.0f };
-			Select_point_Render.SetPosition(Select_position);
-			Select_point_pow_Render.SetPosition(Select_position);
+			m_selectSpritePosition = { 0.0f,-135.0f,0.0f };
+			m_selectPointSprite.SetPosition(m_selectSpritePosition);
+			m_selectPointPowSprite.SetPosition(m_selectSpritePosition);
 			break;
 		case 3:
-			Select_position = { 0.0f,-202.5f,0.0f };
-			Select_point_Render.SetPosition(Select_position);
-			Select_point_pow_Render.SetPosition(Select_position);
+			m_selectSpritePosition = { 0.0f,-202.5f,0.0f };
+			m_selectPointSprite.SetPosition(m_selectSpritePosition);
+			m_selectPointPowSprite.SetPosition(m_selectSpritePosition);
 			break;
 		case 4:
-			Select_position = { 0.0f,-270.0f,0.0f };
-			Select_point_Render.SetPosition(Select_position);
-			Select_point_pow_Render.SetPosition(Select_position);
+			m_selectSpritePosition = { 0.0f,-270.0f,0.0f };
+			m_selectPointSprite.SetPosition(m_selectSpritePosition);
+			m_selectPointPowSprite.SetPosition(m_selectSpritePosition);
 			break;
 		case 5:
-			Select_position = { 0.0f,-337.5f,0.0f };
-			Select_point_Render.SetPosition(Select_position);
-			Select_point_pow_Render.SetPosition(Select_position);
+			m_selectSpritePosition = { 0.0f,-337.5f,0.0f };
+			m_selectPointSprite.SetPosition(m_selectSpritePosition);
+			m_selectPointPowSprite.SetPosition(m_selectSpritePosition);
 			break;
 		case 6:
-			Select_position = { 0.0f,-405.0f,0.0f };
-			Select_point_Render.SetPosition(Select_position);
-			Select_point_pow_Render.SetPosition(Select_position);
+			m_selectSpritePosition = { 0.0f,-405.0f,0.0f };
+			m_selectPointSprite.SetPosition(m_selectSpritePosition);
+			m_selectPointPowSprite.SetPosition(m_selectSpritePosition);
 			break;
 		default:
 			break;
 		}
 	}
 
-	Select_point_Render.Update();
-	Select_point_pow_Render.Update();
-	Main_menu_foundation_Render.SetMulColor(Main_menu_foundation_Render_color);
-	Whiteout.SetMulColor(whiteout_color);
-	Main_menu_foundation_Render.Update();
-	Whiteout.Update();
-}
-
-void Title::S()
-{
-	if (State == 0 && g_pad[0]->IsTrigger(enButtonDown))
-	{
-		State = 1;
-	}
-
-	if (State == 1 && g_pad[0]->IsTrigger(enButtonUp))
-	{
-		State = 0;
-	}
-	else if (State == 1 && g_pad[0]->IsTrigger(enButtonDown))
-	{
-		State = 2;
-	}
-
-	if (State == 2 && g_pad[0]->IsTrigger(enButtonUp))
-	{
-		State = 1;
-	}
-
-	//矢印の置き場所。
-	if (State == 0)
-	{
-		gameStart_Render.SetPosition({ -280.0f,10.0f,0.0f });
-	}
-	if (State == 1)
-	{
-		system_Render.SetPosition({ -280.0f,-120.0f,0.0f });
-	}
-	if (State == 2)
-	{
-		nannka_Render.SetPosition({ -280.0f,-250.0f,0.0f });
-	}
+	m_selectPointSprite.Update();
+	m_selectPointPowSprite.Update();
+	m_mainMenuBaseSprite.SetMulColor(m_mainMenuBaseSpriteColor);
+	m_whiteOutSprite.SetMulColor(m_whiteOutColor);
+	m_mainMenuBaseSprite.Update();
+	m_whiteOutSprite.Update();
 }
 
 void Title::Render(RenderContext& rc)
 {
-	//title_Render.Draw(rc);
-	//gameStart_Render.Draw(rc);
-	///system_Render.Draw(rc);
-	///nannka_Render.Draw(rc);
-	//yajirusi_Render.Draw(rc);
-	//player->m_playerModel.Draw(rc);
-	title_back.Draw(rc);
-	if (pattern == 0)
+	m_backGroundModel.Draw(rc);
+	if (m_titlePattern == 0)
 	{
-		model_batt.Draw(rc);
+		m_battleshipgunModel.Draw(rc);
 	}
-	else if (pattern == 1)
+	else if (m_titlePattern == 1)
 	{
-		model_mac.Draw(rc);
+		m_machinegunModel.Draw(rc);
 	}
-	else if (pattern == 2)
+	else if (m_titlePattern == 2)
 	{
-		model_giga.Draw(rc);
+		m_gigaplasmaModel.Draw(rc);
 	}
 
 	//画像のドロー
-	if (title_state == 0||title_state==1) {
-		Title_Render.Draw(rc);
-		Press_Render.Draw(rc);
+	if (m_titleState == 0||m_titleState==1) {
+		m_titleSprite.Draw(rc);
+		m_pressSprite.Draw(rc);
 	}
-	if (title_state >= 3) {
+	if (m_titleState >= 3) {
 		
-		Main_menu_foundation_Render.Draw(rc);
-		Side_line_Render.Draw(rc);
-		OK_BACK_Render.Draw(rc);
-		Select_point_Render.Draw(rc);
-		Select_point_pow_Render.Draw(rc);
+		m_mainMenuBaseSprite.Draw(rc);
+		m_sideLineSprite.Draw(rc);
+		m_backOKSprite.Draw(rc);
+		m_selectPointSprite.Draw(rc);
+		m_selectPointPowSprite.Draw(rc);
 	}
-	if (title_state == 3) {
-		MAIN_MENU_Render.Draw(rc);
+	if (m_titleState == 3) {
+		m_mainMenuSprite.Draw(rc);
 	}
 
 	
 
-	if (title_state == 5) {
-		Option_Render.Draw(rc);
+	if (m_titleState == 5) {
+		m_optionSprite.Draw(rc);
 	}
-	if (title_state == 6) {
-		Sound_Render.Draw(rc);
-		Sound_Render2.Draw(rc);
-		Sound_Render3.Draw(rc);
-		BGM_Sound_ber.Draw(rc);
-		SE_Sound_ber.Draw(rc);
+	if (m_titleState == 6) {
+		m_soundSprite.Draw(rc);
+		m_soundSprite2.Draw(rc);
+		m_soundSpriet3.Draw(rc);
+		m_BGMSoundBerSprite.Draw(rc);
+		m_SESoundBerSprite.Draw(rc);
 	}
-	if (title_state == 7) {
-		CONTROLES_Render.Draw(rc);
+	if (m_titleState == 7) {
+		m_controlesSprite.Draw(rc);
 	}
-	if (title_state == 8) {
-		Player_Color_Render.Draw(rc);
+	if (m_titleState == 8) {
+		m_playerColorSprite.Draw(rc);
 	}
 	for(int i = 0; i < 9; i++) {
-		Menu_trance[i].Draw(rc);
+		m_menuTranceSprite[i].Draw(rc);
 	}
-	if (title_state == 4) {
-		Loading_Render.Draw(rc);
+	if (m_titleState == 4) {
+		m_loadingSprite.Draw(rc);
 	}
 
-	Whiteout.Draw(rc);
+	m_whiteOutSprite.Draw(rc);
 }

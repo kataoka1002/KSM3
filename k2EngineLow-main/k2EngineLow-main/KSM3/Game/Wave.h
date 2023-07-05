@@ -95,7 +95,7 @@ private:
 	SpriteRender	m_TimerSprite;								//タイマー
 	SpriteRender	m_TimerSprite2;								//タイマー2
 	SpriteRender	m_missionSprite;							//ミッション
-	SpriteRender	Loading_Render;
+	SpriteRender	m_loadingSprite;
 
 	FontRender		m_timerFont;								//タイマーを表示するフォント
 	Vector3			m_spritePos = Vector3::Zero;				//スプライトを動かすための変数
