@@ -8,7 +8,7 @@
 
 Boss_Saber::Boss_Saber() {
 	m_game = FindGO<Game>("game");
-	b_w_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 }
 
 Boss_Saber::~Boss_Saber() {
@@ -16,13 +16,13 @@ Boss_Saber::~Boss_Saber() {
 }
 
 void Boss_Saber::Setup() {
-	b_w_boss = FindGO<Boss>("boss");
+	m_boss = FindGO<Boss>("boss");
 	boss_Cannon_Render.Init("Assets/modelData/Boss_Saber.tkm");
 	boss_Cannon_Render.Update();
 	m_enemyCharacterController.Init(
 		200.0f,			//半径。
 		70.0f,			//高さ。
-		b_w_position	//座標。
+		m_position	//座標。
 	);
 	boss_Cannon_Render.SetScale(scale);
 	boss_Cannon_Render.Update();
@@ -35,11 +35,11 @@ void Boss_Saber::Update() {
 		Setup();
 	}
 	fast++;
-	if (b_w_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		Move();
 	}
-	if (b_w_player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
@@ -58,14 +58,14 @@ void Boss_Saber::Update() {
 
 void Boss_Saber::Move() {
 	//ここは丸パクリでOK
-	Quaternion originRotation = b_w_boss->GetRotation();
-	b_w_position = b_w_boss->GetPosition();
+	Quaternion originRotation = m_boss->GetRotation();
+	m_position = m_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
-	b_w_position += lp;
-	b_w_rotation = originRotation;
-	boss_Cannon_Render.SetPosition(b_w_position);
-	boss_Cannon_Render.SetRotation(b_w_rotation);
+	m_position += lp;
+	m_rotation = originRotation;
+	boss_Cannon_Render.SetPosition(m_position);
+	boss_Cannon_Render.SetRotation(m_rotation);
 }
 
 void Boss_Saber::Render(RenderContext& rc)

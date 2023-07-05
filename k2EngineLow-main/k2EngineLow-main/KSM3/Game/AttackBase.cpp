@@ -240,7 +240,7 @@ void AttackBase::DamageEvent(float damage)
 		{
 
 			//’e‚ÆƒhƒŠƒ‹‚Ì‹——£‚ð‘ª‚é
-			Vector3 diff = m_position - m_game->GetBoss()->GetDrill()->b_w_position;
+			Vector3 diff = m_position - m_game->GetBoss()->GetDrill()->m_position;
 
 
 			//ˆê’è‹——£ˆÈ‰º‚È‚ç

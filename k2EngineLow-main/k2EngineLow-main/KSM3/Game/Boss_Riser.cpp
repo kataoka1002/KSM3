@@ -11,7 +11,7 @@
 Boss_Riser::Boss_Riser()
 {
 	m_game = FindGO<Game>("game");
-	b_w_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 }
 
 Boss_Riser::~Boss_Riser()
@@ -28,7 +28,7 @@ void Boss_Riser::Setup()
 
 
 	set_weapons = 1;
-	b_w_boss = FindGO<Boss>("boss");
+	m_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
 		boss_Riser_Render.Init("Assets/modelData/Boss_do-ze-1.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
@@ -53,7 +53,7 @@ void Boss_Riser::Update()
 	}
 	fast++;
 	
-	if (b_w_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
 	{
 		if (fast >= 540 && fast < 810) {
 			boss_Riser_Render.PlayAnimation(enAnimationClip_attack,0.5f);
@@ -82,8 +82,8 @@ void Boss_Riser::Update()
 			m_weaponEffect->SetScale({ 30.0f,30.0f,30.0f });
 			
 			//efeLP += b_w_position;
-			m_weaponEffect->SetPosition(efeLP + b_w_position);
-			m_weaponEffect->SetRotation(b_w_rotation);
+			m_weaponEffect->SetPosition(efeLP + m_position);
+			m_weaponEffect->SetRotation(m_rotation);
 			m_weaponEffect->Play();
 		}
 
@@ -91,13 +91,13 @@ void Boss_Riser::Update()
 		{
 			b_boss_weapons = NewGO<Boss_Riser_attack>(1, "boss_Riser_attack");
 			m_attackState = true;
-			b_boss_weapons->firing_position = b_w_position;
-			b_boss_weapons->b_a_aiming = b_w_boss->GetRotation();
-			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->GetForward();
+			b_boss_weapons->firing_position = m_position;
+			b_boss_weapons->b_a_aiming = m_boss->GetRotation();
+			b_boss_weapons->b_a_Bullet_Fowrad = m_boss->GetForward();
 		}
 		Move();
 	}
-	if (b_w_player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
@@ -122,14 +122,14 @@ void Boss_Riser::Update()
 void Boss_Riser::Move()
 {
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
-	Quaternion originRotation = b_w_boss->GetRotation();
-	b_w_position = b_w_boss->GetPosition();
+	Quaternion originRotation = m_boss->GetRotation();
+	m_position = m_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
-	b_w_position += lp;
-	b_w_rotation = originRotation;
-	boss_Riser_Render.SetPosition(b_w_position);
-	boss_Riser_Render.SetRotation(b_w_rotation);
+	m_position += lp;
+	m_rotation = originRotation;
+	boss_Riser_Render.SetPosition(m_position);
+	boss_Riser_Render.SetRotation(m_rotation);
 }
 
 void Boss_Riser::PlayerSearch()

@@ -1,10 +1,8 @@
 #pragma once
-#define HP 500.0f
 
 class Player;
 class Boss;
 class Boss_Cannon_attack;
-class Drop_item;
 class Game;
 class Boss_Saber;
 
@@ -17,38 +15,65 @@ public:
 	void Setup();
 	void Update();
 	void Move();
-	void PlayerSearch();
 	void Render(RenderContext& rc);
 	void Rotation();
 
-	Player* b_w_player;
-	Boss* b_w_boss;
-	Boss_Saber* m_bossSaber;
-	Boss_Cannon_attack* b_boss_weapons;
-	Drop_item* m_dropItem;
-	Game* m_game;
+	/// <summary>
+	/// キャノンの大きさ減少
+	/// </summary>
+	/// <param name="amount">減少量</param>
+	void DecreaseScale(float amount)
+	{
+		m_cannonScale -= amount;
+	}
+
+	/// <summary>
+	/// キャノンの大きさを設定
+	/// </summary>
+	void SetCannonScale()
+	{
+		m_cannonModel.SetScale(m_cannonScale);
+	}
+
+	/// <summary>
+	/// 攻撃できるかどうかを設定
+	/// </summary>
+	/// <param name="attack"></param>
+	void SetAttackOK(bool attack)
+	{
+		m_attackOK = attack;
+	}
+
+	/// <summary>
+	/// フラグをセット
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetAttackFlag(bool flag)
+	{
+		m_attackFlag = flag;
+	}
+
+private:
+	Player* m_player = nullptr;
+	Boss* m_boss = nullptr;
+	Boss_Saber* m_bossSaber = nullptr;
+	Boss_Cannon_attack* m_cannonAttack = nullptr;
+	Game* m_game = nullptr;
 	EffectEmitter* m_weaponEffect = nullptr;
-	SoundSource* m_Cannon_ChargeSE = nullptr;
-	//CharacterController boss_riser_characterContller;
+	SoundSource* m_cannonChargeSE = nullptr;
+
 	CharacterController m_enemyCharacterController;	//エネミーキャラコン
-	Quaternion b_w_rotation;
-	Vector3 b_w_position;
-	Vector3 b_w_moveSpeed;
-	Vector3 b_w_Fowrad = { 0.0f,0.0f,1.0f };
-	int game_state = 0;
-	ModelRender boss_Cannon_Render;
+	Quaternion m_rotation;
+	ModelRender m_cannonModel;
 
-	//いる。絶対。
-	Vector3 b_w_localposition = { 00.0f,00.0f,-0.0f };
-	Vector3 efeLP = { 0.0f,680.0f,-00.0f };
-	bool m_attackState = false;
-	bool attack_ok = false;
-	bool defeatState = false;//死んだかどうかのフラグ。
-	int set_weapons = 0;
-
-	int firing_cound = 0;
-	int fast = 0;
-
-	float connon_HP = HP;
-	float scale = 15.0f;
+	Vector3 m_position = Vector3::Zero;
+	Vector3 m_forward = { 0.0f,0.0f,1.0f };
+	Vector3 m_localPosition = { 0.0f,0.0f,0.0f };
+	Vector3 m_effectLocalPos = { 0.0f,680.0f,0.0f };
+	bool m_attackFlag = false;
+	bool m_attackOK = false;
+	int m_fireCount = 0;
+	int m_fast = 0;
+	float m_HP = 500.0f;
+	float m_cannonScale = 15.0f;
 };

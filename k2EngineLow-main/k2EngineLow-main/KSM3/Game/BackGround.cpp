@@ -14,16 +14,16 @@ BackGround::~BackGround()
 bool BackGround::Start()
 {
 	//メモリの確保
-	modelRender = std::make_unique<ModelRender>();
+	m_groundModel = std::make_unique<ModelRender>();
 
 
 	//モデルを読み込む。
-	modelRender->Init("Assets/modelData/stage8.tkm",false);
-	modelRender->SetScale(0.8f);
+	m_groundModel->Init("Assets/modelData/stage8.tkm",false);
+	m_groundModel->SetScale(0.8f);
 	//モデルを更新する。
-	modelRender->Update();
+	m_groundModel->Update();
 	//静的物理オブジェクトを作成。
-	physicsStaticObject.CreateFromModel(modelRender->GetModel(), modelRender->GetModel().GetWorldMatrix());
+	m_physicsStaticObject.CreateFromModel(m_groundModel->GetModel(), m_groundModel->GetModel().GetWorldMatrix());
 	// 当たり判定を有効化する。
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 	return true;
@@ -32,10 +32,10 @@ bool BackGround::Start()
 void BackGround::Update()
 {
 	//モデルの更新処理。
-	modelRender->Update();
+	m_groundModel->Update();
 }
 
 void BackGround::Render(RenderContext& rc)
 {
-	modelRender->Draw(rc);
+	m_groundModel->Draw(rc);
 }

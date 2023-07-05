@@ -25,18 +25,18 @@ public:
 		enAnimationClip_Num
 	};
 
-	Player* b_w_player;
-	Boss* b_w_boss;
+	Player* m_player;
+	Boss* m_boss;
 	Boss_Turbo_attack* b_boss_weapons;
 	Drop_item* m_dropItem;
 	EffectEmitter* m_weaponEffect = nullptr;
 	SoundSource*TatumakiSE=nullptr;
 	AnimationClip m_animationClip[enAnimationClip_Num];
 	//CharacterController boss_riser_characterContller;
-	Quaternion b_w_rotation;
-	Vector3 b_w_position;
+	Quaternion m_rotation;
+	Vector3 m_position;
 	Vector3 b_w_moveSpeed;
-	Vector3 b_w_Fowrad;
+	Vector3 m_forward;
 	Vector3 Move_speed = Vector3::Zero;
 	Vector3 efeLP = { 0.0f,410.0f,0.0f };
 	int game_state = 0;

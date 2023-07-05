@@ -476,14 +476,14 @@ void Boss::PlayerSearch()
 
 	if (fabsf(angle) < Math::DegToRad(45.0f)) {
 		m_bossRiser->attack_ok = true;
-		m_bossCannon->attack_ok = true;
+		m_bossCannon->SetAttackOK(true);
 		m_bossDrill->attack_ok = true;
 		m_bossShovel->attack_ok = true;
 		m_bossTurbo->attack_ok = true;
 	}
 	else {
 		m_bossRiser->attack_ok = false;
-		m_bossCannon->attack_ok = false;
+		m_bossCannon->SetAttackOK(false);
 		m_bossDrill->attack_ok = false;
 		m_bossShovel->attack_ok = false;
 		m_bossTurbo->attack_ok = false;
@@ -522,8 +522,8 @@ void Boss::Damage()
 				m_bossDrill->boss_Drill_Render.SetScale(m_bossDrill->Drill_scale);
 			}
 			if (m_bossCannon != nullptr) {
-				m_bossCannon->scale -= 0.75f;
-				m_bossCannon->boss_Cannon_Render.SetScale(m_bossCannon->scale);
+				m_bossCannon->DecreaseScale(0.75f);
+				m_bossCannon->SetCannonScale();
 			}
 			if (m_bossSaber != nullptr) {
 				m_bossSaber->scale -= 0.75f;
@@ -548,8 +548,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossRiser->b_w_position);
-				m_explosionAnother->SetRotation(m_bossRiser->b_w_rotation);
+				m_explosionAnother->SetPosition(m_bossRiser->m_position);
+				m_explosionAnother->SetRotation(m_bossRiser->m_rotation);
 				m_explosionAnother->Play();
 			}
 			if (m_bossDrill != nullptr) {
@@ -558,8 +558,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossDrill->b_w_position);
-				m_explosionAnother->SetRotation(m_bossDrill->b_w_rotation);
+				m_explosionAnother->SetPosition(m_bossDrill->m_position);
+				m_explosionAnother->SetRotation(m_bossDrill->m_rotation);
 				m_explosionAnother->Play();
 			}
 			if (m_bossSaber != nullptr) {
@@ -568,8 +568,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossSaber->b_w_position);
-				m_explosionAnother->SetRotation(m_bossSaber->b_w_rotation);
+				m_explosionAnother->SetPosition(m_bossSaber->m_position);
+				m_explosionAnother->SetRotation(m_bossSaber->m_rotation);
 				m_explosionAnother->Play();
 			}
 			if (m_bossShovel != nullptr) {
@@ -578,8 +578,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossShovel->b_w_position);
-				m_explosionAnother->SetRotation(m_bossShovel->b_w_rotation);
+				m_explosionAnother->SetPosition(m_bossShovel->m_position);
+				m_explosionAnother->SetRotation(m_bossShovel->m_rotation);
 				m_explosionAnother->Play();
 			}
 			if (m_bossTurbo != nullptr) {
@@ -588,8 +588,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossTurbo->b_w_position);
-				m_explosionAnother->SetRotation(m_bossTurbo->b_w_rotation);
+				m_explosionAnother->SetPosition(m_bossTurbo->m_position);
+				m_explosionAnother->SetRotation(m_bossTurbo->m_rotation);
 				m_explosionAnother->Play();
 			}
 			

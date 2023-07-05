@@ -27,17 +27,17 @@ public:
 
 	AnimationClip m_animationClip[enAnimationClip_Num];
 	EffectEmitter* m_weaponEffect = nullptr;
-	Player* b_w_player;
-	Boss* b_w_boss;
+	Player* m_player;
+	Boss* m_boss;
 	Boss_Riser_attack* b_boss_weapons;
 	Drop_item* m_dropItem;
 	Game* m_game;
 
 	//CharacterController boss_riser_characterContller;
-	Quaternion b_w_rotation;
-	Vector3 b_w_position;
+	Quaternion m_rotation;
+	Vector3 m_position;
 	Vector3 b_w_moveSpeed;
-	Vector3 b_w_Fowrad = { 0.0f,0.0f,1.0f };
+	Vector3 m_forward = { 0.0f,0.0f,1.0f };
 	int game_state = 0;
 	ModelRender boss_Riser_Render;
 	SoundSource* m_Dozar_ChargeSE = nullptr;

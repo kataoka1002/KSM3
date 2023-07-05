@@ -40,7 +40,7 @@ Boss_Drill::~Boss_Drill()
 void Boss_Drill::Setup()
 {
 	set_weapons = 1;
-	b_w_boss = FindGO<Boss>("boss");
+	m_boss = FindGO<Boss>("boss");
 	if (set_weapons == 1)
 	{
 		boss_Drill_Render.Init("Assets/modelData/Boss_Drill.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
@@ -71,9 +71,9 @@ void Boss_Drill::Update()
 		{
 			b_boss_weapons = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
 			m_attackState = true;
-			b_boss_weapons->firing_position = b_w_position;
-			b_boss_weapons->b_a_aiming = b_w_boss->GetRotation();
-			b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->GetForward();
+			b_boss_weapons->firing_position = m_position;
+			b_boss_weapons->b_a_aiming = m_boss->GetRotation();
+			b_boss_weapons->b_a_Bullet_Fowrad = m_boss->GetForward();
 		}
 		//攻撃終了時リセット
 		if (fast >=21) {
@@ -128,8 +128,8 @@ void Boss_Drill::Update()
 			m_explosionAnother->SetScale({ 25.0f,25.0f,25.0f });
 			
 			//efeLP += b_w_position;
-			m_explosionAnother->SetPosition(efeLP + b_w_position);
-			m_explosionAnother->SetRotation(b_w_rotation);
+			m_explosionAnother->SetPosition(efeLP + m_position);
+			m_explosionAnother->SetRotation(m_rotation);
 			m_explosionAnother->Play();
 		}
 		if (Death_count == 140) {
@@ -145,12 +145,12 @@ void Boss_Drill::Update()
 			Explosion_efe->SetScale({ 70.0f,70.0f,70.0f });
 			
 			//efeLP += b_w_position;
-			Explosion_efe->SetPosition(efeLP + b_w_position);
-			Explosion_efe->SetRotation(b_w_rotation);
+			Explosion_efe->SetPosition(efeLP + m_position);
+			Explosion_efe->SetRotation(m_rotation);
 			Explosion_efe->Play();
 		}
 		if (Death_count == 340) {
-			DeleteGO(b_w_boss->GetShovel());
+			DeleteGO(m_boss->GetShovel());
 			DeleteGO(this);
 		}
 		
@@ -162,14 +162,14 @@ void Boss_Drill::Update()
 void Boss_Drill::Move()
 {
 	//ここは丸パクリでOK
-	Quaternion originRotation = b_w_boss->GetRotation();
-	b_w_position = b_w_boss->GetPosition();
+	Quaternion originRotation = m_boss->GetRotation();
+	m_position = m_boss->GetPosition();
 	Vector3 lp = b_w_localposition;
 	originRotation.Multiply(lp);
-	b_w_position += lp;
-	b_w_rotation = originRotation;
-	boss_Drill_Render.SetPosition(b_w_position);
-	boss_Drill_Render.SetRotation(b_w_rotation);
+	m_position += lp;
+	m_rotation = originRotation;
+	boss_Drill_Render.SetPosition(m_position);
+	boss_Drill_Render.SetRotation(m_rotation);
 }
 
 void Boss_Drill::PlayerSearch()
@@ -194,7 +194,7 @@ void Boss_Drill::PlayerSearch()
 }
 void Boss_Drill::Damage()
 {
-	efePosi = b_w_position;
+	efePosi = m_position;
 		//---------------------------------------------------------------------------------------------------
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{

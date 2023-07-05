@@ -46,7 +46,7 @@ Boss_Cannon_attack::Boss_Cannon_attack()
 
 Boss_Cannon_attack::~Boss_Cannon_attack()
 {
-	b_a_weapons->m_attackState = false;
+	b_a_weapons->SetAttackFlag(false);
 }
 
 bool Boss_Cannon_attack::Start() {
