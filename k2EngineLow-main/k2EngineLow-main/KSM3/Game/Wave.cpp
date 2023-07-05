@@ -485,11 +485,7 @@ void Wave::ExecuteBossBattle()
 
 void Wave::TimerRotation()
 {
-	const float ROT_SPEED		= 2.0f;		//‰ñ“]‚·‚é‘¬‚³
-	float		m_rotAmount		= 0.0f;		//‰ñ“]—Ê
-	int			m_stopCount		= 0;		//‰ñ“]‚ÌÃ~ŠÔ
-	bool		m_halfRot		= false;	//”¼•ª‰ñ“]‚µ‚½‚©‚Ç‚¤‚©
-	bool		m_rotStopFlag	= false;	//‰ñ“]‚ª~‚Ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	const float ROT_SPEED		= 2.0f;		//‰ñ“]‚·‚é‘¬‚³	
 
 	float m_rotSpeed = ROT_SPEED;
 
