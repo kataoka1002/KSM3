@@ -475,14 +475,14 @@ void Boss::PlayerSearch()
 	}
 
 	if (fabsf(angle) < Math::DegToRad(45.0f)) {
-		m_bossRiser->m_attackOK = true;
+		m_bossRiser->SetAttackOK(true);
 		m_bossCannon->SetAttackOK(true);
 		m_bossDrill->SetAttackOK(true);
 		m_bossShovel->m_attackOK = true;
 		m_bossTurbo->m_attackOK = true;
 	}
 	else {
-		m_bossRiser->m_attackOK = false;
+		m_bossRiser->SetAttackOK(false);
 		m_bossCannon->SetAttackOK(false);
 		m_bossDrill->SetAttackOK(false);
 		m_bossShovel->m_attackOK = false;
@@ -514,8 +514,8 @@ void Boss::Damage()
 		m_HP = 0.0f;
 		if (m_deathCount >= 0 && m_deathCount < 20) {
 			if (m_bossRiser != nullptr) {
-				m_bossRiser->scale -= 0.6f;
-				m_bossRiser->boss_Riser_Render.SetScale(m_bossRiser->scale);
+				m_bossRiser->DecreaseScale(0.6f);
+				m_bossRiser->SetRiserScale();
 			}
 			if (m_bossDrill != nullptr) {
 				m_bossDrill->DecreaseScale(1.02f);
@@ -535,7 +535,7 @@ void Boss::Damage()
 			}
 			if (m_bossTurbo != nullptr) {
 				m_bossTurbo->scale -= 0.651f;
-				m_bossTurbo->boss_Turbo_Render.SetScale(m_bossRiser->scale);
+				m_bossTurbo->boss_Turbo_Render.SetScale(m_bossRiser->GetScale());
 			}
 		}
 		if (m_deathCount == 0) {
@@ -548,8 +548,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossRiser->m_position);
-				m_explosionAnother->SetRotation(m_bossRiser->m_rotation);
+				m_explosionAnother->SetPosition(m_bossRiser->GetPosirion());
+				m_explosionAnother->SetRotation(m_bossRiser->GetRotation());
 				m_explosionAnother->Play();
 			}
 			if (m_bossDrill != nullptr) {

@@ -75,8 +75,6 @@ public:
 		m_attackOK = attack;
 	}
 
-
-
 private:
 
 	AnimationClip m_animationClip[enAnimationClip_Num];
