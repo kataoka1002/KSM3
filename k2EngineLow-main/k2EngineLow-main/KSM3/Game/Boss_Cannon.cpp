@@ -76,9 +76,9 @@ void Boss_Cannon::Update()
 		{
 			m_cannonAttack = NewGO<Boss_Cannon_attack>(1, "boss_Connon_attack");
 			m_attackFlag = true;
-			m_cannonAttack->firing_position = m_position;
-			m_cannonAttack->b_a_aiming = m_rotation;
-			m_cannonAttack->b_a_Bullet_Fowrad = m_forward;
+			m_cannonAttack->SetPosition(m_position);
+			m_cannonAttack->SetRotation(m_rotation);
+			m_cannonAttack->SetForward(m_forward);
 			m_fireCount = 0;
 		}
 		m_fireCount++;//攻撃のタイミングの計算。

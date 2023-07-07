@@ -48,12 +48,12 @@ void Boss_Turbo::Setup()
 
 void Boss_Turbo::Update()
 {
-	if (fast == 0)
+	if (m_fastFlag == 0)
 	{
 		Setup();
 	}
-	fast++;
-	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	m_fastFlag++;
+	if (m_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
 	{
 		Move();
 			Rotation();
@@ -108,9 +108,9 @@ void Boss_Turbo::Update()
 		if (firing_cound > 700) {
 			b_boss_weapons = NewGO<Boss_Turbo_attack>(1, "boss_Turbo_attack");
 			m_attackState = true;
-			b_boss_weapons->firing_position = m_position;
-			b_boss_weapons->b_a_aiming = m_rotation;
-			b_boss_weapons->b_a_Bullet_Fowrad = m_boss->GetForward();
+			b_boss_weapons->m_firePosition = m_position;
+			b_boss_weapons->m_aim = m_rotation;
+			b_boss_weapons->m_bulletForward = m_boss->GetForward();
 			if (firing_cound == 900) {
 				firing_cound = 0;
 				Rote = false;

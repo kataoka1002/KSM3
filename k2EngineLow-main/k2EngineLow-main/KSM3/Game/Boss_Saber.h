@@ -44,7 +44,7 @@ public:
 	int set_weapons = 0;
 
 	int firing_cound = 0;
-	int fast = 0;
+	int m_fastFlag = 0;
 
 	float connon_HP = HP;
 	float scale = 15.0f;

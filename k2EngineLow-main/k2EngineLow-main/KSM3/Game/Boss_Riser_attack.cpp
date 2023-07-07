@@ -71,13 +71,13 @@ void Boss_Riser_attack::DestroyWithImpactEffect() {
 		m_weaponEffect = NewGO<EffectEmitter>(0);
 		m_weaponEffect->Init(enBoss_Dozar_Landing);
 		m_weaponEffect->SetScale({ 50.0f,50.0f,50.0f });
-		m_weaponEffect->SetPosition(firing_position);
+		m_weaponEffect->SetPosition(m_firePosition);
 		m_weaponEffect->Play();
-		efePosi = firing_position;
+		m_effectPosition = m_firePosition;
 		
 	
-	Landing_count++;
-	if (fast == true) {
+	m_loadingCount++;
+	if (m_fastFlag == true) {
 		//着弾したら効果音発生
 		m_battleShipGunTyakutiSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		m_battleShipGunTyakutiSE->Init(en_Boss_Dozar_Langing_SE);		//初期化
@@ -89,9 +89,9 @@ void Boss_Riser_attack::DestroyWithImpactEffect() {
 		m_camera->SetBigVibFlag(true);
 		Damage(true);
 
-		fast = false;
+		m_fastFlag = false;
 	}
-	if (Landing_count == 100) {
+	if (m_loadingCount == 100) {
 		// 着弾したら死ぬ
 		DeleteGO(this);
 		m_BulletEffect->Stop();
@@ -104,50 +104,50 @@ void Boss_Riser_attack::SetUp()
 {
 	GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
 	m_camera->SetVibFlag(true);
-	b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
-	b_a_aiming.Multiply(m_bulletLocalPosition);	//掛け算
-	m_rot = b_a_aiming;
-	firing_position += m_bulletLocalPosition;
-	b_a_Bullet.SetScale(30);
-	b_a_Bullet.SetPosition(firing_position);
-	b_a_Bullet.SetRotation(m_rot);
-	b_a_Bullet.Update();
+	m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
+	m_aim.Multiply(m_bulletLocalPosition);	//掛け算
+	m_rot = m_aim;
+	m_firePosition += m_bulletLocalPosition;
+	m_bulletModel.SetScale(30);
+	m_bulletModel.SetPosition(m_firePosition);
+	m_bulletModel.SetRotation(m_rot);
+	m_bulletModel.Update();
 
 	Effect();
 }
 
 void Boss_Riser_attack::Update()
 {
-	if (Bullet_efe_count == 0) {
+	if (m_bulletEfeCount == 0) {
 		m_BulletEffect = NewGO<EffectEmitter>(0);
 		m_BulletEffect->Init(enBoss_Dozar_efe);
 		m_BulletEffect->SetScale({ 35.0f,35.0f,35.0f });
 
 		m_BulletEffect->Play();
 	}
-	if (Bullet_efe_count == 600) {
+	if (m_bulletEfeCount == 600) {
 		DeleteGO(m_BulletEffect);
 		m_BulletEffect = nullptr;
-		Bullet_efe_count = -1;
+		m_bulletEfeCount = -1;
 	}
 	if (m_BulletEffect != nullptr) {
-		m_BulletEffect->SetPosition(firing_position);
+		m_BulletEffect->SetPosition(m_firePosition);
 	}
-	Bullet_efe_count++;
+	m_bulletEfeCount++;
 
 	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
-		fall_speed += 0.002;
+		m_fallSpeed += 0.002;
 
-		if (firing_position.y <= 0.0f)
+		if (m_firePosition.y <= 0.0f)
 		{
 			if (farst == true) {
 				DestroyWithImpactEffect();
 				farst = false;
 			}
 		}
-		b_a_Bullet.Update();
+		m_bulletModel.Update();
 		Damage(false);
 		Move();
 
@@ -174,15 +174,15 @@ void Boss_Riser_attack::Effect() {
 void Boss_Riser_attack::Move()
 {
 	//弾を前に飛ばす処理
-	Move_speed += b_a_Bullet_Fowrad * 3.0f;
-	Move_speed.x -= 0.25;
-	Move_speed.y -= 0.5 + fall_speed;
-	firing_position += Move_speed;
+	m_moveSpeed += m_bulletForward * 3.0f;
+	m_moveSpeed.x -= 0.25;
+	m_moveSpeed.y -= 0.5 + m_fallSpeed;
+	m_firePosition += m_moveSpeed;
 
 	//バレットの更新
-	b_a_Bullet.SetRotation(m_rot);
-	b_a_Bullet.SetPosition(firing_position);
-	b_a_Bullet.Update();
+	m_bulletModel.SetRotation(m_rot);
+	m_bulletModel.SetPosition(m_firePosition);
+	m_bulletModel.Update();
 }
 
 void Boss_Riser_attack::Damage(bool No_tyakudan)
@@ -192,7 +192,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = efePosi - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+			Vector3 diffPlayer = m_effectPosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
@@ -213,7 +213,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftArm = efePosi - m_leftArm->GetPosition();
+			Vector3 diffLeftArm = m_effectPosition - m_leftArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -230,7 +230,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftLeg = efePosi - m_leftLeg->GetPosition();
+			Vector3 diffLeftLeg = m_effectPosition - m_leftLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -248,7 +248,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_rightArm != nullptr)	//右手に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightArm = efePosi - m_rightArm->GetPosition();
+			Vector3 diffRightArm = m_effectPosition - m_rightArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -266,7 +266,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightLeg = efePosi - m_rightLeg->GetPosition();
+			Vector3 diffRightLeg = m_effectPosition - m_rightLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -284,7 +284,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_shoulder != nullptr)	//肩に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffShoulder = efePosi - m_shoulder->GetPosition();
+			Vector3 diffShoulder = m_effectPosition - m_shoulder->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -305,7 +305,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = firing_position - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+			Vector3 diffPlayer = m_firePosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
@@ -326,7 +326,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftArm = firing_position - m_leftArm->GetPosition();
+			Vector3 diffLeftArm = m_firePosition - m_leftArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -346,7 +346,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftLeg = firing_position - m_leftLeg->GetPosition();
+			Vector3 diffLeftLeg = m_firePosition - m_leftLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -367,7 +367,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_rightArm != nullptr)	//右手に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightArm = firing_position - m_rightArm->GetPosition();
+			Vector3 diffRightArm = m_firePosition - m_rightArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -388,7 +388,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightLeg = firing_position - m_rightLeg->GetPosition();
+			Vector3 diffRightLeg = m_firePosition - m_rightLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -409,7 +409,7 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 		if (m_shoulder != nullptr)	//肩に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffShoulder = firing_position - m_shoulder->GetPosition();
+			Vector3 diffShoulder = m_firePosition - m_shoulder->GetPosition();
 
 			//武器によってダメージを変える
 

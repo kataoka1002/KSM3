@@ -47,36 +47,36 @@ void Boss_Riser::Setup()
 
 void Boss_Riser::Update()
 {
-	if (fast == 0)
+	if (m_fastFlag == 0)
 	{
 		Setup();
 	}
-	fast++;
+	m_fastFlag++;
 	
-	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
 	{
-		if (fast >= 540 && fast < 810) {
+		if (m_fastFlag >= 540 && m_fastFlag < 810) {
 			boss_Riser_Render.PlayAnimation(enAnimationClip_attack,0.5f);
 		}
 		else {
 			boss_Riser_Render.PlayAnimation(enAnimationClip_Idle,0.5f);
 		}
-		if (fast == 809) {
+		if (m_fastFlag == 809) {
 			DeleteGO(m_weaponEffect);
 			m_weaponEffect = nullptr;
-			fast = 1;
+			m_fastFlag = 1;
 		}
 		
 		if (m_attackState == 0) {
 
 		}
-		if (fast == 540) {
+		if (m_fastFlag == 540) {
 			m_Dozar_ChargeSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_Dozar_ChargeSE->Init(en_Boss_Dozar_Charge_SE);		//初期化
 			m_Dozar_ChargeSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_Dozar_ChargeSE->Play(false);
 		}
-		if (fast == 640) {
+		if (m_fastFlag == 640) {
 			m_weaponEffect = NewGO<EffectEmitter>(0);
 			m_weaponEffect->Init(enBoss_Dozar_Charge);
 			m_weaponEffect->SetScale({ 30.0f,30.0f,30.0f });
@@ -87,13 +87,13 @@ void Boss_Riser::Update()
 			m_weaponEffect->Play();
 		}
 
-		if (fast == 665)
+		if (m_fastFlag == 665)
 		{
 			b_boss_weapons = NewGO<Boss_Riser_attack>(1, "boss_Riser_attack");
 			m_attackState = true;
-			b_boss_weapons->firing_position = m_position;
-			b_boss_weapons->b_a_aiming = m_boss->GetRotation();
-			b_boss_weapons->b_a_Bullet_Fowrad = m_boss->GetForward();
+			b_boss_weapons->m_firePosition = m_position;
+			b_boss_weapons->m_aim = m_boss->GetRotation();
+			b_boss_weapons->m_bulletForward = m_boss->GetForward();
 		}
 		Move();
 	}

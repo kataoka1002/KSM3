@@ -64,32 +64,32 @@ void Boss_Shovel::Update()
 {
 	
 	
-	if (fast == 0)
+	if (m_fastFlag == 0)
 	{
 		Setup();
 		
 	}
-	fast++;
-	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	m_fastFlag++;
+	if (m_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
 	{
-		if (fast == 400) {
+		if (m_fastFlag == 400) {
 			m_Shovel_roar_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_Shovel_roar_SE->Init(enBoss_Shovel_roar);		//初期化
 			m_Shovel_roar_SE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_Shovel_roar_SE->Play(false);
 		}
-		if (fast == 1300) {
+		if (m_fastFlag == 1300) {
 			m_Shovel_roar_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 			m_Shovel_roar_SE->Init(enBoss_Shovel_roar);		//初期化
 			m_Shovel_roar_SE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
 			m_Shovel_roar_SE->Play(false);
 		}
-		if (fast >=270&&fast<630) {
+		if (m_fastFlag >=270&&m_fastFlag<630) {
 			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle2,0.5f);
 		}
 		
-		else if (fast >= 1170 && fast < 1500) {
-			if (fast == 1400) {
+		else if (m_fastFlag >= 1170 && m_fastFlag < 1500) {
+			if (m_fastFlag == 1400) {
 
 				m_Shovel_shock_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 				m_Shovel_shock_SE->Init(en_Boss_Shovel_shock);		//初期化
@@ -107,11 +107,11 @@ void Boss_Shovel::Update()
 			}
 			boss_Shovel_Render.PlayAnimation(enAnimationClip_Shock_Ground, 0.5f);
 		}
-		else if (fast == 1680) {
+		else if (m_fastFlag == 1680) {
 			
 			DeleteGO(shovel_shock);
 			shovel_shock = nullptr;
-			fast = 0;
+			m_fastFlag = 0;
 		}
 		else {
 			boss_Shovel_Render.PlayAnimation(enAnimationClip_Idle,0.5f);

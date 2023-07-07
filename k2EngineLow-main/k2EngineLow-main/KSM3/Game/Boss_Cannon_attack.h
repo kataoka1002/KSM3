@@ -28,43 +28,49 @@ public:
 	void Move();
 	void Render(RenderContext& rc);
 
+	void SetPosition(Vector3 pos)
+	{
+		m_firePosition = pos;
+	}
+
+	void SetRotation(Quaternion rot)
+	{
+		m_aim = rot;
+	}
+
+	void SetForward(Vector3 forward)
+	{
+		m_bulletForward = forward;
+	}
+
+private:
 	Customize_UI_ver2* m_customizeUI = nullptr;
-	Boss_Cannon* b_a_weapons;
-	Boss* b_a_boss;
-	Core_weapons* b_a_core_weapons;
-	Player* b_a_player;
+	Boss_Cannon* m_cannon = nullptr;
+	Player* m_player = nullptr;
 	Left_arm_weapons* m_leftArm = nullptr;
 	Left_leg_weapons* m_leftLeg = nullptr;
 	Right_arm_weapons* m_rightArm = nullptr;
 	Right_leg_weapons* m_rightLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
-	SoundSource* b_attack_SE;
-	Game* m_game;
-
-	ModelRender b_a_Bullet;
-	Quaternion b_a_aiming;
-	Quaternion m_rot;
-	Vector3 firing_position;
-	Vector3 b_a_Bullet_Fowrad;
-	Vector3 b_a_Bulet_weapons;
-	Vector3 Move_speed = Vector3::Zero;
+	Game* m_game = nullptr;
 	EffectEmitter* m_weaponEffect = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;
 	EffectEmitter* m_BulletEffect = nullptr;
 	SoundSource* m_battleShipGunTyakutiSE = nullptr;
 	SoundSource* m_Cannon_LangingSE = nullptr;
-	Vector3 to_core_weapons;
+
+	ModelRender m_bulletModel;
+	Quaternion m_aim;
+	Quaternion m_rot;
+	Vector3 m_firePosition = Vector3::Zero;
+	Vector3 m_bulletForward = Vector3::Zero;
+	Vector3 m_moveSpeed = Vector3::Zero;
 	Vector3 m_bulletLocalPosition = { 0.0f,680.0f,200.0f };	//弾のローカルポジション
+	Vector3 m_effectPosition = Vector3::Zero;
 
-	bool Landing_state = false;
-	float move_speed = 30.0f;
-	float fall_speed = 0.0f;
-	bool m_attackState = true;
-	bool fast_count = true;
+	float m_fallSpeed = 0.0f;
+	int m_loadingCount = 0;
+	int m_bulletEfeCount = 0;
+	bool m_fastFlag = true;
 
-	int Landing_count=0;
-	int Bullet_efe_count = 0;
-	Vector3 efePosi = Vector3::Zero;
-	bool fast = true;
-	
 };
