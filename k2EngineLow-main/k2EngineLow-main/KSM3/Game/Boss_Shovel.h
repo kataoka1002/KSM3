@@ -104,7 +104,7 @@ private:
 
 	ModelRender m_shovelModel;
 	Quaternion m_rotation;
-	Vector3 m_position;
+	Vector3 m_position = Vector3::Zero;
 	Vector3 m_forward = { 0.0f,0.0f,1.0f };
 	Vector3 m_localPosition = { 00.0f,230.0f,950.0f };
 	Vector3 m_shockEffectLocalPos = { 0.0f,-229.0f,-1000.0f };

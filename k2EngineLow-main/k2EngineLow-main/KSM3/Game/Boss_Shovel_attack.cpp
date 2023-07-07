@@ -27,7 +27,7 @@ Boss_Shovel_attack::Boss_Shovel_attack()
 
 Boss_Shovel_attack::~Boss_Shovel_attack()
 {
-	//m_weapon->m_attackState = false;
+	
 }
 
 void Boss_Shovel_attack::SetUp()
@@ -54,18 +54,18 @@ void Boss_Shovel_attack::Update()
 
 void Boss_Shovel_attack::Move()
 {
-	m_firePosition += m_bulletForward * move_speed;
-	if (m_firePosition.y <= m_coreWeapon->GetPosition().y && fast_count == true)
+	m_firePosition += m_bulletForward * m_moveSpeed;
+	if (m_firePosition.y <= m_coreWeapon->GetPosition().y && m_fastFlag == true)
 	{
 		m_firePosition.y += 10.0f;
 	}
 	else
 	{
-		fast_count = false;
+		m_fastFlag = false;
 		m_fallSpeed += 0.1f;
 	}
 	m_firePosition.y -= m_fallSpeed;
-	move_speed -= 0.05f;
+	m_moveSpeed -= 0.05f;
 
 	m_bulletModel.SetPosition(m_firePosition);
 }
