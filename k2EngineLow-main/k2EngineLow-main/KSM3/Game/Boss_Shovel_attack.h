@@ -1,5 +1,4 @@
 #pragma once
-#include "sound/SoundSource.h"
 
 class Boss;
 class Boss_Shovel;
@@ -17,22 +16,19 @@ public:
 	void Move();
 	void Render(RenderContext& rc);
 
-	Boss_Shovel* m_weapon;
-	Boss* m_boss;
-	Core_weapons* m_coreWeapon;
-	Player* m_player;
-	SoundSource* m_attackSE;
+private:
+	Boss_Shovel* m_weapon = nullptr;
+	Boss* m_boss = nullptr;
+	Core_weapons* m_coreWeapon = nullptr;
+	Player* m_player = nullptr;
+	SoundSource* m_attackSE = nullptr;
 
 	ModelRender m_bulletModel;
 	Quaternion m_aim;
-	Vector3 m_firePosition;
-	Vector3 m_bulletForward;
-	Vector3 iranran;
-	Vector3 to_core_weapons;
+	Vector3 m_firePosition = Vector3::Zero;
+	Vector3 m_bulletForward = Vector3::Zero;
 
-	bool Landing_state = false;
-	float move_speed = 30.0f;
+	float m_moveSpeed = 30.0f;
 	float m_fallSpeed = 0.0f;
-	bool m_attackState = true;
-	bool fast_count = true;
+	bool m_fastFlag = true;
 };
