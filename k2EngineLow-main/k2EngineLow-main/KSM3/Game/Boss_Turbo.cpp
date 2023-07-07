@@ -10,7 +10,6 @@
 
 Boss_Turbo::Boss_Turbo()
 {
-
 	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_turbo.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_Attack].Load("Assets/animData/Boss_turbo_attack.tka");
@@ -20,101 +19,75 @@ Boss_Turbo::Boss_Turbo()
 
 Boss_Turbo::~Boss_Turbo()
 {
-	DeleteGO(b_boss_weapons);
-	DeleteGO(TatumakiSE);
+	DeleteGO(m_turboAttack);
+	DeleteGO(m_tatumakiSE);
+}
+
+bool Boss_Turbo::Start()
+{
+	Setup();
+
+	return true;
 }
 
 void Boss_Turbo::Setup()
 {
-	m_setWeapon = 1;
 	m_boss = FindGO<Boss>("boss");
-	if (m_setWeapon == 1)
-	{
-		boss_Turbo_Render.Init("Assets/modelData/Boss_turbo2.tkm", true, true, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
-		boss_Turbo_Render.Update();
-	}
+	m_tarboModel.Init("Assets/modelData/Boss_turbo2.tkm", true, true, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
+	m_tarboModel.Update();
 
-	//キャラコン。
-	//boss_riser_characterContller.Init(
-	//	450.0f,			//半径。
-	//	40.0f,			//高さ。
-	//	b_w_position	//座標。
-	//);
-	//boss_Turbo_Render.SetRotation(b_w_rotation);
-	//boss_Turbo_Render.SetPosition(b_w_position);
-	boss_Turbo_Render.SetScale(scale);
-	boss_Turbo_Render.Update();
+	m_tarboModel.SetScale(m_scale);
+	m_tarboModel.Update();
 }
 
 void Boss_Turbo::Update()
 {
-	if (m_fastFlag == 0)
-	{
-		Setup();
-	}
-	m_fastFlag++;
-	if (m_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		Move();
-			Rotation();
-		
-		iraniran++;//攻撃のタイミングの計算。
-		
+		Rotation();
+
+		m_attackCount++;//攻撃のタイミングの計算。
 
 
-			if (iraniran == 350)
-			{
-				/*m_weaponEffect = NewGO<EffectEmitter>(0);
-				m_weaponEffect->Init(enTatumaki_charge);
-				m_weaponEffect->SetScale({ 40.0f,40.0f,40.0f });
-				m_weaponEffect->SetPosition(efeLP + b_w_position);
-				m_weaponEffect->SetRotation(b_w_rotation);
-				m_weaponEffect->Play();*/
 
-			}
-			if (iraniran >= 500) {
-				boss_Turbo_Render.PlayAnimation(enAnimationClip_Attack, 0.5f);
-			}
-			else {
-				boss_Turbo_Render.PlayAnimation(enAnimationClip_Idle, 0.5f);
-			}
-			if (iraniran == 500) {
+		if (m_attackCount == 350)
+		{
 
-				m_weaponEffect = NewGO<EffectEmitter>(0);
-				m_weaponEffect->Init(enTatumaki_fire);
-				m_weaponEffect->SetScale({ 40.0f,40.0f,30.0f });
-				m_weaponEffect->SetPosition(m_effectLocalPos + m_position);
-				m_weaponEffect->SetRotation(m_rotation);
-				m_weaponEffect->Play();
-				
-				TatumakiSE = NewGO<SoundSource>(0);
-				TatumakiSE->Init(enTatumaki);
-				TatumakiSE->Play(false);
-				Rote = true;
-			}
-		
-		/*if (m_weaponEffect != nullptr) {
-			if (m_weaponEffect->IsPlay() == true) {
-				m_weaponEffect->SetRotation(b_w_rotation);
-				m_weaponEffect->SetPosition(efeLP + b_w_position);
 
-			}
-			else {
-				DeleteGO(m_weaponEffect);
-				m_weaponEffect = nullptr;
-			}
-		}*/
+		}
+		if (m_attackCount >= 500) {
+			m_tarboModel.PlayAnimation(enAnimationClip_Attack, 0.5f);
+		}
+		else {
+			m_tarboModel.PlayAnimation(enAnimationClip_Idle, 0.5f);
+		}
+		if (m_attackCount == 500) {
 
-		if (iraniran > 700) {
-			b_boss_weapons = NewGO<Boss_Turbo_attack>(1, "boss_Turbo_attack");
+			m_weaponEffect = NewGO<EffectEmitter>(0);
+			m_weaponEffect->Init(enTatumaki_fire);
+			m_weaponEffect->SetScale({ 40.0f,40.0f,30.0f });
+			m_weaponEffect->SetPosition(m_effectLocalPos + m_position);
+			m_weaponEffect->SetRotation(m_rotation);
+			m_weaponEffect->Play();
+
+			m_tatumakiSE = NewGO<SoundSource>(0);
+			m_tatumakiSE->Init(enTatumaki);
+			m_tatumakiSE->Play(false);
+			m_roteFlag = true;
+		}
+
+
+		if (m_attackCount > 700) {
+			m_turboAttack = NewGO<Boss_Turbo_attack>(1, "boss_Turbo_attack");
 			m_attackState = true;
-			b_boss_weapons->m_firePosition = m_position;
-			b_boss_weapons->m_aim = m_rotation;
-			b_boss_weapons->m_bulletForward = m_boss->GetForward();
-			if (iraniran == 900) {
-				iraniran = 0;
-				Rote = false;
-				
+			m_turboAttack->m_firePosition = m_position;
+			m_turboAttack->m_aim = m_rotation;
+			m_turboAttack->m_bulletForward = m_boss->GetForward();
+			if (m_attackCount == 900) {
+				m_attackCount = 0;
+				m_roteFlag = false;
+
 			}
 		}
 
@@ -127,28 +100,16 @@ void Boss_Turbo::Update()
 	{
 		DeleteGO(this);
 	}
-	boss_Turbo_Render.Update();
 
-	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
-	boss_Turbo_Render.SetPosition(m_position);
-	/*boss_Turbo_Render.SetRotation(b_w_rotation);*/
-	boss_Turbo_Render.Update();
-	/*PlayerSearch();*/
-
-
-	//if (turbo_HP <= 0.0f)
-	//{
-	//	drop_item = NewGO<Drop_item>(1, "drop_item");
-	//	drop_item->Drop_position = b_w_position;
-	//	drop_item->Drop_position.y += 50.0f;
-	//	defeatState = true;
-	//	DeleteGO(this);
-	//}
+	m_tarboModel.SetPosition(m_position);
+	m_tarboModel.Update();
 }
 
-void Boss_Turbo::Rotation() {
+void Boss_Turbo::Rotation() 
+{
 	
-	if (Rote == false) {
+	if (m_roteFlag == false) 
+	{
 		//エネミーからプレイヤーが入ってきたら追いかける。
 		Vector3 toPlayer = m_player->GetPlayerPosition() - m_position;
 
@@ -160,14 +121,12 @@ void Boss_Turbo::Rotation() {
 		m_forward = toPlayerDir;
 
 		m_rotation.SetRotationY(atan2(m_forward.x, m_forward.z));
-		boss_Turbo_Render.SetRotation(m_rotation);
+		m_tarboModel.SetRotation(m_rotation);
 	}
 	else
 	{
 		
 	}
-	//firing_cound が 350のとき回転を止める
-
 	
 }
 
@@ -180,32 +139,10 @@ void Boss_Turbo::Move()
 	originRotation.Multiply(lp);
 	m_position += lp;
 	m_rotation = originRotation;
-	boss_Turbo_Render.SetPosition(m_position);
-	//boss_Turbo_Render.SetRotation(b_w_rotation);
-}
-
-void Boss_Turbo::PlayerSearch()
-{
-	////エネミーからプレイヤーが入ってきたら追いかける。
-	//Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
-
-	////プレイヤーとの距離を計算する。
-	//float distToPlayer = toPlayer.Length();
-	////プレイヤーに向かって伸びるベクトルを正規化する。
-	//Vector3 toPlayerDir = toPlayer;
-	//toPlayerDir.Normalize();
-	////エネミーの全方向とtoPlayerDirとの内積を計算する。
-	//float t = toPlayerDir.Dot(b_w_Fowrad);
-	////内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
-	//float angle = acos(t);
-
-	//
-
-	//b_w_Fowrad = toPlayerDir;
-
+	m_tarboModel.SetPosition(m_position);
 }
 
 void Boss_Turbo::Render(RenderContext& rc)
 {
-	boss_Turbo_Render.Draw(rc);
+	m_tarboModel.Draw(rc);
 }
