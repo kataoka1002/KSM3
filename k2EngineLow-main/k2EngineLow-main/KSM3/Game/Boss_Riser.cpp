@@ -16,7 +16,7 @@ Boss_Riser::Boss_Riser()
 
 Boss_Riser::~Boss_Riser()
 {
-	DeleteGO(b_boss_weapons);	
+	DeleteGO(m_riserAttack);	
 }
 
 void Boss_Riser::Setup()
@@ -31,18 +31,10 @@ void Boss_Riser::Setup()
 	m_boss = FindGO<Boss>("boss");
 	if (m_setWeapon == 1)
 	{
-		boss_Riser_Render.Init("Assets/modelData/Boss_do-ze-1.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
-		boss_Riser_Render.Update();
+		m_riserModel.Init("Assets/modelData/Boss_do-ze-1.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
+		m_riserModel.Update();
 	}
 	
-	//キャラコン。
-	//boss_riser_characterContller.Init(
-	//	450.0f,			//半径。
-	//	40.0f,			//高さ。
-	//	b_w_position	//座標。
-	//);
-	//boss_Riser_Render.SetRotation(b_w_rotation);
-	//boss_Riser_Render.SetPosition(b_w_position);
 }
 
 void Boss_Riser::Update()
@@ -56,10 +48,10 @@ void Boss_Riser::Update()
 	if (m_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
 	{
 		if (m_fastFlag >= 540 && m_fastFlag < 810) {
-			boss_Riser_Render.PlayAnimation(enAnimationClip_attack,0.5f);
+			m_riserModel.PlayAnimation(enAnimationClip_attack,0.5f);
 		}
 		else {
-			boss_Riser_Render.PlayAnimation(enAnimationClip_Idle,0.5f);
+			m_riserModel.PlayAnimation(enAnimationClip_Idle,0.5f);
 		}
 		if (m_fastFlag == 809) {
 			DeleteGO(m_weaponEffect);
@@ -67,21 +59,17 @@ void Boss_Riser::Update()
 			m_fastFlag = 1;
 		}
 		
-		if (m_attackState == 0) {
-
-		}
 		if (m_fastFlag == 540) {
-			m_Dozar_ChargeSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
-			m_Dozar_ChargeSE->Init(en_Boss_Dozar_Charge_SE);		//初期化
-			m_Dozar_ChargeSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
-			m_Dozar_ChargeSE->Play(false);
+			m_dozarChageSE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+			m_dozarChageSE->Init(en_Boss_Dozar_Charge_SE);		//初期化
+			m_dozarChageSE->SetVolume(2.0f * m_game->GetSEVol());	//音量調整
+			m_dozarChageSE->Play(false);
 		}
 		if (m_fastFlag == 640) {
 			m_weaponEffect = NewGO<EffectEmitter>(0);
 			m_weaponEffect->Init(enBoss_Dozar_Charge);
 			m_weaponEffect->SetScale({ 30.0f,30.0f,30.0f });
 			
-			//efeLP += b_w_position;
 			m_weaponEffect->SetPosition(m_effectLocalPos + m_position);
 			m_weaponEffect->SetRotation(m_rotation);
 			m_weaponEffect->Play();
@@ -89,11 +77,10 @@ void Boss_Riser::Update()
 
 		if (m_fastFlag == 665)
 		{
-			b_boss_weapons = NewGO<Boss_Riser_attack>(1, "boss_Riser_attack");
-			m_attackState = true;
-			b_boss_weapons->m_firePosition = m_position;
-			b_boss_weapons->m_aim = m_boss->GetRotation();
-			b_boss_weapons->m_bulletForward = m_boss->GetForward();
+			m_riserAttack = NewGO<Boss_Riser_attack>(1, "boss_Riser_attack");
+			m_riserAttack->m_firePosition = m_position;
+			m_riserAttack->m_aim = m_boss->GetRotation();
+			m_riserAttack->m_bulletForward = m_boss->GetForward();
 		}
 		Move();
 	}
@@ -101,20 +88,12 @@ void Boss_Riser::Update()
 	{
 		DeleteGO(this);
 	}
-	boss_Riser_Render.Update();
+	m_riserModel.Update();
 
-	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
-	//boss_Riser_Render.SetPosition(b_w_position);
-	//boss_Riser_Render.SetRotation(b_w_rotation);
-	//boss_Riser_Render.Update();
-	//PlayerSearch();
 
-	boss_Riser_Render.SetScale(scale);
-	if (riser_HP<=0.0f)
+	m_riserModel.SetScale(m_scale);
+	if (m_HP<=0.0f)
 	{
-		//drop_item = NewGO<Drop_item>(1, "drop_item");
-		//drop_item->Drop_position.y += 50.0f;
-		notHituyou = true;
 		DeleteGO(this);
 	}
 }
@@ -128,32 +107,11 @@ void Boss_Riser::Move()
 	originRotation.Multiply(lp);
 	m_position += lp;
 	m_rotation = originRotation;
-	boss_Riser_Render.SetPosition(m_position);
-	boss_Riser_Render.SetRotation(m_rotation);
-}
-
-void Boss_Riser::PlayerSearch()
-{
-	////エネミーからプレイヤーが入ってきたら追いかける。
-	//Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
-
-	////プレイヤーとの距離を計算する。
-	//float distToPlayer = toPlayer.Length();
-	////プレイヤーに向かって伸びるベクトルを正規化する。
-	//Vector3 toPlayerDir = toPlayer;
-	//toPlayerDir.Normalize();
-	////エネミーの全方向とtoPlayerDirとの内積を計算する。
-	//float t = toPlayerDir.Dot(b_w_Fowrad);
-	////内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
-	//float angle = acos(t);
-
-	//
-
-	//b_w_Fowrad = toPlayerDir;
-
+	m_riserModel.SetPosition(m_position);
+	m_riserModel.SetRotation(m_rotation);
 }
 
 void Boss_Riser::Render(RenderContext& rc)
 {
-	boss_Riser_Render.Draw(rc);
+	m_riserModel.Draw(rc);
 }

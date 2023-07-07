@@ -50,7 +50,6 @@
     <ClCompile Include="SoundManage.cpp" />
     <ClCompile Include="PlayerUI.cpp" />
     <ClCompile Include="Wave.cpp" />
-    <ClCompile Include="Boss_Movie.cpp" />
     <ClCompile Include="GuideLight.cpp" />
     <ClCompile Include="Boss_Saber.cpp" />
     <ClCompile Include="Combo.cpp" />
@@ -105,7 +104,6 @@
     <ClInclude Include="Result_Macro.h" />
     <ClInclude Include="PlayerUI.h" />
     <ClInclude Include="Wave.h" />
-    <ClInclude Include="Boss_Movie.h" />
     <ClInclude Include="Player_Macro.h" />
     <ClInclude Include="Player_custom_Macro.h" />
     <ClInclude Include="GuideLight.h" />
