@@ -78,9 +78,9 @@ void Boss_Riser::Update()
 		if (m_fastFlag == 665)
 		{
 			m_riserAttack = NewGO<Boss_Riser_attack>(1, "boss_Riser_attack");
-			m_riserAttack->m_firePosition = m_position;
-			m_riserAttack->m_aim = m_boss->GetRotation();
-			m_riserAttack->m_bulletForward = m_boss->GetForward();
+			m_riserAttack->SetPosition(m_position);
+			m_riserAttack->SetRotation(m_boss->GetRotation());
+			m_riserAttack->SetForward(m_boss->GetForward());
 		}
 		Move();
 	}

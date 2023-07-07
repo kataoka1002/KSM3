@@ -142,9 +142,9 @@ void Boss_Riser_attack::Update()
 
 		if (m_firePosition.y <= 0.0f)
 		{
-			if (farst == true) {
+			if (m_firstFlag == true) {
 				DestroyWithImpactEffect();
-				farst = false;
+				m_firstFlag = false;
 			}
 		}
 		m_bulletModel.Update();
@@ -313,9 +313,9 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffPlayer.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_player->ApplyDamage(200.0f);
-				if (farst == true) {
+				if (m_firstFlag == true) {
 					DestroyWithImpactEffect();
-					farst = false;
+					m_firstFlag = false;
 				}
 			}
 
@@ -334,9 +334,9 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffLeftArm.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_leftArm->ApplyDamage(200.0f);
-				if (farst == true) {
+				if (m_firstFlag == true) {
 					DestroyWithImpactEffect();
-					farst = false;
+					m_firstFlag = false;
 				}
 			}
 		}
@@ -354,9 +354,9 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffLeftLeg.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_leftLeg->ApplyDamage(200.0f);
-				if (farst == true) {
+				if (m_firstFlag == true) {
 					DestroyWithImpactEffect();
-					farst = false;
+					m_firstFlag = false;
 				}
 			}
 
@@ -375,9 +375,9 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffRightArm.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_rightArm->ApplyDamage(200.0f);
-				if (farst == true) {
+				if (m_firstFlag == true) {
 					DestroyWithImpactEffect();
-					farst = false;
+					m_firstFlag = false;
 				}
 			}
 
@@ -396,9 +396,9 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffRightLeg.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_rightLeg->ApplyDamage(200.0f);
-				if (farst == true) {
+				if (m_firstFlag == true) {
 					DestroyWithImpactEffect();
-					farst = false;
+					m_firstFlag = false;
 				}
 			}
 
@@ -417,9 +417,9 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 			if (diffShoulder.Length() <= 200.0f) //ダメージが入る範囲
 			{
 				m_shoulder->ApplyDamage(200.0f);
-				if (farst == true) {
+				if (m_firstFlag == true) {
 					DestroyWithImpactEffect();
-					farst = false;
+					m_firstFlag = false;
 				}
 			}
 
