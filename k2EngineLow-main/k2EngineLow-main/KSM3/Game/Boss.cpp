@@ -534,8 +534,8 @@ void Boss::Damage()
 				m_bossShovel->SetShovelScale();
 			}
 			if (m_bossTurbo != nullptr) {
-				m_bossTurbo->scale -= 0.651f;
-				m_bossTurbo->boss_Turbo_Render.SetScale(m_bossRiser->GetScale());
+				m_bossTurbo->m_scale -= 0.651f;
+				m_bossTurbo->m_tarboModel.SetScale(m_bossRiser->GetScale());
 			}
 		}
 		if (m_deathCount == 0) {
