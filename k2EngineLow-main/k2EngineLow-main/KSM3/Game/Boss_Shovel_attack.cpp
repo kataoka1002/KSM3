@@ -27,12 +27,12 @@ Boss_Shovel_attack::Boss_Shovel_attack()
 
 Boss_Shovel_attack::~Boss_Shovel_attack()
 {
-	m_weapon->m_attackState = false;
+	//m_weapon->m_attackState = false;
 }
 
 void Boss_Shovel_attack::SetUp()
 {
-	m_bulletForward = m_weapon->m_forward;
+	m_bulletForward = m_weapon->GetForward();
 	m_firePosition.y += 100.0f;
 	m_firePosition.x -= 600.0f;
 	m_bulletModel.SetRotation(m_boss->GetRotation());

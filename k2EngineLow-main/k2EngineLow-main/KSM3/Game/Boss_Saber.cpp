@@ -41,7 +41,7 @@ void Boss_Saber::Setup()
 
 void Boss_Saber::Update()
 {
-	if (m_player->GetGameState() == MAIN_GAME_NUM /*&& m_fastFlag != 0*/)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		Move();
 	}

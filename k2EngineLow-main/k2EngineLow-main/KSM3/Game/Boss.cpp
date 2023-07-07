@@ -478,14 +478,14 @@ void Boss::PlayerSearch()
 		m_bossRiser->SetAttackOK(true);
 		m_bossCannon->SetAttackOK(true);
 		m_bossDrill->SetAttackOK(true);
-		m_bossShovel->m_attackOK = true;
+		m_bossShovel->SetAttackOK(true);
 		m_bossTurbo->m_attackOK = true;
 	}
 	else {
 		m_bossRiser->SetAttackOK(false);
 		m_bossCannon->SetAttackOK(false);
 		m_bossDrill->SetAttackOK(false);
-		m_bossShovel->m_attackOK = false;
+		m_bossShovel->SetAttackOK(false);
 		m_bossTurbo->m_attackOK = false;
 	}
 
@@ -530,8 +530,8 @@ void Boss::Damage()
 				m_bossSaber->SetSaberScale();
 			}
 			if (m_bossShovel != nullptr) {
-				m_bossShovel->scale -= 0.75f;
-				m_bossShovel->boss_Shovel_Render.SetScale(m_bossShovel->scale);
+				m_bossShovel->DecreaseScale(0.75f);
+				m_bossShovel->SetShovelScale();
 			}
 			if (m_bossTurbo != nullptr) {
 				m_bossTurbo->scale -= 0.651f;
@@ -578,8 +578,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossShovel->m_position);
-				m_explosionAnother->SetRotation(m_bossShovel->m_rotation);
+				m_explosionAnother->SetPosition(m_bossShovel->GetPosirion());
+				m_explosionAnother->SetRotation(m_bossShovel->GetRotation());
 				m_explosionAnother->Play();
 			}
 			if (m_bossTurbo != nullptr) {
