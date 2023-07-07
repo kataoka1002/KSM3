@@ -17,17 +17,17 @@ public:
 	void Move();
 	void Render(RenderContext& rc);
 
-	Boss_Shovel* b_a_weapons;
-	Boss* b_a_boss;
-	Core_weapons* b_a_core_weapons;
+	Boss_Shovel* m_weapon;
+	Boss* m_boss;
+	Core_weapons* m_coreWeapon;
 	Player* m_player;
-	SoundSource* b_attack_SE;
+	SoundSource* m_attackSE;
 
 	ModelRender m_bulletModel;
 	Quaternion m_aim;
 	Vector3 m_firePosition;
 	Vector3 m_bulletForward;
-	Vector3 b_a_Bulet_weapons;
+	Vector3 iranran;
 	Vector3 to_core_weapons;
 
 	bool Landing_state = false;

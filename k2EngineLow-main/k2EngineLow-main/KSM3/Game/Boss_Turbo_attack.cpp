@@ -45,15 +45,15 @@ Boss_Turbo_attack::Boss_Turbo_attack()
 
 Boss_Turbo_attack::~Boss_Turbo_attack()
 {
-	b_a_weapons->m_attackState = false;
+	m_weapon->m_attackState = false;
 }
 
 bool Boss_Turbo_attack::Start()
 {
-	b_a_boss = FindGO<Boss>("boss");
+	m_boss = FindGO<Boss>("boss");
 	m_player = FindGO<Player>("player");
-	b_a_weapons = FindGO<Boss_Turbo>("boss_turbo");
-	b_a_core_weapons = FindGO<Core_weapons>("core_weapons");
+	m_weapon = FindGO<Boss_Turbo>("boss_turbo");
+	m_coreWeapon = FindGO<Core_weapons>("core_weapons");
 	//’eƒ‚ƒfƒ‹B
 	//b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
 	//m_characterController.Init(1170.0f, 150.0f, m_bulletLocalPosition);
@@ -105,8 +105,8 @@ void Boss_Turbo_attack::SetUp()
 		m_aim.Multiply(m_bulletLocalPosition);	//Š|‚¯ŽZ
 		//m_rot = b_a_weapons->b_w_rotation;
 		m_firePosition += m_bulletLocalPosition;
-		m_firePosition = b_a_weapons->m_position;
-		m_bulletForward = b_a_weapons->m_forward;
+		m_firePosition = m_weapon->m_position;
+		m_bulletForward = m_weapon->m_forward;
 		m_bulletModel.SetScale(30);
 		m_bulletModel.SetPosition(m_firePosition);
 		//b_a_Bullet.SetRotation(m_rot);

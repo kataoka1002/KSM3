@@ -29,16 +29,16 @@ public:
 	void Render(RenderContext& rc);
 
 	Customize_UI_ver2* m_customizeUI = nullptr;
-	Boss_Riser* b_a_weapons;
-	Boss* b_a_boss;
-	Core_weapons* b_a_core_weapons;
+	Boss_Riser* m_weapon;
+	Boss* m_boss;
+	Core_weapons* m_coreWeapon;
 	Player* m_player;
 	Left_arm_weapons* m_leftArm = nullptr;
 	Left_leg_weapons* m_leftLeg = nullptr;
 	Right_arm_weapons* m_rightArm = nullptr;
 	Right_leg_weapons* m_rightLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
-	SoundSource* b_attack_SE;
+	SoundSource* m_attackSE;
 	Game* m_game;
 
 	ModelRender m_bulletModel;
@@ -46,7 +46,7 @@ public:
 	Quaternion m_rot;
 	Vector3 m_firePosition;
 	Vector3 m_bulletForward;
-	Vector3 b_a_Bulet_weapons;
+	Vector3 iranran;
 	Vector3 m_moveSpeed = Vector3::Zero;
 	EffectEmitter* m_weaponEffect = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;

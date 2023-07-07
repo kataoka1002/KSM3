@@ -71,9 +71,9 @@ void Boss_Drill::Update()
 		{
 			m_drillAttack = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
 			m_attackState = true;
-			m_drillAttack->m_firePosition = m_position;
-			m_drillAttack->m_aim = m_boss->GetRotation();
-			m_drillAttack->m_bulletForward = m_boss->GetForward();
+			m_drillAttack->SetPosition(m_position);
+			m_drillAttack->SetRotation(m_boss->GetRotation());
+			m_drillAttack->SetForward(m_boss->GetForward());
 		}
 		//攻撃終了時リセット
 		if (m_fastFlag >=21) {
@@ -82,24 +82,6 @@ void Boss_Drill::Update()
 			}
 		}
 
-		
-
-
-
-		
-
-		//if (attack_ok == true)
-		//{
-		//	firing_cound++;//攻撃のタイミングの計算。
-		//	if (firing_cound % 108 == 0)
-		//	{
-		//		b_boss_weapons = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
-		//		attack_state = true;
-		//		b_boss_weapons->firing_position = b_w_position;
-		//		b_boss_weapons->b_a_aiming = b_w_boss->boss_rotation;
-		//		b_boss_weapons->b_a_Bullet_Fowrad = b_w_boss->boss_forward;
-		//	}
-		//}
 	}
 	if (m_player->GetGameEndState() == 1)
 	{
@@ -107,19 +89,10 @@ void Boss_Drill::Update()
 	}
 	m_drillModel.Update();
 
-	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
-	//boss_Riser_Render.SetPosition(b_w_position);
-	//boss_Riser_Render.SetRotation(b_w_rotation);
-	//boss_Riser_Render.Update();
-	//PlayerSearch();
-
 	m_drillModel.SetScale(m_scale);
 	m_drillModel.Update();
 	if (m_HP<=0.0f)
 	{
-		//drop_item = NewGO<Drop_item>(1, "drop_item");
-		//drop_item->Drop_position.y += 50.0f;
-		//defeatState = true;
 		
 		//自分が死ぬと同時にショベルも消す
 		if (m_deathCount == 0){
@@ -172,26 +145,6 @@ void Boss_Drill::Move()
 	m_drillModel.SetRotation(m_rotation);
 }
 
-void Boss_Drill::PlayerSearch()
-{
-	////エネミーからプレイヤーが入ってきたら追いかける。
-	//Vector3 toPlayer = b_w_player->GetPlayerPosition() - b_w_position;
-
-	////プレイヤーとの距離を計算する。
-	//float distToPlayer = toPlayer.Length();
-	////プレイヤーに向かって伸びるベクトルを正規化する。
-	//Vector3 toPlayerDir = toPlayer;
-	//toPlayerDir.Normalize();
-	////エネミーの全方向とtoPlayerDirとの内積を計算する。
-	//float t = toPlayerDir.Dot(b_w_Fowrad);
-	////内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
-	//float angle = acos(t);
-
-	//
-
-	//b_w_Fowrad = toPlayerDir;
-
-}
 void Boss_Drill::Damage()
 {
 	m_effectPosition = m_position;

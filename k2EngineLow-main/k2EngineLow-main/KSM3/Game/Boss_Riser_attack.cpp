@@ -46,15 +46,15 @@ Boss_Riser_attack::Boss_Riser_attack()
 
 Boss_Riser_attack::~Boss_Riser_attack()
 {
-	b_a_weapons->m_attackState = false;
+	m_weapon->m_attackState = false;
 }
 
 bool Boss_Riser_attack::Start() {
 	m_game = FindGO<Game>("game");
-	b_a_boss = FindGO<Boss>("boss");
+	m_boss = FindGO<Boss>("boss");
 	m_player = FindGO<Player>("player");
-	b_a_weapons = FindGO<Boss_Riser>("boss_riser");
-	b_a_core_weapons = FindGO<Core_weapons>("core_weapons");
+	m_weapon = FindGO<Boss_Riser>("boss_riser");
+	m_coreWeapon = FindGO<Core_weapons>("core_weapons");
 
 
 

@@ -20,7 +20,6 @@ public:
 	void Setup();
 	void Update();
 	void Move();
-	void PlayerSearch();
 	void Damage();
 	void Render(RenderContext& rc);
 
