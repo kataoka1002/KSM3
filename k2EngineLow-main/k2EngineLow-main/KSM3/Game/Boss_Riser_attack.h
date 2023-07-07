@@ -41,13 +41,13 @@ public:
 	SoundSource* b_attack_SE;
 	Game* m_game;
 
-	ModelRender b_a_Bullet;
-	Quaternion b_a_aiming;
+	ModelRender m_bulletModel;
+	Quaternion m_aim;
 	Quaternion m_rot;
-	Vector3 firing_position;
-	Vector3 b_a_Bullet_Fowrad;
+	Vector3 m_firePosition;
+	Vector3 m_bulletForward;
 	Vector3 b_a_Bulet_weapons;
-	Vector3 Move_speed = Vector3::Zero;
+	Vector3 m_moveSpeed = Vector3::Zero;
 	EffectEmitter* m_weaponEffect = nullptr;
 	EffectEmitter* m_tyakudanEffect = nullptr;
 	EffectEmitter* m_BulletEffect = nullptr;
@@ -57,13 +57,13 @@ public:
 
 	bool Landing_state = false;
 	float move_speed = 30.0f;
-	float fall_speed = 0.0f;
+	float m_fallSpeed = 0.0f;
 	bool m_attackState = true;
 	bool fast_count = true;
 
-	int Landing_count = 0;
-	int Bullet_efe_count = 0;
-	Vector3 efePosi = Vector3::Zero;
-	bool fast = true;
+	int m_loadingCount = 0;
+	int m_bulletEfeCount = 0;
+	Vector3 m_effectPosition = Vector3::Zero;
+	bool m_fastFlag = true;
 	bool farst = true;
 };

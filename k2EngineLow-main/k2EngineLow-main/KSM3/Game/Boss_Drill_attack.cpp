@@ -80,14 +80,14 @@ bool Boss_Drill_attack::Start() {
 
 void Boss_Drill_attack::SetUp()
 {
-	b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
-	b_a_aiming.Multiply(m_bulletLocalPosition);	//掛け算
-	m_rot = b_a_aiming;
-	firing_position += m_bulletLocalPosition;
-	b_a_Bullet.SetScale(30);
-	b_a_Bullet.SetPosition(firing_position);
-	b_a_Bullet.SetRotation(m_rot);
-	b_a_Bullet.Update();
+	m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
+	m_aim.Multiply(m_bulletLocalPosition);	//掛け算
+	m_rot = m_aim;
+	m_firePosition += m_bulletLocalPosition;
+	m_bulletModel.SetScale(30);
+	m_bulletModel.SetPosition(m_firePosition);
+	m_bulletModel.SetRotation(m_rot);
+	m_bulletModel.Update();
 
 	/*Effect();*/
 
@@ -95,13 +95,13 @@ void Boss_Drill_attack::SetUp()
 
 void Boss_Drill_attack::Update()
 {
-	if (Bullet_efe_count == 0) {
+	if (m_bulletEfeCount == 0) {
 		//b_attack_SE = NewGO<SoundSource>(0);			//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		//b_attack_SE->Init(en_Boss_Drill);		//初期化
 		//b_attack_SE->SetVolume(2.0f * m_game->SEvol);	//音量調整
 		//b_attack_SE->Play(false);
 	}
-	if (Bullet_efe_count % 510 == 0) {
+	if (m_bulletEfeCount % 510 == 0) {
 		m_BulletEffect = NewGO<EffectEmitter>(0);
 		m_BulletEffect->Init(enBoss_Drill);
 		m_BulletEffect->SetScale({ 50.0f,50.0f,50.0f });
@@ -110,9 +110,9 @@ void Boss_Drill_attack::Update()
 		m_BulletEffect->Play();
 	}
 	m_BulletEffect->SetRotation(efe_rot);
-	m_BulletEffect->SetPosition(firing_position+efe_l_pos1);
+	m_BulletEffect->SetPosition(m_firePosition+efe_l_pos1);
 
-	if (Bullet_efe_count % 510 == 0) {
+	if (m_bulletEfeCount % 510 == 0) {
 		m_BulletEffect2 = NewGO<EffectEmitter>(0);
 		m_BulletEffect2->Init(enBoss_Drill);
 		m_BulletEffect2->SetScale({ 50.0f,50.0f,50.0f });
@@ -121,13 +121,13 @@ void Boss_Drill_attack::Update()
 		m_BulletEffect2->Play();
 	}
 	m_BulletEffect2->SetRotation(efe_rot);
-	m_BulletEffect2->SetPosition(firing_position+efe_l_pos2);
-	Bullet_efe_count++;
+	m_BulletEffect2->SetPosition(m_firePosition+efe_l_pos2);
+	m_bulletEfeCount++;
 	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		Damage();
 		Move();
-		b_a_Bullet.Update();
+		m_bulletModel.Update();
 		
 	}
 	else if (b_a_player->GetGameState() == RESULT_NUM)
@@ -145,32 +145,32 @@ void Boss_Drill_attack::Move()
 {
 
 		if (drill_count>=120&&drill_count < 180) {
-			move_speed += b_a_Bullet_Fowrad * 10.0;
-			firing_position += move_speed;
-			b_a_Bullet.SetPosition(move_speed);
+			move_speed += m_bulletForward * 10.0;
+			m_firePosition += move_speed;
+			m_bulletModel.SetPosition(move_speed);
 
-			efe_fowrad.x = b_a_Bullet_Fowrad.x * cos(180 * (M_PI / 180)) - b_a_Bullet_Fowrad.z * sin(180 * (M_PI / 180));
-			efe_fowrad.z = b_a_Bullet_Fowrad.x * sin(180 * (M_PI / 180)) + b_a_Bullet_Fowrad.z * cos(180 * (M_PI / 180));
+			efe_fowrad.x = m_bulletForward.x * cos(180 * (M_PI / 180)) - m_bulletForward.z * sin(180 * (M_PI / 180));
+			efe_fowrad.z = m_bulletForward.x * sin(180 * (M_PI / 180)) + m_bulletForward.z * cos(180 * (M_PI / 180));
 			efe_rot.SetRotationY(atan2(efe_fowrad.x, efe_fowrad.z));
 		}
 		//if (drill_count == 9) {
 		//	return_angle = Player_Search();
 		//}
 		if (drill_count == 209) {
-			Vector3 toPlayer = b_a_player->GetPlayerPosition() - firing_position;
+			Vector3 toPlayer = b_a_player->GetPlayerPosition() - m_firePosition;
 
 			//プレイヤーとの距離を計算する。
 			float distToPlayer = toPlayer.Length();
 			//プレイヤーに向かって伸びるベクトルを正規化する。
 			Vector3 toPlayerDir = toPlayer;
 			toPlayerDir.Normalize();
-			b_a_Bullet_Fowrad = toPlayerDir;
-			m_rot.SetRotationY(atan2(b_a_Bullet_Fowrad.x, b_a_Bullet_Fowrad.z));
-			b_a_Bullet.SetRotation(m_rot);
+			m_bulletForward = toPlayerDir;
+			m_rot.SetRotationY(atan2(m_bulletForward.x, m_bulletForward.z));
+			m_bulletModel.SetRotation(m_rot);
 			lock_p_position = b_a_player->GetPlayerPosition();
 		}
 		if (drill_count == 210) {
-			Vector3 toPlayer = lock_p_position - firing_position;
+			Vector3 toPlayer = lock_p_position - m_firePosition;
 
 			//プレイヤーとの距離を計算する。
 			float distToPlayer = toPlayer.Length();
@@ -183,20 +183,20 @@ void Boss_Drill_attack::Move()
 			efe_fowrad.z = toPlayerDir.x * sin(180 * (M_PI / 180)) + toPlayerDir.z * cos(180 * (M_PI / 180));
 			efe_rot.SetRotationY(atan2(efe_fowrad.x, efe_fowrad.z));
 
-			b_a_Bullet.SetRotation(m_rot);
+			m_bulletModel.SetRotation(m_rot);
 			lock_p_position = b_a_player->GetPlayerPosition();
 			last_fowrad = toPlayerDir;
 		}
 		if (drill_count >= 210 && drill_count < 270) {
 			Vector3 move_speed;
 
-			move_speed += b_a_Bullet_Fowrad * 400.0;
-			firing_position += move_speed;
-			b_a_Bullet.SetPosition(firing_position);
+			move_speed += m_bulletForward * 400.0;
+			m_firePosition += move_speed;
+			m_bulletModel.SetPosition(m_firePosition);
 
 			if (b_a_weapons != nullptr) {
 				//弾とボスの距離を測る
-				Vector3 diffShoulder = firing_position - Vector3{ b_a_weapons->m_position.x, b_a_weapons->m_position.y, b_a_weapons->m_position.z };
+				Vector3 diffShoulder = m_firePosition - Vector3{ b_a_weapons->m_position.x, b_a_weapons->m_position.y, b_a_weapons->m_position.z };
 
 				//武器によってダメージを変える
 
@@ -228,19 +228,19 @@ void Boss_Drill_attack::Move()
 			efe_rot.SetRotationX(atan2(efe_rot.y, efe_rot.z));
 
 			m_rot.SetRotationX(atan2(last_fowrad.y, last_fowrad.z));
-			b_a_Bullet.SetRotation(m_rot);
+			m_bulletModel.SetRotation(m_rot);
 			Vector3 move_speed;
 
 			move_speed += last_fowrad * 40.0;
-			firing_position += move_speed;
-			b_a_Bullet.SetPosition(firing_position);
+			m_firePosition += move_speed;
+			m_bulletModel.SetPosition(m_firePosition);
 		}
 		if (drill_count >= 300 && drill_count < 400) {
 			Vector3 move_speed;
 
 			move_speed += last_fowrad * 400.0;
-			firing_position += move_speed;
-			b_a_Bullet.SetPosition(firing_position);
+			m_firePosition += move_speed;
+			m_bulletModel.SetPosition(m_firePosition);
 		}
 		if (drill_count == 400) {
 			b_a_weapons->b_boss_weapons = nullptr;
@@ -248,18 +248,18 @@ void Boss_Drill_attack::Move()
 			DeleteGO(this);
 		}
 		drill_count++;
-		b_a_Bullet.Update();
+		m_bulletModel.Update();
 }
 
 float Boss_Drill_attack::Player_Search() {
-	Vector3 toPlayer = b_a_player->GetPlayerPosition() - firing_position;
+	Vector3 toPlayer = b_a_player->GetPlayerPosition() - m_firePosition;
 
 	//プレイヤーとの距離を計算する。
 	float distToPlayer = toPlayer.Length();
 	//プレイヤーに向かって伸びるベクトルを正規化する。
 	Vector3 toPlayerDir = toPlayer;
 	toPlayerDir.Normalize();
-	float t = toPlayerDir.Dot(b_a_Bullet_Fowrad);
+	float t = toPlayerDir.Dot(m_bulletForward);
 	//内積の結果をacos関数に渡して、m_enemyFowradとtoPlayerDirのなす角度を求める。
 	float angle = acos(t);
 	float Amount_of_rotation = angle / 200;
@@ -274,7 +274,7 @@ void Boss_Drill_attack::Damage() {
 	if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 	{
 		//弾とプレイヤーの距離を測る
-		Vector3 diffPlayer = firing_position - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+		Vector3 diffPlayer = m_firePosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 		//武器によってダメージを変える
 
@@ -296,7 +296,7 @@ void Boss_Drill_attack::Damage() {
 	if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 	{
 		//弾と左腕の距離を測る
-		Vector3 diffLeftArm = firing_position - m_leftArm->GetPosition();
+		Vector3 diffLeftArm = m_firePosition - m_leftArm->GetPosition();
 
 		//武器によってダメージを変える
 
@@ -314,7 +314,7 @@ void Boss_Drill_attack::Damage() {
 	if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 	{
 		//弾と左腕の距離を測る
-		Vector3 diffLeftLeg = firing_position - m_leftLeg->GetPosition();
+		Vector3 diffLeftLeg = m_firePosition - m_leftLeg->GetPosition();
 
 		//武器によってダメージを変える
 
@@ -333,7 +333,7 @@ void Boss_Drill_attack::Damage() {
 	if (m_rightArm != nullptr)	//右手に情報が入っているなら
 	{
 		//弾と左腕の距離を測る
-		Vector3 diffRightArm = firing_position - m_rightArm->GetPosition();
+		Vector3 diffRightArm = m_firePosition - m_rightArm->GetPosition();
 
 		//武器によってダメージを変える
 
@@ -352,7 +352,7 @@ void Boss_Drill_attack::Damage() {
 	if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 	{
 		//弾と左腕の距離を測る
-		Vector3 diffRightLeg = firing_position - m_rightLeg->GetPosition();
+		Vector3 diffRightLeg = m_firePosition - m_rightLeg->GetPosition();
 
 		//武器によってダメージを変える
 
@@ -371,7 +371,7 @@ void Boss_Drill_attack::Damage() {
 	if (m_shoulder != nullptr)	//肩に情報が入っているなら
 	{
 		//弾と左腕の距離を測る
-		Vector3 diffShoulder = firing_position - m_shoulder->GetPosition();
+		Vector3 diffShoulder = m_firePosition - m_shoulder->GetPosition();
 
 		//武器によってダメージを変える
 
@@ -387,7 +387,7 @@ void Boss_Drill_attack::Damage() {
 	//---------------------------------------------------------------------------------------------------
 	if (b_a_boss != nullptr) {
 		//弾とボスの距離を測る
-		Vector3 diffShoulder = firing_position - b_a_boss->GetPosition();
+		Vector3 diffShoulder = m_firePosition - b_a_boss->GetPosition();
 
 		//武器によってダメージを変える
 
@@ -407,7 +407,7 @@ void Boss_Drill_attack::Effect() {
 	m_tyakudanEffect = NewGO<EffectEmitter>(0);
 	m_tyakudanEffect->Init(enBoss_Drill_Landing);
 	m_tyakudanEffect->SetScale({ 20.0f,20.0f,20.0f });
-	m_tyakudanEffect->SetPosition(firing_position);
+	m_tyakudanEffect->SetPosition(m_firePosition);
 	m_tyakudanEffect->Play();
 }
 

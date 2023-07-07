@@ -37,7 +37,7 @@ public:
 	Vector3 m_position;
 	Vector3 b_w_moveSpeed;
 	Vector3 m_forward;
-	Vector3 Move_speed = Vector3::Zero;
+	Vector3 m_moveSpeed = Vector3::Zero;
 	Vector3 efeLP = { 0.0f,410.0f,0.0f };
 	int game_state = 0;
 	ModelRender boss_Turbo_Render;
@@ -52,7 +52,7 @@ public:
 	int set_weapons = 0;
 
 	int firing_cound = 0;
-	int fast = 0;
+	int m_fastFlag = 0;
 
 	float turbo_HP = HP;
 	float scale = 13.0f;

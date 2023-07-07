@@ -23,16 +23,16 @@ public:
 	Player* b_a_player;
 	SoundSource* b_attack_SE;
 
-	ModelRender b_a_Bullet;
-	Quaternion b_a_aiming;
-	Vector3 firing_position;
-	Vector3 b_a_Bullet_Fowrad;
+	ModelRender m_bulletModel;
+	Quaternion m_aim;
+	Vector3 m_firePosition;
+	Vector3 m_bulletForward;
 	Vector3 b_a_Bulet_weapons;
 	Vector3 to_core_weapons;
 
 	bool Landing_state = false;
 	float move_speed = 30.0f;
-	float fall_speed = 0.0f;
+	float m_fallSpeed = 0.0f;
 	bool m_attackState = true;
 	bool fast_count = true;
 };

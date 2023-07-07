@@ -64,9 +64,9 @@ public:
 	int set_weapons = 0;
 
 	int firing_cound = 0;
-	int fast = 0;
+	int m_fastFlag = 0;
 
-	Vector3 efePosi = Vector3::Zero;
+	Vector3 m_effectPosition = Vector3::Zero;
 	Vector3 efeLP = { 0.0f,0.0f,0.0f };
 	float drill_HP = HP;
 	int Death_count = 0;

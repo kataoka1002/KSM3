@@ -30,12 +30,12 @@ void Boss_Saber::Setup() {
 }
 
 void Boss_Saber::Update() {
-	if (fast == 0)
+	if (m_fastFlag == 0)
 	{
 		Setup();
 	}
-	fast++;
-	if (m_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	m_fastFlag++;
+	if (m_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
 	{
 		Move();
 	}

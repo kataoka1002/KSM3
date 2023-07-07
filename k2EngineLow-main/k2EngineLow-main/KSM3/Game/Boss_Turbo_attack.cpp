@@ -92,8 +92,8 @@ void Boss_Turbo_attack::DestroyWithImpactEffect()
 	//	efePosi = firing_position;
 	//	Damage(true);
 	//}
-	Landing_count++;
-	if (Landing_count == 55) {
+	m_loadingCount++;
+	if (m_loadingCount == 55) {
 		// 着弾したら死ぬ
 		DeleteGO(this);
 	}
@@ -102,15 +102,15 @@ void Boss_Turbo_attack::DestroyWithImpactEffect()
 void Boss_Turbo_attack::SetUp()
 {
 		//b_a_Bullet.Init("Assets/modelData/V_P_bullet.tkm");
-		b_a_aiming.Multiply(m_bulletLocalPosition);	//掛け算
+		m_aim.Multiply(m_bulletLocalPosition);	//掛け算
 		//m_rot = b_a_weapons->b_w_rotation;
-		firing_position += m_bulletLocalPosition;
-		firing_position = b_a_weapons->m_position;
-		b_a_Bullet_Fowrad = b_a_weapons->m_forward;
-		b_a_Bullet.SetScale(30);
-		b_a_Bullet.SetPosition(firing_position);
+		m_firePosition += m_bulletLocalPosition;
+		m_firePosition = b_a_weapons->m_position;
+		m_bulletForward = b_a_weapons->m_forward;
+		m_bulletModel.SetScale(30);
+		m_bulletModel.SetPosition(m_firePosition);
 		//b_a_Bullet.SetRotation(m_rot);
-		b_a_Bullet.Update();
+		m_bulletModel.Update();
 }
 
 void Boss_Turbo_attack::Update()
@@ -118,7 +118,7 @@ void Boss_Turbo_attack::Update()
 	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		DestroyWithImpactEffect();
-		b_a_Bullet.Update();
+		m_bulletModel.Update();
 		Damage(false);
 		Move();
 		Rotation();
@@ -153,14 +153,14 @@ void Boss_Turbo_attack::Rotation()
 void Boss_Turbo_attack::Move()
 {
 	//弾を前に飛ばす処理
-		Move_speed += b_a_Bullet_Fowrad *3.5f;
+		m_moveSpeed += m_bulletForward *3.5f;
 		//Move_speed.y -= 0.2 + fall_speed;
 		//firing_position= b_a_weapons->b_w_position;
-		firing_position += Move_speed;
+		m_firePosition += m_moveSpeed;
 	//バレットの更新
-		b_a_Bullet.SetRotation(m_rot);
-		b_a_Bullet.SetPosition(firing_position);
-		b_a_Bullet.Update();
+		m_bulletModel.SetRotation(m_rot);
+		m_bulletModel.SetPosition(m_firePosition);
+		m_bulletModel.Update();
 }
 
 void Boss_Turbo_attack::Effect()
@@ -290,7 +290,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = firing_position - Vector3{b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z};
+			Vector3 diffPlayer = m_firePosition - Vector3{b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z};
 
 			//武器によってダメージを変える
 
@@ -308,7 +308,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftArm = firing_position - m_leftArm->GetPosition();
+			Vector3 diffLeftArm = m_firePosition - m_leftArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -325,7 +325,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftLeg = firing_position - m_leftLeg->GetPosition();
+			Vector3 diffLeftLeg = m_firePosition - m_leftLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -343,7 +343,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_rightArm != nullptr)	//右手に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightArm = firing_position - m_rightArm->GetPosition();
+			Vector3 diffRightArm = m_firePosition - m_rightArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -361,7 +361,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightLeg = firing_position - m_rightLeg->GetPosition();
+			Vector3 diffRightLeg = m_firePosition - m_rightLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -379,7 +379,7 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 		if (m_shoulder != nullptr)	//肩に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffShoulder = firing_position - m_shoulder->GetPosition();
+			Vector3 diffShoulder = m_firePosition - m_shoulder->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -397,5 +397,5 @@ void Boss_Turbo_attack::Damage(bool No_tyakudan)
 
 void Boss_Turbo_attack::Render(RenderContext& rc)
 {
-		b_a_Bullet.Draw(rc);
+		m_bulletModel.Draw(rc);
 }

@@ -52,33 +52,33 @@ void Boss_Drill::Setup()
 
 void Boss_Drill::Update()
 {
-	if (fast == 0)
+	if (m_fastFlag == 0)
 	{
 		Setup();
 	}
-	fast++;
-	if (b_a_player->GetGameState() == MAIN_GAME_NUM && fast != 0)
+	m_fastFlag++;
+	if (b_a_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
 	{
 		Move();
 
-		if (fast >= 20 && fast < 140) {
+		if (m_fastFlag >= 20 && m_fastFlag < 140) {
 			boss_Drill_Render.PlayAnimation(enAnimationClip_attack, 0.5f);
 		}
 		else {
 			boss_Drill_Render.PlayAnimation(enAnimationClip_Idle, 0.5f);
 		}
-		if (fast == 20)
+		if (m_fastFlag == 20)
 		{
 			b_boss_weapons = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
 			m_attackState = true;
-			b_boss_weapons->firing_position = m_position;
-			b_boss_weapons->b_a_aiming = m_boss->GetRotation();
-			b_boss_weapons->b_a_Bullet_Fowrad = m_boss->GetForward();
+			b_boss_weapons->m_firePosition = m_position;
+			b_boss_weapons->m_aim = m_boss->GetRotation();
+			b_boss_weapons->m_bulletForward = m_boss->GetForward();
 		}
 		//攻撃終了時リセット
-		if (fast >=21) {
+		if (m_fastFlag >=21) {
 			if (b_boss_weapons == nullptr) {
-				fast = 1;
+				m_fastFlag = 1;
 			}
 		}
 
@@ -194,12 +194,12 @@ void Boss_Drill::PlayerSearch()
 }
 void Boss_Drill::Damage()
 {
-	efePosi = m_position;
+	m_effectPosition = m_position;
 		//---------------------------------------------------------------------------------------------------
 		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = efePosi - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+			Vector3 diffPlayer = m_effectPosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 			float a = diffPlayer.Length();
@@ -220,7 +220,7 @@ void Boss_Drill::Damage()
 		if (m_leftArm != nullptr)	//左腕に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftArm = efePosi - m_leftArm->GetPosition();
+			Vector3 diffLeftArm = m_effectPosition - m_leftArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -237,7 +237,7 @@ void Boss_Drill::Damage()
 		if (m_leftLeg != nullptr)	//左足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffLeftLeg = efePosi - m_leftLeg->GetPosition();
+			Vector3 diffLeftLeg = m_effectPosition - m_leftLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -255,7 +255,7 @@ void Boss_Drill::Damage()
 		if (m_rightArm != nullptr)	//右手に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightArm = efePosi - m_rightArm->GetPosition();
+			Vector3 diffRightArm = m_effectPosition - m_rightArm->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -273,7 +273,7 @@ void Boss_Drill::Damage()
 		if (m_rightLeg != nullptr)	//右足に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffRightLeg = efePosi - m_rightLeg->GetPosition();
+			Vector3 diffRightLeg = m_effectPosition - m_rightLeg->GetPosition();
 
 			//武器によってダメージを変える
 
@@ -291,7 +291,7 @@ void Boss_Drill::Damage()
 		if (m_shoulder != nullptr)	//肩に情報が入っているなら
 		{
 			//弾と左腕の距離を測る
-			Vector3 diffShoulder = efePosi - m_shoulder->GetPosition();
+			Vector3 diffShoulder = m_effectPosition - m_shoulder->GetPosition();
 
 			//武器によってダメージを変える
 
