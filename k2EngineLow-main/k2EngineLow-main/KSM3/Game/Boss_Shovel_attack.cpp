@@ -8,34 +8,34 @@
 
 Boss_Shovel_attack::Boss_Shovel_attack()
 {
-	b_a_boss = FindGO<Boss>("boss");
+	m_boss = FindGO<Boss>("boss");
 	m_player = FindGO<Player>("player");
-	b_a_weapons = FindGO<Boss_Shovel>("boss_shovel");
-	b_a_core_weapons = FindGO<Core_weapons>("core_weapons");
+	m_weapon = FindGO<Boss_Shovel>("boss_shovel");
+	m_coreWeapon = FindGO<Core_weapons>("core_weapons");
 	//’eƒ‚ƒfƒ‹B
 	m_bulletModel.Init("Assets/modelData/V_P_bullet.tkm");
 
 	//‰¹(‰¼)
 	g_soundEngine->ResistWaveFileBank(2, "Assets/audio/Taihou_kouho1.wav");
 
-	b_attack_SE = NewGO<SoundSource>(0);
-	b_attack_SE->Init(2);
-	b_attack_SE->SetVolume(0.2f);
-	b_attack_SE->Play(false);
+	m_attackSE = NewGO<SoundSource>(0);
+	m_attackSE->Init(2);
+	m_attackSE->SetVolume(0.2f);
+	m_attackSE->Play(false);
 	SetUp();
 }
 
 Boss_Shovel_attack::~Boss_Shovel_attack()
 {
-	b_a_weapons->m_attackState = false;
+	m_weapon->m_attackState = false;
 }
 
 void Boss_Shovel_attack::SetUp()
 {
-	m_bulletForward = b_a_weapons->m_forward;
+	m_bulletForward = m_weapon->m_forward;
 	m_firePosition.y += 100.0f;
 	m_firePosition.x -= 600.0f;
-	m_bulletModel.SetRotation(b_a_boss->GetRotation());
+	m_bulletModel.SetRotation(m_boss->GetRotation());
 	m_bulletModel.SetPosition(m_firePosition);
 }
 
@@ -55,7 +55,7 @@ void Boss_Shovel_attack::Update()
 void Boss_Shovel_attack::Move()
 {
 	m_firePosition += m_bulletForward * move_speed;
-	if (m_firePosition.y <= b_a_core_weapons->GetPosition().y && fast_count == true)
+	if (m_firePosition.y <= m_coreWeapon->GetPosition().y && fast_count == true)
 	{
 		m_firePosition.y += 10.0f;
 	}

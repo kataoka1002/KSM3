@@ -29,11 +29,11 @@ public:
 	void Effect();
 	void Render(RenderContext& rc);
 
-	Boss_Turbo* b_a_weapons;
-	Boss* b_a_boss;
-	Core_weapons* b_a_core_weapons;
+	Boss_Turbo* m_weapon;
+	Boss* m_boss;
+	Core_weapons* m_coreWeapon;
 	Player* m_player;
-	SoundSource* b_attack_SE;
+	SoundSource* m_attackSE;
 	EffectEmitter* m_weaponEffect = nullptr;
 	Left_arm_weapons* m_leftArm = nullptr;
 	Left_leg_weapons* m_leftLeg = nullptr;
@@ -49,7 +49,7 @@ public:
 	Vector3 m_firePosition;
 	Vector3 m_bulletForward;
 	Vector3 Efe_Fowrad{ 0.0f,0.0f,-100.0f };
-	Vector3 b_a_Bulet_weapons;
+	Vector3 iranran;
 	Vector3 to_core_weapons;
 	Vector3 m_moveSpeed = Vector3::Zero;
 	Vector3 m_effectPosition = Vector3::Zero;
