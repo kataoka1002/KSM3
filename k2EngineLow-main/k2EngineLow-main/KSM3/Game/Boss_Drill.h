@@ -1,5 +1,4 @@
 #pragma once
-#define HP 500.0f
 
 class Player;
 class Boss;
@@ -31,10 +30,60 @@ public:
 		enAnimationClip_Num
 	};
 
+	Vector3 GetPosirion()
+	{
+		return m_position;
+	}
+
+	Quaternion GetRotation()
+	{
+		return m_rotation;
+	}
+
+	void ApplyDamage(float damage)
+	{
+		m_HP -= damage;
+	}
+
+	void SetDrillAttack(Boss_Drill_attack* pointa)
+	{
+		m_drillAttack = pointa;
+	}
+
+	/// <summary>
+	/// ドリルの大きさ減少
+	/// </summary>
+	/// <param name="amount">減少量</param>
+	void DecreaseScale(float amount)
+	{
+		m_scale -= amount;
+	}
+
+	/// <summary>
+	/// ドリルの大きさを設定
+	/// </summary>
+	void SetDrillScale()
+	{
+		m_drillModel.SetScale(m_scale);
+	}
+
+	/// <summary>
+	/// 攻撃できるかどうかを設定
+	/// </summary>
+	/// <param name="attack"></param>
+	void SetAttackOK(bool attack)
+	{
+		m_attackOK = attack;
+	}
+
+
+
+private:
+
 	AnimationClip m_animationClip[enAnimationClip_Num];
-	Player* b_a_player;
+	Player* m_player;
 	Boss* m_boss;
-	Boss_Drill_attack* b_boss_weapons;
+	Boss_Drill_attack* m_drillAttack;
 	Drop_item* m_dropItem;
 	Game* m_game;
 	Left_arm_weapons* m_leftArm = nullptr;
@@ -43,32 +92,23 @@ public:
 	Right_leg_weapons* m_rightLeg = nullptr;
 	Shoulder_weapons* m_shoulder = nullptr;
 	
-
-	//CharacterController boss_riser_characterContller;
-	Quaternion m_rotation;
-	Vector3 m_position;
-	Vector3 b_w_moveSpeed;
-
-	EffectEmitter* Explosion_efe = nullptr;
+	ModelRender m_drillModel;
+	EffectEmitter* m_explosionEffect = nullptr;
 	EffectEmitter* m_explosionAnother = nullptr;
+	Quaternion m_rotation;
 	Vector3 m_forward = { 0.0f,0.0f,1.0f };
-	int game_state = 0;
-	ModelRender boss_Drill_Render;
-
-	//いる。絶対。
-	Vector3 b_w_localposition = { 0.0f,0.0f,900.0f };
+	Vector3 m_position;
+	Vector3 m_localPosition = { 0.0f,0.0f,900.0f };
+	Vector3 m_effectPosition = Vector3::Zero;
+	Vector3 m_effectLocalPos = { 0.0f,0.0f,0.0f };
 
 	bool m_attackState = false;
-	bool attack_ok = false;
-	bool defeatState = false;//死んだかどうかのフラグ。
-	int set_weapons = 0;
-
-	int firing_cound = 0;
+	bool m_attackOK = false;
+	bool notHituyou = false;//死んだかどうかのフラグ。
+	float m_HP = 500.0f;
+	int m_setWeapon = 0;
+	int iraniran = 0;
 	int m_fastFlag = 0;
-
-	Vector3 m_effectPosition = Vector3::Zero;
-	Vector3 efeLP = { 0.0f,0.0f,0.0f };
-	float drill_HP = HP;
-	int Death_count = 0;
-	int Drill_scale = 20.0f;
+	int m_deathCount = 0;
+	int m_scale = 20.0f;
 };

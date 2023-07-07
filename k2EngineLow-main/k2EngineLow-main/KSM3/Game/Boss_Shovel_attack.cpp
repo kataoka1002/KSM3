@@ -9,7 +9,7 @@
 Boss_Shovel_attack::Boss_Shovel_attack()
 {
 	b_a_boss = FindGO<Boss>("boss");
-	b_a_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 	b_a_weapons = FindGO<Boss_Shovel>("boss_shovel");
 	b_a_core_weapons = FindGO<Core_weapons>("core_weapons");
 	//’eƒ‚ƒfƒ‹B
@@ -41,7 +41,7 @@ void Boss_Shovel_attack::SetUp()
 
 void Boss_Shovel_attack::Update()
 {
-	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		Move();
 		m_bulletModel.Update();

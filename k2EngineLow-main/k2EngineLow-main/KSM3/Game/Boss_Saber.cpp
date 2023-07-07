@@ -51,7 +51,7 @@ void Boss_Saber::Update() {
 		/*m_dropItem = NewGO<Drop_item>(1, "drop_item");
 		m_dropItem->m_position = b_w_position;
 		m_dropItem->m_position.y += 50.0f;*/
-		defeatState = true;
+		notHituyou = true;
 		DeleteGO(this);
 	}
 }
@@ -60,7 +60,7 @@ void Boss_Saber::Move() {
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
 	Quaternion originRotation = m_boss->GetRotation();
 	m_position = m_boss->GetPosition();
-	Vector3 lp = b_w_localposition;
+	Vector3 lp = m_localPosition;
 	originRotation.Multiply(lp);
 	m_position += lp;
 	m_rotation = originRotation;

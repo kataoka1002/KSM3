@@ -27,9 +27,9 @@ void Boss_Riser::Setup()
 	m_animationClip[enAnimationClip_attack].SetLoopFlag(true);
 
 
-	set_weapons = 1;
+	m_setWeapon = 1;
 	m_boss = FindGO<Boss>("boss");
-	if (set_weapons == 1)
+	if (m_setWeapon == 1)
 	{
 		boss_Riser_Render.Init("Assets/modelData/Boss_do-ze-1.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
 		boss_Riser_Render.Update();
@@ -82,7 +82,7 @@ void Boss_Riser::Update()
 			m_weaponEffect->SetScale({ 30.0f,30.0f,30.0f });
 			
 			//efeLP += b_w_position;
-			m_weaponEffect->SetPosition(efeLP + m_position);
+			m_weaponEffect->SetPosition(m_effectLocalPos + m_position);
 			m_weaponEffect->SetRotation(m_rotation);
 			m_weaponEffect->Play();
 		}
@@ -114,7 +114,7 @@ void Boss_Riser::Update()
 	{
 		//drop_item = NewGO<Drop_item>(1, "drop_item");
 		//drop_item->Drop_position.y += 50.0f;
-		defeatState = true;
+		notHituyou = true;
 		DeleteGO(this);
 	}
 }
@@ -124,7 +124,7 @@ void Boss_Riser::Move()
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
 	Quaternion originRotation = m_boss->GetRotation();
 	m_position = m_boss->GetPosition();
-	Vector3 lp = b_w_localposition;
+	Vector3 lp = m_localPosition;
 	originRotation.Multiply(lp);
 	m_position += lp;
 	m_rotation = originRotation;

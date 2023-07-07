@@ -50,22 +50,22 @@ public:
 	//CharacterController boss_riser_characterContller;
 	Quaternion m_rotation;
 	Vector3 m_position;
-	Vector3 b_w_moveSpeed;
+	Vector3 iranyatu;
 	EffectEmitter* shovel_shock;
 	Vector3 m_forward = { 0.0f,0.0f,1.0f };
-	int game_state = 0;
+	int iran = 0;
 	ModelRender boss_Shovel_Render;
 	int shovelState = 0;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { 00.0f,230.0f,950.0f };
+	Vector3 m_localPosition = { 00.0f,230.0f,950.0f };
 
 	bool m_attackState = false;
-	bool attack_ok = false;
-	bool defeatState = false;
-	int set_weapons = 0;
+	bool m_attackOK = false;
+	bool notHituyou = false;
+	int m_setWeapon = 0;
 
-	int firing_cound = 0;
+	int iraniran = 0;
 	int m_fastFlag = 0;
 
 	float shovel_HP = HP;

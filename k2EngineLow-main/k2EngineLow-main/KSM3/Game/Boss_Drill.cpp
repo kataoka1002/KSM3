@@ -17,7 +17,7 @@
 Boss_Drill::Boss_Drill()
 {
 	m_game = FindGO<Game>("game");
-	b_a_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 
 	m_animationClip[enAnimationClip_Idle].Load("Assets/animData/Boss_Drill_idol.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
@@ -27,10 +27,10 @@ Boss_Drill::Boss_Drill()
 
 Boss_Drill::~Boss_Drill()
 {
-	if (b_boss_weapons != nullptr) {
-		DeleteGO(b_boss_weapons);
+	if (m_drillAttack != nullptr) {
+		DeleteGO(m_drillAttack);
 	}
-	DeleteGO(b_boss_weapons);
+	DeleteGO(m_drillAttack);
 	/*if (defeatState == true)
 	{
 		drop_item->drop_kinds = set_weapons;
@@ -39,12 +39,12 @@ Boss_Drill::~Boss_Drill()
 
 void Boss_Drill::Setup()
 {
-	set_weapons = 1;
+	m_setWeapon = 1;
 	m_boss = FindGO<Boss>("boss");
-	if (set_weapons == 1)
+	if (m_setWeapon == 1)
 	{
-		boss_Drill_Render.Init("Assets/modelData/Boss_Drill.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
-		boss_Drill_Render.Update();
+		m_drillModel.Init("Assets/modelData/Boss_Drill.tkm", true, false, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
+		m_drillModel.Update();
 	}
 
 	
@@ -57,27 +57,27 @@ void Boss_Drill::Update()
 		Setup();
 	}
 	m_fastFlag++;
-	if (b_a_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
+	if (m_player->GetGameState() == MAIN_GAME_NUM && m_fastFlag != 0)
 	{
 		Move();
 
 		if (m_fastFlag >= 20 && m_fastFlag < 140) {
-			boss_Drill_Render.PlayAnimation(enAnimationClip_attack, 0.5f);
+			m_drillModel.PlayAnimation(enAnimationClip_attack, 0.5f);
 		}
 		else {
-			boss_Drill_Render.PlayAnimation(enAnimationClip_Idle, 0.5f);
+			m_drillModel.PlayAnimation(enAnimationClip_Idle, 0.5f);
 		}
 		if (m_fastFlag == 20)
 		{
-			b_boss_weapons = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
+			m_drillAttack = NewGO<Boss_Drill_attack>(1, "boss_Drill_attack");
 			m_attackState = true;
-			b_boss_weapons->m_firePosition = m_position;
-			b_boss_weapons->m_aim = m_boss->GetRotation();
-			b_boss_weapons->m_bulletForward = m_boss->GetForward();
+			m_drillAttack->m_firePosition = m_position;
+			m_drillAttack->m_aim = m_boss->GetRotation();
+			m_drillAttack->m_bulletForward = m_boss->GetForward();
 		}
 		//攻撃終了時リセット
 		if (m_fastFlag >=21) {
-			if (b_boss_weapons == nullptr) {
+			if (m_drillAttack == nullptr) {
 				m_fastFlag = 1;
 			}
 		}
@@ -101,11 +101,11 @@ void Boss_Drill::Update()
 		//	}
 		//}
 	}
-	if (b_a_player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);
 	}
-	boss_Drill_Render.Update();
+	m_drillModel.Update();
 
 	//b_w_rotation.SetRotationY(atan2(b_w_Fowrad.x, b_w_Fowrad.z));
 	//boss_Riser_Render.SetPosition(b_w_position);
@@ -113,49 +113,49 @@ void Boss_Drill::Update()
 	//boss_Riser_Render.Update();
 	//PlayerSearch();
 
-	boss_Drill_Render.SetScale(Drill_scale);
-	boss_Drill_Render.Update();
-	if (drill_HP<=0.0f)
+	m_drillModel.SetScale(m_scale);
+	m_drillModel.Update();
+	if (m_HP<=0.0f)
 	{
 		//drop_item = NewGO<Drop_item>(1, "drop_item");
 		//drop_item->Drop_position.y += 50.0f;
 		//defeatState = true;
 		
 		//自分が死ぬと同時にショベルも消す
-		if (Death_count == 0){
+		if (m_deathCount == 0){
 			m_explosionAnother = NewGO<EffectEmitter>(0);
 			m_explosionAnother->Init(enBoss_Explosion_Another);
 			m_explosionAnother->SetScale({ 25.0f,25.0f,25.0f });
 			
 			//efeLP += b_w_position;
-			m_explosionAnother->SetPosition(efeLP + m_position);
+			m_explosionAnother->SetPosition(m_effectLocalPos + m_position);
 			m_explosionAnother->SetRotation(m_rotation);
 			m_explosionAnother->Play();
 		}
-		if (Death_count == 140) {
+		if (m_deathCount == 140) {
 			Damage();
 		}
-		if (Death_count>=320&&Death_count<340) {
-			Drill_scale -= 1.0f;
-			boss_Drill_Render.SetScale(Drill_scale);
+		if (m_deathCount>=320&&m_deathCount<340) {
+			m_scale -= 1.0f;
+			m_drillModel.SetScale(m_scale);
 		}
-		if (Death_count == 320) {
-			Explosion_efe = NewGO<EffectEmitter>(0);
-			Explosion_efe->Init(enBoss_Explosion);
-			Explosion_efe->SetScale({ 70.0f,70.0f,70.0f });
+		if (m_deathCount == 320) {
+			m_explosionEffect = NewGO<EffectEmitter>(0);
+			m_explosionEffect->Init(enBoss_Explosion);
+			m_explosionEffect->SetScale({ 70.0f,70.0f,70.0f });
 			
 			//efeLP += b_w_position;
-			Explosion_efe->SetPosition(efeLP + m_position);
-			Explosion_efe->SetRotation(m_rotation);
-			Explosion_efe->Play();
+			m_explosionEffect->SetPosition(m_effectLocalPos + m_position);
+			m_explosionEffect->SetRotation(m_rotation);
+			m_explosionEffect->Play();
 		}
-		if (Death_count == 340) {
+		if (m_deathCount == 340) {
 			DeleteGO(m_boss->GetShovel());
 			DeleteGO(this);
 		}
 		
 
-		Death_count++;
+		m_deathCount++;
 	}
 }
 
@@ -164,12 +164,12 @@ void Boss_Drill::Move()
 	//ここは丸パクリでOK
 	Quaternion originRotation = m_boss->GetRotation();
 	m_position = m_boss->GetPosition();
-	Vector3 lp = b_w_localposition;
+	Vector3 lp = m_localPosition;
 	originRotation.Multiply(lp);
 	m_position += lp;
 	m_rotation = originRotation;
-	boss_Drill_Render.SetPosition(m_position);
-	boss_Drill_Render.SetRotation(m_rotation);
+	m_drillModel.SetPosition(m_position);
+	m_drillModel.SetRotation(m_rotation);
 }
 
 void Boss_Drill::PlayerSearch()
@@ -196,17 +196,17 @@ void Boss_Drill::Damage()
 {
 	m_effectPosition = m_position;
 		//---------------------------------------------------------------------------------------------------
-		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
+		if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = m_effectPosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+			Vector3 diffPlayer = m_effectPosition - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 			float a = diffPlayer.Length();
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 2000.0f) //ダメージが入る範囲
 			{
-				b_a_player->ApplyDamage(200.0f);
+				m_player->ApplyDamage(200.0f);
 
 			}
 
@@ -310,5 +310,5 @@ void Boss_Drill::Damage()
 
 void Boss_Drill::Render(RenderContext& rc)
 {
-	boss_Drill_Render.Draw(rc);
+	m_drillModel.Draw(rc);
 }

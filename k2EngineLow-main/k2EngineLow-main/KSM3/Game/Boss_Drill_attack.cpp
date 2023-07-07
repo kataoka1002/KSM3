@@ -56,13 +56,13 @@ Boss_Drill_attack::~Boss_Drill_attack()
 		m_BulletEffect = nullptr;
 		m_BulletEffect2 = nullptr;
 	}
-	b_a_weapons->m_attackState = false;
+	b_a_weapons->SetAttackOK(false);
 }
 
 bool Boss_Drill_attack::Start() {
 	m_game = FindGO<Game>("game");
 	b_a_boss = FindGO<Boss>("boss");
-	b_a_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 	b_a_weapons = FindGO<Boss_Drill>("boss_drill");
 	b_a_core_weapons = FindGO<Core_weapons>("core_weapons");
 
@@ -123,19 +123,19 @@ void Boss_Drill_attack::Update()
 	m_BulletEffect2->SetRotation(efe_rot);
 	m_BulletEffect2->SetPosition(m_firePosition+efe_l_pos2);
 	m_bulletEfeCount++;
-	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 		Damage();
 		Move();
 		m_bulletModel.Update();
 		
 	}
-	else if (b_a_player->GetGameState() == RESULT_NUM)
+	else if (m_player->GetGameState() == RESULT_NUM)
 	{
 		DeleteGO(this);	//リザルト画面に行くと消す
 	}
 
-	if (b_a_player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
 	}
@@ -157,7 +157,7 @@ void Boss_Drill_attack::Move()
 		//	return_angle = Player_Search();
 		//}
 		if (drill_count == 209) {
-			Vector3 toPlayer = b_a_player->GetPlayerPosition() - m_firePosition;
+			Vector3 toPlayer = m_player->GetPlayerPosition() - m_firePosition;
 
 			//プレイヤーとの距離を計算する。
 			float distToPlayer = toPlayer.Length();
@@ -167,7 +167,7 @@ void Boss_Drill_attack::Move()
 			m_bulletForward = toPlayerDir;
 			m_rot.SetRotationY(atan2(m_bulletForward.x, m_bulletForward.z));
 			m_bulletModel.SetRotation(m_rot);
-			lock_p_position = b_a_player->GetPlayerPosition();
+			lock_p_position = m_player->GetPlayerPosition();
 		}
 		if (drill_count == 210) {
 			Vector3 toPlayer = lock_p_position - m_firePosition;
@@ -184,7 +184,7 @@ void Boss_Drill_attack::Move()
 			efe_rot.SetRotationY(atan2(efe_fowrad.x, efe_fowrad.z));
 
 			m_bulletModel.SetRotation(m_rot);
-			lock_p_position = b_a_player->GetPlayerPosition();
+			lock_p_position = m_player->GetPlayerPosition();
 			last_fowrad = toPlayerDir;
 		}
 		if (drill_count >= 210 && drill_count < 270) {
@@ -196,14 +196,14 @@ void Boss_Drill_attack::Move()
 
 			if (b_a_weapons != nullptr) {
 				//弾とボスの距離を測る
-				Vector3 diffShoulder = m_firePosition - Vector3{ b_a_weapons->m_position.x, b_a_weapons->m_position.y, b_a_weapons->m_position.z };
+				Vector3 diffShoulder = m_firePosition - b_a_weapons->GetPosirion();
 
 				//武器によってダメージを変える
 
 					//距離を測り一定以下なら体力減少
 				if (diffShoulder.Length() <= 500.0f) //ダメージが入る範囲
 				{
-					b_a_weapons->drill_HP -= 2.0f;
+					b_a_weapons->ApplyDamage(2.0f);
 					Effect();
 
 				}
@@ -243,7 +243,7 @@ void Boss_Drill_attack::Move()
 			m_bulletModel.SetPosition(m_firePosition);
 		}
 		if (drill_count == 400) {
-			b_a_weapons->b_boss_weapons = nullptr;
+			b_a_weapons->SetDrillAttack(nullptr);
 			DeleteGO(b_attack_SE);
 			DeleteGO(this);
 		}
@@ -252,7 +252,7 @@ void Boss_Drill_attack::Move()
 }
 
 float Boss_Drill_attack::Player_Search() {
-	Vector3 toPlayer = b_a_player->GetPlayerPosition() - m_firePosition;
+	Vector3 toPlayer = m_player->GetPlayerPosition() - m_firePosition;
 
 	//プレイヤーとの距離を計算する。
 	float distToPlayer = toPlayer.Length();
@@ -271,17 +271,17 @@ float Boss_Drill_attack::Player_Search() {
 
 void Boss_Drill_attack::Damage() {
 	//---------------------------------------------------------------------------------------------------
-	if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
+	if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 	{
 		//弾とプレイヤーの距離を測る
-		Vector3 diffPlayer = m_firePosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+		Vector3 diffPlayer = m_firePosition - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
 		//武器によってダメージを変える
 
 			//距離を測り一定以下なら体力減少
 		if (diffPlayer.Length() <= 500.0f) //ダメージが入る範囲
 		{
-			b_a_player->ApplyDamage(50.0f);
+			m_player->ApplyDamage(50.0f);
 			Effect();
 
 		}

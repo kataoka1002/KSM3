@@ -20,7 +20,7 @@ public:
 	Boss_Shovel* b_a_weapons;
 	Boss* b_a_boss;
 	Core_weapons* b_a_core_weapons;
-	Player* b_a_player;
+	Player* m_player;
 	SoundSource* b_attack_SE;
 
 	ModelRender m_bulletModel;

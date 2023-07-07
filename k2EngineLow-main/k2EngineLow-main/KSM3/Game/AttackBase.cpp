@@ -240,7 +240,7 @@ void AttackBase::DamageEvent(float damage)
 		{
 
 			//弾とドリルの距離を測る
-			Vector3 diff = m_position - m_game->GetBoss()->GetDrill()->m_position;
+			Vector3 diff = m_position - m_game->GetBoss()->GetDrill()->GetPosirion();
 
 
 			//一定距離以下なら
@@ -248,7 +248,7 @@ void AttackBase::DamageEvent(float damage)
 			{
 
 				//ダメージを与える
-				m_game->GetBoss()->GetDrill()->drill_HP -= damage;
+				m_game->GetBoss()->GetDrill()->ApplyDamage(damage);
 
 
 				//弾が消えるときの処理
