@@ -80,7 +80,6 @@ void Boss_Turbo::Update()
 
 		if (m_attackCount > 700) {
 			m_turboAttack = NewGO<Boss_Turbo_attack>(1, "boss_Turbo_attack");
-			m_attackState = true;
 			m_turboAttack->SetPosition(m_position);
 			m_turboAttack->SetRotation(m_rotation);
 			m_turboAttack->SetForward(m_boss->GetForward());
