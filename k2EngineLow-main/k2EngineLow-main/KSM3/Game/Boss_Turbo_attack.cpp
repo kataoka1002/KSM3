@@ -18,7 +18,7 @@ Boss_Turbo_attack::Boss_Turbo_attack()
 
 Boss_Turbo_attack::~Boss_Turbo_attack()
 {
-	m_weapon->m_attackState = false;
+	//m_weapon->m_attackState = false;
 }
 
 bool Boss_Turbo_attack::Start()
@@ -44,8 +44,8 @@ void Boss_Turbo_attack::SetUp()
 {
 		m_aim.Multiply(m_bulletLocalPosition);	//Š|‚¯ŽZ
 		m_firePosition += m_bulletLocalPosition;
-		m_firePosition = m_weapon->m_position;
-		m_bulletForward = m_weapon->m_forward;
+		m_firePosition = m_weapon->GetPosition();
+		m_bulletForward = m_weapon->GetForward();
 		m_bulletModel.SetScale(30);
 		m_bulletModel.SetPosition(m_firePosition);
 		m_bulletModel.Update();

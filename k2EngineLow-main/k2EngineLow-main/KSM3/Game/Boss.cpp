@@ -479,14 +479,14 @@ void Boss::PlayerSearch()
 		m_bossCannon->SetAttackOK(true);
 		m_bossDrill->SetAttackOK(true);
 		m_bossShovel->SetAttackOK(true);
-		m_bossTurbo->m_attackOK = true;
+		m_bossTurbo->SetAttackOK(true);
 	}
 	else {
 		m_bossRiser->SetAttackOK(false);
 		m_bossCannon->SetAttackOK(false);
 		m_bossDrill->SetAttackOK(false);
 		m_bossShovel->SetAttackOK(false);
-		m_bossTurbo->m_attackOK = false;
+		m_bossTurbo->SetAttackOK(false);
 	}
 
 	//敵キャラの前方方向を更新する
@@ -534,8 +534,8 @@ void Boss::Damage()
 				m_bossShovel->SetShovelScale();
 			}
 			if (m_bossTurbo != nullptr) {
-				m_bossTurbo->m_scale -= 0.651f;
-				m_bossTurbo->m_tarboModel.SetScale(m_bossRiser->GetScale());
+				m_bossTurbo->DecreaseScale(0.651f);
+				m_bossTurbo->SetTarboScale();
 			}
 		}
 		if (m_deathCount == 0) {
@@ -588,8 +588,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossTurbo->m_position);
-				m_explosionAnother->SetRotation(m_bossTurbo->m_rotation);
+				m_explosionAnother->SetPosition(m_bossTurbo->GetPosition());
+				m_explosionAnother->SetRotation(m_bossTurbo->GetRotation());
 				m_explosionAnother->Play();
 			}
 			
