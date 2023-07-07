@@ -32,7 +32,7 @@ public:
 	Boss_Riser* b_a_weapons;
 	Boss* b_a_boss;
 	Core_weapons* b_a_core_weapons;
-	Player* b_a_player;
+	Player* m_player;
 	Left_arm_weapons* m_leftArm = nullptr;
 	Left_leg_weapons* m_leftLeg = nullptr;
 	Right_arm_weapons* m_rightArm = nullptr;

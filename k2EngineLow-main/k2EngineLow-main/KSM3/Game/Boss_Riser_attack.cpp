@@ -52,7 +52,7 @@ Boss_Riser_attack::~Boss_Riser_attack()
 bool Boss_Riser_attack::Start() {
 	m_game = FindGO<Game>("game");
 	b_a_boss = FindGO<Boss>("boss");
-	b_a_player = FindGO<Player>("player");
+	m_player = FindGO<Player>("player");
 	b_a_weapons = FindGO<Boss_Riser>("boss_riser");
 	b_a_core_weapons = FindGO<Core_weapons>("core_weapons");
 
@@ -135,7 +135,7 @@ void Boss_Riser_attack::Update()
 	}
 	m_bulletEfeCount++;
 
-	if (b_a_player->GetGameState() == MAIN_GAME_NUM)
+	if (m_player->GetGameState() == MAIN_GAME_NUM)
 	{
 
 		m_fallSpeed += 0.002;
@@ -152,12 +152,12 @@ void Boss_Riser_attack::Update()
 		Move();
 
 	}
-	else if (b_a_player->GetGameState() == RESULT_NUM)
+	else if (m_player->GetGameState() == RESULT_NUM)
 	{
 		DeleteGO(this);	//リザルト画面に行くと消す
 	}
 
-	if (b_a_player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 		DeleteGO(this);	//プレイヤーがポーズ画面からゲームを終了させると消す
 	}
@@ -189,17 +189,17 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 {
 	if (No_tyakudan == true) {
 		//---------------------------------------------------------------------------------------------------
-		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
+		if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = m_effectPosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+			Vector3 diffPlayer = m_effectPosition - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 50000.0f) //ダメージが入る範囲
 			{
-				b_a_player->ApplyDamage(5.0f);
+				m_player->ApplyDamage(5.0f);
 
 			}
 
@@ -302,17 +302,17 @@ void Boss_Riser_attack::Damage(bool No_tyakudan)
 
 
 		//---------------------------------------------------------------------------------------------------
-		if (b_a_player != nullptr)	//プレイヤーの情報が入っているなら
+		if (m_player != nullptr)	//プレイヤーの情報が入っているなら
 		{
 			//弾とプレイヤーの距離を測る
-			Vector3 diffPlayer = m_firePosition - Vector3{ b_a_player->GetPlayerPosition().x, b_a_player->GetPlayerPosition().y + 50.0f, b_a_player->GetPlayerPosition().z };
+			Vector3 diffPlayer = m_firePosition - Vector3{ m_player->GetPlayerPosition().x, m_player->GetPlayerPosition().y + 50.0f, m_player->GetPlayerPosition().z };
 
 			//武器によってダメージを変える
 
 				//距離を測り一定以下なら体力減少
 			if (diffPlayer.Length() <= 200.0f) //ダメージが入る範囲
 			{
-				b_a_player->ApplyDamage(200.0f);
+				m_player->ApplyDamage(200.0f);
 				if (farst == true) {
 					DestroyWithImpactEffect();
 					farst = false;

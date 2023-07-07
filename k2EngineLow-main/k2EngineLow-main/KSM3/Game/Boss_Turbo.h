@@ -35,23 +35,23 @@ public:
 	//CharacterController boss_riser_characterContller;
 	Quaternion m_rotation;
 	Vector3 m_position;
-	Vector3 b_w_moveSpeed;
+	Vector3 iranyatu;
 	Vector3 m_forward;
 	Vector3 m_moveSpeed = Vector3::Zero;
-	Vector3 efeLP = { 0.0f,410.0f,0.0f };
-	int game_state = 0;
+	Vector3 m_effectLocalPos = { 0.0f,410.0f,0.0f };
+	int iran = 0;
 	ModelRender boss_Turbo_Render;
 
 	//Ç¢ÇÈÅBê‚ëŒÅB
-	Vector3 b_w_localposition = { -630.0f,20.0f,-100.0f };
+	Vector3 m_localPosition = { -630.0f,20.0f,-100.0f };
 
 	bool m_attackState = false;
-	bool attack_ok = false;
-	bool defeatState = false;
+	bool m_attackOK = false;
+	bool notHituyou = false;
 	bool Rote = false;
-	int set_weapons = 0;
+	int m_setWeapon = 0;
 
-	int firing_cound = 0;
+	int iraniran = 0;
 	int m_fastFlag = 0;
 
 	float turbo_HP = HP;

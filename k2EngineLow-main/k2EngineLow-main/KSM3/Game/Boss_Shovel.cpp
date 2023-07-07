@@ -40,9 +40,9 @@ bool Boss_Shovel::Start()
 
 void Boss_Shovel::Setup()
 {m_boss = FindGO<Boss>("boss");
-	set_weapons = 1;
+	m_setWeapon = 1;
 	
-	if (set_weapons == 1)
+	if (m_setWeapon == 1)
 	{
 		//boss_Shovel_Render.Init("Assets/modelData/Boss_shovel.tkm");
 		boss_Shovel_Render.Update();
@@ -160,7 +160,7 @@ void Boss_Shovel::Move()
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
 	Quaternion originRotation = m_boss->GetRotation();
 	m_position = m_boss->GetPosition();
-	Vector3 lp = b_w_localposition;
+	Vector3 lp = m_localPosition;
 	originRotation.Multiply(lp);
 	m_position += lp;
 	m_rotation = originRotation;

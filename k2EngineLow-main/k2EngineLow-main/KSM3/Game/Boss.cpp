@@ -119,9 +119,9 @@ void Boss::Update()
 		m_BossEffect = NewGO<EffectEmitter>(0);
 		m_BossEffect->Init(enBoss_Magic_Circle);
 		m_BossEffect->SetScale({ m_efectScale,m_efectScale,m_efectScale });
-		Vector3 efeLP = { 0.0f,680.0f,2000.0f };
-		efeLP += m_position;
-		m_BossEffect->SetPosition(efeLP);
+		Vector3 m_effectLocalPos = { 0.0f,680.0f,2000.0f };
+		m_effectLocalPos += m_position;
+		m_BossEffect->SetPosition(m_effectLocalPos);
 		m_BossEffect->Play();
 	}
 	if (m_bossAttackCount == 500) {
@@ -475,18 +475,18 @@ void Boss::PlayerSearch()
 	}
 
 	if (fabsf(angle) < Math::DegToRad(45.0f)) {
-		m_bossRiser->attack_ok = true;
+		m_bossRiser->m_attackOK = true;
 		m_bossCannon->SetAttackOK(true);
-		m_bossDrill->attack_ok = true;
-		m_bossShovel->attack_ok = true;
-		m_bossTurbo->attack_ok = true;
+		m_bossDrill->SetAttackOK(true);
+		m_bossShovel->m_attackOK = true;
+		m_bossTurbo->m_attackOK = true;
 	}
 	else {
-		m_bossRiser->attack_ok = false;
+		m_bossRiser->m_attackOK = false;
 		m_bossCannon->SetAttackOK(false);
-		m_bossDrill->attack_ok = false;
-		m_bossShovel->attack_ok = false;
-		m_bossTurbo->attack_ok = false;
+		m_bossDrill->SetAttackOK(false);
+		m_bossShovel->m_attackOK = false;
+		m_bossTurbo->m_attackOK = false;
 	}
 
 	//敵キャラの前方方向を更新する
@@ -518,8 +518,8 @@ void Boss::Damage()
 				m_bossRiser->boss_Riser_Render.SetScale(m_bossRiser->scale);
 			}
 			if (m_bossDrill != nullptr) {
-				m_bossDrill->Drill_scale -= 1.02f;
-				m_bossDrill->boss_Drill_Render.SetScale(m_bossDrill->Drill_scale);
+				m_bossDrill->DecreaseScale(1.02f);
+				m_bossDrill->SetDrillScale();
 			}
 			if (m_bossCannon != nullptr) {
 				m_bossCannon->DecreaseScale(0.75f);
@@ -558,8 +558,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossDrill->m_position);
-				m_explosionAnother->SetRotation(m_bossDrill->m_rotation);
+				m_explosionAnother->SetPosition(m_bossDrill->GetPosirion());
+				m_explosionAnother->SetRotation(m_bossDrill->GetRotation());
 				m_explosionAnother->Play();
 			}
 			if (m_bossSaber != nullptr) {

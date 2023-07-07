@@ -26,9 +26,9 @@ Boss_Turbo::~Boss_Turbo()
 
 void Boss_Turbo::Setup()
 {
-	set_weapons = 1;
+	m_setWeapon = 1;
 	m_boss = FindGO<Boss>("boss");
-	if (set_weapons == 1)
+	if (m_setWeapon == 1)
 	{
 		boss_Turbo_Render.Init("Assets/modelData/Boss_turbo2.tkm", true, true, m_animationClip, enAnimationClip_Num, enModelUpAxisZ);
 		boss_Turbo_Render.Update();
@@ -58,11 +58,11 @@ void Boss_Turbo::Update()
 		Move();
 			Rotation();
 		
-		firing_cound++;//攻撃のタイミングの計算。
+		iraniran++;//攻撃のタイミングの計算。
 		
 
 
-			if (firing_cound == 350)
+			if (iraniran == 350)
 			{
 				/*m_weaponEffect = NewGO<EffectEmitter>(0);
 				m_weaponEffect->Init(enTatumaki_charge);
@@ -72,18 +72,18 @@ void Boss_Turbo::Update()
 				m_weaponEffect->Play();*/
 
 			}
-			if (firing_cound >= 500) {
+			if (iraniran >= 500) {
 				boss_Turbo_Render.PlayAnimation(enAnimationClip_Attack, 0.5f);
 			}
 			else {
 				boss_Turbo_Render.PlayAnimation(enAnimationClip_Idle, 0.5f);
 			}
-			if (firing_cound == 500) {
+			if (iraniran == 500) {
 
 				m_weaponEffect = NewGO<EffectEmitter>(0);
 				m_weaponEffect->Init(enTatumaki_fire);
 				m_weaponEffect->SetScale({ 40.0f,40.0f,30.0f });
-				m_weaponEffect->SetPosition(efeLP + m_position);
+				m_weaponEffect->SetPosition(m_effectLocalPos + m_position);
 				m_weaponEffect->SetRotation(m_rotation);
 				m_weaponEffect->Play();
 				
@@ -105,20 +105,20 @@ void Boss_Turbo::Update()
 			}
 		}*/
 
-		if (firing_cound > 700) {
+		if (iraniran > 700) {
 			b_boss_weapons = NewGO<Boss_Turbo_attack>(1, "boss_Turbo_attack");
 			m_attackState = true;
 			b_boss_weapons->m_firePosition = m_position;
 			b_boss_weapons->m_aim = m_rotation;
 			b_boss_weapons->m_bulletForward = m_boss->GetForward();
-			if (firing_cound == 900) {
-				firing_cound = 0;
+			if (iraniran == 900) {
+				iraniran = 0;
 				Rote = false;
 				
 			}
 		}
 
-		if (attack_ok == true)
+		if (m_attackOK == true)
 		{
 
 		}
@@ -176,7 +176,7 @@ void Boss_Turbo::Move()
 	//ここは丸パクリでOK
 	Quaternion originRotation = m_boss->GetRotation();
 	m_position = m_boss->GetPosition();
-	Vector3 lp = b_w_localposition;
+	Vector3 lp = m_localPosition;
 	originRotation.Multiply(lp);
 	m_position += lp;
 	m_rotation = originRotation;
