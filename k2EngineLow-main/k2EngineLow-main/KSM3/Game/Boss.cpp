@@ -526,8 +526,8 @@ void Boss::Damage()
 				m_bossCannon->SetCannonScale();
 			}
 			if (m_bossSaber != nullptr) {
-				m_bossSaber->scale -= 0.75f;
-				m_bossSaber->boss_Cannon_Render.SetScale(m_bossSaber->scale);
+				m_bossSaber->DecreaseScale(0.75f);
+				m_bossSaber->SetSaberScale();
 			}
 			if (m_bossShovel != nullptr) {
 				m_bossShovel->scale -= 0.75f;
@@ -568,8 +568,8 @@ void Boss::Damage()
 				m_explosionAnother->SetScale({ 70.0f,70.0f,70.0f });
 				
 				//efeLP += b_w_position;
-				m_explosionAnother->SetPosition(m_bossSaber->m_position);
-				m_explosionAnother->SetRotation(m_bossSaber->m_rotation);
+				m_explosionAnother->SetPosition(m_bossSaber->GetPosirion());
+				m_explosionAnother->SetRotation(m_bossSaber->GetRotation());
 				m_explosionAnother->Play();
 			}
 			if (m_bossShovel != nullptr) {

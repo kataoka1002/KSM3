@@ -72,9 +72,9 @@ private:
 	Vector3 m_effectPosition = Vector3::Zero;
 
 	float m_fallSpeed = 0.0f;
-	bool m_attackState = true;
 	int m_loadingCount = 0;
 	int m_bulletEfeCount = 0;
+	bool m_attackState = true;
 	bool m_fastFlag = true;
 	bool m_firstFlag = true;
 };

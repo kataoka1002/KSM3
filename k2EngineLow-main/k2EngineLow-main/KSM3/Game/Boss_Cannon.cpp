@@ -119,8 +119,8 @@ void Boss_Cannon::Rotation() {
 void Boss_Cannon::Move()
 {
 	//‚±‚±‚ÍŠÛƒpƒNƒŠ‚ÅOK
-	Quaternion originRotation = m_boss->GetSaber()->m_rotation;
-	m_position = m_boss->GetSaber()->m_position;
+	Quaternion originRotation = m_boss->GetSaber()->GetRotation();
+	m_position = m_boss->GetSaber()->GetPosirion();
 	Vector3 lp = m_localPosition;
 	originRotation.Multiply(lp);
 	m_position += lp;
