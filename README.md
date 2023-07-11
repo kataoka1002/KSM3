@@ -75,7 +75,7 @@
 
 <br />
 
-<a id="anchor1"></a>
+<a id="anchor2"></a>
 ## 2.作成したソースコード
 > * AttackBase.cpp
 > * AttackBase.h
@@ -132,7 +132,7 @@
 
 <br />
 
-<a id="anchor1"></a>
+<a id="anchor3"></a>
 ## 3.作成したエンジンコード
 > * Bloom.cpp
 > * Bloom.h
@@ -155,18 +155,18 @@
 
 <br />
 
-<a id="anchor1"></a>
+<a id="anchor4"></a>
 ## 4.ゲーム内容
 > 敵を倒してドロップしたアイテムを装備し、進んでいくゲーム。<br />
 > 自分好みのカスタマイズで敵を翻弄しよう！
 
 <br />
 
-<a id="anchor1"></a>
+<a id="anchor5"></a>
 ## 5.操作説明
 > ![操作説明](https://github.com/kataoka1002/KSM3/assets/122655580/84628a07-4fc5-4005-b8a9-4c71acd8f195)
 
 <br />
 
-<a id="anchor1"></a>
+<a id="anchor6"></a>
 ## 6.技術紹介
