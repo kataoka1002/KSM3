@@ -223,6 +223,32 @@
 
 <a id="anchor9"></a>
 > ### 導虫
+> 1.光が滑らかに射出されるようにしたいので、まず遠心力を求める。
+> ```math
+> F = m * \frac{v^2}{r}
+> ```
+> より、重さを１として計算する。
+> ``` ruby : GuideLight.cpp
+> float maxCentripetalAccel = speed * speed / curvatureRadius;
+> ```
+> 
+> <br />
+>
+> 2.今いる位置から目標の地点までのベクトルを求める。
+> ``` ruby : GuideLight.cpp
+> //目標の地点
+> Vector3 targetPosition = m_targetPosition;
+>  
+> //目標までのベクトル
+> Vector3 toTarget = targetPosition - m_position;
+> ```
+> 
+> <br />
+>
+> 3.射出速度を正規化し、方向のみの情報を取得する。
+> ![vnの正規化](https://github.com/kataoka1002/KSM3/assets/122655580/f9bc9abc-dc8d-4335-818d-95f18918a404)
+
+
 <a id="anchor10"></a>
 > ### コンボ
 <a id="anchor11"></a>
