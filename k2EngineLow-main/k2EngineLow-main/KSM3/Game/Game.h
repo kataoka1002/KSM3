@@ -172,7 +172,7 @@ enum SoundName
 	
 };
 
-class Game :public IGameObject
+class Game :public IGameObject, Noncopyable
 {
 public:
 	Game();

@@ -1,7 +1,7 @@
 #pragma once
 class Game;
 
-class OPVoice : public IGameObject
+class OPVoice : public IGameObject, Noncopyable
 {
 public:
 	OPVoice();

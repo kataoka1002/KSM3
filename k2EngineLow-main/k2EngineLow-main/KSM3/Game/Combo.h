@@ -1,7 +1,7 @@
 #pragma once
 class Player;
 
-class Combo : public IGameObject
+class Combo : public IGameObject, Noncopyable
 {
 public:
 	Combo();

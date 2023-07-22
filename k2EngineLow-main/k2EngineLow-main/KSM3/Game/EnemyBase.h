@@ -10,7 +10,7 @@ class Enemy_HP_UI;
 
 
 
-class EnemyBase : public IGameObject
+class EnemyBase : public IGameObject, Noncopyable
 {
 public:
 

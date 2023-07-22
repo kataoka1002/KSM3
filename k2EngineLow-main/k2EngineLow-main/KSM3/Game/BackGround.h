@@ -1,5 +1,5 @@
 #pragma once
-class BackGround : public IGameObject
+class BackGround : public IGameObject,Noncopyable
 {
 public:
     BackGround();

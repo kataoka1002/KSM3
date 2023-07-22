@@ -2,7 +2,7 @@
 
 namespace nsK2EngineLow {
 
-	class SpriteRender
+	class SpriteRender : public Noncopyable
 	{
 	public:
 		//‰Šú‰»

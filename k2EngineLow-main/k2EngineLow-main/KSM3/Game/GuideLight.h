@@ -1,5 +1,5 @@
 #pragma once
-class GuideLight : public IGameObject
+class GuideLight : public IGameObject, Noncopyable
 {
 public:
 	GuideLight();

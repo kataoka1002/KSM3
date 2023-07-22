@@ -10,7 +10,7 @@ class Right_arm_weapons;
 class Right_leg_weapons;
 class Shoulder_weapons;
 
-class Boss_Shovel :public IGameObject
+class Boss_Shovel :public IGameObject, Noncopyable
 {
 public:
 	Boss_Shovel();

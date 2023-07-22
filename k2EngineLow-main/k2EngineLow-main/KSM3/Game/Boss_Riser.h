@@ -6,7 +6,7 @@ class Boss_Riser_attack;
 class Drop_item;
 class Game;
 
-class Boss_Riser : public IGameObject
+class Boss_Riser : public IGameObject, Noncopyable
 {
 public:
 	Boss_Riser();

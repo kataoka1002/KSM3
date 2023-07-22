@@ -2,7 +2,7 @@
 
 class Core_weapons_attack;
 class Player;
-class Core_weapons:public IGameObject
+class Core_weapons:public IGameObject, Noncopyable
 {
 public:
 	Core_weapons();

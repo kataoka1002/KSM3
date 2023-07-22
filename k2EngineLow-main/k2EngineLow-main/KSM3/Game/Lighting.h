@@ -1,5 +1,5 @@
 #pragma once
-class Lighting:public IGameObject
+class Lighting:public IGameObject, Noncopyable
 {
 public:
 	Lighting();

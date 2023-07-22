@@ -10,7 +10,7 @@ class Right_leg_weapons;
 class Shoulder_weapons;
 class Game;
 
-class Boss_Turbo_attack :public IGameObject
+class Boss_Turbo_attack :public IGameObject, Noncopyable
 {
 public:
 	Boss_Turbo_attack();

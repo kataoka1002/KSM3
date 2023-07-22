@@ -5,7 +5,7 @@ class Boss_Shovel;
 class Core_weapons;
 class Player;
 
-class Boss_Shovel_attack :public IGameObject
+class Boss_Shovel_attack :public IGameObject, Noncopyable
 {
 public:
 	Boss_Shovel_attack();

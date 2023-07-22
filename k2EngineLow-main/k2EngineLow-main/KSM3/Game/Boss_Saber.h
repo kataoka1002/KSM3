@@ -4,7 +4,7 @@ class Player;
 class Boss;
 class Game;
 
-class Boss_Saber : public IGameObject
+class Boss_Saber : public IGameObject, Noncopyable
 {
 public:
 	Boss_Saber();

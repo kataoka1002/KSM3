@@ -4,7 +4,7 @@ class Player;
 class Boss;
 class Boss_Turbo_attack;
 
-class Boss_Turbo :public IGameObject
+class Boss_Turbo :public IGameObject, Noncopyable
 {
 public:
 	Boss_Turbo();
