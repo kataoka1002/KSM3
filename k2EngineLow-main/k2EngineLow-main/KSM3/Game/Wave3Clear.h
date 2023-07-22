@@ -1,5 +1,5 @@
 #pragma once
-class Wave3Clear : public IGameObject
+class Wave3Clear : public IGameObject, Noncopyable
 {
 public:
 	Wave3Clear();

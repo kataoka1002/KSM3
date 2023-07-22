@@ -2,7 +2,7 @@
 class Lighting;
 class SoundManage;
 
-class Title : public IGameObject
+class Title : public IGameObject, Noncopyable
 {
 public:
 	Title();

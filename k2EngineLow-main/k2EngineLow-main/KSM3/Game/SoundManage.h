@@ -2,7 +2,7 @@
 class Game;
 class Player;
 
-class SoundManage:public IGameObject
+class SoundManage : public IGameObject, Noncopyable
 {
 public:
 	SoundManage();

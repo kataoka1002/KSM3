@@ -3,7 +3,7 @@ class Player;
 class GameCamera;
 using namespace std;
 
-class Result :public IGameObject
+class Result :public IGameObject, Noncopyable
 {
 public:
 	Result();

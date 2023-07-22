@@ -6,7 +6,7 @@ class MachineGunAttack;
 class GigatonCannonAttack;
 class Battle_ship_attack;
 
-class WeaponBase : public IGameObject
+class WeaponBase : public IGameObject, Noncopyable
 {
 public:
 	WeaponBase(){};

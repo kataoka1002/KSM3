@@ -15,7 +15,7 @@ class Right_leg_weapons;
 class Shoulder_weapons;
 
 
-class Enemy_Bullet : public IGameObject
+class Enemy_Bullet : public IGameObject, Noncopyable
 {
 public:
 	Enemy_Bullet();

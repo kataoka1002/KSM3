@@ -13,7 +13,7 @@ class Right_leg_weapons;
 class Shoulder_weapons;
 class Customize_UI_ver2;
 
-class Boss_Riser_attack :public IGameObject
+class Boss_Riser_attack :public IGameObject, Noncopyable
 {
 public:
 	Boss_Riser_attack();

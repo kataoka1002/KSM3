@@ -20,7 +20,7 @@ class Right_arm_weapons;
 class Right_leg_weapons;
 class Shoulder_weapons;
 
-class Boss :public IGameObject
+class Boss :public IGameObject, Noncopyable
 {
 public:
 	Boss();

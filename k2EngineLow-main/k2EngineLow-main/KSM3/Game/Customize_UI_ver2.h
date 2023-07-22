@@ -12,7 +12,7 @@ class Shoulder_weapons;
 class Right_leg_weapons;
 class Left_leg_weapons;
 
-class Customize_UI_ver2 :public IGameObject , Noncopyable
+class Customize_UI_ver2 : public IGameObject , Noncopyable
 {
 public:
 	Customize_UI_ver2();

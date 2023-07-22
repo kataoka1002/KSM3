@@ -3,7 +3,7 @@ class Game;
 class Player;
 class Customize_UI_ver2;
 //ƒQ[ƒ€’†‚ÌƒJƒƒ‰‚ğ§Œä‚·‚éB
-class GameCamera : public IGameObject
+class GameCamera : public IGameObject, Noncopyable
 {
 public:
 	GameCamera();

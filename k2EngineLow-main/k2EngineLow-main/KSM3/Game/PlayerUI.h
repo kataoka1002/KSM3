@@ -8,7 +8,7 @@ class Shoulder_weapons;
 class Wave;
 class Game;
 
-class PlayerUI:public IGameObject
+class PlayerUI:public IGameObject, Noncopyable
 {
 public:
 	PlayerUI();

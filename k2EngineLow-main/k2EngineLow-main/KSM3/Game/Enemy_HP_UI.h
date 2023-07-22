@@ -6,7 +6,7 @@ class Player;
 class Game;
 class GameCamera;
 
-class Enemy_HP_UI : public IGameObject
+class Enemy_HP_UI : public IGameObject, Noncopyable
 {
 public:
 	Enemy_HP_UI();

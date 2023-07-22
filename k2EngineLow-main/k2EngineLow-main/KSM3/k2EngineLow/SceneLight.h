@@ -54,7 +54,7 @@ namespace nsK2EngineLow {
 	};
 
 
-	class SceneLight
+	class SceneLight : public Noncopyable
 	{
 	public:
 		//‰Šú‰»

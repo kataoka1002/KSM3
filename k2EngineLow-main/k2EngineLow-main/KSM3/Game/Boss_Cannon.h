@@ -6,7 +6,7 @@ class Boss_Cannon_attack;
 class Game;
 class Boss_Saber;
 
-class Boss_Cannon :public IGameObject
+class Boss_Cannon :public IGameObject, Noncopyable
 {
 public:
 	Boss_Cannon();

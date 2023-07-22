@@ -1,7 +1,7 @@
 #pragma once
 class Player;
 
-class Customize_area:public IGameObject
+class Customize_area : public IGameObject, Noncopyable
 {
 public:
 	Customize_area();

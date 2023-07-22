@@ -4,7 +4,7 @@ class Player;
 class Boss;
 class GuideLight;
 class Wave3Clear;
-class Wave : public IGameObject
+class Wave : public IGameObject, Noncopyable
 {
 public:
 	Wave();

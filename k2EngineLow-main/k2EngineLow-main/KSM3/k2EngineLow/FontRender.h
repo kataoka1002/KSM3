@@ -1,6 +1,6 @@
 #pragma once
 namespace nsK2EngineLow {
-	class FontRender
+	class FontRender : public Noncopyable
 	{
 	public:
 		static const int MAX_TEXT_SIZE = 256;

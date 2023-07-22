@@ -6,7 +6,7 @@ class Left_arm_weapons;
 class GameCamera;
 class Game;
 
-class Drop_item : public IGameObject
+class Drop_item : public IGameObject, Noncopyable
 {
 public:
 	Drop_item();

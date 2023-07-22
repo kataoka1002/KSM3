@@ -7,7 +7,7 @@ class Game;
 class GameCamera;
 class Title;
 
-class Player:public IGameObject
+class Player:public IGameObject, Noncopyable
 {
 public:
 	Player();
