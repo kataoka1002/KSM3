@@ -69,7 +69,7 @@ Game::~Game()
 	//プッシュしたアイテムを削除していく
 	for (auto dropItem : m_dropItemObject)
 	{
-		DeleteGO(dropItem);
+		dropItem->ExecuteDelete();
 	}
 
 
