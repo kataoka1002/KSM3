@@ -116,6 +116,11 @@ bool Wave::Start()
 
 void Wave::Update()
 {
+	if (g_pad[0]->IsPress(enButtonB))
+	{
+		MakeGuide();
+	}
+
 
 	//ƒ|[ƒY‰æ–Ê’†‚È‚ç
 	if (m_player->GetGameState() == PAUSE_NUM)

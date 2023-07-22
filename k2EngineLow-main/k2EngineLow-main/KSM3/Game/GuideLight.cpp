@@ -61,24 +61,48 @@ void GuideLight::Update()
 
 void GuideLight::CalcVelocity(const float speed, const float curvatureRadius,const float damping)
 {
-	//?
+	//遠心力を求める
 	float maxCentripetalAccel = speed * speed / curvatureRadius;
+
+	//スピードに減衰率をかけて逆方向への力を求める
 	float propulsion = speed * damping;
 
+	//目標の地点
 	Vector3 targetPosition = m_targetPosition;
+
+	//目標までのベクトル
 	Vector3 toTarget = targetPosition - m_position;
+
+	//速度を設定し、正規化して打ち出された方向を取得
 	Vector3 vn = m_velocity;
 	vn.Normalize();
+
+	//目標までのベクトルと打ち出された方向の内積を求める(敵へ向かうベクトルをvnに射影し T'の大きさが求まる)
 	float dot = toTarget.Dot(vn);
+
+	//T'から目標までのベクトル(曲げるために加える加速度)を求める
 	Vector3 centripetalAccel = toTarget - (vn * dot);
+
+	//その長さを求める
 	float centripetalAccelMagnitude = centripetalAccel.Length();
+
+	//1以上なら長さを1に正規化し,1未満ならそのまま
 	if (centripetalAccelMagnitude > 1.0f)
 	{
+		//ベクトルの正規化を行う
 		centripetalAccel /= centripetalAccelMagnitude;
 	}
-	Vector3 force = centripetalAccel * curvatureRadius;
+
+	//長さがmaxCentripetalAccel以下ならそのまま、以上なら長さをmaxCentripetalAccelにする
+	Vector3 force = centripetalAccel * maxCentripetalAccel;
+
+	//推進力
 	force += vn * propulsion;
+
+	//空気抵抗
 	force -= m_velocity * damping;
+
+	//速度積分
 	m_velocity += force * g_gameTime->GetFrameDeltaTime();
 }
 

@@ -4,7 +4,7 @@
 class Game;
 class Player;
 
-class AttackBase : public IGameObject
+class AttackBase : public IGameObject, Noncopyable
 {
 public:
 	AttackBase(){};

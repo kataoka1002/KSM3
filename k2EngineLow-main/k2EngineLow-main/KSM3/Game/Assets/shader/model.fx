@@ -287,9 +287,9 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
     //グレースケールを設定する
     if(setGrayScale == true)
     {
-        float Y = 0.299f * albedoColor.r + 0.587f * albedoColor.g + 0.114f * albedoColor.b;
+        float gray = 0.299f * albedoColor.r + 0.587f * albedoColor.g + 0.114f * albedoColor.b;
         
-        return Y;
+        return gray;
     }
     
     if (flashFlag == 1.0f)
