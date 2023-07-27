@@ -275,7 +275,7 @@ public:
 	/// エネミーのオブジェクトを返す
 	/// </summary>
 	/// <returns>エネミーのオブジェクト</returns>
-	std::vector<Enemy*> GetEnemyObject()
+	const std::vector<Enemy*>& GetEnemyObject() const
 	{
 		return m_enemyObject;
 	}
@@ -285,7 +285,7 @@ public:
 	/// エネミーのオブジェクトを返す
 	/// </summary>
 	/// <returns>エネミーのオブジェクト</returns>
-	std::vector<Enemy_Far*> GetEnemyFarObject()
+	const std::vector<Enemy_Far*>& GetEnemyFarObject() const
 	{
 		return m_enemyFarObject;
 	}
@@ -295,7 +295,7 @@ public:
 	/// エネミーのオブジェクトを返す
 	/// </summary>
 	/// <returns>エネミーのオブジェクト</returns>
-	std::vector<Enemy_Near*> GetEnemyNearObject()
+	const std::vector<Enemy_Near*>& GetEnemyNearObject() const
 	{
 		return m_enemyNearObject;
 	}
@@ -305,11 +305,15 @@ public:
 	/// ドロップアイテムのオブジェクトを返す
 	/// </summary>
 	/// <returns>ドロップアイテムのオブジェクト</returns>
-	std::vector<Drop_item*> GetDropItemObject()
+	const std::vector<Drop_item*>& GetDropItemObject() const
 	{
 		return m_dropItemObject;
 	}
 
+	void PushDropItem(Drop_item* item)
+	{
+		m_dropItemObject.push_back(item);
+	}
 
 	/// <summary>
 	/// ボスのポインタを返す

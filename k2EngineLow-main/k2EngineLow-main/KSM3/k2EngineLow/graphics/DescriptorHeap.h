@@ -28,6 +28,9 @@ namespace nsK2EngineLow {
 		void ResizeShaderResource(int numSRV)
 		{
 			m_shaderResources.resize(numSRV);
+			for (auto& srv : m_shaderResources) {
+				srv = nullptr;
+			}
 		}
 		/// <summary>
 		/// 定数バッファを記憶するための領域を確保
@@ -39,6 +42,9 @@ namespace nsK2EngineLow {
 		void ResizeConstantBuffer(int numCB)
 		{
 			m_constantBuffers.resize(numCB);
+			for (auto& cb : m_constantBuffers) {
+				cb = nullptr;
+			}
 		}
 		/// <summary>
 		/// UAVを記憶するための領域をリサイズ
@@ -49,6 +55,9 @@ namespace nsK2EngineLow {
 		void ResizeUnorderAccessResource(int numUAV)
 		{
 			m_uavResoruces.resize(numUAV);
+			for (auto& uav : m_uavResoruces) {
+				uav = nullptr;
+			}
 		}
 		/// <summary>
 		/// シェーダーリソースをディスクリプタヒープに登録。
@@ -261,7 +270,7 @@ namespace nsK2EngineLow {
 		ID3D12DescriptorHeap* m_descriptorHeap = { nullptr };					//ディスクリプタヒープ。
 		std::vector<IShaderResource*> m_shaderResources;		//シェーダーリソース。
 		std::vector < IUnorderAccessResrouce*> m_uavResoruces;	//UAVリソース。
-		std::vector < ConstantBuffer*> m_constantBuffers;		//定数バッファ。
+		std::vector < ConstantBuffer*>m_constantBuffers;		//定数バッファ。
 		D3D12_SAMPLER_DESC m_samplerDescs[MAX_SAMPLER_STATE];						//サンプラステート。
 		D3D12_GPU_DESCRIPTOR_HANDLE m_cbGpuDescriptorStart[2];						//定数バッファのディスクリプタヒープの開始ハンドル。
 		D3D12_GPU_DESCRIPTOR_HANDLE m_srGpuDescriptorStart[2];						//シェーダーリソースのディスクリプタヒープの開始ハンドル。

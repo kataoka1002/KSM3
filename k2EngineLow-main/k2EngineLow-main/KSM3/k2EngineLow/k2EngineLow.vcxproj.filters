@@ -234,7 +234,6 @@
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Bloom.cpp" />
-    <ClCompile Include="ToonMap.cpp" />
     <ClCompile Include="SpringCamera.cpp" />
     <ClCompile Include="CameraCollisionSolver.cpp" />
     <ClCompile Include="SkyCube.cpp" />
@@ -521,7 +520,6 @@
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Bloom.h" />
-    <ClInclude Include="ToonMap.h" />
     <ClInclude Include="SpringCamera.h" />
     <ClInclude Include="CameraCollisionSolver.h" />
     <ClInclude Include="SkyCube.h" />

@@ -378,10 +378,10 @@ void EnemyBase::ItemDrop()
 
 	//エネミーがどの武器を持っていたか取得
 	m_dropItem->SetItemKinds(m_setWeapon);
-
-
 	//作成したアイテムをコンテナにくっつける
-	m_game->GetDropItemObject().push_back(m_dropItem);
+	//m_game->GetDropItemObject().push_back(m_dropItem);
+
+	m_game->PushDropItem(m_dropItem);
 
 }
 

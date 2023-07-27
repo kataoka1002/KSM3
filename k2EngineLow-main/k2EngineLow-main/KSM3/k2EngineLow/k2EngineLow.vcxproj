@@ -333,7 +333,6 @@
     <ClCompile Include="SceneLight.cpp" />
     <ClCompile Include="SkyCube.cpp" />
     <ClCompile Include="SpringCamera.cpp" />
-    <ClCompile Include="ToonMap.cpp" />
     <ClCompile Include="sound\SoundEngine.cpp" />
     <ClCompile Include="sound\SoundSource.cpp" />
     <ClCompile Include="sound\WaveFile.cpp" />
@@ -436,7 +435,6 @@
     <ClInclude Include="SceneLight.h" />
     <ClInclude Include="SkyCube.h" />
     <ClInclude Include="SpringCamera.h" />
-    <ClInclude Include="ToonMap.h" />
     <ClInclude Include="sound\SoundEngine.h" />
     <ClInclude Include="sound\SoundSource.h" />
     <ClInclude Include="sound\WaveFile.h" />

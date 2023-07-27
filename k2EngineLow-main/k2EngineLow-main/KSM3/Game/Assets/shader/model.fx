@@ -233,7 +233,7 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
     if ( depth> 0.0005f)
     {
         // 深度値が結構違う場合はピクセルカラーを黒にする
-        return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
+        //return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
     }
     
 	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算
@@ -277,12 +277,13 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
     
     //モデルのテクスチャから色をフェッチする
     float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
-
+    
     //トゥーン調に変更
-    float4 Col = MakeToonMap(psIn,directionLight.dirDirection); //引数はライトの方向
+    float4 toonColor = MakeToonMap(psIn,directionLight.dirDirection); //引数はライトの方向
     
     //求まった色を乗算する
-    albedoColor *= Col;
+    albedoColor *= toonColor;
+    //albedoColor.xyz *= lig;
     
     //グレースケールを設定する
     if(setGrayScale == true)
@@ -296,6 +297,7 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
     {
         return float4(1.0f, 1.0f, 1.0f, 1.0f);
     }
+    
     
     return albedoColor;
 }
@@ -600,7 +602,8 @@ float4 MakeToonMap(SPSIn psIn,float3 light)
 {
     //ハーフランバート拡散照明によるライティング計算
     float p = dot(psIn.normal * -1.0f, light);
-    p = p * 0.5f + 0.5f;
+    //-1～1だった範囲を0～1にすることでUV座標から取ってこれるようにする
+    p = p * 0.5f + 0.5f;   
     //p = p * p;
 
     //計算結果よりトゥーンシェーダー用のテクスチャから色をフェッチする

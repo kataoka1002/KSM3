@@ -511,13 +511,13 @@ void Result::BackSet() { //モデルの読み込み
 	m_playerModel.SetPosition(m_playerPosition);
 	m_playerRotation.SetRotationDegY(-135.0f);
 	m_playerModel.SetRotation(m_playerRotation);
-	m_playerModel.Update();
+	//m_playerModel.Update();
 
 	//背景
 	m_boxModel.Init("Assets/modelData/Customize_area.tkm");
 	m_boxModel.SetPosition(m_boxPosition);
 	m_boxModel.SetScale(m_boxScale);
-	m_boxModel.Update();
+	//m_boxModel.Update();
 
 	//カメラの設定
 	m_gameCamera->SetToCameraPos({0.0f, -10.0f, -100.0f});
