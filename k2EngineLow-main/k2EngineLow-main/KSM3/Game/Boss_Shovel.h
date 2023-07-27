@@ -30,22 +30,22 @@ public:
 		enAnimationClip_Num
 	};
 
-	Vector3 GetPosirion()
+	Vector3 GetPosirion() const
 	{
 		return m_position;
 	}
 
-	Quaternion GetRotation()
+	Quaternion GetRotation() const
 	{
 		return m_rotation;
 	}
 
-	Vector3 GetForward()
+	Vector3 GetForward() const
 	{
 		return m_forward;
 	}
 
-	float GetScale()
+	float GetScale() const
 	{
 		return m_scale;
 	}

@@ -29,12 +29,12 @@ public:
 		enAnimationClip_Num
 	};
 
-	Vector3 GetPosirion()
+	Vector3 GetPosirion() const
 	{
 		return m_position;
 	}
 
-	Quaternion GetRotation()
+	Quaternion GetRotation() const
 	{
 		return m_rotation;
 	}

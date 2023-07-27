@@ -75,27 +75,27 @@ public:
 
 	//getter----------------------------------------------------------------
 
-	Right_arm_weapons* GetRightArmWeapon()
+	Right_arm_weapons* GetRightArmWeapon() const
 	{
 		return m_rightArmWeapon;
 	}
 
-	Left_arm_weapons* GetLeftArmWeapon()
+	Left_arm_weapons* GetLeftArmWeapon() const
 	{
 		return m_leftArmWeapon;
 	}
 
-	Shoulder_weapons* GetShoulderWeapon()
+	Shoulder_weapons* GetShoulderWeapon() const
 	{
 		return m_shoulderWeapon;
 	}
 
-	Right_leg_weapons* GetRightLegWeapon()
+	Right_leg_weapons* GetRightLegWeapon() const
 	{
 		return m_rightLegWeapon;
 	}
 
-	Left_leg_weapons* GetLeftLegWeapon()
+	Left_leg_weapons* GetLeftLegWeapon() const
 	{
 		return m_leftLegWeapon;
 	}

@@ -57,7 +57,7 @@ public:
 	/// 回転量を返す
 	/// </summary>
 	/// <returns></returns>
-	Quaternion GetRot()
+	Quaternion GetRot() const
 	{
 		return m_enemyRotation;
 	}
@@ -66,7 +66,7 @@ public:
 	/// 前方向を返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3 GetForward()
+	Vector3 GetForward() const
 	{
 		return m_enemyForward;
 	}
@@ -76,7 +76,7 @@ public:
 	/// ポジションを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3 GetPos()
+	Vector3 GetPos() const
 	{
 		return m_enemyPosition;
 	}
@@ -86,7 +86,7 @@ public:
 	/// 取り付けている武器の種類を返す
 	/// </summary>
 	/// <returns></returns>
-	int GetWeponKind()
+	int GetWeponKind() const
 	{		
 		return m_setWeapon;
 	}
@@ -96,7 +96,7 @@ public:
 	/// 現在のHPを返す
 	/// </summary>
 	/// <returns></returns>
-	float GetHP()
+	float GetHP() const
 	{
 		return m_enemyHP;
 	}
@@ -106,7 +106,7 @@ public:
 	/// HPの最大値を返す
 	/// </summary>
 	/// <returns></returns>
-	float GetMaxHP()
+	float GetMaxHP() const
 	{
 		return m_enemyHPMax;
 	}
@@ -116,7 +116,7 @@ public:
 	/// スピードを返す
 	/// </summary>
 	/// <returns></returns>
-	float GetSpeed()
+	float GetSpeed() const
 	{
 		return m_enemySpeed;
 	}

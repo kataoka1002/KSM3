@@ -22,17 +22,17 @@ public:
 		enAnimationClip_Num
 	};
 
-	Vector3 GetPosition()
+	Vector3 GetPosition() const
 	{
 		return m_position;
 	}
 
-	Vector3 GetForward()
+	Vector3 GetForward() const
 	{
 		return m_forward;
 	}
 
-	Quaternion GetRotation()
+	Quaternion GetRotation() const
 	{
 		return m_rotation;
 	}

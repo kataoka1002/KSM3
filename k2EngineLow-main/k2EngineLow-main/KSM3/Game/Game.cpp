@@ -335,7 +335,7 @@ void Game::GameNow()
 
 
 	//3ウェーブ突破したらボス戦
-	if (player->GetPlayerPosition().z >= 9550.0f && boss == nullptr /*&& m_wave->GetGoBoss() == true*/)
+	if (player->GetPlayerPosition().z >= 9550.0f && boss == nullptr && m_wave->GetGoBoss() == true)
 	{
 
 		//一定のカウントまでいったら
@@ -377,7 +377,8 @@ void Game::GameNow()
 
 
 			//ばねカメラを瞬間移動させる
-			gamecamera->GetSpringCamera().Refresh();
+			//gamecamera->GetSpringCamera().Refresh();
+			gamecamera->SpringCameraRefresh();
 
 
 			//プレイヤーの更新

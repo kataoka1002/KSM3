@@ -88,7 +88,7 @@ public:
 	/// カメラのポジションを返す
 	/// </summary>
 	/// <returns>カメラのポジション</returns>
-	Vector3 GetCameraPos()
+	Vector3 GetCameraPos() const
 	{
 		return m_position;
 	}
@@ -98,7 +98,7 @@ public:
 	/// カメラの前方向を返す
 	/// </summary>
 	/// <returns>カメラの前方向</returns>
-	Vector3 GetCameraForward()
+	Vector3 GetCameraForward() const
 	{
 		return m_cameraForward;
 	}
@@ -108,9 +108,18 @@ public:
 	/// ばねカメラを返す
 	/// </summary>
 	/// <returns>ばねカメラ</returns>
-	SpringCamera& GetSpringCamera()
+	const SpringCamera& GetSpringCamera() const
 	{
 		return m_springCamera;
+	}
+
+
+	/// <summary>
+	/// ばねカメラを瞬間移動させる
+	/// </summary>
+	void SpringCameraRefresh()
+	{
+		m_springCamera.Refresh();
 	}
 
 
@@ -118,7 +127,7 @@ public:
 	/// カメラステートを返す
 	/// </summary>
 	/// <returns>ステート</returns>
-	int GetCameraState()
+	int GetCameraState() const
 	{
 		return m_cameraState;
 	}

@@ -36,7 +36,7 @@ public:
 	/// 今のゲームステートを返す
 	/// </summary>
 	/// <returns>0:メインゲーム,1:ポーズ画面,2:リザルト,3:カスタマイズ,4:最初のシーン</returns>
-	int GetGameState()
+	int GetGameState() const
 	{
 		return m_gameState;
 	}
@@ -46,7 +46,7 @@ public:
 	/// ゲームの終了判定を返す
 	/// </summary>
 	/// <returns>1ならゲーム終了</returns>
-	int GetGameEndState()
+	int GetGameEndState() const
 	{
 		return m_gameEndState;
 	}
@@ -56,7 +56,7 @@ public:
 	/// ボス戦中かどうかを返す
 	/// </summary>
 	/// <returns>0：違う , 1：ボス戦</returns>
-	int GetBossState()
+	int GetBossState() const
 	{
 		return m_bossState;
 	}
@@ -66,7 +66,7 @@ public:
 	/// プレイヤーが死んだかどうか
 	/// </summary>
 	/// <returns>false：生きている , true：死んでいる</returns>
-	bool GetPlayerDead()
+	bool GetPlayerDead() const
 	{
 		return m_playerDead;
 	}
@@ -78,11 +78,11 @@ public:
 	/// <param name="line">行</param>
 	/// <param name="column">列</param>
 	/// <returns>0 : 装備なし </returns>
-	int GetCustomPoint(int line, int column)
+	int GetCustomPoint(int line, int column) const
 	{
 		return m_customPoint[line][column];
 	}
-	int GetCustomPoint(IntPair intPair)
+	int GetCustomPoint(IntPair intPair) const
 	{
 		return m_customPoint[intPair.first][intPair.second];
 	}
@@ -92,7 +92,7 @@ public:
 	/// プレイヤーの前方向を返す
 	/// </summary>
 	/// <returns>プレイヤーの前方向</returns>
-	Vector3 GetPlayerForward()
+	Vector3 GetPlayerForward() const
 	{
 		return m_playerForward;
 	}
@@ -102,7 +102,7 @@ public:
 	/// プレイヤーが今いる位置を返す
 	/// </summary>
 	/// <returns>プレイヤーの今いる位置</returns>
-	Vector3 GetPlayerPosition()
+	Vector3 GetPlayerPosition() const
 	{
 		return m_playerPosition;
 	}
@@ -112,7 +112,7 @@ public:
 	/// プレイヤーの回転を返す
 	/// </summary>
 	/// <returns>プレイヤーの回転量</returns>
-	Quaternion GetPlayerRotation()
+	Quaternion GetPlayerRotation() const
 	{
 		return m_playerRotation;
 	}
@@ -132,7 +132,7 @@ public:
 	/// 殺したエネミーの数を返す
 	/// </summary>
 	/// <returns></returns>
-	int GetKillEnemyAmount()
+	int GetKillEnemyAmount() const
 	{
 		return m_killEnemyAmountFont;
 	}
@@ -142,7 +142,7 @@ public:
 	/// プレイヤーの今のHPを返す
 	/// </summary>
 	/// <returns></returns>
-	float GetPlayerHP()
+	float GetPlayerHP() const
 	{
 		return m_playerHP;
 	}
@@ -152,7 +152,7 @@ public:
 	/// プレイヤーのHPの最大値を返す
 	/// </summary>
 	/// <returns></returns>
-	float GetPlayerHPMax()
+	float GetPlayerHPMax() const
 	{
 		return m_playerHPMax;
 	}
@@ -162,7 +162,7 @@ public:
 	/// ランダムに選ばれたカラーを返す
 	/// </summary>
 	/// <returns></returns>
-	int GetRandomColor()
+	int GetRandomColor() const
 	{
 		return m_playerColorRandom;
 	}
@@ -173,7 +173,7 @@ public:
 	/// キャラコンを返す
 	/// </summary>
 	/// <returns></returns>
-	CharacterController& GetCharacterController()
+	const CharacterController& GetCharacterController() const
 	{
 		return m_characterController;
 	}

@@ -523,7 +523,8 @@ void Result::BackSet() { //モデルの読み込み
 	m_gameCamera->SetToCameraPos({0.0f, -10.0f, -100.0f});
 	//gamecamera->fast_count = 0;
 	m_gameCamera->SetTarget({10000.0f,20.0f,0.0f});
-	m_gameCamera->GetSpringCamera().Refresh();
+	//m_gameCamera->GetSpringCamera().Refresh();
+	m_gameCamera->SpringCameraRefresh();
 	m_gameCamera->SetCameraState(3);
 
 	//コアウェポンの設定

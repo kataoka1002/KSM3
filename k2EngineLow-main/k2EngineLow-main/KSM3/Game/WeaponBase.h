@@ -58,7 +58,7 @@ public:
 	/// セットしている武器の種類を返す
 	/// </summary>
 	/// <returns>セットしている武器の種類</returns>
-	int GetWeaponKind()
+	int GetWeaponKind() const
 	{
 		return m_setWeapon;
 	}
@@ -68,7 +68,7 @@ public:
 	/// 現在の体力を返す
 	/// </summary>
 	/// <returns>現在の体力</returns>
-	float GetHP()
+	float GetHP() const
 	{
 		return m_HP;
 	}
@@ -78,7 +78,7 @@ public:
 	/// HPの最大値を返す
 	/// </summary>
 	/// <returns>HPの最大値</returns>
-	float GetHPMax()
+	float GetHPMax() const
 	{
 		return m_HPMax;
 	}
@@ -88,7 +88,7 @@ public:
 	/// 今いるポジションを返す
 	/// </summary>
 	/// <returns>今いるポジション</returns>
-	Vector3 GetPosition()
+	Vector3 GetPosition() const
 	{
 		return m_position;
 	}

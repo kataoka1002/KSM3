@@ -34,32 +34,32 @@ public:
 	void SetHPScale();
 	void PlayerSearch();//çıìG
 
-	Quaternion GetRotation()
+	Quaternion GetRotation()const
 	{
 		return m_rotation;
 	}
 
-	Vector3 GetPosition()
+	Vector3 GetPosition() const
 	{
 		return m_position;
 	}
 
-	Vector3 GetForward()
+	Vector3 GetForward() const
 	{
 		return m_forward;
 	}
 
-	Boss_Saber* GetSaber()
+	Boss_Saber* GetSaber() const
 	{
 		return m_bossSaber;
 	}
 
-	Boss_Shovel* GetShovel()
+	Boss_Shovel* GetShovel() const
 	{
 		return m_bossShovel;
 	}
 
-	Boss_Drill* GetDrill()
+	Boss_Drill* GetDrill() const
 	{
 		return m_bossDrill;
 	}
