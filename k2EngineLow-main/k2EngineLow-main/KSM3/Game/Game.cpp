@@ -31,11 +31,11 @@ Game::Game()
 {
 
 	//ライトの作成
-	lighting = NewGO<Lighting>(1, "lighting");
+	m_lighting = NewGO<Lighting>(1, "lighting");
 
 
 	//ステージの作成
-	background = NewGO< BackGround>(1, "background");
+	m_backGround = NewGO< BackGround>(1, "background");
 
 
 	//カスタマイズエリアの生成
@@ -43,7 +43,7 @@ Game::Game()
 
 
 	//ゲームカメラの作成
-	gamecamera = NewGO<GameCamera>(1, "gamecamera");
+	m_gameCamera = NewGO<GameCamera>(1, "gamecamera");
 
 	
 	//スカイキューブの作成
@@ -77,18 +77,18 @@ Game::~Game()
 	//削除
 	DeleteGO(m_soundManage);
 	DeleteGO(m_customizeUI);
-	DeleteGO(background);
+	DeleteGO(m_backGround);
 	DeleteGO(m_skyCube);
 	DeleteGO(m_wave);
-	DeleteGO(core_weapons);
+	DeleteGO(m_coreWeapon);
 	DeleteGO(m_playerUI);
 	DeleteGO(m_combo);
 	DeleteGO(m_customizeArea);
 
 	//ボスが存在するなら
-	if (boss != nullptr) 
+	if (m_boss != nullptr) 
 	{
-		DeleteGO(boss);
+		DeleteGO(m_boss);
 	}
 
 }
@@ -97,15 +97,15 @@ bool Game::Start()
 {
 
 	//プレイヤーの作成
-	player = NewGO<Player>(2, "player");
+	m_player = NewGO<Player>(2, "player");
 	
 	
 	//プレイヤーにカラーの情報を渡す
-	player->SetPlayerColorData(player_color_date);
+	m_player->SetPlayerColorData(m_playerColorDate);
 
 
 	//コア武器の作成
-	core_weapons = NewGO<Core_weapons>(1, "core_weapons");
+	m_coreWeapon = NewGO<Core_weapons>(1, "core_weapons");
 
 
 	//エフェクトの初期化
@@ -117,7 +117,7 @@ bool Game::Start()
 
 
 	//効果音の大きさをセーブする
-	SaveSEvol = SEvol;
+	m_saveSEvol = m_SEvol;
 		
 
 	return true;
@@ -205,7 +205,7 @@ void Game::Update()
 {
 
 	//最初のシーン中
-	if (player->GetGameState() == 4)
+	if (m_player->GetGameState() == 4)
 	{
 
 		//タイトルからメインゲームへの遷移時の処理
@@ -215,7 +215,7 @@ void Game::Update()
 
 
 	//最初のシーンじゃなかったら
-	if (player->GetGameState() != 4)
+	if (m_player->GetGameState() != 4)
 	{
 
 		//メインゲーム中の処理
@@ -335,7 +335,7 @@ void Game::GameNow()
 
 
 	//3ウェーブ突破したらボス戦
-	if (player->GetPlayerPosition().z >= 9550.0f && boss == nullptr && m_wave->GetGoBoss() == true)
+	if (m_player->GetPlayerPosition().z >= 9550.0f && m_boss == nullptr && m_wave->GetGoBoss() == true)
 	{
 
 		//一定のカウントまでいったら
@@ -343,7 +343,7 @@ void Game::GameNow()
 		{
 
 			//ボス戦中に変更
-			player->SetBossState(1);
+			m_player->SetBossState(1);
 
 		}
 
@@ -362,23 +362,23 @@ void Game::GameNow()
 
 
 			//ボスを発生させる
-			boss = NewGO<Boss>(1, "boss");
-			boss->SetPosition({ -19800.0f,0.0f,7800.0f });
+			m_boss = NewGO<Boss>(1, "boss");
+			m_boss->SetPosition({ -19800.0f,0.0f,7800.0f });
 
 
 			//ウェーブクラスのボスポインタに教えてやる
-			m_wave->SetBoss(boss);
+			m_wave->SetBoss(m_boss);
 
 
 			//プレイヤーの場所をボスの場所へ移動させる
-			player->SetPosition({-19246.0f,0.0f,-130.0f});
+			m_player->SetPosition({-19246.0f,0.0f,-130.0f});
 			//player->m_playerModel.SetPosition(player->GetPlayerPosition());
-			player->SetCharacterControllerPosition(player->GetPlayerPosition());
+			m_player->SetCharacterControllerPosition(m_player->GetPlayerPosition());
 
 
 			//ばねカメラを瞬間移動させる
 			//gamecamera->GetSpringCamera().Refresh();
-			gamecamera->SpringCameraRefresh();
+			m_gameCamera->SpringCameraRefresh();
 
 
 			//プレイヤーの更新
@@ -393,11 +393,11 @@ void Game::GameNow()
 
 
 	//プレイヤーが死んだら
-	if (player->GetGameEndState() == 1)
+	if (m_player->GetGameEndState() == 1)
 	{
 
 		//タイトルを作成
-		title = NewGO<Title>(1, "title");
+		m_title = NewGO<Title>(1, "title");
 
 
 		//自分自身の削除

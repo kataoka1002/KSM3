@@ -321,7 +321,7 @@ public:
 	/// <returns>ボスのポインタ</returns>
 	Boss* GetBoss() const
 	{
-		return boss;
+		return m_boss;
 	}
 
 
@@ -331,7 +331,7 @@ public:
 	/// <returns>BGMの音量</returns>
 	float GetBGMVol() const
 	{
-		return BGMvol;
+		return m_BGMvol;
 	}
 
 
@@ -341,7 +341,7 @@ public:
 	/// <returns>SEの音量</returns>
 	float GetSEVol() const
 	{
-		return SEvol;
+		return m_SEvol;
 	}
 
 
@@ -351,7 +351,7 @@ public:
 	/// <returns>セーブしたSEの音量</returns>
 	float GetSaveSEvol() const
 	{
-		return SaveSEvol;
+		return m_saveSEvol;
 	}
 
 
@@ -385,9 +385,9 @@ public:
 	/// <param name="vol">新しい音量</param>
 	void SetSEVol(float vol)
 	{
-		SEvol = vol;
+		m_SEvol = vol;
 
-		SEvol = max(SEvol, 0.0f);
+		m_SEvol = max(m_SEvol, 0.0f);
 	}
 
 
@@ -397,9 +397,9 @@ public:
 	/// <param name="vol">新しい音量</param>
 	void SetBGM(float vol)
 	{
-		BGMvol = vol;
+		m_BGMvol = vol;
 
-		BGMvol = max(BGMvol, 0.0f);
+		m_BGMvol = max(m_BGMvol, 0.0f);
 	}
 
 
@@ -409,42 +409,39 @@ public:
 	/// <param name="col">プレイヤーカラーデータ</param>
 	void SetPlayerColorData(int col)
 	{
-		player_color_date = col;
+		m_playerColorDate = col;
 	}
 
 
 	//----------------------------------------------------------------------------
 
 private:
-	Player* player = nullptr;			
-	Title* title = nullptr;			
-	Result* result = nullptr;			
-	Lighting* lighting = nullptr;		
-	SoundManage* m_soundManage = nullptr;
-	Drop_item* m_dropItem = nullptr;
-	BackGround* background = nullptr;
-	Core_weapons* core_weapons = nullptr;
-	GameCamera* gamecamera = nullptr;
-	Enemy_HP_UI* e_h_ui = nullptr;
-	Boss* boss = nullptr;
-	PlayerUI* m_playerUI = nullptr;
-	Wave* m_wave = nullptr;
-	SkyCube* m_skyCube = nullptr;
-	GuideLight* m_guide = nullptr;
-	Combo* m_combo = nullptr;
-	Customize_UI_ver2* m_customizeUI = nullptr;
-	Customize_area* m_customizeArea = nullptr;
-
+	Player*				m_player = nullptr;			
+	Title*				m_title = nullptr;			
+	Lighting*			m_lighting = nullptr;		
+	SoundManage*		m_soundManage = nullptr;
+	Drop_item*			m_dropItem = nullptr;
+	BackGround*			m_backGround = nullptr;
+	Core_weapons*		m_coreWeapon = nullptr;
+	GameCamera*			m_gameCamera = nullptr;
+	Boss*				m_boss = nullptr;
+	PlayerUI*			m_playerUI = nullptr;
+	Wave*				m_wave = nullptr;
+	SkyCube*			m_skyCube = nullptr;
+	GuideLight*			m_guide = nullptr;
+	Combo*				m_combo = nullptr;
+	Customize_UI_ver2*	m_customizeUI = nullptr;
+	Customize_area*		m_customizeArea = nullptr;
 
 	std::vector<Enemy*>			m_enemyObject;
 	std::vector<Enemy_Far*>		m_enemyFarObject;
 	std::vector<Enemy_Near*>	m_enemyNearObject;
 	std::vector<Drop_item*>		m_dropItemObject;
 
-	float	BGMvol				= 1.0f;		//こいつらを音量にかけてやることで調整する
-	float	SEvol				= 1.0f;		//こいつらを音量にかけてやることで調整する
-	float	SaveSEvol			= 0.0f;		//効果音の大きさを保存しておく変数
-	int		player_color_date	= 0;		//プレイヤーのカラーデータ
+	float	m_BGMvol			= 1.0f;		//こいつらを音量にかけてやることで調整する
+	float	m_SEvol				= 1.0f;		//こいつらを音量にかけてやることで調整する
+	float	m_saveSEvol			= 0.0f;		//効果音の大きさを保存しておく変数
+	int		m_playerColorDate	= 0;		//プレイヤーのカラーデータ
 	int		m_numEnemy			= 0;		//エネミーの数。
 	int		m_numDefeatedEnemy	= 0;		//倒されたエネミーの数。
 };
