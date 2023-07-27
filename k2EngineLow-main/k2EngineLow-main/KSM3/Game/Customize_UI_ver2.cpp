@@ -1144,7 +1144,8 @@ void Customize_UI_ver2::TranceIn()
 		m_gameCamera->SetToCameraPos({ 0.0f, -10.0f, -100.0f });
 		m_gameCamera->SetTarget({ 10000.0f,20.0f,0.0f });
 		m_gameCamera->SetCameraState(3);
-		m_gameCamera->GetSpringCamera().Refresh();
+		//m_gameCamera->GetSpringCamera().Refresh();
+		m_gameCamera->SpringCameraRefresh();
 	}
 
 
@@ -1253,7 +1254,8 @@ void Customize_UI_ver2::TranceOut()
 		//カメラ移動(プレイヤーのステートはカスタム画面のまま)
 		m_gameCamera->SetCameraState(0);
 		m_gameCamera->SetToCameraPos({ 0.0f, 500.0f, -700.0f });
-		m_gameCamera->GetSpringCamera().Refresh();	
+		//m_gameCamera->GetSpringCamera().Refresh();	
+		m_gameCamera->SpringCameraRefresh();
 	}
 
 	//黒フェード消滅

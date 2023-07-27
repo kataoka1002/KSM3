@@ -14,17 +14,17 @@ public:
 	void WeaponSet();
 	void MakeBullet();
 
-	Vector3 GetPosition()
+	Vector3 GetPosition() const
 	{
 		return m_position;
 	}
 
-	Quaternion GetRotation()
+	Quaternion GetRotation() const
 	{
 		return m_rotation;
 	}
 
-	int GetSetWeapon()
+	int GetSetWeapon() const
 	{
 		return m_setWeapon;
 	}

@@ -56,7 +56,7 @@ public:
 	/// ボス戦に行けるかどうかを返す
 	/// </summary>
 	/// <returns>true : 行ける , false : 行けない</returns>
-	bool GetGoBoss()
+	bool GetGoBoss() const
 	{
 		return m_goBoss;
 	}
@@ -66,7 +66,7 @@ public:
 	/// ローディングカウントを返す
 	/// </summary>
 	/// <returns></returns>
-	int GetLoadCount()
+	int GetLoadCount() const
 	{
 		return Loading_count;
 	}
@@ -76,7 +76,7 @@ public:
 	/// ウェーブクリアを返す
 	/// </summary>
 	/// <returns></returns>
-	Wave3Clear* GetWaveClear()
+	const Wave3Clear* GetWaveClear() const
 	{
 		return m_waveClear;
 	}

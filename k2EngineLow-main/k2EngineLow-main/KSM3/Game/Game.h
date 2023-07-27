@@ -319,7 +319,7 @@ public:
 	/// ボスのポインタを返す
 	/// </summary>
 	/// <returns>ボスのポインタ</returns>
-	Boss* GetBoss()
+	Boss* GetBoss() const
 	{
 		return boss;
 	}
@@ -329,7 +329,7 @@ public:
 	/// BGMの音量を返す
 	/// </summary>
 	/// <returns>BGMの音量</returns>
-	float GetBGMVol()
+	float GetBGMVol() const
 	{
 		return BGMvol;
 	}
@@ -339,7 +339,7 @@ public:
 	/// SEの音量を返す
 	/// </summary>
 	/// <returns>SEの音量</returns>
-	float GetSEVol()
+	float GetSEVol() const
 	{
 		return SEvol;
 	}
@@ -349,7 +349,7 @@ public:
 	/// セーブしたSEの音量を返す
 	/// </summary>
 	/// <returns>セーブしたSEの音量</returns>
-	float GetSaveSEvol()
+	float GetSaveSEvol() const
 	{
 		return SaveSEvol;
 	}
@@ -359,7 +359,7 @@ public:
 	/// エネミーの数を返す
 	/// </summary>
 	/// <returns>エネミーの数</returns>
-	int GetEnemyNum()
+	int GetEnemyNum() const
 	{
 		return m_numEnemy;
 	}
@@ -368,7 +368,7 @@ public:
 	/// 死んだエネミーの数を返す
 	/// </summary>
 	/// <returns>死んだエネミーの数</returns>
-	int GetDefeatedEnemyNum()
+	int GetDefeatedEnemyNum() const
 	{
 		return m_numDefeatedEnemy;
 	}
