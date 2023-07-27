@@ -289,7 +289,7 @@
 >
 > *7.* 最終的に加える力を求め、速度に加える。
 > ``` ruby : GuideLight.cpp
-> //長さがmaxCentripetalAccel以下ならそのまま、以上なら長さをmaxCentripetalAccelにする
+> //求めた長さに遠心力をかける
 > Vector3 force = centripetalAccel * maxCentripetalAccel;
 >
 > //推進力
