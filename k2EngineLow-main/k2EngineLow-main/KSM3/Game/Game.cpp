@@ -71,7 +71,6 @@ Game::~Game()
 	{
 		DeleteGO(dropItem);
 
-		RemoveDropItemFromList(dropItem);
 	}
 
 
