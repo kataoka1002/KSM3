@@ -51,12 +51,14 @@ namespace nsK2EngineLow {
 		float pad3;
 		Matrix m_LVP;					//ライトビュースクリーン配列
 		bool setGryaScale;				//グレースケールをセットするかどうか
+		int deltaTime;
 	};
 
 
 	class SceneLight : public Noncopyable
 	{
 	public:
+
 		//初期化
 		void Init()
 		{
@@ -107,6 +109,11 @@ namespace nsK2EngineLow {
 		void SetGryaScale(bool setGrayScale)
 		{
 			m_light.setGryaScale = setGrayScale;
+		}
+
+		void AddTime(int time)
+		{
+			m_light.deltaTime = time;
 		}
 
 		Light& GetLight()

@@ -226,7 +226,8 @@ namespace nsK2EngineLow {
 		const Matrix& mView,
 		const Matrix& mProj,
 		int numInstance,
-		bool flashFlag
+		bool flashFlag,
+		bool m_UVScrollFlag
 	)
 	{
 		//メッシュごとにドロー
@@ -238,14 +239,18 @@ namespace nsK2EngineLow {
 		cb.mWorld = mWorld;
 		cb.mView = mView;
 		cb.mProj = mProj;
-		/*cb.pad1 = 0.0f;
-		cb.pad2 = 0.0f;
-		cb.pad3 = 0.0f;*/
 		if (flashFlag) {
 			cb.flashFlag = 1.0f;
 		}
 		else {
 			cb.flashFlag = 0.0f;
+		}
+
+		if (m_UVScrollFlag) {
+			cb.m_UVScrollFlag = 1.0f;
+		}
+		else {
+			cb.m_UVScrollFlag = 0.0f;
 		}
 
 		m_commonConstantBuffer.CopyToVRAM(cb);
