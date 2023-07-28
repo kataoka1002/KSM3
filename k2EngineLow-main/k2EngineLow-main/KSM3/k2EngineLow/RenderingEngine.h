@@ -87,6 +87,13 @@ namespace nsK2EngineLow {
 			m_sceneLight.SetGryaScale(setGrayScale);
 		}
 
+		//時間の設定
+		void AddTime(int time)
+		{
+			m_sceneLight.AddTime(time);
+		}
+
+
 		//ZPrepassで作成された深度テクスチャを取得
 		Texture& GetZPrepassDepthTexture()
 		{
@@ -137,7 +144,6 @@ namespace nsK2EngineLow {
 
 		
 	private:
-
 		SceneLight m_sceneLight;
 		Bloom m_bloom;
 
@@ -156,6 +162,9 @@ namespace nsK2EngineLow {
 		
 		//トゥーンシェーダーのテクスチャ
 		Texture m_toonTexture;
+
+		//UVスクロール用
+		int m_time = 0;
 
 		std::vector<ModelRender*>	ModelRenderObject;
 		std::vector<SpriteRender*>	SpriteRenderObject;

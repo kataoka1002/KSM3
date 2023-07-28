@@ -196,6 +196,11 @@ void  Player::InitModel()
 
 		//プレイヤーモデルを指定されたカラーで初期化
 		m_playerModel->Init(getPlayer_color(m_playerColorData));
+		//レインボーが選ばれたらUVスクロールを起こす
+		if (m_playerColorData == 5)
+		{
+			m_playerModel->PlayUVScroll();
+		}
 
 
 		//変数にタイトルで指定されたカラーを覚えさせておく

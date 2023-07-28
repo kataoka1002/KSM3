@@ -39,10 +39,8 @@ cbuffer ModelCb : register(b0){
 	float4x4 mWorld;
 	float4x4 mView;
 	float4x4 mProj;
-    //float pad1;
-    //float pad2;
-    //float pad3;
     float flashFlag;
+    float m_UVScrollFlag;
 };
 //ディレクションライト用の定数バッファ
 cbuffer DirectionLightCb : register(b1) {
@@ -66,6 +64,9 @@ cbuffer DirectionLightCb : register(b1) {
     float4x4 mLVP;
     
     bool setGrayScale;
+    
+    int deltaTime;
+
 }
 
 
@@ -170,6 +171,12 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     psIn.biNormal = normalize(mul(m, vsIn.biNormal));
 
 	psIn.uv = vsIn.uv;
+    //UVスクロールのフラグが立っているなら
+    if (m_UVScrollFlag == 1.0f)
+    {
+        psIn.uv.x += 0.015f * deltaTime;
+        //psIn.uv.y += 0.005f * deltaTime;
+    }
 	
     psIn.normalInView = mul(mView, psIn.normal);//カメラ空間の法線を求める
     
@@ -233,7 +240,7 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
     if ( depth> 0.0005f)
     {
         // 深度値が結構違う場合はピクセルカラーを黒にする
-        //return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
+        return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
     }
     
 	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算

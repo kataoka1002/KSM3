@@ -116,7 +116,7 @@ namespace nsK2EngineLow {
 
 		void OnDraw(RenderContext& rc)
 		{
-			m_model.Draw(rc, 1, m_flashFlag);
+			m_model.Draw(rc, 1, m_flashFlag, m_UVScrollFlag);
 		}
 
 		void OnShadowDraw(RenderContext& rc)
@@ -127,6 +127,11 @@ namespace nsK2EngineLow {
 		void PlayFlash()
 		{
 			m_flashFlag = true;
+		}
+
+		void PlayUVScroll() 
+		{
+			m_UVScrollFlag = true;
 		}
 
 	private:
@@ -162,6 +167,7 @@ namespace nsK2EngineLow {
 
 		bool syuok = false;
 		bool m_flashFlag = false;
+		bool m_UVScrollFlag = false;
 
 		int Now_Animation_Number = -1;
 	};
