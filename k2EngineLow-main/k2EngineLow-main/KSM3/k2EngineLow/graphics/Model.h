@@ -99,7 +99,8 @@ namespace nsK2EngineLow {
 		void Draw(
 			RenderContext& renderContext,
 			int numInstance = 1,
-			bool flashFlag = false
+			bool flashFlag = false,
+			bool m_UVScrollFlag = false
 		);
 		/// <summary>
 		/// •`‰æ(ƒJƒƒ‰w’è”Å)

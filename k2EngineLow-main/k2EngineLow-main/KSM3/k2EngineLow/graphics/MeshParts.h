@@ -75,7 +75,8 @@ namespace nsK2EngineLow {
 			const Matrix& mView,
 			const Matrix& mProj,
 			int numInstance,
-			bool flashFlag = false);
+			bool flashFlag = false,
+			bool m_UVScrollFlag = false);
 		/// <summary>
 		/// スケルトンを関連付ける。
 		/// </summary>
@@ -149,10 +150,8 @@ namespace nsK2EngineLow {
 			Matrix mWorld;		//ワールド行列。
 			Matrix mView;		//ビュー行列。
 			Matrix mProj;		//プロジェクション行列。
-			/*float pad1;
-			float pad2;
-			float pad3;*/
 			float flashFlag = 0.0f;		//モデルを白くするフラグ
+			float m_UVScrollFlag = 0.0f;	//UVスクロールのフラグ
 		};
 		ConstantBuffer m_commonConstantBuffer;					//メッシュ共通の定数バッファ。
 		ConstantBuffer m_expandConstantBuffer;					//ユーザー拡張用の定数バッファ

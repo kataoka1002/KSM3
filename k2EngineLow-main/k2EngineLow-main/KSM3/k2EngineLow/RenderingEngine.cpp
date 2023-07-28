@@ -135,6 +135,14 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
+		//Œo‰ßŽžŠÔ‚ÌÝ’è
+		m_time++;
+		AddTime(m_time);
+		if (m_time >= 10000)
+		{
+			m_time = 0;
+		}
+
 		// ZPrepass
 		ZPrepass(rc);
 

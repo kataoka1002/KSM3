@@ -88,7 +88,8 @@ namespace nsK2EngineLow {
 	void Model::Draw(
 		RenderContext& rc,
 		int numInstance,
-		bool flashFlag
+		bool flashFlag,
+		bool m_UVScrollFlag
 	)
 	{
 		m_meshParts.Draw(
@@ -97,7 +98,8 @@ namespace nsK2EngineLow {
 			g_camera3D->GetViewMatrix(),
 			g_camera3D->GetProjectionMatrix(),
 			numInstance,
-			flashFlag
+			flashFlag,
+			m_UVScrollFlag
 		);
 	}
 	void Model::Draw(

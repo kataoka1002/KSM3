@@ -61,11 +61,14 @@ cbuffer directionLightCb : register(b1)
     //半球ライト用
     HemLight hemLight;
 
-    //ライトビュースクリーン用
+   //ライトビュースクリーン用
     float4x4 mLVP;
     
     //グレースケール設定用
     bool setGrayScale;
+    
+    int deltaTime;
+    
 }
 
 
@@ -237,7 +240,6 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 	
 	//テクスチャからカラーをフェッチ
     float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
-
     
     //シャドウの処理
     /////////////////////////////////////////////////////////////////////////////
