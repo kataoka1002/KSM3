@@ -251,12 +251,14 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     // ライトビュースクリーン空間でのZ値を計算する
     float zInLVP = psIn.posInLVP.z / psIn.posInLVP.w;
 
-    if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
-        && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f)
+    //ライトビュースクリーン空間でのUV座標の内側なら
+    if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f)
     {
-        // シャドウマップに描き込まれているZ値と比較する
+        // シャドウマップに描き込まれているZ値と比較し
         // 計算したUV座標を使って、シャドウマップから深度値をサンプリング
         float zInShadowMap = g_shadowMap.Sample(g_sampler, shadowMapUV).r;
+        
+        //ライトカメラ目線時,描画予定のピクセル(zInLVP)より手前にオブジェクト(zInShadowMap)があるなら
         if (zInLVP > zInShadowMap)
         {
             // 遮蔽されている
