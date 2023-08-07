@@ -175,7 +175,6 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     if (m_UVScrollFlag == 1.0f)
     {
         psIn.uv.x += 0.015f * deltaTime;
-        //psIn.uv.y += 0.005f * deltaTime;
     }
 	
     psIn.normalInView = mul(mView, psIn.normal);//カメラ空間の法線を求める
@@ -198,6 +197,8 @@ SPSIn VSSkinMain( SVSIn vsIn )
 {
 	return VSMainCore(vsIn, true);
 }
+
+
 // シャドウモデルのピクセルシェーダーのエントリー関数
 float4 PSShadowMain(SPSIn psIn) : SV_Target0
 {
@@ -205,92 +206,26 @@ float4 PSShadowMain(SPSIn psIn) : SV_Target0
     return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
 }
 
-float4 PSTest(SPSIn psIn):SV_Target0    //テスト用の関数
-{
-    float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
-    
-    //if (dot(psIn.normal, directionLight.dirDirection) < -0.3f)
-    //{
-    //    return float4(1.0f, 1.0f, 1.0f, 1.0f);
-    //}
-    //else if (dot(psIn.normal, directionLight.dirDirection) >= -0.3f && dot(psIn.normal, directionLight.dirDirection) < 0.3f)
-    //{
-    //    return float4(0.5f, 0.5f, 0.5f, 1.0f);
-    //}
-    //else if (dot(psIn.normal, directionLight.dirDirection) >= 0.3f)
-    //{
-    //    return float4(0.0f,0.0f,0.0f,1.0f);
-    //}
-    
-    float p = dot(psIn.normal * -1.0f, directionLight.dirDirection);
-    p = p * 0.5f + 0.5f;
-
-    
-    //計算結果よりトゥーンシェーダー用のテクスチャから色をフェッチする
-    float4 Col = g_toonMap.Sample(g_sampler, float2(p, 0.0f));
-    
-    return albedoColor*Col;
-}
 
 // トゥーンシェーダーのエントリーポイント関数
 float4 PSToonMap(SPSIn psIn) : SV_Target0
 {
     // 輪郭線の作成
     float depth = OutLine(psIn);
-    if ( depth> 0.0005f)
+    if ( depth > 0.0005f)
     {
         // 深度値が結構違う場合はピクセルカラーを黒にする
         return float4(0.0f, 0.0f, 0.0f, 1.0f); // <ー これがエッジカラーとなる
     }
     
-	//ディレクションライト(鏡面拡散どっちも)によるライティングを計算
-    float3 directionLig = CalcLigFromDirectionLight(psIn);
-	
-    //複数個のライティング計算
-    float3 pointLig[10];
-    float3 spotLig[10];
-    for (int i = 0; i < 10; i++)
-    {
-        //ポイントライト(鏡面拡散どっちも)によるライティングを計算
-        pointLig[i] = CalcLigFromPointLight(psIn, i);
-        //スポットライト(鏡面拡散どっちも)によるライティングを計算
-        spotLig[i] = CalcLigFromSpotLight(psIn, i);
-    }
-    
-	//リムの計算
-    float3 limColor = CalcLimPower(psIn);
-	
-	//半球ライトの計算
-    float3 hemLig = CalcLigFromHemLight(psIn);
-	
-	//法線マップの計算
-    float3 normalMap = CalcNormalMap(psIn);
-    
-    //スペキュラーマップの計算
-    float3 specularMap = CalcSpecularMap(psIn);
-    
-	
-	//ディレクションライト、ポイントライト、スポットライト、
-	//アンビエントライト、半球ライト、法線マップ、スペキュラマップを合算して最終的な光を求める
-    float3 lig = directionLig + ambientLight + hemLig + normalMap + specularMap;
-    for (int j = 0; j < 10; j++)
-    {
-        lig += pointLig[j];
-        lig += spotLig[j];
-    }
-    
-	//最終的な反射光にリムの反射光を合算する
-    lig += limColor;
-    
     //モデルのテクスチャから色をフェッチする
     float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
     
-    //トゥーン調に変更
-    float4 toonColor = MakeToonMap(psIn,directionLight.dirDirection); //引数はライトの方向
+    //トゥーン調を求める
+    float4 toonColor = MakeToonMap(psIn, directionLight.dirDirection); //引数はライトの方向
     
     //求まった色を乗算する
     albedoColor *= toonColor;
-    //albedoColor.xyz *= lig;
     
     //グレースケールを設定する
     if(setGrayScale == true)
@@ -300,16 +235,16 @@ float4 PSToonMap(SPSIn psIn) : SV_Target0
         return gray;
     }
     
+    //白くするフラグが立ったら白くする
     if (flashFlag == 1.0f)
     {
         return float4(1.0f, 1.0f, 1.0f, 1.0f);
     }
-    
-    
+       
     return albedoColor;
 }
 
-/// ピクセルシェーダーのエントリー関数。
+// 通常時のピクセルシェーダーのエントリー関数。
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
     // 自身の深度値と近傍8テクセルの深度値の差を調べる
@@ -365,8 +300,6 @@ float4 PSMain(SPSIn psIn) : SV_Target0
 	//最終出力カラーに光を乗算する
     albedoColor.xyz *= lig;
     
-
-
     return albedoColor;
 }
 
