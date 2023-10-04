@@ -10,14 +10,14 @@
 namespace
 {
 	//アイテムの大きさ
-	const float MACHINEGUN_DROP_SCALE = 2.5f;
-	const float GIGATONCANNON_DROP_SCALE = 1.0f;
-	const float BATTLESHIPGUN_DROP_SCALE = 2.5f;
+	const float MACHINEGUN_DROP_SCALE = 3.5f;
+	const float GIGATONCANNON_DROP_SCALE = 2.0f;
+	const float BATTLESHIPGUN_DROP_SCALE = 5.5f;
 
 	//大きくなる速さ
-	const float ADD_MACHINEGUN_SCALE = 0.05f;
-	const float ADD_GIGATONCANNON_SCALE = 0.02f;
-	const float ADD_BATTLESHIPGUN_SCALE = 0.05f;
+	const float ADD_MACHINEGUN_SCALE = 0.1f;
+	const float ADD_GIGATONCANNON_SCALE = 0.05f;
+	const float ADD_BATTLESHIPGUN_SCALE = 0.1f;
 
 	//回転量
 	const float MODEL_ROT_AMOUNT = 2.0f;
@@ -26,7 +26,7 @@ namespace
 	const int REVERSAL_COUNT = 90;
 
 	//アイテムを拾える距離
-	const float CAN_GET_DISTANCE = 100.0f;
+	const float CAN_GET_DISTANCE = 170.0f;
 }
 
 Drop_item::Drop_item() 
