@@ -9,13 +9,16 @@
 namespace
 {
 	//１ウェーブのタイムリミット
-	const float		TIME_LIMIT = 180.0f;						
+	const float		TIME_LIMIT = 120.0f;		
+
+	//最終ウェーブのナンバー
+	const int LAST_WAVE_NUM = 2;
 	
 	//ウェーブ変更スプライトの初期場所
 	const Vector3	SPRITE_POSITION = { 1000.0f,0.0f,0.0f };	
 
 	//ボス戦に行くのに必要な殺した数
-	const int REQUIRED_ENEMY_COUNT_FOR_BOSS = 30;
+	const int REQUIRED_ENEMY_COUNT_FOR_BOSS = 20;
 
 	//ガイドのターゲットポジション
 	const Vector3 GUIDE_TARGET_POS = { 0.0f,0.0f,10000.0f };
@@ -216,7 +219,7 @@ void Wave::HandleWaveLogic()
 {
 
 	//最終ウェーブじゃないとき
-	if (m_waveNum != 3)
+	if (m_waveNum != LAST_WAVE_NUM)
 	{
 
 		//プレイヤーがエネミーを倒すか、ウェーブタイマーが0になると追加でエネミー生成
@@ -229,7 +232,7 @@ void Wave::HandleWaveLogic()
 		}
 
 	}
-	else if (m_waveNum == 3)
+	else if (m_waveNum == LAST_WAVE_NUM)
 	{
 
 		//エネミーを倒すか、ウェーブタイマーが0になると
@@ -337,7 +340,7 @@ void Wave::TimeCount()
 	wchar_t text[256];
 	int minute = (int)m_timer / 60;
 	int sec = (int)m_timer % 60;
-	swprintf_s(text, 256, L"ウェーブ%d /3                  %02d  :%02d",m_waveNum, minute, sec);
+	swprintf_s(text, 256, L"ウェーブ%d /%d                  %02d  :%02d",m_waveNum, LAST_WAVE_NUM, minute, sec);
 	m_timerFont.SetText(text);
 	m_timerFont.SetPosition(TIMER_FONT_POSITION);
 	m_timerFont.SetShadowParam(true, 1.0f, TIMER_FONT_SHADOW_COLOR);
@@ -406,7 +409,7 @@ void Wave::SpritePlay()
 			m_waveStartSprite.Init("Assets/sprite/wave/wave2.DDS", 1920.0f, 1080.0f);
 
 		}
-		else if (m_waveNum == 2)
+		else if (m_waveNum == 2 && m_waveNum != LAST_WAVE_NUM)
 		{
 
 			//ウェーブ3スタート画像
@@ -444,7 +447,7 @@ void Wave::ExecuteBossBattle()
 {
 
 	//ボス戦に入る瞬間
-	if (m_player->GetPlayerPosition().z >= 9550.0f && m_boss == nullptr/*&& m_goBoss == true*/)
+	if (m_player->GetPlayerPosition().z >= 9550.0f && m_boss == nullptr && m_goBoss == true)
 	{
 
 		//ある程度のカウントまでいったら

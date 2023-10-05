@@ -162,10 +162,8 @@ void GameCamera::Update()
 	}
 	else if (m_cameraState == 2)
 	{
-		/*m_toCameraPos.Set(0.0f, 10.0f, -300.0f);
-		target.y = 100.0f;
+		//QTE用にしたい
 
-		m_toCameraPos = toCameraPosOld;*/
 	}
 	//カスタマイズ画面の時
 	else if (m_cameraState == CAMERA_STATE_CUSTOMIZE)
