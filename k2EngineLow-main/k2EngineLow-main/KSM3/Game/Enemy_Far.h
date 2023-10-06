@@ -17,6 +17,7 @@ public:
 	void EnemyDead()				override;
 	void HPUnder0()					override;
 	void InitEnemyModel()			override;
+	void DeleteGoThis()             override;
 
 
 private:

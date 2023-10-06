@@ -20,6 +20,10 @@ bool EnemyBase::Start()
 	m_player = FindGO<Player>("player");
 
 
+	//カメラを探す
+	m_gameCamera = FindGO<GameCamera>("gamecamera");
+
+
 	//HPのUI作成
 	m_HPUI = NewGO<Enemy_HP_UI>(1, "enemy_hp_ui");
 
@@ -334,6 +338,65 @@ void EnemyBase::PlayerSearch()
 void EnemyBase::ExecuteOnEnemyDefeated()
 {
 
+	//倒したときにそいつが最後の一匹(違う場合もある)だったら
+	if (m_game->GetDefeatedEnemyNum() == 9 || m_game->GetDefeatedEnemyNum() == 19)
+	{
+		//QTEの準備に入る
+		m_gameCamera->SetQTE(m_enemyPosition);
+		m_deleteGoThisFlag = true;
+		return;
+	}
+
+	PushButton();
+	////死亡爆破エフェ
+	//EnemyDead();
+
+
+	////アイテムドロップの処理
+	//ItemDrop();
+
+
+	////死んだエネミーの数を増やす
+	//m_game->AddDefeatedEnemyNumber();
+
+
+	////殺した数を増やす
+	//m_player->AddKillEnemyAmount();
+
+
+	////画面を揺らす
+	//GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
+	//m_camera->SetVibFlag(true);
+
+
+	////コンボの処理
+	//Combo* m_combo = FindGO<Combo>("combo");
+	//m_combo->ComboUpdate();
+
+}
+
+void EnemyBase::ToPushButton()
+{
+	//タイマー減少
+	m_pushTimer--;
+
+	if (g_pad[0]->IsTrigger(enButtonA) || m_pushTimer < 0)
+	{
+		//決定音の再生
+		SoundSource* ketteiSE = NewGO<SoundSource>(0);		//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
+		ketteiSE->Init(en_PushButton);						//初期化
+		ketteiSE->SetVolume(1.0f * m_game->GetSEVol());		//音量調整
+		ketteiSE->Play(false);
+
+		//QTE解除
+		m_gameCamera->SetOffQTE();
+
+		PushButton();
+	}
+}
+
+void EnemyBase::PushButton()
+{
 	//死亡爆破エフェ
 	EnemyDead();
 
@@ -359,6 +422,9 @@ void EnemyBase::ExecuteOnEnemyDefeated()
 	Combo* m_combo = FindGO<Combo>("combo");
 	m_combo->ComboUpdate();
 
+
+	//自分自身の削除
+	DeleteGoThis();
 }
 
 void EnemyBase::ItemDrop()

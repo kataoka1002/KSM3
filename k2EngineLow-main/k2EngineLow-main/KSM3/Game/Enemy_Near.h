@@ -19,7 +19,7 @@ public:
 	void EnemyDead()				override;
 	void HPUnder0()					override;
 	void InitEnemyModel()			override;
-
+	void DeleteGoThis()             override;
 
 private:
 	SoundSource* m_cannonSE = nullptr;				//ƒMƒKƒgƒ“ƒLƒƒƒmƒ“SE

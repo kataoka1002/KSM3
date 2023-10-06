@@ -81,6 +81,16 @@ void Enemy_Near::InitEnemyModel()
 
 void Enemy_Near::Update()
 {
+	//世界が止まっているとき
+	if (m_game->IsStopWorld() != false)
+	{
+		if (m_deleteGoThisFlag == true)
+		{
+			ToPushButton();
+		}
+
+		return;
+	}
 
 	//メインゲーム中
 	if (m_player->GetGameState() == MAIN_GAME_NUM)
@@ -478,15 +488,24 @@ void Enemy_Near::HPUnder0()
 		ExecuteOnEnemyDefeated();
 
 
-		//自分自身の削除
-		DeleteGO(this);
+		////自分自身の削除
+		//DeleteGO(this);
 
 
-		//リストから消す
-		m_game->RemoveEnemyNearFromList(this);
+		////リストから消す
+		//m_game->RemoveEnemyNearFromList(this);
 
 	}
 
+}
+
+void Enemy_Near::DeleteGoThis()
+{
+	//自分自身の削除
+	DeleteGO(this);
+
+	//リストから消す
+	m_game->RemoveEnemyNearFromList(this);
 }
 
 void Enemy_Near::EnemyDead()

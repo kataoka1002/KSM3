@@ -10,7 +10,7 @@ namespace
 	//ステートナンバー
 	const int CAMERA_STATE_ZAKO = 0;
 	const int CAMERA_STATE_BOSS = 1;
-	const int NO = 2;
+	const int CAMERA_STATE_QTE = 2;
 	const int CAMERA_STATE_CUSTOMIZE = 3;
 	const int CAMERA_STATE_OP = 4;
 
@@ -82,6 +82,19 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
+	//世界が止まっているなら
+	if (m_game->IsStopWorld() != false)
+	{
+		//視点を計算する。
+		m_position = m_target + m_toCameraPos;
+
+		//ばねカメラの設定
+		m_springCamera.SetTarget(m_target);
+		m_springCamera.SetPosition(m_position);
+		m_springCamera.UpdateSpringCamera();
+		m_springCamera.UpdateCamera();
+		return;
+	}
 
 	//直前のカメラポジションを保存
 	Vector3 toCameraPosOld = m_toCameraPos;
@@ -160,10 +173,9 @@ void GameCamera::Update()
 		}
 
 	}
-	else if (m_cameraState == 2)
+	else if (m_cameraState == CAMERA_STATE_QTE)
 	{
 		//QTE用にしたい
-
 	}
 	//カスタマイズ画面の時
 	else if (m_cameraState == CAMERA_STATE_CUSTOMIZE)
@@ -187,7 +199,7 @@ void GameCamera::Update()
 
 
 	//カスタム画面とリザルト以外の時
-	if (m_cameraState != CAMERA_STATE_CUSTOMIZE && m_player->GetGameState() != RESULT_NUM)
+	if (m_cameraState != CAMERA_STATE_CUSTOMIZE && m_player->GetGameState() != RESULT_NUM && m_cameraState != CAMERA_STATE_QTE)
 	{
 		//揺れの大きさを足す
 		m_target.x += BGX;
@@ -214,9 +226,8 @@ void GameCamera::Update()
 
 void GameCamera::CalcRotation()
 {
-
 	//メインゲーム中にプレイヤーが死んでないなら
-	if (m_cameraState != CAMERA_STATE_CUSTOMIZE && m_cameraState != CAMERA_STATE_OP && m_player->GetPlayerDead() != true)
+	if (m_cameraState != CAMERA_STATE_CUSTOMIZE && m_cameraState != CAMERA_STATE_OP && m_player->GetPlayerDead() != true && m_cameraState != CAMERA_STATE_QTE)
 	{
 
 		//パッドの入力を使ってカメラを回す
@@ -436,4 +447,37 @@ void GameCamera::PlayVibration(int decline,int maxVib, bool& flag,int& vibration
 			BGY = rand() % vib - vibHalf;
 		}
 
+}
+
+void GameCamera::SetQTE(Vector3 enemyPos)
+{
+	//ターゲットを敵に向けて
+	m_target = enemyPos;
+
+	//カメラまでの距離は半分にする
+	m_toCameraPos *= 0.5f;
+
+	//カメラステートはQTE用
+	m_cameraState = CAMERA_STATE_QTE;
+
+	//時を止める
+	m_game->StopWorld();
+
+	//ボタンを押せを表示
+	m_game->SetPushButton();
+}
+
+void GameCamera::SetOffQTE()
+{
+	//時を進める
+	m_game->ReStartWorld();
+
+	//カメラのまでの距離を元に戻す
+	m_toCameraPos *= 2.0f;
+
+	//ステートを雑魚戦に戻す
+	m_cameraState = CAMERA_STATE_ZAKO;
+
+	//ボタンを押せを消す
+	m_game->SetOffPushButton();
 }

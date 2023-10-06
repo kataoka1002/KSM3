@@ -58,6 +58,7 @@
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AttackBase.cpp" />
     <ClCompile Include="WeaponBase.cpp" />
+    <ClCompile Include="PushButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -114,5 +115,6 @@
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="AttackBase.h" />
     <ClInclude Include="WeaponBase.h" />
+    <ClInclude Include="PushButton.h" />
   </ItemGroup>
 </Project>

@@ -81,6 +81,13 @@ bool Player::Start()
 
 void Player::Update() 
 {
+	//世界が止まっているなら
+	if (m_game->IsStopWorld() != false)
+	{
+		//マシンガン発射音を停止
+		m_machineGunSE->Stop();
+		return;
+	}
 
 	//プレイヤーが死んでいてリザルト中でないとき
 	if (m_playerDead == true && m_gameState != RESULT_NUM)

@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+#include "GameCamera.h"
 
 class Game;
 class Player;
@@ -7,7 +8,6 @@ class Drop_item;
 class GameCamera;
 class Combo;
 class Enemy_HP_UI;
-
 
 
 class EnemyBase : public IGameObject, Noncopyable
@@ -36,7 +36,8 @@ public:
 	void PassMove();							//パス移動
 	void PlayEffect(EffectName name, Vector3 pos, Quaternion rot, Vector3 scale);
 	void AsiotoSEManage(bool play);
-
+	void PushButton();
+	void ToPushButton();
 
 	//純粋仮想関数にして、派生クラスで実装する。
 	virtual void GameSetUp()				= 0;	//ゲーム全般の初期化
@@ -49,6 +50,7 @@ public:
 	virtual void EnemyDead()				= 0;
 	virtual void HPUnder0()					= 0;
 	virtual void InitEnemyModel()			= 0;
+	virtual void DeleteGoThis()             = 0;
 
 
 	//getter関数-------------------------------------------------------------
@@ -175,6 +177,7 @@ protected:
 
 	Game* m_game = nullptr;
 	Player* m_player = nullptr;
+	GameCamera* m_gameCamera = nullptr;
 	Drop_item* m_dropItem = nullptr;
 	Enemy_HP_UI* m_HPUI = nullptr;
 	SoundSource* m_enemyDeadSE = nullptr;			//死んだときの爆破SE
@@ -210,6 +213,7 @@ protected:
 	float m_enemyHP = 0;							//エネミーの体力
 	float m_enemyHPMax = 0;							//エネミーの体力の最大値
 	float m_enemySpeed = 0;							//エネミーの移動速度
-
+	int m_pushTimer = 300;							//爆発するまでの時間
+	bool m_deleteGoThisFlag = false;				//消される直前かどうか
 };
 

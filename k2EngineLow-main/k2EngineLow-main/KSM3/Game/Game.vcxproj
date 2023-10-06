@@ -262,6 +262,7 @@
     <ClCompile Include="OPVoice.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerUI.cpp" />
+    <ClCompile Include="PushButton.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Right_arm_weapons.cpp" />
     <ClCompile Include="Right_leg_weapons.cpp" />
@@ -319,6 +320,7 @@
     <ClInclude Include="PlayerUI.h" />
     <ClInclude Include="Player_custom_Macro.h" />
     <ClInclude Include="Player_Macro.h" />
+    <ClInclude Include="PushButton.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Result_Macro.h" />
     <ClInclude Include="Right_arm_weapons.h" />

@@ -203,6 +203,16 @@ namespace nsK2EngineLow {
 			m_frameRateInfo.maxFPS = maxFPS;
 		}
 		
+		//追加（カタオカ）
+		void StapWorld()
+		{
+			m_isStopWorld = true;
+		}
+		void ReStartWorld()
+		{
+			m_isStopWorld = false;
+		}
+
 	private:
 #ifdef K2_DEBUG
 		std::unique_ptr<Font> m_fpsFont;
@@ -219,6 +229,9 @@ namespace nsK2EngineLow {
 		GameTime m_gameTime;
 		FPSLimitter m_fpsLimitter;						// FPSに制限をかける処理。
 		FrameRateInfo m_frameRateInfo = { enFrameRateMode_Variable , 60};
+
+		//追加（カタオカ）
+		bool m_isStopWorld = false;
 	};
 
 	extern K2EngineLow* g_engine;	// 低レベルK2エンジン。

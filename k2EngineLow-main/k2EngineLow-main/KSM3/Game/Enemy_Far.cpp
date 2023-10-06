@@ -84,6 +84,16 @@ void Enemy_Far::InitEnemyModel()
 
 void Enemy_Far::Update()
 {
+	//¢ŠE‚ªŽ~‚Ü‚Á‚Ä‚¢‚é‚Æ‚«
+	if (m_game->IsStopWorld() != false)
+	{
+		if (m_deleteGoThisFlag == true)
+		{
+			ToPushButton();
+		}
+
+		return;
+	}
 
 	//ƒƒCƒ“ƒQ[ƒ€’†
 	if (m_player->GetGameState() == MAIN_GAME_NUM)
@@ -502,7 +512,7 @@ void Enemy_Far::HPUnder0()
 		}
 		
 		//ƒ‚ƒfƒ‹‚ð”’‚­‚³‚¹‚é
-		m_enemyModel->PlayFlash();
+		//m_enemyModel->PlayFlash();
 
 	}
 
@@ -526,6 +536,16 @@ void Enemy_Far::EnemyDead()
 	m_enemyDeadSE->Play(false);
 
 }
+
+void Enemy_Far::DeleteGoThis()
+{
+	//Ž©•ªŽ©g‚Ìíœ
+	DeleteGO(this);
+
+	//ƒŠƒXƒg‚©‚çÁ‚·
+	m_game->RemoveEnemyFarFromList(this);
+}
+
 
 void Enemy_Far::Render(RenderContext& rc)
 {

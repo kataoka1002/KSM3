@@ -87,6 +87,19 @@ void Enemy::InitEnemyModel()
 
 void Enemy::Update()
 {
+	//世界が止まっているとき
+	if (m_game->IsStopWorld() != false)
+	{
+		//マシンガンの効果音を停止
+		m_machineGunSE->Stop();
+
+		if (m_deleteGoThisFlag == true)
+		{
+			ToPushButton();
+		}
+
+		return;
+	}
 
 	//プレイヤーが死亡した時用の音量調整
 	m_machineGunSE->SetVolume(0.5f * m_game->GetSEVol());
@@ -445,16 +458,26 @@ void Enemy::HPUnder0()
 		ExecuteOnEnemyDefeated();
 
 
-		//自分自身の削除
-		DeleteGO(this);
+		////自分自身の削除
+		//DeleteGO(this);
 
 
-		//リストから消す
-		m_game->RemoveEnemyFromList(this);
+		////リストから消す
+		//m_game->RemoveEnemyFromList(this);
 
 	}
 
 }
+
+void Enemy::DeleteGoThis()
+{
+	//自分自身の削除
+	DeleteGO(this);
+
+	//リストから消す
+	m_game->RemoveEnemyFromList(this);
+}
+
 
 void Enemy::EnemyDead()
 {

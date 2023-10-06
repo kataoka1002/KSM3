@@ -197,7 +197,7 @@ void Game::InitSound()
 	g_soundEngine->ResistWaveFileBank(en_Boss_Shovel_shock, "Assets/audio/Shovel_shock.wav");
 	g_soundEngine->ResistWaveFileBank(en_Boss_cannon_Langing_SE, "Assets/audio/Cannon_Langing.wav");
 	g_soundEngine->ResistWaveFileBank(en_Boss_Dozar_Langing_SE, "Assets/audio/Dozar_Langing.wav");
-
+	g_soundEngine->ResistWaveFileBank(en_PushButton, "Assets/audio/pushButton.wav");
 }
 
 

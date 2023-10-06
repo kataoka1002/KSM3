@@ -1,5 +1,6 @@
 #pragma once
 #include "LevelRender.h"
+#include "PushButton.h"
 class Player;		//プレイヤー
 class Title;		//タイトル
 class Result;		//リザルト
@@ -168,8 +169,8 @@ enum SoundName
 	en_Boss_Dozar_Charge_SE,	//ボスドーザーチャージ
 	en_Boss_Shovel_shock,		//ボスショベル衝撃
 	en_Boss_cannon_Langing_SE,	//ボスキャノン着弾
-	en_Boss_Dozar_Langing_SE	//ボスドーザー着弾
-	
+	en_Boss_Dozar_Langing_SE,	//ボスドーザー着弾
+	en_PushButton				//ボタンを押せ
 };
 
 class Game :public IGameObject, Noncopyable
@@ -265,6 +266,31 @@ public:
 	void AddDefeatedEnemyNumber()
 	{
 		m_numDefeatedEnemy++;
+	}
+
+	//ボタンを押せを生成
+	void SetPushButton()
+	{
+		m_pushButton = NewGO<PushButton>(0, "pushbutton");
+	}
+	void SetOffPushButton()
+	{
+		DeleteGO(m_pushButton);
+		m_pushButton = nullptr;
+	}
+
+	//時止め系
+	void StopWorld()
+	{
+		m_isStopWorld = true;
+	}
+	void ReStartWorld()
+	{
+		m_isStopWorld = false;
+	}
+	bool IsStopWorld() const
+	{
+		return m_isStopWorld;
 	}
 
 
@@ -432,6 +458,8 @@ private:
 	Combo*				m_combo = nullptr;
 	Customize_UI_ver2*	m_customizeUI = nullptr;
 	Customize_area*		m_customizeArea = nullptr;
+	PushButton*			 m_pushButton = nullptr;
+
 
 	std::vector<Enemy*>			m_enemyObject;
 	std::vector<Enemy_Far*>		m_enemyFarObject;
@@ -444,5 +472,6 @@ private:
 	int		m_playerColorDate	= 0;		//プレイヤーのカラーデータ
 	int		m_numEnemy			= 0;		//エネミーの数。
 	int		m_numDefeatedEnemy	= 0;		//倒されたエネミーの数。
+	bool    m_isStopWorld		= false;	//時が止まっているかどうか
 };
 

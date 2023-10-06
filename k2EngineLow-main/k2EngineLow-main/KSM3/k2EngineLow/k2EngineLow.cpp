@@ -84,6 +84,12 @@ namespace nsK2EngineLow {
 
 	void K2EngineLow::ExecuteUpdate()
 	{
+		//Žž‚ðŽ~‚ß‚é
+		/*if (m_isStopWorld != false)
+		{
+			return;
+		}*/
+
 		for (auto& pad : m_pad) {
 			pad.Update();
 		}

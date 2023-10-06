@@ -2,6 +2,7 @@
 class Game;
 class Player;
 class Customize_UI_ver2;
+
 //ゲーム中のカメラを制御する。
 class GameCamera : public IGameObject, Noncopyable
 {
@@ -13,6 +14,8 @@ public:
 	void Update();
 	void ManageVibration();
 	void CalcRotation();
+	void SetQTE(Vector3 enemyPos);
+	void SetOffQTE();
 
 	/// <summary>
 	/// 画面揺れの処理を行う
