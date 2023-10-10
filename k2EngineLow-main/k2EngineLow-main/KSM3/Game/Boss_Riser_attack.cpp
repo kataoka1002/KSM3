@@ -86,7 +86,8 @@ void Boss_Riser_attack::DestroyWithImpactEffect() {
 
 		//‰æ–Ê‚ð—h‚ç‚·
 		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-		m_camera->SetBigVibFlag(true);
+		//m_camera->SetBigVibFlag(true);
+		m_camera->SetVibFlag(true);
 		Damage(true);
 
 		m_fastFlag = false;

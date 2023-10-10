@@ -103,8 +103,8 @@ void Boss_Cannon_attack::DestroyWithImpactEffect() {
 		
 		//‰æ–Ê‚ð—h‚ç‚·
 		GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-		m_camera->SetBigVibFlag(true);
-		
+		//m_camera->SetBigVibFlag(true);
+		m_camera->SetVibFlag(true);
 		m_fastFlag = false;
 	}
 	if (m_loadingCount == 130) {

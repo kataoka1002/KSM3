@@ -188,6 +188,7 @@ void Boss::Update()
 		m_bossTimeScore = 0.0f;
 	}
 
+	//PlayerSearch();
 	
 	m_modelRender.Update();
 }
@@ -498,6 +499,11 @@ void Boss::PlayerSearch()
 	m_modelRender.Update();
 }
 
+void Boss::BossRot()
+{
+
+}
+
 void Boss::Damage()
 {
 	//ボス即死コード。
@@ -612,7 +618,8 @@ void Boss::Damage()
 		}
 		if (m_deathCount == 120) {
 			GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-			m_camera->SetBigVibFlag(true);
+			//m_camera->SetBigVibFlag(true);
+			m_camera->SetVibFlag(true);
 			m_bossExplosion = NewGO<EffectEmitter>(0);
 			m_bossExplosion->Init(enBoss_Death2);
 			m_bossExplosion->SetScale({ 70.0f,70.0f,70.0f });

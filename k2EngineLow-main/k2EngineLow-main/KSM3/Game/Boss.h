@@ -33,6 +33,7 @@ public:
 	void Damage();
 	void SetHPScale();
 	void PlayerSearch();//çıìG
+	void BossRot();
 
 	Quaternion GetRotation()const
 	{
