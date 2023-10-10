@@ -348,31 +348,6 @@ void EnemyBase::ExecuteOnEnemyDefeated()
 	}
 
 	PushButton();
-	////死亡爆破エフェ
-	//EnemyDead();
-
-
-	////アイテムドロップの処理
-	//ItemDrop();
-
-
-	////死んだエネミーの数を増やす
-	//m_game->AddDefeatedEnemyNumber();
-
-
-	////殺した数を増やす
-	//m_player->AddKillEnemyAmount();
-
-
-	////画面を揺らす
-	//GameCamera* m_camera = FindGO<GameCamera>("gamecamera");
-	//m_camera->SetVibFlag(true);
-
-
-	////コンボの処理
-	//Combo* m_combo = FindGO<Combo>("combo");
-	//m_combo->ComboUpdate();
-
 }
 
 void EnemyBase::ToPushButton()
@@ -382,6 +357,8 @@ void EnemyBase::ToPushButton()
 
 	if (g_pad[0]->IsTrigger(enButtonA) || m_pushTimer < 0)
 	{
+		m_game->PlayNiziButton();
+
 		//決定音の再生
 		SoundSource* ketteiSE = NewGO<SoundSource>(0);		//一回再生すると終わりなのでインスタンスを保持させない為にここでNewGOする
 		ketteiSE->Init(en_PushButton);						//初期化

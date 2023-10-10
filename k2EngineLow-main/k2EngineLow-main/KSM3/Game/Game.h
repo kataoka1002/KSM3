@@ -278,6 +278,10 @@ public:
 		DeleteGO(m_pushButton);
 		m_pushButton = nullptr;
 	}
+	void PlayNiziButton()
+	{
+		m_pushButton->SetNiziButtonFlag();
+	}
 
 	//時止め系
 	void StopWorld()

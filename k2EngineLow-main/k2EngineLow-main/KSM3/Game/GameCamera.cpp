@@ -477,7 +477,4 @@ void GameCamera::SetOffQTE()
 
 	//ステートを雑魚戦に戻す
 	m_cameraState = CAMERA_STATE_ZAKO;
-
-	//ボタンを押せを消す
-	m_game->SetOffPushButton();
 }

@@ -501,9 +501,9 @@ void Enemy_Far::HPUnder0()
 
 			//ÕŒ‚‚ÌSE‚ğÄ¶
 			m_bisiSE = NewGO<SoundSource>(0);
-			m_bisiSE->Init(enBisi);						//‰Šú‰»
-			m_bisiSE->SetVolume(3.8f * m_game->GetSEVol());	//‰¹—Ê’²®
-			m_bisiSE->Play(false);						//Ä¶
+			m_bisiSE->Init(enBisi);								//‰Šú‰»
+			m_bisiSE->SetVolume(3.8f * m_game->GetSEVol());		//‰¹—Ê’²®
+			m_bisiSE->Play(false);								//Ä¶
 
 
 			//ÕŒ‚”­¶ƒtƒ‰ƒO‚ğ—§‚Ä‚é
