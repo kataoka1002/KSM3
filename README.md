@@ -79,6 +79,8 @@
 >  <dd>Slack</dd>
 >  <dt>GitHubのURL</dt>
 >  <dd>https://github.com/kataoka1002/KSM3.git</dd> 
+>  <dt>動画リンク(YouTube)</dt>
+>  <dd>https://youtu.be/3PM8rp3Y5fU</dd>
 > </dl>
 
 <br />
